@@ -1,0 +1,334 @@
+23:
+  ToDo: {Both cc_ll_delete and cc_ll_fdelete use this  function.: null}
+  text: '= Monday, 10/23/2017 05:31:24 PM =
+
+
+    === AUIP decode ===
+
+
+    I have a decode problem where in the AUIP there is an amount but no unit.  This
+    causes the ingredient to be decoded as the unit of measurement.  I believe that
+    using the translation function this can be corrected.  The ingredient should not
+    match a unit of measurement and I can take that as a signal to leave the unit
+    of measurement empty.
+
+
+    Most, not all, of the translate functions are written and tested.  Enough is there
+    to confirm that the ‘no unit’ option is working as desired.
+
+
+    === #001 Both cc_ll_delete and cc_ll_fdelete use this  function. ===
+
+
+    Both of these functions call a common delete function.  HOWEVER, the ''fdelete''
+    function already points to the record that is to be deleted while the ''delete''
+    only has a pointer to the record.  Move the search code to ''delete'' then have
+    both functions pass a pointer to the record that is to be deleted.  It works the
+    way it is but when called from ''fdelete'' time is waisted looking for something
+    that is already known.'
+24: {text: 'I suppose I should have started this a couple weeks ago but I suppose
+    it is better late then never.
+
+
+    = Tuesday, 10/24/2017 5:58:48 PM =
+
+
+    I have run into a problem with some sort of memory corruption and other then the
+    error message I have absolutely no idea what is going wrong.  The system is saying
+    that the program is double freeing memory but it simply isn''t.  I logged each
+    and every malloc and each and every free.  In the logs I can clearly see the memory
+    allocation, the usage and eventual free.  Once and only once.  There must be something
+    corrupting the OS allocation tables.  I believe that I have a solution but it
+    is going to take a lot to implement.  At the core is is a complete new library
+    of functions that will replace the ''str'' functions.
+
+
+    The mem_malloc will be modified to always create a structure with a buried ''int''
+    that will contain the size of the string buffer that follows.  The ''str'' functions
+    will then reference the size to insure there is no buffer overflow issue.  I don''t
+    have all the details worked out for example how does it work when I want to malloc
+    a structure that will never use any of the ''
+
+'}
+25: {text: '= Wednesday, 10/25/2017 07:42:59 AM =
+
+
+    After thinking about it overnight I came up with a middle ground that is less
+    intrusive.  I enhanced the malloc and free functions to build a list of allocated
+    storage and size of the storage units.  Then created a function that will allow
+    other functions to query the size of a malloc''d buffer.
+
+
+    = Wednesday, 10/25/2017 09:09:52 AM =
+
+
+    OK.  New code is written and looks good.  I ran the application and there doesn''t
+    seem to be any negative side effects.  Well it isn''t being used much.  The structurs
+    are being created and deleted but nothing is accessing them yet.  That is next.
+
+
+    = Wednesday, 10/25/2017 04:14:22 PM =
+
+
+    There is "obviously" some corruption if the AUIP formatter but I can''t find it.  I
+    went over the code with a fine tooth comb and I can''t find whatever is wrong.
+
+
+    I spent more time looking over existing code than using the new validation allocated
+    memory length tool.  There MUST be something here because when I bypass formatting
+    the AUIP everything works.  I guess tomorrow is another day.  Starting the backups
+    and shutting down for the day.'}
+26: {text: "= Thursday, 10/26/2017 10:05:02 AM =\n\nWell, finally some good news.
+    \ I was able to track down the cod bug causing the application crash.  I was so
+    focused on running of the end of a buffer I kept missing running of the start
+    of a buffer.\n\nIn function 'RECIPE__fmt_amount' there was a test for the character
+    following the amount field to be a character.  This is there to manage flaws in
+    recipes where there isn't a space between the amount and unit such as '1Cup'.
+    \ To decode this the position pointer was backed up one position and the last
+    digir of the amount field was changed to a space.  The bug presented itself when
+    there wasn't an amount field and the first character was a letter.  The position
+    was backed up into whatever preceeded the AUIP line and that character was changed
+    to a space.  NOT GOOD!.  I just expanded the test to verify it wasn't at the first
+    character and all is good again.\n\n= Thursday, 10/26/2017 06:41:18 PM =\n\nA
+    fairly productive day. After the bug fix above I added the translation function
+    for categories.  That looks to be working.\n\nTomorrow:\n\n- Add in the 'Title
+    Case' function to make the recipe names uniform.\n- Look at the output of the
+    categories translation for:\n  - Cuisine ........... (Cuisine:)\n  - Appliance
+    ......... (Appliance:)\n  - Occasion .......... (Seasonal:)\n  - Course ............
+    (Meal:)\n  - Diet .............. (Diet:)\n  - Category .......... (Group:)\n    -
+    Before saving into the appropiate group, strip off the (soon to be) redundant
+    group name."}
+27: {text: '= Friday, 10/27/2017 06:52:01 AM =
+
+
+    Title Case is done and working.
+
+
+    I did notice another bug in the MXP title decode.  Well it was actually in the
+    ''email_xlate_qp'' but I saw the result with a blank recipe name.  The quoted
+    printable function was "correctly" adding a Carrage Return to the line (=0D) translation.  The
+    problem is that the line wasn''t blank anymore so the decode gor all messed up.  I
+    just added a call to ''cc_text_strip_crlf'' at the end of the function and the
+    problem is resolved.
+
+
+    = Friday, 10/27/2017 08:47:45 AM =
+
+
+    While reviewing the ''Title Case'' function I saw a few numbered names.  I wrote
+    a new function to strip off extra crap at the end of a recipe title.  Normally
+    this was special characters like Asterisk or some form of numbering sequence to
+    avoid having two recipes with the same name.  Also some recipe names had back-to-back
+    spaces in them.  These were changed to single spaces.
+
+
+    = Friday, 10/27/2017 02:24:37 PM =
+
+
+    I suppose I''ll find something to tweak but the ''Cuisine'', ''Appliance'', ''Occasion'',
+    ''Course'', ''Diet'', and ''Category'' groupings all look good.
+
+
+    Making a short day of it today.
+
+
+    Tomorrow start formatting the directions.
+
+
+    = Friday, 10/27/2017 02:32:01 PM =
+
+
+    Well that didn''t take long!  I just found a problem where the categories isn''t
+    translating correctly.  Somehow "Breads" is translating into:
+
+
+    ```
+
+    Appliance:Bread Machine,            BREADMACHINE, ABM, Breadmaker, Machine,
+
+    Appliance:Bread Machine,            Breadmakers, BRDMAKER, BRDMACHINE
+
+    Appliance:Bread Machine,            BreadMachi, BreadBaker, BreadsBM, Bread Machine
+
+
+    It is supposed to match:
+
+
+    Category:Bread,                     BREADS, BREAD, QUICKBREADS, Sourdough, Rye
+
+    Category:Bread,                     Bread-Bakers Mailing List, Breads & Muffins
+
+    Category:Bread,                     Bread Mailing List, Bread/Muffins/Rolls
+
+    Category:Bread,                     Bread With Yeast, Breads For Dessert
+
+
+    ```
+
+
+    I suspect, no scratch that, the problem is that it is matching the longer "BreadsBM"
+    but the length limit of "Breads" is causing the compare to be true.  It was done
+    this way because the search buffers are fixed length with spaces following the
+    search data.  The solution is going to be moving the search string to a temporary
+    buffer that is as large as the search buffer then doing a compare on the full
+    length.'}
+28:
+  ToDo: {Get file date & time stamp then add it to the recipe.: null, Write a decode for RECIPE_FORMAT_BOF: null,
+    Write a decode for RECIPE_FORMAT_CP2: null, Write a decode for RECIPE_FORMAT_GF1: null,
+    Write a decode for RECIPE_FORMAT_GF2: null, Write a decode for RECIPE_FORMAT_GTF: null,
+    Write a decode for RECIPE_FORMAT_MMF: null, Write a decode for RECIPE_FORMAT_MX2: null,
+    Write a decode for RECIPE_FORMAT_RXF: null, Write a decode for RECIPE_FORMAT_TXT: null,
+    Write xlate_html: null}
+  text: '= Saturday, 10/28/2017 10:16:49 AM =
+
+
+    So now that I have the translation search function working --properly-- better
+    I am looking at the various category fields closer and I see many recipes with
+    multiple entries that are translating to the same thing.  The result of this is
+    that there are multiple entries in the output that are the same.  I guess I am
+    going to hav to add code to look to see if the new value is already there.  This
+    only if it isnt, add it to the list.  (More Work).
+
+
+    = Saturday, 10/28/2017 05:06:34 PM =
+
+
+    Another problem bites the dust..
+
+
+    Maybe I can get started on formatting the directions tomorrow.
+
+
+    NOTE: The following are items that have been on another ToDo list.  I am just
+    bringing them here to get everything in the same place.
+
+
+    === #002 Get file date & time stamp then add it to the recipe. ===
+
+
+    === #003 Implement the ‘-id’ parameter to scan entire directory chains. ===
+
+
+    === #004 Write a decode for RECIPE_FORMAT_BOF ===
+
+
+    === #005 Write a decode for RECIPE_FORMAT_CP2 ===
+
+
+    === #006 Write a decode for RECIPE_FORMAT_GF1 ===
+
+
+    === #007 Write a decode for RECIPE_FORMAT_GF2 ===
+
+
+    === #008 Write a decode for RECIPE_FORMAT_GTF ===
+
+
+    === #009 Write a decode for RECIPE_FORMAT_MMF ===
+
+
+    === #010 Write a decode for RECIPE_FORMAT_MX2 ===
+
+
+    === #011 Write a decode for RECIPE_FORMAT_RXF ===
+
+
+    === @012 Write a decode for RECIPE_FORMAT_TXT ===
+
+
+    === #013 Write ''xlate_html( )'' ===
+
+
+    === #014 Write ''xlate_paragraph_starters( )'' ==='
+29: {text: '= Sunday, 10/29/2017 09:05:28 AM =
+
+
+    Another problem bites the dust.  I added a generic function to add the various
+    categories.  It looks at the list to see if the new category is already on the
+    list.  The new category is ONLY added if it is NOT already found on the list.
+
+
+    = Sunday, 10/29/2017 10:40:50 AM =
+
+
+    Formatting the directions has started.  I created a function for the formatting
+    though I expect it will be calling numerious subroutines before it is complete.  So
+    far lines that end with an equals sign ''='' are joined together.
+
+
+    Side note: After thinking about it for a second or two, this needs to be moved
+    WAY earlier in the processing because other lines of text in the recipe could
+    also have equals sign ''='' at the end of line.  Do it once earlier or add code
+    everywhere to do it..
+
+
+    = Sunday, 10/29/2017 12:53:06 PM =
+
+
+    === Quoted-Printable ===
+
+
+    After thinking about this for a while I came to the conclusion that this stuff
+    needs to be moved all the way back to file read.  Then when data is first turned
+    over to the decoder it will have already been correctd.  This makes sense since
+    the conversion to QuotedPrintable is the last thing done before sending the message
+    and would normally be done in the message reader before being displayed.
+
+
+    = Sunday, 10/29/2017 07:19:12 PM =
+
+
+    I an done for the night, going to watch the World Series.  There is a problem
+    in the routine, in in a single memcpy instruction.  After translating quoted printable
+    string (=B0) [I assume others as well] I compress the remainder of the line, by
+    overlay the second and third character (B0) in this example with a memcpy instruction.  After
+    the instruction I see the data is altered in a way that makes absolutely no sense.  Anyhow,
+    I''ll pick this back up tomorrow.'}
+30: {text: "= Monday, 10/30/2017 07:33:56 AM =\n\nStarting with a followup from last
+    night.  Both the 'strcpy' and 'memcpy' are corrupting data.\n\n```\nBefore:     \"B0.
+    Prepare a 9\" pie pan with cooking spray and flour; set aside. T\"\nstrcpy:     \".
+    Prepare a 9\" pie pan with cooking spray and flour; set aside. T\"\nmemcpy:     \".
+    Prepare a  pie pan with cooking spray and flour; set aside. . T\"\nEXPECTED:   \".
+    Prepare a 9\" pie pan with cooking spray and flour; set aside. T\"\n```\n\nIn
+    the above, '**B0**' is the hex code that is being overwritten by the lsft shift
+    of the data.\n```\nWhen 'strcpy' is used 'e a 9\" p' is changed to \"e a 9\" p\".\nWhen
+    'memcpy' is used 'e a 9\" p' is changed to \"e a  pie\".\n```\n\nI suspect, make
+    that think, it has something to do with attempting to get to a word boundary but
+    thinking isn't knowing and even if I knew it still doesn't work.\n\nI eventually
+    went to an inefficant 'for( )' loop moving charactr by character to get the correct
+    result.  But it is working so I am moving on.\n\n= Monday, 10/30/2017 07:56:17
+    AM =\n\n=== End-Of-eMail vs. Ingredient ===\n\nAnother bug.  I have run across
+    more then one recipe where a continuous line of dashes is being used to break
+    AUIP into sections.  The problem is that this line is being detected as the end
+    of an e-Mail.  The end of recipe is never detected and thus the recipe is lost.
+    \ I think that if I also check the line length I should be able to tell the differance
+    between the two.\n\nMonday, 10/30/2017 08:31:00 AM\n\nI was looking over the log
+    output and noticed there are a bunch of recipes that didn't make it to the decoder.
+    \ There are two primary reasons.\n\n1) There isn't an end of recipe tag.\\\\\n2)
+    inside the directions there is a 'FROM:' which is being detected as the start
+    of a new e-Mail.\n\n= Monday, 10/30/2017 01:20:18 PM =\n\n=== End-Of-eMail vs.
+    Ingredient ===\n\nLike I said above, I just added a length check to the end of
+    MXP recipe check.\n\n=== \"From:\" in the directions ===\n\nA bit tricky because
+    I had to look a line ahead when 'From:' was seen to see if it is a \"Date:\" tag.
+    \ If it is, I just continue if not, the imput line is tossed.\n\n= Monday, 10/30/2017
+    07:19:03 PM =\n\nThat's it for today.\n\nAs best as I can see things are working
+    fairly good.  Still need a lot of work on formatting the directions and there
+    are the recipes that don'have an end-of-recipe tag.\n\nAnyhow I archived the recipe
+    out so I can begin to do comparisons from run to run.  It already identified another
+    problem with data shifting that wasn't working right.  Basicly the same problem
+    I had when converting the quoted printable stuff.  \n"}
+31: {text: '= Tuesday, 10/31/2017 09:18:31 AM =
+
+
+    Another ToDo is done..
+
+
+    Now if the end of an e-Mail is detected and there is an active recipe decode,
+    Whatever is on the decode list is passed off to the decoder to do whatever it
+    can.
+
+
+    = Tuesday, 10/31/2017 09:33:03 AM =
+
+
+    And CATEGORIES has been refactored to CHAPTER.'}

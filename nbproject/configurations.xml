@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="100">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="HeaderFiles"
+                   displayName="Header Files"
+                   projectFiles="true">
+      <itemPath>include/main_api.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ResourceFiles"
+                   displayName="Resource Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+      <logicalFolder name="DecodeBOF" displayName="DecodeBOF" projectFiles="true">
+        <itemPath>DecodeBOF/decode_bof_api.c</itemPath>
+        <itemPath>DecodeBOF/decode_bof_api.h</itemPath>
+        <itemPath>DecodeBOF/decode_bof_lib.c</itemPath>
+        <itemPath>DecodeBOF/decode_bof_lib.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="DecodeGRF" displayName="DecodeGRF" projectFiles="true">
+        <itemPath>DecodeGRF/decode_grf_api.c</itemPath>
+        <itemPath>DecodeGRF/decode_grf_api.h</itemPath>
+        <itemPath>DecodeGRF/decode_grf_lib.c</itemPath>
+        <itemPath>DecodeGRF/decode_grf_lib.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="DecodeHTML" displayName="DecodeHTML" projectFiles="true">
+        <itemPath>DecodeHTML/decode_html_api.c</itemPath>
+        <itemPath>DecodeHTML/decode_html_api.h</itemPath>
+        <itemPath>DecodeHTML/decode_html_lib.c</itemPath>
+        <itemPath>DecodeHTML/decode_html_lib.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f4" displayName="DecodeL1" projectFiles="true">
+        <itemPath>DecodeL1/decodel1_api.c</itemPath>
+        <itemPath>DecodeL1/decodel1_api.h</itemPath>
+        <itemPath>DecodeL1/decodel1_lib.c</itemPath>
+        <itemPath>DecodeL1/decodel1_lib.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f11" displayName="DecodeL2" projectFiles="true">
+        <itemPath>DecodeL2/decodel2_api.c</itemPath>
+        <itemPath>DecodeL2/decodel2_api.h</itemPath>
+        <itemPath>DecodeL2/decodel2_lib.c</itemPath>
+        <itemPath>DecodeL2/decodel2_lib.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f10" displayName="DecodeLIB" projectFiles="true">
+        <itemPath>DecodeLIB/decode_api.c</itemPath>
+        <itemPath>DecodeLIB/decode_api.h</itemPath>
+        <itemPath>DecodeLIB/decode_lib.c</itemPath>
+        <itemPath>DecodeLIB/decode_lib.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f5" displayName="DecodeMMF" projectFiles="true">
+        <itemPath>DecodeMMF/decode_mmf_api.c</itemPath>
+        <itemPath>DecodeMMF/decode_mmf_api.h</itemPath>
+        <itemPath>DecodeMMF/decode_mmf_lib.c</itemPath>
+        <itemPath>DecodeMMF/decode_mmf_lib.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="DecodeMX2" displayName="DecodeMX2" projectFiles="true">
+        <itemPath>DecodeMX2/decode_mx2_api.c</itemPath>
+        <itemPath>DecodeMX2/decode_mx2_api.h</itemPath>
+        <itemPath>DecodeMX2/decode_mx2_lib.c</itemPath>
+        <itemPath>DecodeMX2/decode_mx2_lib.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f12" displayName="DecodeMXP" projectFiles="true">
+        <itemPath>DecodeMXP/decode_mxp_api.c</itemPath>
+        <itemPath>DecodeMXP/decode_mxp_api.h</itemPath>
+        <itemPath>DecodeMXP/decode_mxp_lib.c</itemPath>
+        <itemPath>DecodeMXP/decode_mxp_lib.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="DecodeNYC" displayName="DecodeNYC" projectFiles="true">
+        <itemPath>DecodeNYC/decode_nyc_api.c</itemPath>
+        <itemPath>DecodeNYC/decode_nyc_api.h</itemPath>
+        <itemPath>DecodeNYC/decode_nyc_lib.c</itemPath>
+        <itemPath>DecodeNYC/decode_nyc_lib.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f7" displayName="DecodeRXF" projectFiles="true">
+      </logicalFolder>
+      <logicalFolder name="f8" displayName="DecodeTXT" projectFiles="true">
+        <itemPath>DecodeTXT/decode_txt_api.c</itemPath>
+        <itemPath>DecodeTXT/decode_txt_api.h</itemPath>
+        <itemPath>DecodeTXT/decode_txt_lib.c</itemPath>
+        <itemPath>DecodeTXT/decode_txt_lib.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f3" displayName="email" projectFiles="true">
+        <itemPath>eMail/email_api.c</itemPath>
+        <itemPath>eMail/email_api.h</itemPath>
+        <itemPath>eMail/email_lib.c</itemPath>
+        <itemPath>eMail/email_lib.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f13" displayName="EncodeLIB" projectFiles="true">
+        <itemPath>Encode/encode_api.c</itemPath>
+        <itemPath>Encode/encode_api.h</itemPath>
+        <itemPath>Encode/encode_lib.c</itemPath>
+        <itemPath>Encode/encode_lib.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f9" displayName="EncodeRXF" projectFiles="true">
+        <itemPath>EncodeRXF/encode_rxf_api.c</itemPath>
+        <itemPath>EncodeRXF/encode_rxf_api.h</itemPath>
+        <itemPath>EncodeRXF/encode_rxf_lib.c</itemPath>
+        <itemPath>EncodeRXF/encode_rxf_lib.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f2" displayName="FileScan" projectFiles="true">
+        <itemPath>FileScan/filescan_api.c</itemPath>
+        <itemPath>FileScan/filescan_api.h</itemPath>
+        <itemPath>FileScan/filescan_lib.c</itemPath>
+        <itemPath>FileScan/filescan_lib.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f14" displayName="Recipe" projectFiles="true">
+        <itemPath>Recipe/recipe_api.c</itemPath>
+        <itemPath>Recipe/recipe_api.h</itemPath>
+        <itemPath>Recipe/recipe_lib.c</itemPath>
+        <itemPath>Recipe/recipe_lib.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f15" displayName="Xlate" projectFiles="true">
+        <itemPath>Xlate/xlate_api.c</itemPath>
+        <itemPath>Xlate/xlate_api.h</itemPath>
+        <itemPath>Xlate/xlate_lib.c</itemPath>
+        <itemPath>Xlate/xlate_lib.h</itemPath>
+      </logicalFolder>
+      <itemPath>main.c</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+      <itemPath>Translations</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceRootList>
+    <Elem>DecodeGF1</Elem>
+    <Elem>DecodeGRF</Elem>
+    <Elem>DecodeXML</Elem>
+    <Elem>DecodeHTML</Elem>
+    <Elem>DecodeNYC</Elem>
+    <Elem>DecodeMX2</Elem>
+    <Elem>DecodeBOF</Elem>
+  </sourceRootList>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <incDir>
+            <pElem>../LibTools/include</pElem>
+            <pElem>include</pElem>
+          </incDir>
+          <warningLevel>2</warningLevel>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>../LibTools/include</pElem>
+            <pElem>include</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <linkerLibItems>
+            <linkerLibFileItem>../LibTools/dist/Debug/GNU-Linux/liblibtools.a</linkerLibFileItem>
+            <linkerLibStdlibItem>PosixThreads</linkerLibStdlibItem>
+            <linkerLibStdlibItem>DynamicLinking</linkerLibStdlibItem>
+          </linkerLibItems>
+        </linkerTool>
+      </compileType>
+      <item path="DecodeBOF/decode_bof_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeBOF/decode_bof_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeBOF/decode_bof_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeBOF/decode_bof_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeGRF/decode_grf_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeGRF/decode_grf_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeGRF/decode_grf_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeGRF/decode_grf_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeHTML/decode_html_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeHTML/decode_html_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeHTML/decode_html_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeHTML/decode_html_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeL1/decodel1_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeL1/decodel1_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeL1/decodel1_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeL1/decodel1_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeL2/decodel2_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeL2/decodel2_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeL2/decodel2_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeL2/decodel2_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeLIB/decode_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeLIB/decode_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeLIB/decode_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeLIB/decode_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeMMF/decode_mmf_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeMMF/decode_mmf_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeMMF/decode_mmf_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeMMF/decode_mmf_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeMX2/decode_mx2_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeMX2/decode_mx2_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeMX2/decode_mx2_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeMX2/decode_mx2_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeMXP/decode_mxp_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeMXP/decode_mxp_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeMXP/decode_mxp_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeMXP/decode_mxp_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeNYC/decode_nyc_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeNYC/decode_nyc_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeNYC/decode_nyc_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeNYC/decode_nyc_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeTXT/decode_txt_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeTXT/decode_txt_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeTXT/decode_txt_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeTXT/decode_txt_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Encode/encode_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="Encode/encode_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Encode/encode_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="Encode/encode_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="EncodeRXF/encode_rxf_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="EncodeRXF/encode_rxf_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="EncodeRXF/encode_rxf_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="EncodeRXF/encode_rxf_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="FileScan/filescan_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="FileScan/filescan_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="FileScan/filescan_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="FileScan/filescan_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Recipe/recipe_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="Recipe/recipe_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Recipe/recipe_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="Recipe/recipe_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Xlate/xlate_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="Xlate/xlate_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Xlate/xlate_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="Xlate/xlate_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="eMail/email_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="eMail/email_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="eMail/email_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="eMail/email_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/main_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="main.c" ex="false" tool="0" flavor2="0">
+      </item>
+    </conf>
+    <conf name="Release" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <developmentMode>5</developmentMode>
+        </cTool>
+        <ccTool>
+          <developmentMode>5</developmentMode>
+        </ccTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <asmTool>
+          <developmentMode>5</developmentMode>
+        </asmTool>
+      </compileType>
+      <item path="DecodeBOF/decode_bof_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeBOF/decode_bof_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeBOF/decode_bof_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeBOF/decode_bof_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeGRF/decode_grf_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeGRF/decode_grf_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeGRF/decode_grf_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeGRF/decode_grf_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeHTML/decode_html_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeHTML/decode_html_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeHTML/decode_html_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeHTML/decode_html_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeL1/decodel1_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeL1/decodel1_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeL1/decodel1_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeL1/decodel1_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeL2/decodel2_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeL2/decodel2_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeL2/decodel2_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeL2/decodel2_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeLIB/decode_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeLIB/decode_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeLIB/decode_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeLIB/decode_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeMMF/decode_mmf_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeMMF/decode_mmf_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeMMF/decode_mmf_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeMMF/decode_mmf_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeMX2/decode_mx2_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeMX2/decode_mx2_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeMX2/decode_mx2_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeMX2/decode_mx2_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeMXP/decode_mxp_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeMXP/decode_mxp_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeMXP/decode_mxp_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeMXP/decode_mxp_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeNYC/decode_nyc_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeNYC/decode_nyc_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeNYC/decode_nyc_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeNYC/decode_nyc_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeTXT/decode_txt_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeTXT/decode_txt_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeTXT/decode_txt_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeTXT/decode_txt_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Encode/encode_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="Encode/encode_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Encode/encode_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="Encode/encode_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="EncodeRXF/encode_rxf_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="EncodeRXF/encode_rxf_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="EncodeRXF/encode_rxf_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="EncodeRXF/encode_rxf_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="FileScan/filescan_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="FileScan/filescan_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="FileScan/filescan_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="FileScan/filescan_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Recipe/recipe_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="Recipe/recipe_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Recipe/recipe_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="Recipe/recipe_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Xlate/xlate_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="Xlate/xlate_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Xlate/xlate_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="Xlate/xlate_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="eMail/email_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="eMail/email_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="eMail/email_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="eMail/email_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/main_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="main.c" ex="false" tool="0" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>

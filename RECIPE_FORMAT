@@ -1,0 +1,277 @@
+##############################################################################
+#  GENERIC FORMAT #1
+##############################################################################
+
+    [[[[[
+    title
+    <hard return>
+    ingredients
+    <hard return>
+    directions
+    ]]]]]
+
+    [[[[[
+    title
+    <hard return>
+    ingredients
+    <hard return>
+    directions
+    ]]]]]
+
+    ##########################################################################
+    #  DESCRIPTIONS:
+    ##########################################################################
+
+    [[[[[
+        A unique character sequence that identifies the following
+        as a Generic Format #1 recipe.
+    title
+        The recipe name.
+    <hard return>
+        Just an empty line
+    ingredients
+        Formatted as 'Amount', 'Unit of Measurement', 'Ingredient'
+        and 'Preparation'.  Spaces separate the first three columns
+        from each other.  A coma {,), or double dash (--) may be used
+        to separate the "Ingredient' from 'Preparation'.
+    <hard return>
+        Just an empty line
+    directions
+        This is essentially free formatted text.
+    ]]]]]
+         A unique character sequence that ends a Generic Format #1 recipe.
+
+    ##########################################################################
+    #  EXAMPLE:
+    ##########################################################################
+
+    [[[[[
+    Squash Casserole
+
+    2 pounds yellow squash
+    2 medium tomatoes, sliced
+    Salt and pepper, to taste
+    2 medium onions, sliced
+    1/2 cup Parmesan Cheese
+    1/4 cup Margarine, (1/2 stick)
+
+    Preheat oven to 350 degrees F. Peel and slice squash into
+    rounds about 1/2" thick. Place about 1/3 of the sliced squash
+    in the bottom of a baking dish, add a 1/3 of the tomatoes, salt
+    and pepper, 1/3 of the onions and 1/3 of the cheese. Dot with
+    1/3 of the margarine. Repeat with additional two layers. Cover
+    with foil and bake in preheated oven for 30 minutes. Remove the
+    foil and bake for an additional 10 minutes.
+
+    Serves 4-6.
+
+    NOTE:
+        The above example does not include the recipe end marker
+        "-----" found in recipes posted.  I don't know if this is
+        a mistake or just something that is present in the recipes
+        I have looked at.
+    ]]]]]
+
+##############################################################################
+#  GENERIC FORMAT #2
+##############################################################################
+
+    @@@@@
+    title
+    <hard return>
+    ingredients
+    <hard return>
+    directions
+    _____
+    @@@@@
+    title
+    <hard return>
+    ingredients
+    <hard return>
+    directions
+    _____
+
+    ##########################################################################
+    #  DESCRIPTIONS:
+    ##########################################################################
+
+    @@@@@
+        A unique character sequence that identifies the following
+        as a Generically Formatted Text recipe.
+    title
+        The recipe name.
+    <hard return>
+        Just an empty line
+    ingredients
+        Formatted as 'Amount', 'Unit of Measurement', 'Ingredient'
+        and 'Preparation'.  Spaces separate the first three columns
+        from each other.  A coma {,), or double dash (--) may be used
+        to separate the "Ingredient' from 'Preparation'.
+    <hard return>
+        Just an empty line
+    directions
+        This is essentially free formatted text.
+
+    ##########################################################################
+    #  EXAMPLE:
+    ##########################################################################
+
+    @@@@@
+    Squash Casserole
+
+    2 pounds yellow squash
+    2 medium tomatoes, sliced
+    Salt and pepper, to taste
+    2 medium onions, sliced
+    1/2 cup Parmesan Cheese
+    1/4 cup Margarine, (1/2 stick)
+
+    Preheat oven to 350 degrees F. Peel and slice squash into
+    rounds about 1/2" thick. Place about 1/3 of the sliced squash
+    in the bottom of a baking dish, add a 1/3 of the tomatoes, salt
+    and pepper, 1/3 of the onions and 1/3 of the cheese. Dot with
+    1/3 of the margarine. Repeat with additional two layers. Cover
+    with foil and bake in preheated oven for 30 minutes. Remove the
+    foil and bake for an additional 10 minutes.
+
+    Serves 4-6.
+
+    NOTE:
+        The above example does not include the recipe end marker
+        "-----" found in recipes posted.  I don't know if this is
+        a mistake or just something that is present in the recipes
+        I have looked at.
+    _____
+
+##############################################################################
+#  MEAL-MASTER FORMAT
+##############################################################################
+
+---------- Recipe via Meal-Master (tm) v8.05          RECIPE START
+                                                      BLANK LINE
+      Title: Recipe Title                             RECIPE TITLE
+ Categories: cat1,cat2,cat3                           RECIPE CATEGORIES
+      Yield: (num) (unit)                             YIELDS
+                                                      BLANK LINE
+    (ingredients list)                                ONE or MORE
+                                                      BLANK LINE
+    (directions)                                      FREE FORMAT
+-----                                                 RECIPE END
+
+   ##########################################################################
+   #  EXAMPLE:
+   ##########################################################################
+
+---------- Recipe via Meal-Master (tm) v8.05
+
+      Title: Chili's Honey-Lime Dressing
+ Categories: None
+      Yield: 1 Servings
+
+    1/4 c  Grey Poupon Dijon mustard
+    1/4 c  Honey
+  1 1/2 tb Sugar
+      1 tb Sesame oil
+  1 1/2 tb Apple cider vinegar
+  1 1/2 ts Lime juice
+
+  Blend all the ingredients in a small bowl with an electric
+  mixer. Cover and chill.
+
+  Posted to EAT-L Digest  by J Wendel <jwendel@REDSHIFT.COM> on Sep
+  11, 1997
+
+-----
+
+##############################################################################
+#  NATIVE RECIPE FORMAT
+##############################################################################
+
+#! START	Native Recipe Format
+##
+TITLE:		   Recipe Title                             RECIPE TITLE
+BASED ON:      Recipe used for the base of this recipe.
+CATEGORIES:    cat1, cat2, cat3                         RECIPE CATEGORIES
+OTHER CAT:     Categories in the source recipe not recognized
+AUTHOR:		   The creator of the recipe
+SOURCE:		   Where the recipe was published (possible www)
+COPYRIGHT:	   If there is a copyright
+POSTED:		   User name - date - time
+FORMATTED:	   User name - date - time (May be many of these)
+SERVINGS:	   Number of servings.
+SERVINGS SIZE:	The size of each serving.
+MAKES:		   Number of what.  (4 Dozen cookies)
+PREP TIME:	   0:00
+TOTAL TIME:	   0:00
+COOK TIME:	   0:00	(Cook or bake time)
+RATING:		   0 to 5 spatulas
+WINE:		      If there is a preferred wine.
+SRV IDEAS:	   Serve with ...
+DESCRIPTION:	A wonderful ...
+NOTES:		   Use butter not magerine.
+
+AUIP:
+I:			Standard AUIP
+T:			Additional text.
+R:			Link to another recipe.
+S:			Substitutions
+
+DIRECTIONS:
+
+#! END	Native Recipe Format
+
+   ##########################################################################
+   #  EXAMPLE:
+   ##########################################################################
+
+#! START	Native Recipe Format
+##
+## Created on June 09, 2004 at 17:06:42
+##
+TITLE:		Fish Baked in Parchment With Lime and Cilantro
+CATEGORIES:	Group:Seafood, Meal:Main Dish, Diet:Low-Calorie, Group:Quick & Easy
+UNSUPORT CAT:	Light Meals
+AUTHOR:		The California Culinary Academy
+SOURCE:
+COPYRIGHT:
+SERVINGS:	4
+SERVINGS SIZE:
+MAKES:
+PREP TIME:	0:15
+TOTAL TIME:
+RATING:
+WINE:
+SRV IDEAS:
+DESCRIPTION:
+NOTES:
+Lime and cilantro add a Caribbean flavor to this easy, salt-free
+entree. Choose fillets of red snapper, cod, flounder, or orange
+roughy. You can even marinate the fish in the poaching liquid
+overnight before cooking.
+
+AUIP:
+I:                                    safflower oil  -- to grease parchment
+T:      4 Large                        fillets of red snapper -- cod, flounder
+T:      1 Teaspoon                     grated gingerroot
+T:      2 Tablespoon                   sake or rice wine
+T:      1 Tablespoon                   lime juice
+T:      1 Teaspoon                     grated lime rind
+T:      2 Tablespoon                   minced cilantro
+T:      1 Teaspoon                     dark sesame oil
+
+DIRECTIONS:
+
+Preheat oven to 350 degrees F. Lightly oil 4 sheets parchment paper.
+
+Place 1 fillet on the center of each sheet of parchment. In a small
+bowl combine gingerroot, sake, lime juice, lime rind, cilantro, and sesame
+oil. Spoon an equal amount over each fish fillet.
+
+Roll edges of parchment together, forming a packet around fish.  Bake
+for 12 minutes.
+
+To serve, unroll parchment packets and slide fish onto plates. Spoon
+poaching liquid over fish and serve immediately.
+
+#! END	Native Recipe Format
+
