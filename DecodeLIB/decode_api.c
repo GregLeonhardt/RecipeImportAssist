@@ -342,12 +342,24 @@ decode_end_of_recipe(
      *  Function
      ************************************************************************/
 
+#if 0
+    //  NOTE:
+    //  When a MXP formatted recipe is embedded inside a MX2, this was producing
+    //  a false positive for a recipe break.  If this creates a problem then
+    //  I will have to pass the current recipe type for additional testing.
+
+
     //  Is this something that can end a recipe ?
     if(    ( email_is_start(       data_p ) == true )
         || ( email_is_group_break( data_p ) == true )
         || ( decode_mmf_start(     data_p ) == true )
         || ( decode_mx2_start(     data_p ) == true )
         || ( decode_mxp_start(     data_p ) == true ) )
+#else
+    //  Is this something that can end a recipe ?
+    if(    ( email_is_start(       data_p ) == true )
+        || ( email_is_group_break( data_p ) == true ) )
+#endif
     {
         //  YES:    Change the return code
         decode_rc = true;
@@ -700,10 +712,10 @@ decode_finalize(
      ************************************************************************/
 
     //  Directions  analysis
-    DECODE__directions_cleanup( recipe_p );
+//  DECODE__directions_cleanup( recipe_p );
 
     //  Directions format
-    recipe_fmt_directions( recipe_p );
+//  recipe_fmt_directions( recipe_p );
 
     //  Recipe Title analysis
 //  DECODE__directions_notes( recipe_p );
