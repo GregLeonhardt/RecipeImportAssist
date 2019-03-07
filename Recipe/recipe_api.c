@@ -1683,7 +1683,7 @@ recipe_next_id(
      ************************************************************************/
 
     //  Set an initialization value
-    store_value_p = NULL;
+    store_value_p = recipe_id_p;
 
     //  Convert the recipe-ID to an integer
     recipe_id_val = atoi( recipe_id_p );
