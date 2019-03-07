@@ -158,6 +158,7 @@ struct  mx2_tag_t                   mx2_table[ ] =
 {
 //  MX2_TAG         CODE                    Description
     {   "<mx2",         MX2_TAG_MX2     },  //  Start of MX2
+    {   "</mx2",        MX2_TAG_EMX2    },  //  End   of MX2
     {   "<summ>",       MX2_TAG_SUMM    },  //  Start of Recipe List
     {   "</summ>",      MX2_TAG_ESUM    },  //  End   of    "     "
     {   "<nam>",        MX2_TAG_NAM     },  //  Start of Recipe List Name
@@ -217,10 +218,10 @@ struct  mx2_tag_t                   mx2_table[ ] =
     {   "</note>",      MX2_TAG_ENOTE   },  //  End   of   "
     {   "<nutr>",       MX2_TAG_NUTR    },  //  Start of Nutrition
     {   "</nutr>",      MX2_TAG_ENUTR   },  //  End   of     "
-    {   "<rtxt>",       MX2_TAG_RTXT    },  //  Start of Embeded MXP
+    {   "<rtxt>",       MX2_TAG_RTXT    },  //  Start of Embedded MXP
     {   "</rtxt>",      MX2_TAG_ERTXT   },  //  End   of     "
 
-    {   "<![cdata[",    MX2_TAG_CDATA   },  //  Start of Embeded MXP
+    {   "<![cdata[",    MX2_TAG_CDATA   },  //  Start of Embedded MXP
     {   "<]]>",         MX2_TAG_ECDATA  },  //  End   of    "     "
 
     {   "END",          MX2_TAG_END     }   //  Table end.
@@ -1224,6 +1225,9 @@ DECODE_MX2__decode(
 
     while( 1 )
     {
+        //  Just in case there is some white space before the tag
+        mx2_offset_p = text_skip_past_whitespace( mx2_offset_p );
+
         //  Locate the start of a Character Name string
         mx2_offset_p = strchr(  mx2_offset_p, '<' );
 
@@ -1258,7 +1262,7 @@ DECODE_MX2__decode(
                     switch( mx2_table[ mx2_table_ndx ].code )
                     {
                         //----------------------------------------------------
-                        case    MX2_TAG_MX2:    //  Start of MX2
+                        case    MX2_TAG_RCPE:   //  Start of Recipe Entry
                         {
                             //  Allocate a new recipe data structure
                             recipe_p = recipe_new( RECIPE_FORMAT_MX2 );
@@ -1275,10 +1279,7 @@ DECODE_MX2__decode(
                             recipe_p->posted_date
                                     = DECODE_MX2__srch( attribute_p, "date=\"" );
 
-                        }   break;
                         //----------------------------------------------------
-                        case    MX2_TAG_RCPE:   //  Start of Recipe Entry
-                        {
                             //  NAME="..."
                             recipe_p->name
                                     = DECODE_MX2__srch( attribute_p, "name=\"" );
@@ -1564,10 +1565,24 @@ DECODE_MX2__decode(
 
                         }   break;
                         //----------------------------------------------------
-                        case    MX2_TAG_EMX2:   //  End   of MX2
+                        case    MX2_TAG_ERCPE:  //  Start of Recipe Entry
                         {
                             //  End-of-Recipe
                             decode_finalize( recipe_p );
+
+                        }   break;
+                        //----------------------------------------------------
+                        case    MX2_TAG_RTXT:   //  Start of Embedded MXP
+                        {
+                            //  <RTXT> ... </RTXT>
+                            //  Ignore everything until </RTXT> is detected.
+
+                        }   break;
+                        //----------------------------------------------------
+                        case    MX2_TAG_ERTXT:  //  End   of Embedded MXP
+                        {
+                            //  <RTXT> ... </RTXT>
+                            //  Found the </RTXT> tag.  Start scanning again.
 
                         }   break;
                         //----------------------------------------------------
@@ -1589,9 +1604,10 @@ DECODE_MX2__decode(
                         case    MX2_TAG_RATS:   //  Start of Ratings Section
                         //----------------------------------------------------
                         //      The following are ending statements.
+                        case    MX2_TAG_MX2:    //  Start of MX2
+                        case    MX2_TAG_EMX2:   //  End   of MX2
                         case    MX2_TAG_ESUM:   //  End   of Recipe List
                         case    MX2_TAG_ENAM:   //  End   of Recipe List Name
-                        case    MX2_TAG_ERCPE:  //  End   of Recipe Entry
                         case    MX2_TAG_ESRV:   //  End   of Servings
                         case    MX2_TAG_EPREPT: //  End   of Preparation Time
                         case    MX2_TAG_ECATS:  //  End   of Category list
@@ -1618,10 +1634,8 @@ DECODE_MX2__decode(
                         case    MX2_TAG_ENUTR:  //  End   of Nutrition
                         case    MX2_TAG_EINTI:  //  End   of ???
 
-                        case    MX2_TAG_CDATA:  //  Start of Embeded MXP
+                        case    MX2_TAG_CDATA:  //  Start of Embedded MXP
                         case    MX2_TAG_ECDATA: //  End   of    "     "
-                        case    MX2_TAG_RTXT:   //  Start of Embeded MXP
-                        case    MX2_TAG_ERTXT:  //  End   of    "     "
 
                         case    MX2_TAG_END:    //  Table end.
                         {
