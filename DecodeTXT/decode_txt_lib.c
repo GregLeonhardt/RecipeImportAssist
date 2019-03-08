@@ -69,6 +69,8 @@
 #define NOT_A_TITLE_03          "FooBar"
 #define NOT_A_TITLE_03_L        ( strlen( NOT_A_TITLE_03 ) )
 //----------------------------------------------------------------------------
+#define UNIT_L                  ( 32 )
+//----------------------------------------------------------------------------
 
 /****************************************************************************
  * Structures local to this file
@@ -143,7 +145,7 @@ DECODE__is_auip(
     if( start_numeric == true )
     {
         //  @param  tmp_unit        Buffer to hold the units data           */
-        char                            tmp_unit[ 32 ];
+        char                            tmp_unit[ UNIT_L ];
 
         //  YES:    Skip past the amount field
         while( 1 )
@@ -164,12 +166,35 @@ DECODE__is_auip(
 
         //  Copy the next word to the temporary buffer
         memset( tmp_unit, '\0', sizeof( tmp_unit ) );
+
         if( strchr( data_p, ' ' ) != NULL )
         {
+            //  Will it fit in the buffer ?
+            if ( ( strchr( data_p, ' ' ) - data_p ) >= ( UNIT_L - 1 ) )
+            {
+                //  NO:     Error message and terminate the run
+                log_write( MID_INFO, "DECODE__is_auip",
+                           "The unit of measurement is larger then %d bytes\n",
+                           ( UNIT_L - 1 ) );
+                log_write( MID_FATAL, " ",
+                           "SRC-DATA %s\n", data_p );
+            }
+
             strncpy( tmp_unit, data_p, ( strchr( data_p, ' ' ) - data_p ) );
         }
         else
         {
+            //  Will it fit in the buffer ?
+            if ( strlen( data_p ) >= ( UNIT_L - 1 ) )
+            {
+                //  NO:     Error message and terminate the run
+                log_write( MID_INFO, "DECODE__is_auip",
+                           "The unit of measurement is larger then %d bytes\n",
+                           ( UNIT_L - 1 ) );
+                log_write( MID_FATAL, " ",
+                           "SRC-DATA %s\n", data_p );
+            }
+
             strncpy( tmp_unit, data_p, strlen( data_p ) );
         }
 
