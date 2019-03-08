@@ -1216,6 +1216,9 @@ DECODE_MX2__decode(
     //  Allocate the text buffer
     text_p = mem_malloc( decode_l + 1 );
 
+    //  Null out the recipe pointer
+    recipe_p = NULL;
+
     /************************************************************************
      *  Look for character strings 'Entity', 'MX2 Tags'
      ************************************************************************/
@@ -1570,6 +1573,9 @@ DECODE_MX2__decode(
                             //  End-of-Recipe
                             decode_finalize( recipe_p );
 
+                            //  Done with the old one
+                            recipe_p = NULL;
+
                         }   break;
                         //----------------------------------------------------
                         case    MX2_TAG_RTXT:   //  Start of Embedded MXP
@@ -1661,14 +1667,18 @@ DECODE_MX2__decode(
         }
 
         //  Did we locate the search tag in the tag table ?
-        if( mx2_table[ mx2_table_ndx ].code == MX2_TAG_END )
+        if ( mx2_table[ mx2_table_ndx ].code == MX2_TAG_END )
         {
-            //  NO:     Write a fatal error message
-            log_write( MID_WARNING, "DECODE_MX2__decode",
-                    "An unidentified MX2 tag '%s' was found in the recipe stream.\n",
-                    compare );
-            log_write( MID_WARNING, "DECODE_MX2__decode",
-                    "'%.80s'\n", mx2_offset_p );
+            //  NO:     Are we actively processing a recipe ?
+            if ( recipe_p != NULL )
+            {
+                //  YES:    Write a fatal error message
+                log_write( MID_WARNING, "DECODE_MX2__decode",
+                        "An unidentified MX2 tag '%s' was found in the recipe stream.\n",
+                        compare );
+                log_write( MID_WARNING, "DECODE_MX2__decode",
+                        "'%.80s'\n", mx2_offset_p );
+            }
 
             //  Move on past the tag
             mx2_offset_p += 1;
