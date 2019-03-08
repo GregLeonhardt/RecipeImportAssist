@@ -170,32 +170,22 @@ DECODE__is_auip(
         if( strchr( data_p, ' ' ) != NULL )
         {
             //  Will it fit in the buffer ?
-            if ( ( strchr( data_p, ' ' ) - data_p ) >= ( UNIT_L - 1 ) )
+            if ( ( strchr( data_p, ' ' ) - data_p )  < UNIT_L )
             {
-                //  NO:     Error message and terminate the run
-                log_write( MID_INFO, "DECODE__is_auip",
-                           "The unit of measurement is larger then %d bytes\n",
-                           ( UNIT_L - 1 ) );
-                log_write( MID_FATAL, " ",
-                           "SRC-DATA %s\n", data_p );
+                //  YES:    Copy it to the temp buffer
+                strncpy( tmp_unit, data_p, ( strchr( data_p, ' ' ) - data_p ) );
             }
 
-            strncpy( tmp_unit, data_p, ( strchr( data_p, ' ' ) - data_p ) );
         }
         else
         {
             //  Will it fit in the buffer ?
-            if ( strlen( data_p ) >= ( UNIT_L - 1 ) )
+            if ( strlen( data_p ) < UNIT_L )
             {
-                //  NO:     Error message and terminate the run
-                log_write( MID_INFO, "DECODE__is_auip",
-                           "The unit of measurement is larger then %d bytes\n",
-                           ( UNIT_L - 1 ) );
-                log_write( MID_FATAL, " ",
-                           "SRC-DATA %s\n", data_p );
+                //  YES:    Copy it to the temp buffer
+                strncpy( tmp_unit, data_p, strlen( data_p ) );
             }
 
-            strncpy( tmp_unit, data_p, strlen( data_p ) );
         }
 
         //  Remove any period (.) that may be at the end of the word
