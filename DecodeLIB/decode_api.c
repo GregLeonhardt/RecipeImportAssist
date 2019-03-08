@@ -711,14 +711,17 @@ decode_finalize(
      *
      ************************************************************************/
 
-    //  Directions  analysis
-//  DECODE__directions_cleanup( recipe_p );
+    if ( recipe_p->instructions != NULL )
+    {
+        //  Directions  analysis
+        DECODE__directions_cleanup( recipe_p );
 
-    //  Directions format
-//  recipe_fmt_directions( recipe_p );
+        //  Directions format
+        recipe_fmt_directions( recipe_p );
 
-    //  Recipe Title analysis
-//  DECODE__directions_notes( recipe_p );
+        //  Recipe Title analysis
+        DECODE__directions_notes( recipe_p );
+    }
 
     /************************************************************************
      *  Function Exit
