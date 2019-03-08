@@ -307,6 +307,16 @@ DECODE_MX2__attribute(
                     //  Copy the everything until the next quotation
                     for( ndx ++ ; tmp_p[ ndx ] != '"' ; ndx ++ )
                     {
+                        //  Is there room for it ?
+                        if ( ndx == attribute_l )
+                        {
+                            //  NO:     Error message and terminate
+                            log_write( MID_WARNING, "DECODE_MX2__attribute",
+                                    "The defined buffer size is too small for "
+                                    "the text data.\n" );
+                            log_write( MID_FATAL, " ", "%s\n", tmp_p );
+                        }
+
                         //  Copy the data one byte at a time
                         attribute_p[ ndx ] = tmp_p[ ndx ];
                     }
