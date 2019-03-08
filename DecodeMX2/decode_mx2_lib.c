@@ -339,37 +339,29 @@ DECODE_MX2__attribute(
 /**
  *  Locate the attribute string of a tag (if any) and copy it to a buffer.
  *
- *  @param  xml_p               Pointer to the start of an xml tag.
+ *  @param  src_data_p          Pointer to the source data buffer
  *  @param  text_p              Pointer to a buffer to store the text string.
  *  @param  text_l              Size of the text string.
- *  @param  tag_p               Pointer to the tag name.
  *
- *  @return end_p               Pointer to the next XML tag.
+ *  @return void                No information is returned from this function.
  *
  *  @note
  *
  ****************************************************************************/
 
-char    *
+void
 DECODE_MX2__text(
-    char                        *   xml_p,
+    char                        *   src_data_p,
     char                        *   text_p,
-    int                             text_l,
-    char                        *   tag_p
+    int                             text_l
     )
 {
     /**
      *  @param  start_p         Start of text pointer                       */
     char                        *   start_p;
     /**
-     *  @param  end_p           End of tag pointer                          */
-    char                        *   end_p;
-    /**
-     *  @param  tag_search      Tag Close String                            */
-    char                            tag_search[ 32 ];
-    /**
-     *  @param  compare         A place to put a lowercase version          */
-    char                            compare[ 10 ];
+     *  @param  ndx             Depth index into the src and dst buffers    */
+    int                             ndx;
 
     /************************************************************************
      *  Function Initialization
@@ -382,70 +374,38 @@ DECODE_MX2__text(
      *  Build the tag close string
      ************************************************************************/
 
-    //  Clean the buffer
-    memset( tag_search, '\0', sizeof( tag_search ) );
+    //  Find the end of the start tag
+    start_p = strchr( src_data_p, '>' );
 
-    //  Set the prefix
-    strncat( tag_search, "</", sizeof( tag_search ) );
-
-    //  Copy the tag name to the tag close buffer
-    for( start_p = ( tag_p + 1 );
-            (    ( start_p[ 0 ] != '\0' )
-              && ( start_p[ 0 ] != ' '  )
-              && ( start_p[ 0 ] != '>'  ) );
-         start_p += 1 )
+    //  Was it found ?
+    if ( start_p != NULL )
     {
-        //  Copy the characters in one-by-one
-        strncat( tag_search, start_p, 1 );
-    }
+        //  YES:    skip any leading white space.
+        start_p = text_skip_past_whitespace( ++start_p );
 
-    //  Close the end tag
-    strcat( tag_search, ">" );
-
-    /************************************************************************
-     *  Copy the text data to the provided buffer
-     ************************************************************************/
-
-    //  Set the start of the search
-    end_p = xml_p;
-
-    do
-    {
-        //  Look for an XML tag
-        end_p = strchr( ++end_p, '<' );
-
-            //  Is this the start of the next tag ?
-        if( end_p != NULL )
+        //  Is this another tag ?
+        if ( start_p[ 0 ] != '<' )
         {
-            //  YES:    Fill the compare buffer from the decode buffer
-            memset( compare, '\0', sizeof( compare ) );
-            memcpy( compare, end_p, ( sizeof( compare ) - 1 ) );
-            text_to_lowercase( compare );
-
-            //  Is this the tag we are looking for ?
-            if( strncmp( compare, tag_search, strlen( tag_search ) ) == 0 )
+            //  NO:     Good, now copy the text data
+            for ( ndx = 0;
+                  start_p[ ndx ] != '<';
+                  ndx += 1 )
             {
-                //  YES:    Will the text data fit in the buffer ?
-                if( ( end_p - xml_p ) > ( text_l - 1 ) )
+                //  Is the text too big for the provided buffer ?
+                if ( ndx == ( text_l - 1 ) )
                 {
-                    //  NO:     Log and terminate
+                    //  YES:    Log and terminate
                     log_write( MID_FATAL, "DECODE_MX2__text",
                             "The defined buffer size is too small for the text data.\n" );
                 }
-                else
-                {
-                    //  YES:    Copy the data to the buffer
-                    memcpy( text_p, xml_p, ( end_p - xml_p ) );
 
-                    //  Locate the end of the text area
-                    end_p += strlen( tag_search );
-
-                    //  The end of the search
-                    break;
-                }
+                //  Copy another byte of data
+                text_p [ ndx ] = start_p[ ndx ];
             }
+            //  Strip off any trailing white space.
+            text_strip_whitespace( text_p );
         }
-    }   while( end_p != NULL );
+    }
 
     /************************************************************************
      *  Function Exit
@@ -455,7 +415,6 @@ DECODE_MX2__text(
     html2txt_str_2_char( text_p );
 
     //  DONE!
-    return( end_p );
 }
 
 /****************************************************************************/
@@ -1328,6 +1287,9 @@ DECODE_MX2__decode(
                              *  @param xlated_data_p    Translated chapter  */
                             char                         *  xlated_data_p;
 
+                            //  Copy the tag text filed (if there is one)
+                            DECODE_MX2__text( mx2_offset_p, text_p, decode_l );
+
                             //  Translate the chapter
                             xlated_data_p = xlate_chapter( text_p );
 
@@ -1393,7 +1355,8 @@ DECODE_MX2__decode(
                         //----------------------------------------------------
                         case    MX2_TAG_IPRP:   //  Start of Ingredient Preparation
                         {
-                            //  <IPrp>
+                            //  Copy the tag text filed (if there is one)
+                            DECODE_MX2__text( mx2_offset_p, text_p, decode_l );
 
                             //  Get the previous ingredient from the list
                             auip_p = list_get_last( recipe_p->ingredient );
@@ -1420,7 +1383,8 @@ DECODE_MX2__decode(
                         //----------------------------------------------------
                         case    MX2_TAG_DIRT:   //  Start of Directions Text
                         {
-                            //  <DirT img=...>
+                            //  Copy the tag text filed (if there is one)
+                            DECODE_MX2__text( mx2_offset_p, text_p, decode_l );
 
                             //  Add it to the Directions
                             recipe_add_instructions( recipe_p, text_p );
@@ -1431,6 +1395,9 @@ DECODE_MX2__decode(
                         {
                             //  <Desc>
 
+                            //  Copy the tag text filed (if there is one)
+                            DECODE_MX2__text( mx2_offset_p, text_p, decode_l );
+
                             //  Add it to the Directions
                             recipe_p->description = text_copy_to_new( text_p );
 
@@ -1439,6 +1406,9 @@ DECODE_MX2__decode(
                         case    MX2_TAG_SRCE:   //  Start of Source
                         {
                             //  <Srce>
+
+                            //  Copy the tag text filed (if there is one)
+                            DECODE_MX2__text( mx2_offset_p, text_p, decode_l );
 
                             //  Move the description string to the recipe
                             recipe_p->group_from = text_copy_to_new( text_p );
@@ -1464,7 +1434,8 @@ DECODE_MX2__decode(
                         //----------------------------------------------------
                         case    MX2_TAG_CPYR:   //  Start of Copyright
                         {
-                            //
+                            //  Copy the tag text filed (if there is one)
+                            DECODE_MX2__text( mx2_offset_p, text_p, decode_l );
 
                             //  Move the description string to the recipe
                             recipe_p->copyright = text_copy_to_new( text_p );
@@ -1538,21 +1509,27 @@ DECODE_MX2__decode(
                         //----------------------------------------------------
                         case    MX2_TAG_WINE:   //  Start of Wine List
                         {
-                            //  <WINE> ... </WINE>
+                            //  Copy the tag text filed (if there is one)
+                            DECODE_MX2__text( mx2_offset_p, text_p, decode_l );
+
                             recipe_p->wine = text_copy_to_new( text_p );
 
                         }   break;
                         //----------------------------------------------------
                         case    MX2_TAG_SRVI:   //  Start of Serving Ideas
                         {
-                            //  <SRVI> ... </SRVI>
+                            //  Copy the tag text filed (if there is one)
+                            DECODE_MX2__text( mx2_offset_p, text_p, decode_l );
+
                             recipe_p->serve_with = text_copy_to_new( text_p );
 
                         }   break;
                         //----------------------------------------------------
                         case    MX2_TAG_NOTE:   //  Start of Notes
                         {
-                            //  <NOTE> ... </NOTE>
+                            //  Copy the tag text filed (if there is one)
+                            DECODE_MX2__text( mx2_offset_p, text_p, decode_l );
+
                             recipe_add_instructions( recipe_p, " " );
                             recipe_add_instructions( recipe_p, "NOTES: " );
                             recipe_add_instructions( recipe_p, " " );
