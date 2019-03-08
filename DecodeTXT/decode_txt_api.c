@@ -179,7 +179,7 @@ decode_txt(
             txt_msg_array[ line_number ].line_type
                     = DECODE_TXT__line_type( txt_msg_array[ line_number ].line_p );
 
-#if 0
+#if 0       //  @ToDo   Why was this code written ?  Is it needed ?
             //  Do we have three consecutive blank lines ?
             if(    (                line_number                 >=               1 )
                 && ( txt_msg_array[ line_number     ].line_type == LINE_TYPE_BLANK )
