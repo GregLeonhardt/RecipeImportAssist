@@ -79,8 +79,8 @@
 
 /****************************************************************************/
 /**
- *  Go through the recipe directions and cleanup common formatting
- *  inconsistencies.
+ *  Some recipes have embedded content in the recipe directions.  Such as
+ *  the original poster, number of people it serves, etc.
  *
  *  @param recipe_t             Primary structure for a recipe
  *
