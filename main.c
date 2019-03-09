@@ -296,7 +296,7 @@ main(
     struct  file_info_t         *   file_info_p;
     /**
      *  @param  input_file_name Buffer to hold the directory/file name      */
-    char                            input_file_name[ FILE_NAME_L ];
+    char                            input_file_name[ ( FILE_NAME_L * 3 ) ];
     /**
      * @param source_info_p     Pointer to source data information          */
     struct  source_info_t       *   source_info_p;
