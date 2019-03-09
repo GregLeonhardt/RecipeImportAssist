@@ -229,7 +229,7 @@ DECODE_TXT__dump(
     int                             list_lock_key;
     /**
      * @param out_name          Encoded output file name                    */
-    char                            out_name[ FILE_NAME_L + 1 ];
+    char                            out_name[ ( FILE_NAME_L * 3 ) ];
     /**
      * @param input_file_fp     Output File pointer                         */
     FILE                        *   out_file_fp;
