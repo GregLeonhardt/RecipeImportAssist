@@ -258,10 +258,7 @@ DECODE_TXT__dump(
 
     //  Build the source file path & name
     snprintf( out_name, sizeof( out_name ),
-            "%s/%s", source_info_p->f_dir_name, recipe_id_p );
-
-    //  @ToDo   Decide how to name the trash files.
-    //      "%s/%s", source_info_p->f_dir_name, source_info_p->f_file_name );
+            "%s/%s", source_info_p->f_dir_name, source_info_p->f_file_name );
 
     //  Change the file extention
     data_p = strrchr( out_name, '.' );

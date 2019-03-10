@@ -649,8 +649,7 @@ encode_rxf(
 
     //  Build the source file path & name
     snprintf( out_name, sizeof( out_name ),
-            "%s/%s", recipe_p->dir_name, recipe_p->recipe_id );
-//          "%s/%s", recipe_p->dir_name, recipe_p->file_name );
+            "%s/%s", recipe_p->dir_name, recipe_p->file_name );
 
     //  Change the file extention
     data_p = strrchr( out_name, '.' );
