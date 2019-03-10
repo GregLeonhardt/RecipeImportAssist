@@ -256,6 +256,9 @@ decodel2_parse(
         {
             //  YES:    Set the format to use
             recipe_format = RECIPE_FORMAT_MXP;
+
+            //  Increment the number of MXP recipes
+            count_mxp += 1;
         }
         else
             //  Meal-Master
@@ -264,6 +267,9 @@ decodel2_parse(
         {
             //  YES:    Set the format to use
             recipe_format = RECIPE_FORMAT_MMF;
+
+            //  Increment the number of MMF recipes
+            count_mmf += 1;
         }
         else
             //  MasterCook MX2
@@ -272,6 +278,9 @@ decodel2_parse(
         {
             //  YES:    Set the format to use
             recipe_format = RECIPE_FORMAT_MX2;
+
+            //  Increment the number of MX2 recipes
+            count_mx2 += 1;
         }
         else
             //  Big-Oven BOF
@@ -280,6 +289,9 @@ decodel2_parse(
         {
             //  YES:    Set the format to use
             recipe_format = RECIPE_FORMAT_BOF;
+
+            //  Increment the number of BOF recipes
+            count_bof += 1;
         }
         else
             //  Now You're Cooking!
@@ -288,6 +300,9 @@ decodel2_parse(
         {
             //  YES:    Set the format to use
             recipe_format = RECIPE_FORMAT_NYC;
+
+            //  Increment the number of NYC recipes
+            count_nyc += 1;
         }
         else
             //  Generic-Recipe-Format [[[[[
@@ -296,6 +311,9 @@ decodel2_parse(
         {
             //  YES:    Set the format to use
             recipe_format = RECIPE_FORMAT_GRF;
+
+            //  Increment the number of GRF recipes
+            count_grf += 1;
         }
 
         /********************************************************************

@@ -76,6 +76,30 @@
 
 //---------------------------------------------------------------------------
 /**
+ *  @param  count_bof           Number of BOF recipes decoded               */
+int                             count_bof;
+/**
+ *  @param  count_grf           Number of GRF recipes decoded               */
+int                             count_grf;
+/**
+ *  @param  count_mmf           Number of MMF recipes decoded               */
+int                             count_mmf;
+/**
+ *  @param  count_mx2           Number of MX2 recipes decoded               */
+int                             count_mx2;
+/**
+ *  @param  count_mxp           Number of MXP recipes decoded               */
+int                             count_mxp;
+/**
+ *  @param  count_nyc           Number of NYC recipes decoded               */
+int                             count_nyc;
+/**
+ *  @param  count_rxf           Number of RXF recipes decoded               */
+int                             count_rxf;
+/**
+ *  @param  count_txt           Number of TXT recipes decoded               */
+int                             count_txt;
+/**
  *  @param  encode_queue_id     ID number for the ENCODE queue              */
 int                             encode_queue_id;
 /**

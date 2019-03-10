@@ -711,6 +711,14 @@ main(
     log_write( MID_INFO, "main",
                   "RECIPE_ID = %s\n", recipe_id_p );
 
+    //  Log the breakdown of recipe formats
+    log_write( MID_INFO, "main",
+                  " BOF   GRF   MMF   MX2   MXP   NYC   RXF   TXT\n" );
+    log_write( MID_INFO, "main",
+                  "%4d, %4d, %4d, %4d, %4d, %4d, %4d, %4d\n",
+                  count_bof, count_grf, count_mmf, count_mx2,
+                  count_mxp, count_nyc, count_rxf, count_txt );
+
     //  Save the recipe-id for the next pass
     store_put( "RECIPE_ID", recipe_id_p );
 
