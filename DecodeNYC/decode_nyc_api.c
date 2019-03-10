@@ -182,6 +182,10 @@ decode_nyc(
                 //  Locate and process the recipe title
                 if( DECODE_NYC__title( recipe_p, list_data_p ) == true )
                 {
+                    //  Change to Title Case
+                    text_title_case( recipe_p->name, recipe_p->name );
+
+                    //  Log the new title
                     log_write( MID_INFO, "decode_nyc",
                                "'%s'\n", recipe_p->name );
 

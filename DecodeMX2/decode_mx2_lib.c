@@ -1260,7 +1260,10 @@ DECODE_MX2__decode(
                             recipe_p->author
                                     = DECODE_MX2__srch( attribute_p, "author=\"" );
 
-                            //  Log the new recipe
+                            //  Change to Title Case
+                            text_title_case( recipe_p->name, recipe_p->name );
+
+                            //  Log the new title
                             log_write( MID_INFO, "decode_mx2",
                                "'%s'\n", recipe_p->name );
 

@@ -261,6 +261,10 @@ decode_bof(
                 //  Locate and process the recipe title
                 if( DECODE_BOF__title( recipe_p, list_data_p ) == true )
                 {
+                    //  Change to Title Case
+                    text_title_case( recipe_p->name, recipe_p->name );
+
+                    //  Log the new title
                     log_write( MID_INFO, "decode_bof",
                                "'%s'\n", recipe_p->name );
 
