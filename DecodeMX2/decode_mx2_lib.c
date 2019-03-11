@@ -278,10 +278,11 @@ DECODE_MX2__attribute(
     if ( strncmp( xml_p, "<![", 3 ) == 0 )
     {
         //  YES:    Skip past it
+        tmp_p = &xml_p[ 1 ];
         do
         {
             //  Search for the end of the comment string
-            tmp_p = strchr(  &xml_p[ 1 ], ']' );
+            tmp_p = strchr(  &tmp_p[ 1 ], ']' );
         }   while ( strncmp( tmp_p, "]]>", 3 ) != 0 );
 
         //  Now point to the next tag
