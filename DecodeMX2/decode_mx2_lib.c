@@ -274,7 +274,22 @@ DECODE_MX2__attribute(
      *  Locate the start of the data
      ************************************************************************/
 
+    //  Is this the special <![CDATA[
+    if ( strncmp( xml_p, "<![", 3 ) == 0 )
+    {
+        //  YES:    Skip past it
+        do
+        {
+            //  Search for the end of the comment string
+            tmp_p = strchr(  &xml_p[ 1 ], ']' );
+        }   while ( strncmp( tmp_p, "]]>", 3 ) != 0 );
+
+        //  Now point to the next tag
+        tmp_p = strchr(  tmp_p, '<' );
+    }
+
     //  Are we pointed at a tag ?
+    else
     if( xml_p[ 0 ] == '<' )
     {
         //  YES:    Is this the end of the tag element name ?
@@ -1171,6 +1186,9 @@ DECODE_MX2__decode(
     /**
      *  @param  decode_l        Size of the decode buffer                   */
     int                             decode_l;
+    /**
+     *  @param  mxp_inside_mx2  Flag indicating that we found a MXP recipe  */
+    int                             mxp_inside_mx2;
 
     /************************************************************************
      *  Function Initialization
@@ -1187,6 +1205,9 @@ DECODE_MX2__decode(
 
     //  Null out the recipe pointer
     recipe_p = NULL;
+
+    //  Set the found MXP recipe flag FALSE
+    mxp_inside_mx2 = false;
 
     /************************************************************************
      *  Look for character strings 'Entity', 'MX2 Tags'
@@ -1230,6 +1251,20 @@ DECODE_MX2__decode(
                     //  Get the attributes for this tag
                     tmp_a_p = DECODE_MX2__attribute( mx2_offset_p,
                             attribute_p, decode_l );
+
+                    //  Did we find a MXP recipe inside a MX2 recipe ?
+                    if ( mxp_inside_mx2 == true )
+                    {
+                        //  YES:    Is this the end of the MXP recipe ?
+                        if ( mx2_table[ mx2_table_ndx ].code != MX2_TAG_ERTXT )
+                        {
+                            //  NO:     Update the decode pointer.
+                            mx2_offset_p = tmp_a_p;
+
+                            //  Skip processing until we find it.
+                            break;
+                        }
+                    }
 
                     switch( mx2_table[ mx2_table_ndx ].code )
                     {
@@ -1570,16 +1605,14 @@ DECODE_MX2__decode(
                         //----------------------------------------------------
                         case    MX2_TAG_RTXT:   //  Start of Embedded MXP
                         {
-                            //  <RTXT> ... </RTXT>
-                            //  Ignore everything until </RTXT> is detected.
-
+                            //  Set the flag
+                            mxp_inside_mx2 = true;
                         }   break;
                         //----------------------------------------------------
                         case    MX2_TAG_ERTXT:  //  End   of Embedded MXP
                         {
-                            //  <RTXT> ... </RTXT>
-                            //  Found the </RTXT> tag.  Start scanning again.
-
+                            //  Clear the found MXP recipe flag
+                            mxp_inside_mx2 = false;
                         }   break;
                         //----------------------------------------------------
                         //      I don't know what the following are or what
