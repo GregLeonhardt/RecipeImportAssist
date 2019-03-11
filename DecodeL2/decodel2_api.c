@@ -241,8 +241,13 @@ decodel2_parse(
 
             if( list_query_count( level3_list_p ) != 0 )
             {
+                //  Something hasn't been released.  Dump it to assist in
+                //  figuring out what it is.
+                mem_dump( );
+
+                //  Error message and terminate
                 log_write( MID_FATAL, "decodel2_parse",
-                           "There is still something on the list\n" );
+                           "There is still something on the list. (Recipe Break)\n" );
             }
         }
 
@@ -343,8 +348,13 @@ decodel2_parse(
 
             if( list_query_count( level3_list_p ) != 0 )
             {
+                //  Something hasn't been released.  Dump it to assist in
+                //  figuring out what it is.
+                mem_dump( );
+
+                //  Error message and terminate
                 log_write( MID_FATAL, "decodel2_parse",
-                           "There is still something on the list\n" );
+                           "There is still something on the list. (MXP)\n" );
             }
         }
         //--------------------------------------------------------------------
@@ -360,8 +370,13 @@ decodel2_parse(
 
             if( list_query_count( level3_list_p ) != 0 )
             {
+                //  Something hasn't been released.  Dump it to assist in
+                //  figuring out what it is.
+                mem_dump( );
+
+                //  Error message and terminate
                 log_write( MID_FATAL, "decodel2_parse",
-                           "There is still something on the list\n" );
+                           "There is still something on the list. (MMF)\n" );
             }
         }
         //--------------------------------------------------------------------
@@ -377,8 +392,13 @@ decodel2_parse(
 
             if( list_query_count( level3_list_p ) != 0 )
             {
+                //  Something hasn't been released.  Dump it to assist in
+                //  figuring out what it is.
+                mem_dump( );
+
+                //  Error message and terminate
                 log_write( MID_FATAL, "decodel2_parse",
-                           "There is still something on the list\n" );
+                           "There is still something on the list. (MX2)\n" );
             }
         }
         //--------------------------------------------------------------------
@@ -394,8 +414,13 @@ decodel2_parse(
 
             if( list_query_count( level3_list_p ) != 0 )
             {
+                //  Something hasn't been released.  Dump it to assist in
+                //  figuring out what it is.
+                mem_dump( );
+
+                //  Error message and terminate
                 log_write( MID_FATAL, "decodel2_parse",
-                           "There is still something on the list\n" );
+                           "There is still something on the list. (BOF)\n" );
             }
         }
         //--------------------------------------------------------------------
@@ -411,8 +436,13 @@ decodel2_parse(
 
             if( list_query_count( level3_list_p ) != 0 )
             {
+                //  Something hasn't been released.  Dump it to assist in
+                //  figuring out what it is.
+                mem_dump( );
+
+                //  Error message and terminate
                 log_write( MID_FATAL, "decodel2_parse",
-                           "There is still something on the list\n" );
+                           "There is still something on the list. (NYC)\n" );
             }
         }
         //--------------------------------------------------------------------
@@ -428,8 +458,13 @@ decodel2_parse(
 
             if( list_query_count( level3_list_p ) != 0 )
             {
+                //  Something hasn't been released.  Dump it to assist in
+                //  figuring out what it is.
+                mem_dump( );
+
+                //  Error message and terminate
                 log_write( MID_FATAL, "decodel2_parse",
-                           "There is still something on the list\n" );
+                           "There is still something on the list. (GRF)\n" );
             }
         }
         //--------------------------------------------------------------------
@@ -446,8 +481,13 @@ decodel2_parse(
 
         if( list_query_count( level3_list_p ) != 0 )
         {
+            //  Something hasn't been released.  Dump it to assist in
+            //  figuring out what it is.
+            mem_dump( );
+
+            //  Error message and terminate
             log_write( MID_FATAL, "decodel2_parse",
-                       "There is still something on the list\n" );
+                       "There is still something on the list. (TXT)\n" );
         }
     }
 
@@ -492,7 +532,11 @@ decodel2_parse(
     //  Did we process everything in the list ?
     if( list_query_count( level2_list_p ) != 0 )
     {
-        //  Log what we found
+        //  Something hasn't been released.  Dump it to assist in
+        //  figuring out what it is.
+        mem_dump( );
+
+        //  Error message and terminate
         log_write( MID_FATAL, "decodel2_parse",
                       "level2_list_p is not empty!.\n" );
     }
