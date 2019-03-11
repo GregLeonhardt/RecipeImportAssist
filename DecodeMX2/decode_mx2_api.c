@@ -146,6 +146,9 @@ decode_mx2(
          list_data_p != NULL;
          list_data_p = list_get_next( mx2_list_p, list_data_p ) )
     {
+        //  Remove the line from the list.
+        list_delete( mx2_list_p, list_data_p );
+
         //  Is this the start of a new recipe ?
         if( strstr( list_data_p, "<mx2 " ) != NULL )
         {
@@ -184,13 +187,9 @@ decode_mx2(
                 //  Clean out the decode buffer
                 memset( decode_p, '\0', DECODE_BUF_L );
             }
-
-            //  Remove the line from the list.
-            list_delete( mx2_list_p, list_data_p );
-
-            //  Release the input data buffer
-            mem_free( list_data_p );
         }
+        //  Release the input data buffer
+        mem_free( list_data_p );
     }
 
     /************************************************************************
