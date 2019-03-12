@@ -65,8 +65,14 @@
 #define MMF_PREFIX_2            "MMMMM"
 #define MMF_PREFIX_2_L          strlen( MMF_PREFIX_2 )
 //----------------------------------------------------------------------------
+#define MMF_PREFIX_3            "- -----"
+#define MMF_PREFIX_3_L          strlen( MMF_PREFIX_3 )
+//----------------------------------------------------------------------------
 #define MMF_MMF_1               "Meal-Master"
-#define MMF_MMF_1_L             strlen( MMF_PREFIX_1 )
+#define MMF_MMF_1_L             strlen( MMF_MMF_1_L )
+//----------------------------------------------------------------------------
+#define MMF_NYC_1               "Now You're Cooking!"
+#define MMF_NYC_1_L             strlen( MMF_NYC_1_L )
 //----------------------------------------------------------------------------
 #define MMF_START_1             "Recipe via Meal-Master"
 #define MMF_START_1_L           strlen( MMF_START_1 )
@@ -173,19 +179,20 @@ DECODE_MMF__start (
 
 
     /************************************************************************
-     *  Anything that starts with "MMMMM" or "-----" and also
-     *  contains "Meal-Master"
+     *  Look for a generic recipe start message for Meal-Master format
      ************************************************************************/
 
     //  Skip this test if a previous test was TRUE
-    if( mmf_rc == false )
+    if ( mmf_rc == false )
     {
-        //  Does the string start with "-----" or "MMMMM" ?
-        if(    ( strncmp( tmp_data_p, MMF_PREFIX_1, MMF_PREFIX_1_L ) == 0 )
-            || ( strncmp( tmp_data_p, MMF_PREFIX_2, MMF_PREFIX_2_L ) == 0 ) )
+        //  Does the string start with one of out line prefixes?
+        if (    ( strncmp( tmp_data_p, MMF_PREFIX_1, MMF_PREFIX_1_L ) == 0 )    //  -----
+             || ( strncmp( tmp_data_p, MMF_PREFIX_2, MMF_PREFIX_2_L ) == 0 )    //  MMMMM
+             || ( strncmp( tmp_data_p, MMF_PREFIX_3, MMF_PREFIX_3_L ) == 0 ) )  //  - -----
         {
-            //  YES:    Does it contain "Meal-Master" ?
-            if( strstr( tmp_data_p, MMF_MMF_1 ) != NULL )
+            //  YES:    Does it contain contain a software tag ?
+            if (    ( strstr( tmp_data_p, MMF_MMF_1 ) != NULL )     //  Meal-Master
+                 || ( strstr( tmp_data_p, MMF_NYC_1 ) != NULL ) )   //  Now You're Cooking!
             {
                 //  YES:    Change the return code
                 mmf_rc = true;
@@ -194,21 +201,21 @@ DECODE_MMF__start (
     }
 
     /************************************************************************
-     *  |Recipe via Meal-Master|
+     *  Look for other more specialized start messages
      ************************************************************************/
 
     //  Skip this test if a previous test was TRUE
-    if( mmf_rc == false )
+    if ( mmf_rc == false )
     {
         //  Is this the start of a Meal-Master MMF recipe ?
-        if(    ( strncmp( tmp_data_p, MMF_START_1,  MMF_START_1_L  ) == 0 )
-            || ( strncmp( tmp_data_p, MMF_START_2,  MMF_START_2_L  ) == 0 )
-            || ( strncmp( tmp_data_p, MMF_START_3,  MMF_START_3_L  ) == 0 )
-            || ( strncmp( tmp_data_p, MMF_START_4,  MMF_START_4_L  ) == 0 )
-            || ( strncmp( tmp_data_p, MMF_START_5,  MMF_START_5_L  ) == 0 )
-            || ( strncmp( tmp_data_p, MMF_START_6,  MMF_START_6_L  ) == 0 )
-            || ( strncmp( tmp_data_p, MMF_START_7,  MMF_START_7_L  ) == 0 )
-            || ( strncmp( tmp_data_p, MMF_START_8,  MMF_START_8_L  ) == 0 ) )
+        if (    ( strncmp( tmp_data_p, MMF_START_1,  MMF_START_1_L  ) == 0 )
+             || ( strncmp( tmp_data_p, MMF_START_2,  MMF_START_2_L  ) == 0 )
+             || ( strncmp( tmp_data_p, MMF_START_3,  MMF_START_3_L  ) == 0 )
+             || ( strncmp( tmp_data_p, MMF_START_4,  MMF_START_4_L  ) == 0 )
+             || ( strncmp( tmp_data_p, MMF_START_5,  MMF_START_5_L  ) == 0 )
+             || ( strncmp( tmp_data_p, MMF_START_6,  MMF_START_6_L  ) == 0 )
+             || ( strncmp( tmp_data_p, MMF_START_7,  MMF_START_7_L  ) == 0 )
+             || ( strncmp( tmp_data_p, MMF_START_8,  MMF_START_8_L  ) == 0 ) )
         {
             //  YES:    Change the return code
             mmf_rc = true;
@@ -270,12 +277,12 @@ DECODE_MMF__end(
      ************************************************************************/
 
     //  Is this the start of a Meal-Master MMF recipe ?
-    if(    (    ( strncmp( tmp_data_p, MMF_END_1,  MMF_END_1_L  ) == 0 )
-             && ( strlen( tmp_data_p ) == MMF_END_1_L ) )
-        || (    ( strncmp( tmp_data_p, MMF_END_2,  MMF_END_2_L  ) == 0 )
-             && ( strlen( tmp_data_p ) == MMF_END_2_L ) )
-        || (    ( strncmp( tmp_data_p, MMF_END_3,  MMF_END_3_L  ) == 0 )
-             && ( strlen( tmp_data_p ) == MMF_END_3_L ) ) )
+    if (    (    ( strncmp( tmp_data_p, MMF_END_1,  MMF_END_1_L  ) == 0 )
+              && ( strlen( tmp_data_p ) == MMF_END_1_L ) )
+         || (    ( strncmp( tmp_data_p, MMF_END_2,  MMF_END_2_L  ) == 0 )
+              && ( strlen( tmp_data_p ) == MMF_END_2_L ) )
+         || (    ( strncmp( tmp_data_p, MMF_END_3,  MMF_END_3_L  ) == 0 )
+              && ( strlen( tmp_data_p ) == MMF_END_3_L ) ) )
     {
         //  YES:    Change the return code
         mmf_rc = true;
@@ -323,12 +330,12 @@ DECODE_MMF__title(
      ************************************************************************/
 
     //  Skip everything if this is a blank line
-    if( text_is_blank_line( title_p ) != true )
+    if ( text_is_blank_line( title_p ) != true )
     {
         title_p = text_skip_past_whitespace( title_p );
 
         //  Look for a TITLE tag in the line
-        if( strncmp( title_p, "Title:", 6 ) == 0 )
+        if ( strncmp( title_p, "Title:", 6 ) == 0 )
         {
             //  This is the title!  Move the pointer past the title tag.
             title_p += 6;
@@ -396,12 +403,12 @@ DECODE_MMF__categories(
      ************************************************************************/
 
     //  Skip everything if this is a blank line
-    if( text_is_blank_line( categories_p ) != true )
+    if ( text_is_blank_line( categories_p ) != true )
     {
         categories_p = text_skip_past_whitespace( categories_p );
 
         //  Look for a TITLE tag in the line
-        if( strncmp( categories_p, "Categories:", 11 ) == 0 )
+        if ( strncmp( categories_p, "Categories:", 11 ) == 0 )
         {
             //  This is the title!  Move the pointer past the categories tag.
             categories_p += 11;
@@ -498,7 +505,7 @@ DECODE_MMF__yield(
             sizeof ( local_unit ) );
 
     //  Skip everything if this is a blank line
-    if( text_is_blank_line( yield_p ) != true )
+    if ( text_is_blank_line( yield_p ) != true )
     {
         yield_p = text_skip_past_whitespace( yield_p );
 
@@ -560,7 +567,7 @@ DECODE_MMF__yield(
                     toupper( tmp_unit[ strlen( tmp_unit ) - 1 ] );
             }
             //  Is the units field empty
-            if( strlen( tmp_unit ) == 0 )
+            if ( strlen( tmp_unit ) == 0 )
             {
                 //  YES:    This is a serves amount, not a MAKES amount
                 recipe_p->serves = text_copy_to_new( local_amount );
@@ -623,7 +630,7 @@ DECODE_MMF__auip(
      ************************************************************************/
 
     //  Skip everything if this is a blank line
-    if( text_is_blank_line( in_buffer_p ) != true )
+    if ( text_is_blank_line( in_buffer_p ) != true )
     {
         //  Process the first half (or the entire line)
         in_buffer_p = text_skip_past_whitespace( in_buffer_p );
@@ -681,7 +688,7 @@ DECODE_MMF__directions(
      ************************************************************************/
 
     //  Is this the end of the recipe ?
-    if( DECODE_MMF__end( in_buffer_p ) == true )
+    if ( DECODE_MMF__end( in_buffer_p ) == true )
     {
         //  YES:    Change the return code
         mmf_rc = true;
