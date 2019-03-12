@@ -86,6 +86,12 @@
 #define MMF_START_6             "-- MMMMM----- Recipe via Meal-Master"
 #define MMF_START_6_L           strlen( MMF_START_6 )
 //----------------------------------------------------------------------------
+#define MMF_START_7             "- ---------- Recipe via Meal-Master"
+#define MMF_START_7_L           strlen( MMF_START_7 )
+//----------------------------------------------------------------------------
+#define MMF_START_8             "- ---------- Recipe via UNREGISTERED Meal-Master"
+#define MMF_START_8_L           strlen( MMF_START_8 )
+//----------------------------------------------------------------------------
 #define MMF_END_1               "-----"
 #define MMF_END_1_L             strlen( MMF_END_1 )
 //----------------------------------------------------------------------------
@@ -200,7 +206,9 @@ DECODE_MMF__start (
             || ( strncmp( tmp_data_p, MMF_START_3,  MMF_START_3_L  ) == 0 )
             || ( strncmp( tmp_data_p, MMF_START_4,  MMF_START_4_L  ) == 0 )
             || ( strncmp( tmp_data_p, MMF_START_5,  MMF_START_5_L  ) == 0 )
-            || ( strncmp( tmp_data_p, MMF_START_6,  MMF_START_6_L  ) == 0 ) )
+            || ( strncmp( tmp_data_p, MMF_START_6,  MMF_START_6_L  ) == 0 )
+            || ( strncmp( tmp_data_p, MMF_START_7,  MMF_START_7_L  ) == 0 )
+            || ( strncmp( tmp_data_p, MMF_START_8,  MMF_START_8_L  ) == 0 ) )
         {
             //  YES:    Change the return code
             mmf_rc = true;

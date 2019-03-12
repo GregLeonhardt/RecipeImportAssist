@@ -107,6 +107,9 @@ enum    direction_state_e
 #define MXP_START_9             "* Exported for MasterCook 4 by Living Cookbook *"
 #define MXP_START_9_L           strlen( MXP_START_9 )
 //----------------------------------------------------------------------------
+#define MXP_START_10            "*  Exported from  Key Home Gourmet  *"
+#define MXP_START_10_L          strlen( MXP_START_10 )
+//----------------------------------------------------------------------------
 #define MXP_END_1               "- - - - - - - - - - - - - - - - - -"
 #define MXP_END_1_L             strlen( MXP_END_1 )
 //----------------------------------------------------------------------------
@@ -230,15 +233,16 @@ DECODE_MXP__start(
      ************************************************************************/
 
     //  Is this the start of a MasterCook MXP recipe ?
-    if(    ( strncmp( tmp_data_p, MXP_START_1, MXP_START_1_L ) == 0 )
-        || ( strncmp( tmp_data_p, MXP_START_2, MXP_START_2_L ) == 0 )
-        || ( strncmp( tmp_data_p, MXP_START_3, MXP_START_3_L ) == 0 )
-        || ( strncmp( tmp_data_p, MXP_START_4, MXP_START_4_L ) == 0 )
-        || ( strncmp( tmp_data_p, MXP_START_5, MXP_START_5_L ) == 0 )
-        || ( strncmp( tmp_data_p, MXP_START_6, MXP_START_6_L ) == 0 )
-        || ( strncmp( tmp_data_p, MXP_START_7, MXP_START_7_L ) == 0 )
-        || ( strncmp( tmp_data_p, MXP_START_8, MXP_START_8_L ) == 0 )
-        || ( strncmp( tmp_data_p, MXP_START_9, MXP_START_9_L ) == 0 ) )
+    if(    ( strncmp( tmp_data_p, MXP_START_1,  MXP_START_1_L  ) == 0 )
+        || ( strncmp( tmp_data_p, MXP_START_2,  MXP_START_2_L  ) == 0 )
+        || ( strncmp( tmp_data_p, MXP_START_3,  MXP_START_3_L  ) == 0 )
+        || ( strncmp( tmp_data_p, MXP_START_4,  MXP_START_4_L  ) == 0 )
+        || ( strncmp( tmp_data_p, MXP_START_5,  MXP_START_5_L  ) == 0 )
+        || ( strncmp( tmp_data_p, MXP_START_6,  MXP_START_6_L  ) == 0 )
+        || ( strncmp( tmp_data_p, MXP_START_7,  MXP_START_7_L  ) == 0 )
+        || ( strncmp( tmp_data_p, MXP_START_8,  MXP_START_8_L  ) == 0 )
+        || ( strncmp( tmp_data_p, MXP_START_9,  MXP_START_9_L  ) == 0 )
+        || ( strncmp( tmp_data_p, MXP_START_10, MXP_START_10_L ) == 0 ) )
     {
         //  YES:    Change the return code
         mxp_rc = true;
