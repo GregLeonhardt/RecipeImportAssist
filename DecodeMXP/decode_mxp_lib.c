@@ -80,6 +80,15 @@ enum    direction_state_e
  ****************************************************************************/
 
 //----------------------------------------------------------------------------
+#define MXP_S_PART_1            "*"
+#define MXP_S_PART_1_L          strlen( MXP_S_PART_1 )
+//----------------------------------------------------------------------------
+#define MXP_S_PART_2            "Exported"
+#define MXP_S_PART_2_L          strlen( MXP_S_PART_2 )
+//----------------------------------------------------------------------------
+#define MXP_S_PART_3            "from"
+#define MXP_S_PART_3_L          strlen( MXP_S_PART_3 )
+//----------------------------------------------------------------------------
 #define MXP_START_1             "*  Exported from  MasterCook Mac  *"
 #define MXP_START_1_L           strlen( MXP_START_1 )
 //----------------------------------------------------------------------------
@@ -232,7 +241,22 @@ DECODE_MXP__start(
     direction_scan_state = DSS_IDLE;
 
     /************************************************************************
-     *  Function
+     *  Generic Detection
+     ************************************************************************/
+
+    //  Is this the start of a MasterCook MXP recipe ?
+    if ( strncmp( tmp_data_p, MXP_S_PART_1,  MXP_S_PART_1_L  ) == 0 )
+    {
+            if (    ( strstr( tmp_data_p, MXP_S_PART_2 ) != NULL )     //  Exported
+                 && ( strstr( tmp_data_p, MXP_S_PART_3 ) != NULL ) )   //  from
+            {
+                //  YES:    Change the return code
+                mxp_rc = true;
+            }
+    }
+
+    /************************************************************************
+     *  Specific Detection
      ************************************************************************/
 
     //  Is this the start of a MasterCook MXP recipe ?
