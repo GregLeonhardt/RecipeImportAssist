@@ -43,6 +43,7 @@
 #include <decode_api.h>         //  API for all decode_*            PUBLIC
 #include <decode_bof_api.h>     //  API for all decode_bof_*        PUBLIC
 #include <decode_grf_api.h>     //  API for all decode_grf_*        PUBLIC
+#include <decode_gf2_api.h>     //  API for all decode_gf2_*        PUBLIC
 #include <decode_mmf_api.h>     //  API for all decode_mmf_*        PUBLIC
 #include <decode_mxp_api.h>     //  API for all decode_mxp_*        PUBLIC
 #include <decode_mx2_api.h>     //  API for all decode_mx2_*        PUBLIC
@@ -346,6 +347,17 @@ decodel2_parse(
             //  Increment the number of GRF recipes
             count_grf += 1;
         }
+        else
+            //  Generic-Recipe-Format @@@@@
+        if(    ( recipe_format == RECIPE_FORMAT_NONE )
+            && ( decode_gf2_start( list_data_p ) == true ) )
+        {
+            //  YES:    Set the format to use
+            recipe_format = RECIPE_FORMAT_GF2;
+
+            //  Increment the number of GRF recipes
+            count_gf2 += 1;
+        }
 
         /********************************************************************
          *  Do something with the current line
@@ -472,7 +484,7 @@ decodel2_parse(
             }
         }
         //--------------------------------------------------------------------
-        //  Generic-Recipe-Format
+        //  Generic-Recipe-Format   '[[[[['
         if(    ( recipe_format == RECIPE_FORMAT_GRF )
             && ( decode_grf_end( list_data_p ) == true ) )
         {
@@ -494,6 +506,27 @@ decodel2_parse(
             }
         }
         //--------------------------------------------------------------------
+        //  Generic-Recipe-Format  '@@@@@'
+        if(    ( recipe_format == RECIPE_FORMAT_GRF )
+            && ( decode_grf_end( list_data_p ) == true ) )
+        {
+            //  YES:    Process the recipe
+            decode_xxx( recipe_format, level3_list_p, source_info_p );
+
+            //  Done with this recipe
+            recipe_format = RECIPE_FORMAT_NONE;
+
+            if( list_query_count( level3_list_p ) != 0 )
+            {
+                //  Something hasn't been released.  Dump it to assist in
+                //  figuring out what it is.
+                mem_dump( );
+
+                //  Error message and terminate
+                log_write( MID_FATAL, "decodel2_parse",
+                           "There is still something on the list. (GRF)\n" );
+            }
+        }
     }
 
     //  Is there anything still on the list ?

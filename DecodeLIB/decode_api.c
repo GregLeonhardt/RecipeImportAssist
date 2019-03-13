@@ -40,6 +40,7 @@
 #include <libtools_api.h>       //  My Tools Library
                                 //*******************************************
 #include <decode_bof_api.h>     //  API for all decode_bof_*        PUBLIC
+#include <decode_gf2_api.h>     //  API for all decode_gf2_*        PUBLIC
 #include <decode_grf_api.h>     //  API for all decode_grf_*        PUBLIC
 #include <decode_mmf_api.h>     //  API for all decode_mmf_*        PUBLIC
 #include <decode_mxp_api.h>     //  API for all decode_mxp_*        PUBLIC
@@ -418,6 +419,11 @@ decode_xxx(
         case    RECIPE_FORMAT_GRF:
         {
             decode_grf( level3_list_p, source_info_p );
+        }   break;
+        //--------------------------------------------------------------------
+        case    RECIPE_FORMAT_GF2:
+        {
+            decode_gf2( level3_list_p, source_info_p );
         }   break;
         //--------------------------------------------------------------------
         case    RECIPE_FORMAT_MMF:

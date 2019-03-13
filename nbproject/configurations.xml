@@ -4,7 +4,25 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>include/decode_api.h</itemPath>
+      <itemPath>include/decode_bof_api.h</itemPath>
+      <itemPath>DecodeGF2/decode_gf2_api.h</itemPath>
+      <itemPath>include/decode_grf_api.h</itemPath>
+      <itemPath>include/decode_html_api.h</itemPath>
+      <itemPath>include/decode_mmf_api.h</itemPath>
+      <itemPath>include/decode_mx2_api.h</itemPath>
+      <itemPath>include/decode_mxp_api.h</itemPath>
+      <itemPath>include/decode_nyc_api.h</itemPath>
+      <itemPath>include/decode_txt_api.h</itemPath>
+      <itemPath>include/decodel1_api.h</itemPath>
+      <itemPath>include/decodel2_api.h</itemPath>
+      <itemPath>include/email_api.h</itemPath>
+      <itemPath>include/encode_api.h</itemPath>
+      <itemPath>include/encode_rxf_api.h</itemPath>
+      <itemPath>include/filescan_api.h</itemPath>
       <itemPath>include/main_api.h</itemPath>
+      <itemPath>include/recipe_api.h</itemPath>
+      <itemPath>include/xlate_api.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -18,6 +36,11 @@
         <itemPath>DecodeBOF/decode_bof_api.h</itemPath>
         <itemPath>DecodeBOF/decode_bof_lib.c</itemPath>
         <itemPath>DecodeBOF/decode_bof_lib.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f1" displayName="DecodeGF2" projectFiles="true">
+        <itemPath>DecodeGF2/decode_gf2_api.c</itemPath>
+        <itemPath>DecodeGF2/decode_gf2_lib.c</itemPath>
+        <itemPath>DecodeGF2/decode_gf2_lib.h</itemPath>
       </logicalFolder>
       <logicalFolder name="DecodeGRF" displayName="DecodeGRF" projectFiles="true">
         <itemPath>DecodeGRF/decode_grf_api.c</itemPath>
@@ -179,6 +202,14 @@
       </item>
       <item path="DecodeBOF/decode_bof_lib.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="DecodeGF2/decode_gf2_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeGF2/decode_gf2_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeGF2/decode_gf2_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeGF2/decode_gf2_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="DecodeGRF/decode_grf_api.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="DecodeGRF/decode_grf_api.h" ex="false" tool="3" flavor2="0">
@@ -307,7 +338,41 @@
       </item>
       <item path="eMail/email_lib.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="include/decode_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/decode_bof_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/decode_grf_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/decode_html_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/decode_mmf_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/decode_mx2_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/decode_mxp_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/decode_nyc_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/decode_txt_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/decodel1_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/decodel2_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/email_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/encode_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/encode_rxf_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/filescan_api.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="include/main_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/recipe_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/xlate_api.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.c" ex="false" tool="0" flavor2="0">
       </item>
@@ -340,6 +405,14 @@
       </item>
       <item path="DecodeBOF/decode_bof_lib.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="DecodeGF2/decode_gf2_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeGF2/decode_gf2_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeGF2/decode_gf2_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeGF2/decode_gf2_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="DecodeGRF/decode_grf_api.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="DecodeGRF/decode_grf_api.h" ex="false" tool="3" flavor2="0">
@@ -468,7 +541,41 @@
       </item>
       <item path="eMail/email_lib.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="include/decode_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/decode_bof_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/decode_grf_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/decode_html_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/decode_mmf_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/decode_mx2_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/decode_mxp_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/decode_nyc_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/decode_txt_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/decodel1_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/decodel2_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/email_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/encode_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/encode_rxf_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/filescan_api.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="include/main_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/recipe_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/xlate_api.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.c" ex="false" tool="0" flavor2="0">
       </item>

@@ -322,6 +322,10 @@ main(
     mem_init( );
     store_init( );
 
+    //  Initialize recipe type counters
+    count_bof = count_gf2 = count_grf = count_mmf = count_mx2 = \
+    count_mxp = count_nyc = count_rxf = count_txt = 0;
+
     /************************************************************************
      *  Initialize the Recipe-ID:
      ************************************************************************/
@@ -713,10 +717,10 @@ main(
 
     //  Log the breakdown of recipe formats
     log_write( MID_INFO, "main",
-                  "  BOF    GRF    MMF    MX2    MXP    NYC    RXF    TXT\n" );
+                  "  BOF    GF2    GRF    MMF    MX2    MXP    NYC    RXF    TXT\n" );
     log_write( MID_INFO, "main",
-                  "%5d  %5d  %5d  %5d  %5d  %5d  %5d  %5d\n",
-                  count_bof, count_grf, count_mmf, count_mx2,
+                  "%5d  %5d  %5d  %5d  %5d  %5d  %5d  %5d  %5d\n",
+                  count_bof, count_gf2, count_grf, count_mmf, count_mx2,
                   count_mxp, count_nyc, count_rxf, count_txt );
 
     //  Save the recipe-id for the next pass

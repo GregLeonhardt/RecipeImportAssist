@@ -591,7 +591,9 @@ email_filter(
                 //  Is this part of a reply to an e-mail
                 else
                 if(    ( data_p[ 0 ] == '>' )
-                    || ( data_p[ 0 ] == '|' )
+//  @ToDo   This was removed because it is a defined part of the GF2
+//          recipe format.
+//                  || ( data_p[ 0 ] == '|' )
                     || ( data_p[ 0 ] == '!' ) )
                 {
                     //  YES:    Throw it in the trash

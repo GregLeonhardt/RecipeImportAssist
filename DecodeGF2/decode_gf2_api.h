@@ -4,13 +4,13 @@
  *
  ****************************************************************************/
 
-#ifndef MAIN_API_H
-#define MAIN_API_H
+#ifndef DECODE_GF2_API_H
+#define DECODE_GF2_API_H
 
 /******************************** JAVADOC ***********************************/
 /**
- *  This file contains public definitions (etc.) that are accessible to the
- *  entire project.  I.E. "global".
+ *  This file contains public definitions (etc.) that apply to external 
+ *  library components of the 'decode_gf2' library.
  *
  *  @note
  *
@@ -20,11 +20,6 @@
  *  Compiler directives
  ****************************************************************************/
 
-#ifdef ALLOC_MAIN
-   #define MAIN_EXT
-#else
-   #define MAIN_EXT             extern
-#endif
 
 /****************************************************************************
  * System APIs
@@ -38,6 +33,12 @@
  ****************************************************************************/
 
                                 //*******************************************
+#include <libtools_api.h>       //  My Tools Library
+                                //*******************************************
+#include <decode_api.h>         //  API for all decode_*            PUBLIC
+                                //*******************************************
+#include <email_api.h>          //  API for all email_*             PUBLIC
+#include <recipe_api.h>         //  API for all recipe_*            PUBLIC
                                 //*******************************************
 
 /****************************************************************************
@@ -45,15 +46,6 @@
  ****************************************************************************/
 
 //----------------------------------------------------------------------------
-/**
- *  @param  THREADING           TRUE will enable threading
- *                              FALSE run everything in a single thread     */
-#define THREADING               ( false )
-//----------------------------------------------------------------------------
-/**
- *  @param  MEM_DUMP            TRUE will enable memory stack size
- *                              FALSE will disable memory stack size        */
-#define MEM_DUMP                ( false )
 //----------------------------------------------------------------------------
 
 /****************************************************************************
@@ -75,42 +67,6 @@
  ****************************************************************************/
 
 //---------------------------------------------------------------------------
-/**
- *  @param  count_bof           Number of BOF recipes decoded               */
-int                             count_bof;
-/**
- *  @param  count_grf           Number of GRF recipes decoded               */
-int                             count_gf2;
-/**
- *  @param  count_grf           Number of GRF recipes decoded               */
-int                             count_grf;
-/**
- *  @param  count_mmf           Number of MMF recipes decoded               */
-int                             count_mmf;
-/**
- *  @param  count_mx2           Number of MX2 recipes decoded               */
-int                             count_mx2;
-/**
- *  @param  count_mxp           Number of MXP recipes decoded               */
-int                             count_mxp;
-/**
- *  @param  count_nyc           Number of NYC recipes decoded               */
-int                             count_nyc;
-/**
- *  @param  count_rxf           Number of RXF recipes decoded               */
-int                             count_rxf;
-/**
- *  @param  count_txt           Number of TXT recipes decoded               */
-int                             count_txt;
-/**
- *  @param  encode_queue_id     ID number for the ENCODE queue              */
-int                             encode_queue_id;
-/**
- *  @param  decode_queue_id     ID number for the DECODE queue              */
-int                             decode_queue_id;
-/**
- *  @param  store_value_p       ID number for the DECODE queue              */
-char                        *   recipe_id_p;
 //---------------------------------------------------------------------------
 
 /****************************************************************************
@@ -118,8 +74,23 @@ char                        *   recipe_id_p;
  ****************************************************************************/
 
 //---------------------------------------------------------------------------
+void
+decode_gf2(
+    struct  list_base_t         *   mxp_list_p,
+    struct  source_info_t       *   source_info_p
+    );
+//---------------------------------------------------------------------------
+int
+decode_gf2_start(
+    char                        *   data_p
+    );
+//---------------------------------------------------------------------------
+int
+decode_gf2_end(
+    char                        *   data_p
+    );
 //---------------------------------------------------------------------------
 
 /****************************************************************************/
 
-#endif                      //    MAIN_API_H
+#endif                      //    DECODE_GF2_API_H

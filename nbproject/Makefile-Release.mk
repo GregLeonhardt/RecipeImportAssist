@@ -37,6 +37,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/DecodeBOF/decode_bof_api.o \
 	${OBJECTDIR}/DecodeBOF/decode_bof_lib.o \
+	${OBJECTDIR}/DecodeGF2/decode_gf2_api.o \
+	${OBJECTDIR}/DecodeGF2/decode_gf2_lib.o \
 	${OBJECTDIR}/DecodeGRF/decode_grf_api.o \
 	${OBJECTDIR}/DecodeGRF/decode_grf_lib.o \
 	${OBJECTDIR}/DecodeHTML/decode_html_api.o \
@@ -105,6 +107,16 @@ ${OBJECTDIR}/DecodeBOF/decode_bof_lib.o: DecodeBOF/decode_bof_lib.c
 	${MKDIR} -p ${OBJECTDIR}/DecodeBOF
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DecodeBOF/decode_bof_lib.o DecodeBOF/decode_bof_lib.c
+
+${OBJECTDIR}/DecodeGF2/decode_gf2_api.o: DecodeGF2/decode_gf2_api.c
+	${MKDIR} -p ${OBJECTDIR}/DecodeGF2
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DecodeGF2/decode_gf2_api.o DecodeGF2/decode_gf2_api.c
+
+${OBJECTDIR}/DecodeGF2/decode_gf2_lib.o: DecodeGF2/decode_gf2_lib.c
+	${MKDIR} -p ${OBJECTDIR}/DecodeGF2
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DecodeGF2/decode_gf2_lib.o DecodeGF2/decode_gf2_lib.c
 
 ${OBJECTDIR}/DecodeGRF/decode_grf_api.o: DecodeGRF/decode_grf_api.c
 	${MKDIR} -p ${OBJECTDIR}/DecodeGRF
