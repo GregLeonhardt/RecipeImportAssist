@@ -65,6 +65,9 @@
 #define NYC_END_1               "** Exported from Now You're Cooking!"
 #define NYC_END_1_L             strlen( NYC_END_1 )
 //----------------------------------------------------------------------------
+#define NYC_END_2               "-+-"
+#define NYC_END_2_L             strlen( NYC_END_2 )
+//----------------------------------------------------------------------------
 
 /****************************************************************************
  * Structures local to this file
@@ -191,7 +194,8 @@ DECODE_NYC__end(
      ************************************************************************/
 
     //  Is this the start of a Meal-Master NYC recipe ?
-    if( strncmp( tmp_data_p, NYC_END_1,  NYC_END_1_L  ) == 0 )
+    if(    ( strncmp( tmp_data_p, NYC_END_1,  NYC_END_1_L  ) == 0 )
+        || ( strncmp( tmp_data_p, NYC_END_2,  NYC_END_2_L  ) == 0 ) )
     {
         //  YES:    Change the return code
         nyc_rc = true;

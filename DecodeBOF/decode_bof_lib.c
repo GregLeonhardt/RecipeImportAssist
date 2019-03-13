@@ -124,10 +124,10 @@ DECODE_BOF__start (
      ************************************************************************/
 
     //  Skip this test if a previous test was TRUE
-    if( bof_rc == false )
+    if ( bof_rc == false )
     {
         //  Does the string start with "-= Exported from BigOven =-" ?
-        if( strncmp( tmp_data_p, BOF_START, BOF_START_L ) == 0 )
+        if ( strncmp( tmp_data_p, BOF_START, BOF_START_L ) == 0 )
         {
             //  YES:    Change the return code
             bof_rc = true;
@@ -184,7 +184,7 @@ DECODE_BOF__pre_end(
      ************************************************************************/
 
     //  Is this the start of a Big-Oven BOF recipe ?
-    if( strncmp( tmp_data_p, BOF_END_1, BOF_END_1_L  ) == 0 )
+    if ( strncmp( tmp_data_p, BOF_END_1, BOF_END_1_L  ) == 0 )
     {
         //  YES:    Change the return code
         bof_rc = true;
@@ -240,7 +240,8 @@ DECODE_BOF__end(
      ************************************************************************/
 
     //  Is this the start of a Big-Oven BOF recipe ?
-    if( strncmp( tmp_data_p, BOF_END_2, BOF_END_2_L  ) == 0 )
+    if (    ( strncmp( tmp_data_p, BOF_END_2, BOF_END_2_L  ) == 0 )
+         || ( strncmp( tmp_data_p, BOF_END_3, BOF_END_3_L  ) == 0 ) )
     {
         //  YES:    Change the return code
         bof_rc = true;
@@ -290,7 +291,7 @@ DECODE_BOF__title(
      ************************************************************************/
 
     //  Skip everything if this is a blank line
-    if( text_is_blank_line( title_p ) != true )
+    if ( text_is_blank_line( title_p ) != true )
     {
         title_p = text_skip_past_whitespace( title_p );
 
@@ -477,7 +478,7 @@ DECODE_BOF__categories(
     tmp_data_p = strchr( categories_p, ':' );
 
     //  Should always be true but just in case; Did we find one ?
-    if( tmp_data_p != NULL )
+    if ( tmp_data_p != NULL )
     {
         //  YES:    Advance the pointer past it
         tmp_data_p += 1;
@@ -565,7 +566,7 @@ DECODE_BOF__auip(
      ************************************************************************/
 
     //  Skip everything if this is a blank line
-    if( text_is_blank_line( in_buffer_p ) != true )
+    if ( text_is_blank_line( in_buffer_p ) != true )
     {
         //  Process the first half (or the entire line)
         in_buffer_p = text_skip_past_whitespace( in_buffer_p );
@@ -621,7 +622,7 @@ DECODE_BOF__directions(
      ************************************************************************/
 
     //  Is this the end-of-recipe tag ?
-    if( DECODE_BOF__end( in_buffer_p ) == false )
+    if ( DECODE_BOF__end( in_buffer_p ) == false )
     {
         //  Format the AUIP line
         recipe_add_instructions( recipe_p, in_buffer_p );

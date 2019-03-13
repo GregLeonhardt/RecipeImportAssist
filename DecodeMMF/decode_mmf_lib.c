@@ -107,6 +107,9 @@
 #define MMF_END_3               "- -----"
 #define MMF_END_3_L             strlen( MMF_END_3 )
 //----------------------------------------------------------------------------
+#define MMF_END_4               "-+-"
+#define MMF_END_4_L             strlen( MMF_END_4 )
+//----------------------------------------------------------------------------
 
 /****************************************************************************
  * Structures local to this file
@@ -282,7 +285,9 @@ DECODE_MMF__end(
          || (    ( strncmp( tmp_data_p, MMF_END_2,  MMF_END_2_L  ) == 0 )
               && ( strlen( tmp_data_p ) == MMF_END_2_L ) )
          || (    ( strncmp( tmp_data_p, MMF_END_3,  MMF_END_3_L  ) == 0 )
-              && ( strlen( tmp_data_p ) == MMF_END_3_L ) ) )
+              && ( strlen( tmp_data_p ) == MMF_END_3_L ) )
+         || (    ( strncmp( tmp_data_p, MMF_END_4,  MMF_END_4_L  ) == 0 )
+              && ( strlen( tmp_data_p ) == MMF_END_4_L ) ) )
     {
         //  YES:    Change the return code
         mmf_rc = true;

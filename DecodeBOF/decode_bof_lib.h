@@ -75,6 +75,9 @@
 #define BOF_END_2               "** Easy recipe software.  Try it free at: http://www.bigoven.com    **"
 #define BOF_END_2_L             strlen( BOF_END_2 )
 //----------------------------------------------------------------------------
+#define BOF_END_3               "-+-"
+#define BOF_END_3_L             strlen( BOF_END_3 )
+//----------------------------------------------------------------------------
 
 /****************************************************************************
  * Library Private Enumerations

@@ -113,6 +113,9 @@ enum    direction_state_e
 #define MXP_END_1               "- - - - - - - - - - - - - - - - - -"
 #define MXP_END_1_L             strlen( MXP_END_1 )
 //----------------------------------------------------------------------------
+#define MXP_END_2               "-+-"
+#define MXP_END_2_L             strlen( MXP_END_2 )
+//----------------------------------------------------------------------------
 #define MXP_BY                  "Recipe By     :"
 #define MXP_BY_L                strlen( MXP_BY )
 //----------------------------------------------------------------------------
@@ -819,7 +822,8 @@ DECODE_MXP__auip(
         }   break;
     }
     //  Is this the start of a MasterCook MXP recipe ?
-    if(    ( strncmp( tmp_data_p, MXP_END_1, MXP_END_1_L ) == 0 ) )
+    if(    ( strncmp( tmp_data_p, MXP_END_1, MXP_END_1_L ) == 0 )
+        || ( strncmp( tmp_data_p, MXP_END_2, MXP_END_2_L ) == 0 ) )
     {
         //  YES:    Change the return code
         mxp_rc = true;
