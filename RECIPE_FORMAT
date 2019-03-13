@@ -78,18 +78,20 @@
 
     @@@@@
     title
-    <hard return>
+	|
+	description
+    |
     ingredients
-    <hard return>
+    |
     directions
-    _____
+    _____    (or @@@@@)
     @@@@@
-    title
-    <hard return>
+	|
+	description
+    |
     ingredients
-    <hard return>
+    |
     directions
-    _____
 
     ##########################################################################
     #  DESCRIPTIONS:
@@ -100,17 +102,25 @@
         as a Generically Formatted Text recipe.
     title
         The recipe name.
-    <hard return>
-        Just an empty line
+    |
+        (MUST BE A VIRTICAL BAR '|'.)
+    description
+		Say something about the recipe.  (Free form.)
+    |
+        (MUST BE A VIRTICAL BAR '|'.)
     ingredients
         Formatted as 'Amount', 'Unit of Measurement', 'Ingredient'
         and 'Preparation'.  Spaces separate the first three columns
         from each other.  A coma {,), or double dash (--) may be used
         to separate the "Ingredient' from 'Preparation'.
-    <hard return>
-        Just an empty line
+    |
+        (MUST BE A VIRTICAL BAR '|'.)
     directions
         This is essentially free formatted text.
+    _____
+        A unique character sequence that identifies the end of a
+        Generically Formatted Text recipe. (NOTE: May optionally be
+        the same character sequence as the start '@@@@@'.)
 
     ##########################################################################
     #  EXAMPLE:
@@ -118,14 +128,21 @@
 
     @@@@@
     Squash Casserole
+	|
+    Serves 4-6.
 
+    NOTE: Say something nice about the recipe.
+	NOTE: Notice there is a blank line here.  That's OK.
+	NOTE: It is also OK if there isn't any text.  In that case there 
+			would still be two virtical bars but no text between them.
+	|
     2 pounds yellow squash
     2 medium tomatoes, sliced
     Salt and pepper, to taste
     2 medium onions, sliced
     1/2 cup Parmesan Cheese
     1/4 cup Margarine, (1/2 stick)
-
+	|
     Preheat oven to 350 degrees F. Peel and slice squash into
     rounds about 1/2" thick. Place about 1/3 of the sliced squash
     in the bottom of a baking dish, add a 1/3 of the tomatoes, salt
@@ -133,14 +150,6 @@
     1/3 of the margarine. Repeat with additional two layers. Cover
     with foil and bake in preheated oven for 30 minutes. Remove the
     foil and bake for an additional 10 minutes.
-
-    Serves 4-6.
-
-    NOTE:
-        The above example does not include the recipe end marker
-        "-----" found in recipes posted.  I don't know if this is
-        a mistake or just something that is present in the recipes
-        I have looked at.
     _____
 
 ##############################################################################
