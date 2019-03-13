@@ -295,7 +295,7 @@ DECODE_TXT__dump(
 
     fprintf( out_file_fp, "GROUP-FROM:    %s\n", source_info_p->g_from      );
     fprintf( out_file_fp, "GROUP-SUBJECT: %s\n", source_info_p->g_subject   );
-    fprintf( out_file_fp, "GROUP-DATE::   %s\n", source_info_p->g_datetime  );
+    fprintf( out_file_fp, "GROUP-DATE:    %s\n", source_info_p->g_datetime  );
 
     fprintf( out_file_fp, "MAIL-FROM:     %s\n", source_info_p->e_from      );
     fprintf( out_file_fp, "MAIL-SUBJECT:  %s\n", source_info_p->e_subject   );

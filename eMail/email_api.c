@@ -63,6 +63,9 @@
 #define SRCH_RETURN                 "Return-Path:"
 #define SRCH_RETURN_L               strlen( SRCH_RETURN )
 //----------------------------------------------------------------------------
+#define SRCH_RXF_BREAK              "........................................"
+#define SRCH_RXF_BREAK_L            strlen( SRCH_RXF_BREAK )
+//----------------------------------------------------------------------------
 #define SRCH_FROM                   "From:"
 #define SRCH_FROM_L                 strlen( SRCH_FROM )
 //----------------------------------------------------------------------------
@@ -154,6 +157,13 @@ email_is_start(
     //  Is this the start of a new e-Mail ?
     else
     if( strncmp( tmp_data_p, SRCH_RETURN, SRCH_RETURN_L ) == 0 )
+    {
+        //  YES:    Change the return code
+        email_rc = true;
+    }
+    //  Is this the start of a new e-Mail ?
+    else
+    if( strncmp( tmp_data_p, SRCH_RXF_BREAK, SRCH_RXF_BREAK_L ) == 0 )
     {
         //  YES:    Change the return code
         email_rc = true;

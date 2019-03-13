@@ -112,6 +112,9 @@ decodel2_parse(
      *  @param list_lock_key    File list key                               */
     int                             list_lock_key;
     /**
+     *  @param  un_fmt_output   Flag showing input data from unformatted    */
+    int                             un_fmt_output;
+    /**
      *  @param list_data_p      Pointer to the read data                    */
     char                        *   list_data_p;
     /**
@@ -139,6 +142,9 @@ decodel2_parse(
     //  Initialize the current recipe format
     recipe_format = RECIPE_FORMAT_NONE;
 
+    //  Not processing an unformatted recipe file.
+    un_fmt_output = false;
+
     //  Create a new list
     level3_list_p = list_new( );
 
@@ -155,6 +161,26 @@ decodel2_parse(
          list_data_p != NULL;
          list_data_p = list_fget_next( level2_list_p, list_data_p, list_lock_key ) )
     {
+
+        /********************************************************************
+         *  Look to see if this is from an UNFORMATTED_RECIPE file
+         ********************************************************************/
+
+        if ( un_fmt_output == true )
+        {
+            //  YES:    Recover the saved source information
+            un_fmt_output = DECODEL2__recover_src_info( source_info_p,
+                                                        list_data_p );
+        }
+        else
+        {
+            //  NO:     Look to see if this is the start
+            if ( strncmp( list_data_p, URF_START, URF_START_L ) == 0 )
+            {
+                //  YES:    Set the flag so we can remember what we are doing
+                un_fmt_output = true;
+            }
+        }
 
         /********************************************************************
          *  Possible e-Mail Subject
