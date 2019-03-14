@@ -154,7 +154,6 @@ DECODE_GF2__start (
  *  Test the string for a recipe end marker.
  *      FORMATS:
  *          1   |_____|
- *          2   |@@@@@|
  *
  *  @param  data_p              Pointer to a a line of text to be scanned.
  *
@@ -192,8 +191,7 @@ DECODE_GF2__end(
      ************************************************************************/
 
     //  Is this the start of a Meal-Master GF2 recipe ?
-    if (    ( strncmp( tmp_data_p, GF2_START, GF2_START_L  ) == 0 )
-         || ( strncmp( tmp_data_p, GF2_END,   GF2_END_L    ) == 0 ) )
+    if ( strncmp( tmp_data_p, GF2_END,   GF2_END_L    ) == 0 )
     {
         //  YES:    Change the return code
         gf2_rc = true;

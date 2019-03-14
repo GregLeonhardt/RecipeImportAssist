@@ -110,6 +110,9 @@ decode_gf2(
      * @param list_lock_key     File list key                               */
     int                             list_lock_key;
     /**
+     * @param cookn_format      Recipe is using the Cook'n file format      */
+    int                             cookn_format;
+    /**
      * @param list_data_p       Pointer to the read data                    */
     char                        *   list_data_p;
     /**
@@ -130,6 +133,9 @@ decode_gf2(
 
     //  Change state to looking for the recipe title.
     gf2_state = GF2_DS_START;
+
+    //  Not using the Cook'n format style until it is detected
+    cookn_format = false;
 
     /************************************************************************
      *  Copy e-Mail information
@@ -170,8 +176,7 @@ decode_gf2(
                 //  Locate and process the recipe title
                 if ( DECODE_GF2__start( list_data_p ) == true )
                 {
-                    //  When rc == true, the title search is complete.
-                    //  Change state to looking for the recipe categories.
+                    //  The next line should be the recipe title.
                     gf2_state = GF2_DS_TITLE;
                 }
             }   break;
@@ -192,8 +197,7 @@ decode_gf2(
                     log_write( MID_INFO, "decode_gf2",
                                "'%s'\n", recipe_p->name );
 
-                    //  When rc == true, the title search is complete.
-                    //  Change state to looking for the recipe categories.
+                    //  Next look for a blank line or a Cook'n segment change.
                     gf2_state = GF2_DS_BREAK;
                 }
             }   break;
@@ -204,13 +208,22 @@ decode_gf2(
 
             case GF2_DS_BREAK:
             {
-                //  Is this a secion break marker ?
+                //  Is this a blank line ?
+                if ( text_is_blank_line( list_data_p ) == true )
+                {
+                    //  YES:    This is the old format style.
+                    cookn_format = false;
+                }
+                //  Is this a section break marker ?
+                else
                 if ( ( list_data_p[ 0 ] ) == '|' )
                 {
-                    //  When rc == true, the title search is complete.
-                    //  Change state to looking for the recipe categories.
-                    gf2_state = GF2_DS_NOTE;
+                    //  This is present in the Cook'n format style.
+                    cookn_format = true;
                 }
+                //  Set the next field
+                gf2_state = GF2_DS_NOTE;
+
             }   break;
 
             /****************************************************************
@@ -219,20 +232,36 @@ decode_gf2(
 
             case GF2_DS_NOTE:
             {
-                //  Is this a secion break marker ?
-                if ( ( list_data_p[ 0 ] ) == '|' )
+                //  Are we using the Cook'n format style ?
+                if ( cookn_format == false )
                 {
-                    //  YES:    The-End of this recipe
-                    gf2_state = GF2_DS_AUIP;
+                    //  YES:    Process the note.
+                    DECODE_GF2__note( recipe_p, list_data_p );
 
-                    //  There may be some data in the directions
-                    //  processing buffer. This call will flush it out.
-                    DECODE_GF2__note( recipe_p, "   " );
+                    //  Is this the end of the note ?
+                    if ( text_is_blank_line( list_data_p ) == true )
+                    {
+                        //  YES:    Set the next field
+                        gf2_state = GF2_DS_AUIP;
+                    }
                 }
+                //  Is this a section break marker ?
                 else
                 {
-                    //  Process some notes
-                    DECODE_GF2__note( recipe_p, list_data_p );
+                    if ( ( list_data_p[ 0 ] ) == '|' )
+                    {
+                        //  YES:    Set the next field
+                        gf2_state = GF2_DS_AUIP;
+
+                        //  There may be some data in the notes processing
+                        //  buffer. This call will flush it out.
+                        DECODE_GF2__note( recipe_p, "   " );
+                    }
+                    else
+                    {
+                        //  Process some notes
+                        DECODE_GF2__note( recipe_p, list_data_p );
+                    }
                 }
             }   break;
 
@@ -243,16 +272,32 @@ decode_gf2(
 
             case GF2_DS_AUIP:
             {
-                //  Is this a segment break marker ?
-                if ( ( list_data_p[ 0 ] ) == '|' )
+                //  Are we using the Cook'n format style ?
+                if ( cookn_format == false )
                 {
-                    //  YES:    Start processing AUIP
-                    gf2_state = GF2_DS_DIRECTIONS;
+                    //  YES:    Process the AUIP data.
+                    DECODE_GF2__auip( recipe_p, list_data_p );
+
+                    //  Is this the end of the note ?
+                    if ( text_is_blank_line( list_data_p ) == true )
+                    {
+                        //  YES:    Set the next field
+                        gf2_state = GF2_DS_DIRECTIONS;
+                    }
                 }
+                //  Is this a section break marker ?
                 else
                 {
-                    //  NO:     Process AUIP
-                    DECODE_GF2__auip( recipe_p, list_data_p );
+                    if ( ( list_data_p[ 0 ] ) == '|' )
+                    {
+                        //  YES:    Set the next field
+                        gf2_state = GF2_DS_DIRECTIONS;
+                    }
+                    else
+                    {
+                        //  Process the AUIP data.
+                        DECODE_GF2__auip( recipe_p, list_data_p );
+                    }
                 }
             }   break;
 

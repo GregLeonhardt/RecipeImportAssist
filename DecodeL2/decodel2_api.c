@@ -507,8 +507,8 @@ decodel2_parse(
         }
         //--------------------------------------------------------------------
         //  Generic-Recipe-Format  '@@@@@'
-        if(    ( recipe_format == RECIPE_FORMAT_GRF )
-            && ( decode_grf_end( list_data_p ) == true ) )
+        if(    ( recipe_format == RECIPE_FORMAT_GF2 )
+            && ( decode_gf2_end( list_data_p ) == true ) )
         {
             //  YES:    Process the recipe
             decode_xxx( recipe_format, level3_list_p, source_info_p );
