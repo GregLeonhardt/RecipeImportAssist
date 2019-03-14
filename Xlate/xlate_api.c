@@ -181,8 +181,8 @@ xlate_init(
         in_data_p = fgets( in_data, sizeof( in_data ), xlate_fp );
 
         //  Look for the version number
-        if(    ( in_data_p != NULL )
-            && ( strstr( in_data_p, "Version:" ) != NULL ) )
+        if (    ( in_data_p != NULL )
+             && ( strstr( in_data_p, "Version:" ) != NULL ) )
         {
             //  YES:    Log the version number.
             log_write( MID_INFO, "xlate_init",
@@ -190,7 +190,7 @@ xlate_init(
         }
 
         //  Test for End-Of_File
-        if( in_data_p == NULL )
+        if ( in_data_p == NULL )
         {
             break;
         }
@@ -202,7 +202,7 @@ xlate_init(
         in_data_p = text_skip_past_whitespace( in_data_p );
 
         //  Look for a table header
-        if( strncmp( in_data_p, TABLE, TABLE_L ) == 0 )
+        if ( strncmp( in_data_p, TABLE, TABLE_L ) == 0 )
         {
             //  Found a table header, Adjust the buffer pointer.
             in_data_p += TABLE_L;
@@ -211,23 +211,27 @@ xlate_init(
             in_data_p = text_skip_past_whitespace( in_data_p );
 
             //  Identify the table type and process it
-            if( strncmp( in_data_p, UNITOFMEASUREMENT, UNITOFMEASUREMENT_L ) == 0 )
+            if ( strncmp( in_data_p, UNITOFMEASUREMENT, UNITOFMEASUREMENT_L ) == 0 )
             {
                 XLATE__table_input( xlate_fp, unit_of_measurement_p );
             }
-            else if( strncmp( in_data_p, CATEGORIES, CATEGORIES_L ) == 0 )
+            else
+            if ( strncmp( in_data_p, CATEGORIES, CATEGORIES_L ) == 0 )
             {
                 XLATE__table_input( xlate_fp, categories_p );
             }
-            else if( strncmp( in_data_p, ABBREVIATIONS, ABBREVIATIONS_L ) == 0 )
+            else
+            if ( strncmp( in_data_p, ABBREVIATIONS, ABBREVIATIONS_L ) == 0 )
             {
                 XLATE__table_input( xlate_fp, abbreviations_p );
             }
-            else if( strncmp( in_data_p, PARAGRAPHSTARTERS, PARAGRAPHSTARTERS_L ) == 0 )
+            else
+            if ( strncmp( in_data_p, PARAGRAPHSTARTERS, PARAGRAPHSTARTERS_L ) == 0 )
             {
                 XLATE__table_input( xlate_fp, paragraph_starters_p );
             }
-            else if( strncmp( in_data_p, KEYWORDS, KEYWORDS_L ) == 0 )
+            else
+            if ( strncmp( in_data_p, KEYWORDS, KEYWORDS_L ) == 0 )
             {
                 XLATE__table_input( xlate_fp, key_words_p );
             }
@@ -274,7 +278,7 @@ xlate_units(
                                            search_string_p );
 
     //  Did we locate a translation for this string ?
-    if( found_string_p == NULL )
+    if ( found_string_p == NULL )
     {
         //  NO:     Write it to the log
 #if 0
@@ -331,7 +335,7 @@ xlate_chapter(
                                            search_string_p );
 
     //  Did we locate a translation for this string ?
-    if( found_string_p == NULL )
+    if ( found_string_p == NULL )
     {
         //  NO:     Write it to the log
 #if 0

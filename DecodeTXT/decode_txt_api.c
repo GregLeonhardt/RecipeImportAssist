@@ -158,7 +158,7 @@ decode_txt(
      ************************************************************************/
 
     //  Will everything fit in the structure
-    if( line_count < MAX_LINE_COUNT )
+    if ( line_count < MAX_LINE_COUNT )
     {
         //  Set the starting line number
         line_number = 0;
@@ -181,10 +181,10 @@ decode_txt(
 
 #if 0       //  @ToDo   Why was this code written ?  Is it needed ?
             //  Do we have three consecutive blank lines ?
-            if(    (                line_number                 >=               1 )
-                && ( txt_msg_array[ line_number     ].line_type == LINE_TYPE_BLANK )
-                && ( txt_msg_array[ line_number - 1 ].line_type == LINE_TYPE_BLANK )
-                && ( txt_msg_array[ line_number - 2 ].line_type == LINE_TYPE_BLANK ) )
+            if (    (                line_number                 >=               1 )
+                 && ( txt_msg_array[ line_number     ].line_type == LINE_TYPE_BLANK )
+                 && ( txt_msg_array[ line_number - 1 ].line_type == LINE_TYPE_BLANK )
+                 && ( txt_msg_array[ line_number - 2 ].line_type == LINE_TYPE_BLANK ) )
             {
                 //  YES:    Go process a text recipe
                 DECODE_TXT__decode( source_info_p );

@@ -169,7 +169,7 @@ decode_mmf(
             case MMF_DS_TITLE:
             {
                 //  Locate and process the recipe title
-                if( DECODE_MMF__title( recipe_p, list_data_p ) == true )
+                if ( DECODE_MMF__title( recipe_p, list_data_p ) == true )
                 {
                     //  When rc == true, the title search is complete.
                     //  Change state to looking for the recipe categories.
@@ -184,7 +184,7 @@ decode_mmf(
             case MMF_DS_CATEGORIES:
             {
                 //  Locate and process the recipe title
-                if( DECODE_MMF__categories( recipe_p, list_data_p ) == true )
+                if ( DECODE_MMF__categories( recipe_p, list_data_p ) == true )
                 {
                     //  When rc == true, the title search is complete.
                     //  Change state to looking for the recipe yield.
@@ -199,7 +199,7 @@ decode_mmf(
             case MMF_DS_YIELD:
             {
                 //  Locate and process the recipe title
-                if( DECODE_MMF__yield( recipe_p, list_data_p ) == true )
+                if ( DECODE_MMF__yield( recipe_p, list_data_p ) == true )
                 {
                     //  When rc == true, the title search is complete.
                     //  Change state to looking for the AUIP section.
@@ -225,7 +225,7 @@ decode_mmf(
             case MMF_DS_AUIP_1:
             {
                 //  Locate and process the recipe title
-                if( DECODE_MMF__auip( recipe_p, list_data_p ) == true )
+                if ( DECODE_MMF__auip( recipe_p, list_data_p ) == true )
                 {
                     //  Change to Title Case
                     text_title_case( recipe_p->name, recipe_p->name );
@@ -247,7 +247,7 @@ decode_mmf(
             case MMF_DS_DIRECTIONS:
             {
                 //  Locate and process the recipe title
-                if( DECODE_MMF__directions( recipe_p, list_data_p ) == true )
+                if ( DECODE_MMF__directions( recipe_p, list_data_p ) == true )
                 {
                     //  When rc == true, the title search is complete.
                     //  Change state to recipe decode complete.

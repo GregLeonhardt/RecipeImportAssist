@@ -138,7 +138,7 @@ DECODE__directions_cleanup(
         //--------------------------------------------------------------------
         //  Date :
         compare_p = strstr( lowercase, "date :" );
-        if( compare_p != NULL )
+        if ( compare_p != NULL )
         {
             memcpy( &directions_p[ compare_p - lowercase ], "Date: ",       6 );
             found = true;
@@ -146,7 +146,7 @@ DECODE__directions_cleanup(
         //====================================================================
         //  From :
         compare_p = strstr( lowercase, "from :" );
-        if( compare_p != NULL )
+        if ( compare_p != NULL )
         {
             memcpy( &directions_p[ compare_p - lowercase ], "From: ",       6 );
             found = true;
@@ -154,7 +154,7 @@ DECODE__directions_cleanup(
         //====================================================================
         //  Makes :
         compare_p = strstr( lowercase, "makes :" );
-        if( compare_p != NULL )
+        if ( compare_p != NULL )
         {
             memcpy( &directions_p[ compare_p - lowercase ], "Makes: ",      7 );
             found = true;
@@ -164,7 +164,7 @@ DECODE__directions_cleanup(
         //--------------------------------------------------------------------
         //  Makes
         compare_p = strstr( lowercase, "makes " );
-        if( compare_p != NULL )
+        if ( compare_p != NULL )
         {
             memcpy( &directions_p[ compare_p - lowercase ], "Makes:",       6 );
             found = true;
@@ -173,7 +173,7 @@ DECODE__directions_cleanup(
         //====================================================================
         //  Note :
         compare_p = strstr( lowercase, "note :" );
-        if( compare_p != NULL )
+        if ( compare_p != NULL )
         {
             memcpy( &directions_p[ compare_p - lowercase ], "Notes: ",      7 );
             found = true;
@@ -181,7 +181,7 @@ DECODE__directions_cleanup(
         //--------------------------------------------------------------------
         //  Notes :
         compare_p = strstr( lowercase, "notes :" );
-        if( compare_p != NULL )
+        if ( compare_p != NULL )
         {
             memcpy( &directions_p[ compare_p - lowercase ], "Notes: ",      7 );
             found = true;
@@ -189,7 +189,7 @@ DECODE__directions_cleanup(
         //====================================================================
         //  Per Serving:
         compare_p = strstr( lowercase, "per serving:" );
-        if( compare_p != NULL )
+        if ( compare_p != NULL )
         {
             memcpy( &directions_p[ compare_p - lowercase ], "PerServing: ",12 );
             found = true;
@@ -197,7 +197,7 @@ DECODE__directions_cleanup(
         //====================================================================
         //  Posted By :
         compare_p = strstr( lowercase, "posted by :" );
-        if( compare_p != NULL )
+        if ( compare_p != NULL )
         {
             memcpy( &directions_p[ compare_p - lowercase ], "SentBy:    ", 11 );
             found = true;
@@ -205,7 +205,7 @@ DECODE__directions_cleanup(
         //--------------------------------------------------------------------
         //  Posted By:
         compare_p = strstr( lowercase, "posted by:" );
-        if( compare_p != NULL )
+        if ( compare_p != NULL )
         {
             memcpy( &directions_p[ compare_p - lowercase ], "SentBy:   ",  10 );
             found = true;
@@ -213,7 +213,7 @@ DECODE__directions_cleanup(
         //--------------------------------------------------------------------
         //  Posted By
         compare_p = strstr( lowercase, "posted by" );
-        if( compare_p != NULL )
+        if ( compare_p != NULL )
         {
             memcpy( &directions_p[ compare_p - lowercase ], "SentBy:   ",  10 );
             found = true;
@@ -221,7 +221,7 @@ DECODE__directions_cleanup(
         //====================================================================
         //  Posted To :
         compare_p = strstr( lowercase, "posted To :" );
-        if( compare_p != NULL )
+        if ( compare_p != NULL )
         {
             memcpy( &directions_p[ compare_p - lowercase ], "SentTo:    ", 11 );
             found = true;
@@ -229,7 +229,7 @@ DECODE__directions_cleanup(
         //--------------------------------------------------------------------
         //  Posted To:
         compare_p = strstr( lowercase, "posted to:" );
-        if( compare_p != NULL )
+        if ( compare_p != NULL )
         {
             memcpy( &directions_p[ compare_p - lowercase ], "SentTo:   ",  10 );
             found = true;
@@ -237,7 +237,7 @@ DECODE__directions_cleanup(
         //--------------------------------------------------------------------
         //  Posted To
         compare_p = strstr( lowercase, "posted to" );
-        if( compare_p != NULL )
+        if ( compare_p != NULL )
         {
             memcpy( &directions_p[ compare_p - lowercase ], "SentTo:   ",  10 );
             found = true;
@@ -245,7 +245,7 @@ DECODE__directions_cleanup(
         //====================================================================
         //  Recipe By :
         compare_p = strstr( lowercase, "recipe by :" );
-        if( compare_p != NULL )
+        if ( compare_p != NULL )
         {
             memcpy( &directions_p[ compare_p - lowercase ], "RecipeBy:  ", 11 );
             found = true;
@@ -253,7 +253,7 @@ DECODE__directions_cleanup(
         //--------------------------------------------------------------------
         //  Recipe By:
         compare_p = strstr( lowercase, "recipe by:" );
-        if( compare_p != NULL )
+        if ( compare_p != NULL )
         {
             memcpy( &directions_p[ compare_p - lowercase ], "RecipeBy: ",  10 );
             found = true;
@@ -261,7 +261,7 @@ DECODE__directions_cleanup(
         //--------------------------------------------------------------------
         //  Recipe By
         compare_p = strstr( lowercase, "recipe by" );
-        if( compare_p != NULL )
+        if ( compare_p != NULL )
         {
             memcpy( &directions_p[ compare_p - lowercase ], "RecipeBy: ",  10 );
             found = true;
@@ -269,7 +269,7 @@ DECODE__directions_cleanup(
         //====================================================================
         //  Sent By :
         compare_p = strstr( lowercase, "sent by :" );
-        if( compare_p != NULL )
+        if ( compare_p != NULL )
         {
             memcpy( &directions_p[ compare_p - lowercase ], "SentBy:  ",     9 );
             found = true;
@@ -277,7 +277,7 @@ DECODE__directions_cleanup(
         //--------------------------------------------------------------------
         //  Sent By:
         compare_p = strstr( lowercase, "sent by:" );
-        if( compare_p != NULL )
+        if ( compare_p != NULL )
         {
             memcpy( &directions_p[ compare_p - lowercase ], "SentBy: ",      8 );
             found = true;
@@ -285,7 +285,7 @@ DECODE__directions_cleanup(
         //--------------------------------------------------------------------
         //  Sent By
         compare_p = strstr( lowercase, "sent by " );
-        if( compare_p != NULL )
+        if ( compare_p != NULL )
         {
             memcpy( &directions_p[ compare_p - lowercase ], "SentBy: ",      8 );
             found = true;
@@ -293,7 +293,7 @@ DECODE__directions_cleanup(
         //====================================================================
         //  Sent To :
         compare_p = strstr( lowercase, "sent to :" );
-        if( compare_p != NULL )
+        if ( compare_p != NULL )
         {
             memcpy( &directions_p[ compare_p - lowercase ], "SentTo:  ",     9 );
             found = true;
@@ -301,7 +301,7 @@ DECODE__directions_cleanup(
         //--------------------------------------------------------------------
         //  Sent To:
         compare_p = strstr( lowercase, "sent to:" );
-        if( compare_p != NULL )
+        if ( compare_p != NULL )
         {
             memcpy( &directions_p[ compare_p - lowercase ], "SentTo: ",      8 );
             found = true;
@@ -309,7 +309,7 @@ DECODE__directions_cleanup(
         //--------------------------------------------------------------------
         //  Sent To
         compare_p = strstr( lowercase, "sent to " );
-        if( compare_p != NULL )
+        if ( compare_p != NULL )
         {
             memcpy( &directions_p[ compare_p - lowercase ], "SentTo: ",      8 );
             found = true;
@@ -317,7 +317,7 @@ DECODE__directions_cleanup(
         //====================================================================
         //  Serves :
         compare_p = strstr( lowercase, "serves :" );
-        if( compare_p != NULL )
+        if ( compare_p != NULL )
         {
             memcpy( &directions_p[ compare_p - lowercase ], "Serves: ",     8 );
             found = true;
@@ -325,7 +325,7 @@ DECODE__directions_cleanup(
         //--------------------------------------------------------------------
         //  Servings:
         compare_p = strstr( lowercase, "servings:" );
-        if( compare_p != NULL )
+        if ( compare_p != NULL )
         {
             memcpy( &directions_p[ compare_p - lowercase ], "Serves:   ",  10 );
             found = true;
@@ -333,7 +333,7 @@ DECODE__directions_cleanup(
         //--------------------------------------------------------------------
         //  Servings :
         compare_p = strstr( lowercase, "servings :" );
-        if( compare_p != NULL )
+        if ( compare_p != NULL )
         {
             memcpy( &directions_p[ compare_p - lowercase ], "Serves:    ", 11 );
             found = true;
@@ -341,7 +341,7 @@ DECODE__directions_cleanup(
         //====================================================================
         //  Source :
         compare_p = strstr( lowercase, "source :" );
-        if( compare_p != NULL )
+        if ( compare_p != NULL )
         {
             memcpy( &directions_p[ compare_p - lowercase ], "Source: ",     8 );
             found = true;
@@ -349,7 +349,7 @@ DECODE__directions_cleanup(
         //====================================================================
         //  To Plate:
         compare_p = strstr( lowercase, "to plate:" );
-        if( compare_p != NULL )
+        if ( compare_p != NULL )
         {
             memcpy( &directions_p[ compare_p - lowercase ], "ToPlate: ",     9 );
             found = true;
@@ -471,20 +471,20 @@ DECODE__directions_notes(
      *  Function
      ************************************************************************/
 
-    if( list_query_count( recipe_p->directions ) > 0 )
+    if ( list_query_count( recipe_p->directions ) > 0 )
     {
         for( directions_p = list_get_first( recipe_p->directions );
              directions_p != NULL;
              directions_p = list_get_next( recipe_p->directions, directions_p ) )
         {
             //  Look for the keyword "NOTES:" or "NOTE:"
-            if(    ( ( notes_p = strstr( directions_p, "NOTES:" ) ) != NULL )
-                || ( ( notes_p = strstr( directions_p, "Notes:" ) ) != NULL )
-                || ( ( notes_p = strstr( directions_p, "Note:"  ) ) != NULL )
-                || ( ( notes_p = strstr( directions_p, "Note:"  ) ) != NULL ) )
+            if (    ( ( notes_p = strstr( directions_p, "NOTES:" ) ) != NULL )
+                 || ( ( notes_p = strstr( directions_p, "Notes:" ) ) != NULL )
+                 || ( ( notes_p = strstr( directions_p, "Note:"  ) ) != NULL )
+                 || ( ( notes_p = strstr( directions_p, "Note:"  ) ) != NULL ) )
             {
                 //  Is this a Notes: ONLY directions line ?
-                if( notes_p == directions_p )
+                if ( notes_p == directions_p )
                 {
                     //  YES:    Remove it from the directions
                     list_delete( recipe_p->directions, directions_p );
@@ -500,7 +500,7 @@ DECODE__directions_notes(
                 notes_p = text_skip_past_whitespace( ++notes_p );
 
                 //  Is there anything else on this line ?
-                if( text_is_blank_line( notes_p ) == false )
+                if ( text_is_blank_line( notes_p ) == false )
                 {
                     //  YES:    Add the remaining text to the notes.
                     recipe_fmt_notes( recipe_p, text_copy_to_new( notes_p ) );
@@ -511,7 +511,7 @@ DECODE__directions_notes(
                     directions_p = list_get_next( recipe_p->directions, directions_p );
 
                     //  Sanity check! Did we get something
-                    if( directions_p != NULL )
+                    if ( directions_p != NULL )
                     {
                         //  YES:    Remove the entire line from the directions
                         list_delete( recipe_p->directions, directions_p );

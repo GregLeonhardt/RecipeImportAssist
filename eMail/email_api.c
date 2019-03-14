@@ -149,21 +149,21 @@ email_is_start(
      ************************************************************************/
 
     //  Is this the start of a new e-Mail ?
-    if( strncmp( tmp_data_p, SRCH_SOURCE, SRCH_SOURCE_L ) == 0 )
+    if ( strncmp( tmp_data_p, SRCH_SOURCE, SRCH_SOURCE_L ) == 0 )
     {
         //  YES:    Change the return code
         email_rc = true;
     }
     //  Is this the start of a new e-Mail ?
     else
-    if( strncmp( tmp_data_p, SRCH_RETURN, SRCH_RETURN_L ) == 0 )
+    if ( strncmp( tmp_data_p, SRCH_RETURN, SRCH_RETURN_L ) == 0 )
     {
         //  YES:    Change the return code
         email_rc = true;
     }
     //  Is this the start of a new e-Mail ?
     else
-    if( strncmp( tmp_data_p, SRCH_RXF_BREAK, SRCH_RXF_BREAK_L ) == 0 )
+    if ( strncmp( tmp_data_p, SRCH_RXF_BREAK, SRCH_RXF_BREAK_L ) == 0 )
     {
         //  YES:    Change the return code
         email_rc = true;
@@ -221,19 +221,19 @@ email_is_group_break(
      ************************************************************************/
 
     //  Is this the start of a new e-Mail ?
-    if(    (    ( strncmp( tmp_data_p, "------------------------------", 30 ) ==  0 )
-             && ( strlen( tmp_data_p )                                        == 30 ) )
-        || (    ( strncmp( tmp_data_p, "______________________________", 30 ) ==  0 )
-             && ( strlen( tmp_data_p )                                        == 30 ) )
-        || (    ( strncmp( tmp_data_p, "----------------------------------------------------------------------", 70 ) == 0 )
-             && ( strlen( tmp_data_p )                                        == 70 ) )
-        || (    ( strncmp( tmp_data_p, "________________________________________________________________________", 72 ) == 0 )
-             && ( strlen( tmp_data_p )                                        == 72 ) )
-        || (    ( strncmp( tmp_data_p, "-----"                         ,  5 ) ==  0 )
-             && ( strlen( tmp_data_p )                                        ==  5 ) )
-        || ( strncmp( tmp_data_p, "========================  Arch",      30 ) == 0 )
-        || ( strncmp( tmp_data_p, "--------------- MESSAGE bread-",      30 ) == 0 )
-        || ( strncmp( tmp_data_p, "--------------- END bread-bake",      30 ) == 0 ) )
+    if (    (    ( strncmp( tmp_data_p, "------------------------------", 30 ) ==  0 )
+              && ( strlen( tmp_data_p )                                        == 30 ) )
+         || (    ( strncmp( tmp_data_p, "______________________________", 30 ) ==  0 )
+              && ( strlen( tmp_data_p )                                        == 30 ) )
+         || (    ( strncmp( tmp_data_p, "----------------------------------------------------------------------", 70 ) == 0 )
+              && ( strlen( tmp_data_p )                                        == 70 ) )
+         || (    ( strncmp( tmp_data_p, "________________________________________________________________________", 72 ) == 0 )
+              && ( strlen( tmp_data_p )                                        == 72 ) )
+         || (    ( strncmp( tmp_data_p, "-----"                         ,  5 ) ==  0 )
+              && ( strlen( tmp_data_p )                                        ==  5 ) )
+         || ( strncmp( tmp_data_p, "========================  Arch",      30 ) == 0 )
+         || ( strncmp( tmp_data_p, "--------------- MESSAGE bread-",      30 ) == 0 )
+         || ( strncmp( tmp_data_p, "--------------- END bread-bake",      30 ) == 0 ) )
     {
         //  YES:    Change the return code
         email_rc = true;
@@ -287,7 +287,7 @@ email_find_source(
     //          to use
 
     //  Mailing-List: ?
-    if( strncmp( tmp_data_p, SRCH_MAILINGLIST, SRCH_MAILINGLIST_L ) == 0 )
+    if ( strncmp( tmp_data_p, SRCH_MAILINGLIST, SRCH_MAILINGLIST_L ) == 0 )
     {
         //  YES:    Move the pointer past the search text
         tmp_data_p += SRCH_MAILINGLIST_L;
@@ -297,7 +297,7 @@ email_find_source(
     }
     //  Sender: ?
     else
-    if( strncmp( tmp_data_p, SRCH_SENDER, SRCH_SENDER_L ) == 0 )
+    if ( strncmp( tmp_data_p, SRCH_SENDER, SRCH_SENDER_L ) == 0 )
     {
         //  YES:    Move the pointer past the search text
         tmp_data_p += SRCH_SENDER_L;
@@ -354,7 +354,7 @@ email_find_from(
      ************************************************************************/
 
     //  From: ?
-    if( strncmp( tmp_data_p, SRCH_FROM, SRCH_FROM_L ) == 0 )
+    if ( strncmp( tmp_data_p, SRCH_FROM, SRCH_FROM_L ) == 0 )
     {
         //  YES:    Move the pointer past the search text
         tmp_data_p += SRCH_FROM_L;
@@ -364,7 +364,7 @@ email_find_from(
     }
     //  Posted by: ?
     else
-    if( strncmp( tmp_data_p, SRCH_POSTED, SRCH_POSTED_L ) == 0 )
+    if ( strncmp( tmp_data_p, SRCH_POSTED, SRCH_POSTED_L ) == 0 )
     {
         //  YES:    Move the pointer past the search text
         tmp_data_p += SRCH_POSTED_L;
@@ -421,7 +421,7 @@ email_find_datetime(
      ************************************************************************/
 
     //  From: ?
-    if( strncmp( tmp_data_p, SRCH_DATETIME, SRCH_DATETIME_L ) == 0 )
+    if ( strncmp( tmp_data_p, SRCH_DATETIME, SRCH_DATETIME_L ) == 0 )
     {
         //  YES:    Move the pointer past the search text
         tmp_data_p += SRCH_DATETIME_L;
@@ -477,7 +477,7 @@ email_find_subject(
      ************************************************************************/
 
     //  From: ?
-    if( strncmp( tmp_data_p, SRCH_SUBJECT, SRCH_SUBJECT_L ) == 0 )
+    if ( strncmp( tmp_data_p, SRCH_SUBJECT, SRCH_SUBJECT_L ) == 0 )
     {
         //  YES:    Move the pointer past the search text
         tmp_data_p += SRCH_SUBJECT_L;
@@ -527,7 +527,7 @@ email_filter(
      ************************************************************************/
 
     //  Was the last line from a reply message ?
-    if( email_filter_type == EMAIL_FILTER_REPLY )
+    if ( email_filter_type == EMAIL_FILTER_REPLY )
     {
         //  YES:    Throw it in the trash
         email_filter_type = EMAIL_FILTER_NONE;
@@ -542,7 +542,7 @@ email_filter(
         case    EMAIL_FILTER_X_YMAILISG:
         {
             //  Is this part of the current block ?
-            if( data_p[ 0 ] != ' ' )
+            if ( data_p[ 0 ] != ' ' )
             {
                 //  NO:     Set the return code.
                 email_filter_type = EMAIL_FILTER_NONE;
@@ -552,7 +552,7 @@ email_filter(
         case    EMAIL_FILTER_BASE64:
         {
             //  Is this the end of the BASE-64 data ?
-            if( strstr( data_p, "--" ) != NULL )
+            if ( strstr( data_p, "--" ) != NULL )
             {
                 //  YES:    Set the return code.
                 email_filter_type = EMAIL_FILTER_NONE;
@@ -566,7 +566,7 @@ email_filter(
             char                            tmp_data[ 100 ];
 
             //  Is the data length too long for a compare match ?
-            if( strlen( data_p ) < sizeof( tmp_data ) )
+            if ( strlen( data_p ) < sizeof( tmp_data ) )
             {
                 //  YES:    Copy the data to our temporary buffer
                 memset( tmp_data, '\0', sizeof( tmp_data ) );
@@ -576,25 +576,25 @@ email_filter(
                 text_to_lowercase( tmp_data );
 
                 //  Yahoo Mail  ?
-                if( strncmp( tmp_data, "x-ymailisg:", 11 ) == 0 )
+                if ( strncmp( tmp_data, "x-ymailisg:", 11 ) == 0 )
                 {
                     //  YES:    Set the filter type.
                     email_filter_type = EMAIL_FILTER_X_YMAILISG;
                 }
                 //  BASE-64:
                 else
-                if( strncmp( tmp_data, "content-transfer-encoding: base64", 33 ) == 0 )
+                if ( strncmp( tmp_data, "content-transfer-encoding: base64", 33 ) == 0 )
                 {
                     //  YES:    Set the filter type.
                     email_filter_type = EMAIL_FILTER_BASE64;
                 }
                 //  Is this part of a reply to an e-mail
                 else
-                if(    ( data_p[ 0 ] == '>' )
+                if (    ( data_p[ 0 ] == '>' )
 //  @ToDo   This was removed because it is a defined part of the GF2
 //          recipe format.
-//                  || ( data_p[ 0 ] == '|' )
-                    || ( data_p[ 0 ] == '!' ) )
+//                   || ( data_p[ 0 ] == '|' )
+                     || ( data_p[ 0 ] == '!' ) )
                 {
                     //  YES:    Throw it in the trash
                     email_filter_type = EMAIL_FILTER_REPLY;
@@ -608,7 +608,7 @@ email_filter(
      ************************************************************************/
 
     //  Set the return code
-    if( email_filter_type == EMAIL_FILTER_NONE )
+    if ( email_filter_type == EMAIL_FILTER_NONE )
     {
         email_rc = false;
     }

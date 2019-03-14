@@ -118,7 +118,7 @@ encode_rxf(
 
     //  Change the file extention
     data_p = strrchr( out_name, '.' );
-    if( data_p != NULL ) data_p[ 0 ] = '\0';
+    if ( data_p != NULL ) data_p[ 0 ] = '\0';
     strncat( out_name, ".rxf", sizeof( out_name ) );
 
     //  Open the input file
@@ -129,49 +129,49 @@ encode_rxf(
      ************************************************************************/
 
     //-----------------------------------------------------------------------
-    if( recipe_p->name == NULL )
+    if ( recipe_p->name == NULL )
     {
         //  Create a default string
         recipe_p->name = text_copy_to_new( "No Recipe Name Found" );
     }
     //-----------------------------------------------------------------------
-    if( recipe_p->recipe_id == NULL )
+    if ( recipe_p->recipe_id == NULL )
     {
         //  Create a default string
         recipe_p->recipe_id = text_copy_to_new( "0" );
     }
     //-----------------------------------------------------------------------
-    if( recipe_p->file_name == NULL )
+    if ( recipe_p->file_name == NULL )
     {
         //  Create a default string
         recipe_p->file_name = text_copy_to_new( "UNKNOWN" );
     }
     //-----------------------------------------------------------------------
-    if( recipe_p->file_date_time == NULL )
+    if ( recipe_p->file_date_time == NULL )
     {
         //  Create a default string
         recipe_p->file_date_time = text_copy_to_new( "UNKNOWN" );
     }
     //-----------------------------------------------------------------------
-    if( recipe_p->file_size == NULL )
+    if ( recipe_p->file_size == NULL )
     {
         //  Create a default string
         recipe_p->file_size = text_copy_to_new( "UNKNOWN" );
     }
     //-----------------------------------------------------------------------
-    if( recipe_p->author == NULL )
+    if ( recipe_p->author == NULL )
     {
         //  Create a default string
         recipe_p->author = text_copy_to_new( "UNKNOWN" );
     }
     //-----------------------------------------------------------------------
-    if( recipe_p->group_from == NULL )
+    if ( recipe_p->group_from == NULL )
     {
         //  Create a default string
         recipe_p->group_from = text_copy_to_new( "UNKNOWN" );
     }
     //-----------------------------------------------------------------------
-    if( recipe_p->copyright == NULL )
+    if ( recipe_p->copyright == NULL )
     {
         //  Create a default string
         recipe_p->copyright = text_copy_to_new( "Copyright (c) and related "
@@ -179,115 +179,115 @@ encode_rxf(
                 "https://creativecommons.org/licenses/by-sa/4.0/" );
     }
     //-----------------------------------------------------------------------
-    if( recipe_p->imported_from == NULL )
+    if ( recipe_p->imported_from == NULL )
     {
         //  Create a default string
         recipe_p->imported_from = text_copy_to_new( "UNKNOWN" );
     }
     //-----------------------------------------------------------------------
-    if( recipe_p->posted_by == NULL )
+    if ( recipe_p->posted_by == NULL )
     {
         //  Create a default string
         recipe_p->posted_by = text_copy_to_new( "UNKNOWN" );
     }
     //-----------------------------------------------------------------------
-    if( recipe_p->posted_date == NULL )
+    if ( recipe_p->posted_date == NULL )
     {
         //  Create a default string
         recipe_p->posted_date = text_copy_to_new( "UNKNOWN" );
     }
     //-----------------------------------------------------------------------
-    if( recipe_p->posted_subject == NULL )
+    if ( recipe_p->posted_subject == NULL )
     {
         //  Create a default string
         recipe_p->posted_subject = text_copy_to_new( "UNKNOWN" );
     }
     //-----------------------------------------------------------------------
-    if( recipe_p->edited_by == NULL )
+    if ( recipe_p->edited_by == NULL )
     {
         //  Create a default string
         recipe_p->edited_by = text_copy_to_new( "UNKNOWN" );
     }
     //-----------------------------------------------------------------------
-    if( recipe_p->formatted_by == NULL )
+    if ( recipe_p->formatted_by == NULL )
     {
         //  Create a default string
         recipe_p->formatted_by = text_copy_to_new( "UNKNOWN" );
     }
     //-----------------------------------------------------------------------
-    if( recipe_p->serves == NULL )
+    if ( recipe_p->serves == NULL )
     {
         //  Create a default string
         recipe_p->serves = text_copy_to_new( "0" );
     }
     //-----------------------------------------------------------------------
-    if( recipe_p->servings_size == NULL )
+    if ( recipe_p->servings_size == NULL )
     {
         //  Create a default string
         recipe_p->servings_size = text_copy_to_new( "Servings" );
     }
     //-----------------------------------------------------------------------
-    if( recipe_p->makes == NULL )
+    if ( recipe_p->makes == NULL )
     {
         //  Create a default string
         recipe_p->makes = text_copy_to_new( "0" );
     }
     //-----------------------------------------------------------------------
-    if( recipe_p->makes_unit == NULL )
+    if ( recipe_p->makes_unit == NULL )
     {
         //  Create a default string
         recipe_p->makes_unit = text_copy_to_new( " " );
     }
     //-----------------------------------------------------------------------
-    if( recipe_p->time_prep == NULL )
+    if ( recipe_p->time_prep == NULL )
     {
         //  Create a default string
         recipe_p->time_prep = text_copy_to_new( "0:00" );
     }
     //-----------------------------------------------------------------------
-    if( recipe_p->time_cook == NULL )
+    if ( recipe_p->time_cook == NULL )
     {
         //  Create a default string
         recipe_p->time_cook = text_copy_to_new( "0:00" );
     }
     //-----------------------------------------------------------------------
-    if( recipe_p->time_resting == NULL )
+    if ( recipe_p->time_resting == NULL )
     {
         //  Create a default string
         recipe_p->time_resting = text_copy_to_new( "0:00" );
     }
     //-----------------------------------------------------------------------
-    if( recipe_p->time_total == NULL )
+    if ( recipe_p->time_total == NULL )
     {
         //  Create a default string
         recipe_p->time_total = text_copy_to_new( "0:00" );
     }
     //-----------------------------------------------------------------------
-    if( recipe_p->description == NULL )
+    if ( recipe_p->description == NULL )
     {
         //  Create a default string
         recipe_p->description = text_copy_to_new( " " );
     }
     //-----------------------------------------------------------------------
-    if( recipe_p->based_on == NULL )
+    if ( recipe_p->based_on == NULL )
     {
         //  Create a default string
         recipe_p->based_on = text_copy_to_new( " " );
     }
     //-----------------------------------------------------------------------
-    if( recipe_p->serve_with == NULL )
+    if ( recipe_p->serve_with == NULL )
     {
         //  Create a default string
         recipe_p->serve_with = text_copy_to_new( " " );
     }
     //-----------------------------------------------------------------------
-    if( recipe_p->rating == NULL )
+    if ( recipe_p->rating == NULL )
     {
         //  Create a default string
         recipe_p->rating = text_copy_to_new( "0" );
     }
     //-----------------------------------------------------------------------
-    if( recipe_p->skill == NULL )
+    if ( recipe_p->skill == NULL )
     {
         //  Create a default string
         recipe_p->skill = text_copy_to_new( "0" );
@@ -411,7 +411,7 @@ encode_rxf(
     //-----------------------------------------------------------------------
     //  recipe_p->appliance
     fprintf( out_file_fp, "APPLIANCE:\n" );
-    if( list_query_count( recipe_p->appliance ) > 0 )
+    if ( list_query_count( recipe_p->appliance ) > 0 )
     {
         for( data_p = list_get_first( recipe_p->appliance );
              data_p != NULL;
@@ -427,7 +427,7 @@ encode_rxf(
     //-----------------------------------------------------------------------
     //  recipe_p->diet
     fprintf( out_file_fp, "DIET:\n" );
-    if( list_query_count( recipe_p->diet ) > 0 )
+    if ( list_query_count( recipe_p->diet ) > 0 )
     {
         for( data_p = list_get_first( recipe_p->diet );
              data_p != NULL;
@@ -443,7 +443,7 @@ encode_rxf(
     //-----------------------------------------------------------------------
     //  recipe_p->course
     fprintf( out_file_fp, "COURSE:\n" );
-    if( list_query_count( recipe_p->course ) > 0 )
+    if ( list_query_count( recipe_p->course ) > 0 )
     {
         for( data_p = list_get_first( recipe_p->course );
              data_p != NULL;
@@ -459,7 +459,7 @@ encode_rxf(
     //-----------------------------------------------------------------------
     //  recipe_p->cuisine
     fprintf( out_file_fp, "CUISINE:\n" );
-    if( list_query_count( recipe_p->cuisine ) > 0 )
+    if ( list_query_count( recipe_p->cuisine ) > 0 )
     {
         for( data_p = list_get_first( recipe_p->cuisine );
              data_p != NULL;
@@ -475,7 +475,7 @@ encode_rxf(
     //-----------------------------------------------------------------------
     //  recipe_p->occasion
     fprintf( out_file_fp, "OCCASION:\n" );
-    if( list_query_count( recipe_p->occasion ) > 0 )
+    if ( list_query_count( recipe_p->occasion ) > 0 )
     {
         for( data_p = list_get_first( recipe_p->occasion );
              data_p != NULL;
@@ -491,7 +491,7 @@ encode_rxf(
     //-----------------------------------------------------------------------
     //  recipe_p->chapter
     fprintf( out_file_fp, "CHAPTER:\n" );
-    if( list_query_count( recipe_p->chapter ) > 0 )
+    if ( list_query_count( recipe_p->chapter ) > 0 )
     {
         for( data_p = list_get_first( recipe_p->chapter );
              data_p != NULL;
@@ -507,38 +507,38 @@ encode_rxf(
     //-----------------------------------------------------------------------
     //  recipe_p->ingredient
     fprintf( out_file_fp, "INGREDIENTS:\n" );
-    if( list_query_count( recipe_p->ingredient ) > 0 )
+    if ( list_query_count( recipe_p->ingredient ) > 0 )
     {
         for( auip_p = list_get_first( recipe_p->ingredient );
              auip_p != NULL;
              auip_p = list_get_next( recipe_p->ingredient, auip_p ) )
         {
             //  Is there an amount ?
-            if( auip_p->amount_p == NULL )
+            if ( auip_p->amount_p == NULL )
             {
                 //  NO:     Use the filler
                 auip_p->amount_p = text_copy_to_new( " " );
             }
             //  Is there a unit of measurement ?
-            if( auip_p->unit_p == NULL )
+            if ( auip_p->unit_p == NULL )
             {
                 //  NO:     Use the filler
                 auip_p->unit_p = text_copy_to_new( " " );
             }
             //  Is there an ingredient ?
-            if( auip_p->ingredient_p == NULL )
+            if ( auip_p->ingredient_p == NULL )
             {
                 //  NO:     Use the filler
                 auip_p->ingredient_p = text_copy_to_new( " " );
             }
             //  Is there a preparation method ?
-            if( auip_p->preparation_p == NULL )
+            if ( auip_p->preparation_p == NULL )
             {
                 //  NO:     Use the filler
                 auip_p->preparation_p = text_copy_to_new( " " );
             }
             //  Is there a preparation method here ?
-            if( text_is_blank_line( auip_p->preparation_p ) == false )
+            if ( text_is_blank_line( auip_p->preparation_p ) == false )
             {
                 //  YES:
                 fprintf( out_file_fp, "\t%-8s %-32s %s %s\n",
@@ -564,7 +564,7 @@ encode_rxf(
     //-----------------------------------------------------------------------
     //  recipe_p->directions
     fprintf( out_file_fp, "DIRECTIONS:\n" );
-    if( list_query_count( recipe_p->directions ) > 0 )
+    if ( list_query_count( recipe_p->directions ) > 0 )
     {
         for( data_p = list_get_first( recipe_p->directions );
              data_p != NULL;
@@ -580,7 +580,7 @@ encode_rxf(
     //-----------------------------------------------------------------------
     //  recipe_p->notes
     fprintf( out_file_fp, "NOTES:\n" );
-    if( list_query_count( recipe_p->notes ) > 0 )
+    if ( list_query_count( recipe_p->notes ) > 0 )
     {
         for( data_p = list_get_first( recipe_p->notes );
              data_p != NULL;
@@ -653,7 +653,7 @@ encode_rxf(
 
     //  Change the file extention
     data_p = strrchr( out_name, '.' );
-    if( data_p != NULL ) data_p[ 0 ] = '\0';
+    if ( data_p != NULL ) data_p[ 0 ] = '\0';
     strncat( out_name, ".rxf", sizeof( out_name ) );
 
     //  Open the input file
@@ -687,22 +687,22 @@ encode_rxf(
              recipe_p->copyright );
     //-----------------------------------------------------------------------
     //  <OUTPUT>
-    if(    ( recipe_p->serves     != NULL )
-        || ( recipe_p->makes      != NULL )
-        || ( recipe_p->makes_unit != NULL ) )
+    if (    ( recipe_p->serves     != NULL )
+         || ( recipe_p->makes      != NULL )
+         || ( recipe_p->makes_unit != NULL ) )
     {
         fprintf( out_file_fp, "  <Output>\n" );
-        if( recipe_p->serves != NULL )
+        if ( recipe_p->serves != NULL )
         {
             fprintf( out_file_fp, "    <Serves>             %s  </Serves>\n",
                      recipe_p->serves );
         }
-        if( recipe_p->makes  != NULL )
+        if ( recipe_p->makes  != NULL )
         {
             fprintf( out_file_fp, "    <Makes>              %s  </Makes>\n",
                      recipe_p->makes );
         }
-        if( recipe_p->makes_unit != NULL )
+        if ( recipe_p->makes_unit != NULL )
         {
             fprintf( out_file_fp, "    <MakesUnit>          %s  </MakesUnit>\n",
                      recipe_p->makes_unit );
@@ -711,7 +711,7 @@ encode_rxf(
     }
     //-----------------------------------------------------------------------
     //  <CATEGORIES type=APPLIANCE>
-    if( list_query_count( recipe_p->appliance ) != 0 )
+    if ( list_query_count( recipe_p->appliance ) != 0 )
     {
         for( data_p = list_get_first( recipe_p->appliance );
              data_p != NULL;
@@ -724,7 +724,7 @@ encode_rxf(
     }
     //-----------------------------------------------------------------------
     //  <CATEGORIES type=CUISINE>
-    if( list_query_count( recipe_p->cuisine ) != 0 )
+    if ( list_query_count( recipe_p->cuisine ) != 0 )
     {
         for( data_p = list_get_first( recipe_p->cuisine );
              data_p != NULL;
@@ -737,7 +737,7 @@ encode_rxf(
     }
     //-----------------------------------------------------------------------
     //  <CATEGORIES type=OCCASION>
-    if( list_query_count( recipe_p->occasion ) != 0 )
+    if ( list_query_count( recipe_p->occasion ) != 0 )
     {
         for( data_p = list_get_first( recipe_p->occasion );
              data_p != NULL;
@@ -750,7 +750,7 @@ encode_rxf(
     }
     //-----------------------------------------------------------------------
     //  <CATEGORIES type=COURSE>
-    if( list_query_count( recipe_p->course ) != 0 )
+    if ( list_query_count( recipe_p->course ) != 0 )
     {
         for( data_p = list_get_first( recipe_p->course );
              data_p != NULL;
@@ -763,7 +763,7 @@ encode_rxf(
     }
     //-----------------------------------------------------------------------
     //  <CATEGORIES type=DIET>
-    if( list_query_count( recipe_p->diet ) != 0 )
+    if ( list_query_count( recipe_p->diet ) != 0 )
     {
         for( data_p = list_get_first( recipe_p->diet );
              data_p != NULL;
@@ -776,7 +776,7 @@ encode_rxf(
     }
     //-----------------------------------------------------------------------
     //  <CATEGORIES type=GROUP>
-    if( list_query_count( recipe_p->chapter ) != 0 )
+    if ( list_query_count( recipe_p->chapter ) != 0 )
     {
         for( data_p = list_get_first( recipe_p->chapter );
              data_p != NULL;
@@ -789,75 +789,75 @@ encode_rxf(
     }
     //-----------------------------------------------------------------------
     //  <DESCRIPTION>
-    if( recipe_p->description != NULL )
+    if ( recipe_p->description != NULL )
     {
         fprintf( out_file_fp, "  <Description> %s  </Description>\n",
                  recipe_p->description );
     }
     //-----------------------------------------------------------------------
     //  <TIME type=PREP>
-    if( recipe_p->time_prep != NULL )
+    if ( recipe_p->time_prep != NULL )
     {
         fprintf( out_file_fp, "  <Time type= \"Prep\">      %s  </Time>\n",
                  recipe_p->time_prep );
     }
     //-----------------------------------------------------------------------
     //  <TIME type=PRE-COOK>
-    if( recipe_p->time_resting != NULL )
+    if ( recipe_p->time_resting != NULL )
     {
         fprintf( out_file_fp, "  <Time type= \"PreCook\">   %s  </Time>\n",
                  recipe_p->time_resting );
     }
     //-----------------------------------------------------------------------
     //  <TIME type=COOK>
-    if( recipe_p->time_cook != NULL )
+    if ( recipe_p->time_cook != NULL )
     {
         fprintf( out_file_fp, "  <Time type= \"Cook\">      %s  </Time>\n",
                  recipe_p->time_cook );
     }
     //-----------------------------------------------------------------------
     //  <TIME type=POST-COOK>
-    if( recipe_p->time_resting != NULL )
+    if ( recipe_p->time_resting != NULL )
     {
         fprintf( out_file_fp, "  <Time type= \"PostCook\">  %s  </Time>\n",
                  recipe_p->time_resting );
     }
     //-----------------------------------------------------------------------
     //  <RATING type=SKILL>
-    if( recipe_p->skill != NULL )
+    if ( recipe_p->skill != NULL )
     {
         fprintf( out_file_fp, "  <Rating type= \"Skill\">   %s  </Rating>\n",
                  recipe_p->skill );
     }
     //-----------------------------------------------------------------------
     //  <RATING type=RATING>
-    if( recipe_p->rating != NULL )
+    if ( recipe_p->rating != NULL )
     {
         fprintf( out_file_fp, "  <Rating type= \"Taste\">   %s  </Rating>\n",
                  recipe_p->rating );
     }
     //-----------------------------------------------------------------------
     //  <PUBLISHED format=(MXP|MMF|MX2|TXT)>
-    if(    ( recipe_p->dir_name         != NULL )
-        || ( recipe_p->file_name        != NULL )
-        || ( recipe_p->file_size        != NULL )
-        || ( recipe_p->file_date_time   != NULL )
+    if (    ( recipe_p->dir_name         != NULL )
+         || ( recipe_p->file_name        != NULL )
+         || ( recipe_p->file_size        != NULL )
+         || ( recipe_p->file_date_time   != NULL )
 
-        || ( recipe_p->group_from           != NULL )
-//      || ( recipe_p->group_subject    != NULL )
-        || ( recipe_p->posted_by        != NULL )
-        || ( recipe_p->posted_subject   != NULL )
+         || ( recipe_p->group_from       != NULL )
+//       || ( recipe_p->group_subject    != NULL )
+         || ( recipe_p->posted_by        != NULL )
+         || ( recipe_p->posted_subject   != NULL )
 
-        || ( recipe_p->formatted_by     != NULL )
-//      || ( recipe_p->formatted_date   != NULL )
-        || ( recipe_p->edited_by        != NULL )
+         || ( recipe_p->formatted_by     != NULL )
+//       || ( recipe_p->formatted_date   != NULL )
+         || ( recipe_p->edited_by        != NULL )
 #if 0
-        || ( recipe_p->edited_date      != NULL ) )
+         || ( recipe_p->edited_date      != NULL ) )
 #else
-                                                  )
+                                                   )
 #endif
     {
-        if( recipe_p->source_format == NULL )
+        if ( recipe_p->source_format == NULL )
         {
             fprintf( out_file_fp, "  <Published format=\"TXT\" >\n" );
         }
@@ -868,23 +868,23 @@ encode_rxf(
         }
         //-------------------------------------------------------------------
         //  <IMPORTED_FROM>
-        if(    ( recipe_p->dir_name         != NULL )
-            || ( recipe_p->file_name        != NULL )
-            || ( recipe_p->file_size        != NULL )
-            || ( recipe_p->file_date_time   != NULL ) )
+        if (    ( recipe_p->dir_name         != NULL )
+             || ( recipe_p->file_name        != NULL )
+             || ( recipe_p->file_size        != NULL )
+             || ( recipe_p->file_date_time   != NULL ) )
         {
             fprintf( out_file_fp, "    <ImportedFrom>\n" );
-            if( recipe_p->dir_name != NULL )
+            if ( recipe_p->dir_name != NULL )
             {
                 fprintf( out_file_fp, "      <FileDirectory>    %s  </FileDirectory>\n",
                          recipe_p->dir_name );
             }
-            if( recipe_p->file_name != NULL )
+            if ( recipe_p->file_name != NULL )
             {
                 fprintf( out_file_fp, "      <FileName>         %s  </FileName>\n",
                          recipe_p->file_name );
             }
-            if( recipe_p->file_date_time != NULL )
+            if ( recipe_p->file_date_time != NULL )
             {
                 fprintf( out_file_fp, "      <FileSize>         %s  </FileSize>\n",
                          recipe_p->file_size );
@@ -897,50 +897,50 @@ encode_rxf(
         }
         //-------------------------------------------------------------------
         //  <E-MAIL>
-        if(    ( recipe_p->group_from       != NULL )
-            || ( recipe_p->group_subject    != NULL )
-            || ( recipe_p->posted_by        != NULL )
-            || ( recipe_p->posted_subject   != NULL ) )
+        if (    ( recipe_p->group_from       != NULL )
+             || ( recipe_p->group_subject    != NULL )
+             || ( recipe_p->posted_by        != NULL )
+             || ( recipe_p->posted_subject   != NULL ) )
         {
             fprintf( out_file_fp, "    <EMail>\n" );
             //---------------------------------------------------------------
             //  <GROUPNAME>
-            if( recipe_p->group_from != NULL )
+            if ( recipe_p->group_from != NULL )
             {
                 fprintf( out_file_fp, "      <GroupName>        %s  </GroupName>\n",
                          recipe_p->group_from );
             }
             //---------------------------------------------------------------
             //  <GROUPSUBJECT>
-            if( recipe_p->group_subject != NULL )
+            if ( recipe_p->group_subject != NULL )
             {
                 fprintf( out_file_fp, "      <GroupSubject>     %s  </GroupSubject>\n",
                          recipe_p->group_subject );
             }
             //---------------------------------------------------------------
             //  <GROUPDATE>
-            if( recipe_p->group_date != NULL )
+            if ( recipe_p->group_date != NULL )
             {
                 fprintf( out_file_fp, "      <GroupDate>        %s  </GroupDate>\n",
                          recipe_p->group_date );
             }
             //---------------------------------------------------------------
             //  <POSTEDBY>
-            if( recipe_p->posted_by != NULL )
+            if ( recipe_p->posted_by != NULL )
             {
                 fprintf( out_file_fp, "      <PostedBy>         %s  </PostedBy>\n",
                          recipe_p->posted_by );
             }
             //---------------------------------------------------------------
             //  <POSTEDSUBJECT>
-            if( recipe_p->posted_subject != NULL )
+            if ( recipe_p->posted_subject != NULL )
             {
                 fprintf( out_file_fp, "      <PostedSubject>    %s  </PostedSubject>\n",
                          recipe_p->posted_subject );
             }
             //---------------------------------------------------------------
             //  <POSTEDDATE>
-            if( recipe_p->posted_date != NULL )
+            if ( recipe_p->posted_date != NULL )
             {
                 fprintf( out_file_fp, "      <PostedDate>       %s  </PostedDate>\n",
                          recipe_p->posted_date );
@@ -951,36 +951,36 @@ encode_rxf(
 
         //-------------------------------------------------------------------
         //  <EDITING>
-        if(    ( recipe_p->formatted_by     != NULL )
-//          || ( recipe_p->formatted_date   != NULL )
-            || ( recipe_p->edited_by        != NULL )
+        if (    ( recipe_p->formatted_by     != NULL )
+//           || ( recipe_p->formatted_date   != NULL )
+             || ( recipe_p->edited_by        != NULL )
 #if 0
-            || ( recipe_p->edited_date      != NULL ) )
+             || ( recipe_p->edited_date      != NULL ) )
 #else
                                                       )
 #endif
 
         {
             fprintf( out_file_fp, "    <Editing>\n" );
-            if( recipe_p->formatted_by != NULL )
+            if ( recipe_p->formatted_by != NULL )
             {
                 fprintf( out_file_fp, "      <FormattedBy>      %s  </FormattedBy>\n",
                          recipe_p->formatted_by );
             }
 #if 0
-            if( recipe_p->formatted_date != NULL )
+            if ( recipe_p->formatted_date != NULL )
             {
                 fprintf( out_file_fp, "      <FormattedDate>    %s  </FormattedDate>\n",
                          recipe_p->formatted_date );
             }
 #endif
-            if( recipe_p->edited_by != NULL )
+            if ( recipe_p->edited_by != NULL )
             {
                 fprintf( out_file_fp, "      <EditedBy>         %s  </EditedBy>\n",
                          recipe_p->edited_by );
             }
 #if 0
-            if( recipe_p->edited_date != NULL )
+            if ( recipe_p->edited_date != NULL )
             {
                 fprintf( out_file_fp, "      <EditedDate>       %s  </EditedDate>\n",
                          recipe_p->edited_date );
@@ -993,13 +993,13 @@ encode_rxf(
     }
     //-----------------------------------------------------------------------
     //  <AUIP>
-    if( list_query_count( recipe_p->ingredient ) > 0 )
+    if ( list_query_count( recipe_p->ingredient ) > 0 )
     {
         for( auip_p = list_get_first( recipe_p->ingredient );
              auip_p != NULL;
              auip_p = list_get_next( recipe_p->ingredient, auip_p ) )
         {
-            if( auip_p->type_p == NULL )
+            if ( auip_p->type_p == NULL )
             {
                 fprintf( out_file_fp, "  <AUIP type=\"Ingredient\" >\n" );
             }
@@ -1009,25 +1009,25 @@ encode_rxf(
                         auip_p->type_p );
             }
             //  Is there an amount ?
-            if( auip_p->amount_p != NULL )
+            if ( auip_p->amount_p != NULL )
             {
                 fprintf( out_file_fp, "    <Amount>         %s  </Amount>\n",
                          auip_p->amount_p );
             }
             //  Is there a unit of measurement ?
-            if( auip_p->unit_p != NULL )
+            if ( auip_p->unit_p != NULL )
             {
                 fprintf( out_file_fp, "    <Unit>           %s  </Unit>\n",
                          auip_p->unit_p );
             }
             //  Is there an ingredient ?
-            if( auip_p->ingredient_p != NULL )
+            if ( auip_p->ingredient_p != NULL )
             {
                 fprintf( out_file_fp, "    <Ingredient>     %s  </Ingredient>\n",
                          auip_p->ingredient_p );
             }
             //  Is there a preparation method ?
-            if( auip_p->preparation_p != NULL )
+            if ( auip_p->preparation_p != NULL )
             {
                 fprintf( out_file_fp, "    <Preperation>    %s  </Preperation>\n",
                          auip_p->preparation_p );
@@ -1037,7 +1037,7 @@ encode_rxf(
     }
     //-----------------------------------------------------------------------
     //  <DIRECTIONS>
-    if( list_query_count( recipe_p->directions ) > 0 )
+    if ( list_query_count( recipe_p->directions ) > 0 )
     {
         for( data_p = list_get_first( recipe_p->directions );
              data_p != NULL;
@@ -1051,7 +1051,7 @@ encode_rxf(
     }
     //-----------------------------------------------------------------------
     //  <NOTES>
-    if( list_query_count( recipe_p->notes ) > 0 )
+    if ( list_query_count( recipe_p->notes ) > 0 )
     {
         for( data_p = list_get_first( recipe_p->notes );
              data_p != NULL;

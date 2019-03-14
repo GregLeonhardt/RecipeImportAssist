@@ -157,7 +157,7 @@ XLATE__table_input(
         text_remove_crlf( in_data_p );
 
         //  Look for a blank line to end the table
-        if( text_is_blank_line( in_data ) == true )
+        if ( text_is_blank_line( in_data ) == true )
         {
             break;
         }
@@ -214,7 +214,7 @@ XLATE__table_input(
                 }
 
                 //  Is the from string more than a single character ?
-                if( from_string[ 1 ] != ' ' )
+                if ( from_string[ 1 ] != ' ' )
                 {
                     //--------------------------------------------------------
                     //  @note   This is needed because 'T' as in Tablespoon
@@ -311,7 +311,7 @@ XLATE__find_in_table(
     search_string_l = strlen( search_string_p );
 
     //  Will the search string fit in the local buffer ?
-    if( search_string_l >= sizeof ( search_string ) )
+    if ( search_string_l >= sizeof ( search_string ) )
     {
         //  YES:    Log it.
         log_write( MID_DEBUG_0, "XLATE__find_in_table",

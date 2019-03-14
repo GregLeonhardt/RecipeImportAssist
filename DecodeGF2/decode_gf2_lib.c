@@ -131,10 +131,10 @@ DECODE_GF2__start (
      ************************************************************************/
 
     //  Skip this test if a previous test was TRUE
-    if( gf2_rc == false )
+    if ( gf2_rc == false )
     {
         //  Does the string start with "@@@@@" ?
-        if( strncmp( tmp_data_p, GF2_START, GF2_START_L ) == 0 )
+        if ( strncmp( tmp_data_p, GF2_START, GF2_START_L ) == 0 )
         {
             //  YES:    Change the return code
             gf2_rc = true;
@@ -241,7 +241,7 @@ DECODE_GF2__title(
      ************************************************************************/
 
     //  Skip everything if this is a blank line
-    if( text_is_blank_line( title_p ) != true )
+    if ( text_is_blank_line( title_p ) != true )
     {
         title_p = text_skip_past_whitespace( title_p );
 
@@ -299,7 +299,7 @@ DECODE_GF2__auip(
      ************************************************************************/
 
     //  Skip everything if this is a blank line
-    if( text_is_blank_line( in_buffer_p ) != true )
+    if ( text_is_blank_line( in_buffer_p ) != true )
     {
         //  Process the first half (or the entire line)
         in_buffer_p = text_skip_past_whitespace( in_buffer_p );

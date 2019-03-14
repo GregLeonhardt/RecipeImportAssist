@@ -260,16 +260,16 @@ DECODE_MXP__start(
      ************************************************************************/
 
     //  Is this the start of a MasterCook MXP recipe ?
-    if(    ( strncmp( tmp_data_p, MXP_START_1,  MXP_START_1_L  ) == 0 )
-        || ( strncmp( tmp_data_p, MXP_START_2,  MXP_START_2_L  ) == 0 )
-        || ( strncmp( tmp_data_p, MXP_START_3,  MXP_START_3_L  ) == 0 )
-        || ( strncmp( tmp_data_p, MXP_START_4,  MXP_START_4_L  ) == 0 )
-        || ( strncmp( tmp_data_p, MXP_START_5,  MXP_START_5_L  ) == 0 )
-        || ( strncmp( tmp_data_p, MXP_START_6,  MXP_START_6_L  ) == 0 )
-        || ( strncmp( tmp_data_p, MXP_START_7,  MXP_START_7_L  ) == 0 )
-        || ( strncmp( tmp_data_p, MXP_START_8,  MXP_START_8_L  ) == 0 )
-        || ( strncmp( tmp_data_p, MXP_START_9,  MXP_START_9_L  ) == 0 )
-        || ( strncmp( tmp_data_p, MXP_START_10, MXP_START_10_L ) == 0 ) )
+    if (    ( strncmp( tmp_data_p, MXP_START_1,  MXP_START_1_L  ) == 0 )
+         || ( strncmp( tmp_data_p, MXP_START_2,  MXP_START_2_L  ) == 0 )
+         || ( strncmp( tmp_data_p, MXP_START_3,  MXP_START_3_L  ) == 0 )
+         || ( strncmp( tmp_data_p, MXP_START_4,  MXP_START_4_L  ) == 0 )
+         || ( strncmp( tmp_data_p, MXP_START_5,  MXP_START_5_L  ) == 0 )
+         || ( strncmp( tmp_data_p, MXP_START_6,  MXP_START_6_L  ) == 0 )
+         || ( strncmp( tmp_data_p, MXP_START_7,  MXP_START_7_L  ) == 0 )
+         || ( strncmp( tmp_data_p, MXP_START_8,  MXP_START_8_L  ) == 0 )
+         || ( strncmp( tmp_data_p, MXP_START_9,  MXP_START_9_L  ) == 0 )
+         || ( strncmp( tmp_data_p, MXP_START_10, MXP_START_10_L ) == 0 ) )
     {
         //  YES:    Change the return code
         mxp_rc = true;
@@ -322,7 +322,7 @@ DECODE_MXP__title(
      ************************************************************************/
 
     //  Is this a blank line ?
-    if( text_is_blank_line( data_p ) == false )
+    if ( text_is_blank_line( data_p ) == false )
     {
         //  NO:     Skip past any leading whitespace.
         tmp_data_p = text_skip_past_whitespace( data_p );
@@ -389,7 +389,7 @@ DECODE_MXP__recipe_by(
     tmp_data_p = strstr( data_p, MXP_BY );
 
     //  Does this line contain
-    if( tmp_data_p != NULL )
+    if ( tmp_data_p != NULL )
     {
         //  YES:    Jump past the search string
         tmp_data_p += MXP_BY_L;
@@ -456,7 +456,7 @@ DECODE_MXP__srv_size(
     tmp_data_p = strstr( data_p, MXP_SRV_SIZE );
 
     //  Does this line contain
-    if( tmp_data_p != NULL )
+    if ( tmp_data_p != NULL )
     {
         //  YES:    Jump past the search string
         tmp_data_p += MXP_SRV_SIZE_L;
@@ -469,7 +469,7 @@ DECODE_MXP__srv_size(
 
         //  Is there anything past the serving size on this line ?
         tmp_data_p = strchr( recipe_p->serves, ' ' );
-        if( tmp_data_p != NULL )
+        if ( tmp_data_p != NULL )
         {
             //  YES:    Terminate the line after the serving size
             tmp_data_p[ 0 ] = '\0';
@@ -531,7 +531,7 @@ DECODE_MXP__prep_time(
     tmp_data_p = strstr( data_p, MXP_PREP_TIME );
 
     //  Does this line contain
-    if( tmp_data_p != NULL )
+    if ( tmp_data_p != NULL )
     {
         //  YES:    Jump past the search string
         tmp_data_p += MXP_PREP_TIME_L;
@@ -604,13 +604,13 @@ DECODE_MXP__categories(
      ************************************************************************/
 
     //
-    if( categories_scan_state == CSS_IDLE )
+    if ( categories_scan_state == CSS_IDLE )
     {
         //  Search the data buffer
         tmp_data_p = strstr( tmp_data_p, MXP_CATEGORIES );
 
         //  Does this line contain ?
-        if( tmp_data_p != NULL )
+        if ( tmp_data_p != NULL )
         {
             //  YES:    This is the first categories line being scanned.
             categories_scan_state = CSS_STARTED;
@@ -622,13 +622,13 @@ DECODE_MXP__categories(
             tmp_data_p = text_skip_past_whitespace( tmp_data_p );
         }
     }
-    if( categories_scan_state == CSS_STARTED )
+    if ( categories_scan_state == CSS_STARTED )
     {
         //  Is this the end of the categories list ?
-        if(    ( strncmp( tmp_data_p, MXP_CAT_END_1, MXP_CAT_END_1_L ) == 0 )
-            || ( strncmp( tmp_data_p, MXP_CAT_END_2, MXP_CAT_END_2_L ) == 0 )
-            || ( strncmp( tmp_data_p, MXP_CAT_END_3, MXP_CAT_END_3_L ) == 0 )
-            || ( text_is_blank_line( tmp_data_p )                == true ) )
+        if (    ( strncmp( tmp_data_p, MXP_CAT_END_1, MXP_CAT_END_1_L ) == 0 )
+             || ( strncmp( tmp_data_p, MXP_CAT_END_2, MXP_CAT_END_2_L ) == 0 )
+             || ( strncmp( tmp_data_p, MXP_CAT_END_3, MXP_CAT_END_3_L ) == 0 )
+             || ( text_is_blank_line( tmp_data_p )                == true ) )
         {
             //  YES:    Then this is the end of the categories section
             categories_scan_state = CSS_COMPLETE;
@@ -666,42 +666,42 @@ DECODE_MXP__categories(
                 if ( xlated_chapter_p != NULL )
                 {
                     //  Appliance ?
-                    if( strncmp( MXP_APPLIANCE, xlated_chapter_p, MXP_APPLIANCE_L ) == 0 )
+                    if ( strncmp( MXP_APPLIANCE, xlated_chapter_p, MXP_APPLIANCE_L ) == 0 )
                     {
                         recipe_append( recipe_p->appliance,
                                        ( xlated_chapter_p + MXP_APPLIANCE_L ) );
                     }
                     //  Diet ?
                     else
-                    if( strncmp( MXP_DIET, xlated_chapter_p, MXP_DIET_L ) == 0 )
+                    if ( strncmp( MXP_DIET, xlated_chapter_p, MXP_DIET_L ) == 0 )
                     {
                         recipe_append( recipe_p->diet,
                                        ( xlated_chapter_p + MXP_DIET_L ) );
                     }
                     //  Course ?
                     else
-                    if( strncmp( MXP_COURSE, xlated_chapter_p, MXP_COURSE_L ) == 0 )
+                    if ( strncmp( MXP_COURSE, xlated_chapter_p, MXP_COURSE_L ) == 0 )
                     {
                         recipe_append( recipe_p->course,
                                        ( xlated_chapter_p + MXP_COURSE_L ) );
                     }
                     //  Cuisine ?
                     else
-                    if( strncmp( MXP_CUISINE, xlated_chapter_p, MXP_CUISINE_L ) == 0 )
+                    if ( strncmp( MXP_CUISINE, xlated_chapter_p, MXP_CUISINE_L ) == 0 )
                     {
                         recipe_append( recipe_p->cuisine,
                                        ( xlated_chapter_p + MXP_CUISINE_L ) );
                     }
                     //  Occasion ?
                     else
-                    if( strncmp( MXP_OCCASION, xlated_chapter_p, MXP_OCCASION_L ) == 0 )
+                    if ( strncmp( MXP_OCCASION, xlated_chapter_p, MXP_OCCASION_L ) == 0 )
                     {
                         recipe_append( recipe_p->occasion,
                                        ( xlated_chapter_p + MXP_OCCASION_L ) );
                     }
                     //  Category ?
                     else
-                    if( strncmp( MXP_CATEGORY, xlated_chapter_p, MXP_CATEGORY_L ) == 0 )
+                    if ( strncmp( MXP_CATEGORY, xlated_chapter_p, MXP_CATEGORY_L ) == 0 )
                     {
                         recipe_append( recipe_p->chapter,
                                        ( xlated_chapter_p + MXP_CATEGORY_L ) );
@@ -710,7 +710,7 @@ DECODE_MXP__categories(
             }
 
             //  Is there room on this line for another category ?
-            if( strlen( tmp_data_p ) <= SIZE_CATEGORY )
+            if ( strlen( tmp_data_p ) <= SIZE_CATEGORY )
             {
                 //  NO:     Time to go
                 break;
@@ -723,7 +723,7 @@ DECODE_MXP__categories(
 
         }
     }
-    if( categories_scan_state == CSS_COMPLETE )
+    if ( categories_scan_state == CSS_COMPLETE )
     {
         //  Change the return code
         mxp_rc = true;
@@ -790,7 +790,7 @@ DECODE_MXP__auip(
         case    AUIPS_IDLE:
         {
             //  Is this a blank line ?
-            if( text_is_blank_line( tmp_data_p ) != true )
+            if ( text_is_blank_line( tmp_data_p ) != true )
             {
                 //  YES:    Change the state
                 auip_scan_state = AUIPS_TEXT;
@@ -799,7 +799,7 @@ DECODE_MXP__auip(
         case    AUIPS_TEXT:
         {
             //  Is this the AUIP column description ?
-            if( strncmp( tmp_data_p, MXP_CAT_END_1, MXP_CAT_END_1_L ) == 0 )
+            if ( strncmp( tmp_data_p, MXP_CAT_END_1, MXP_CAT_END_1_L ) == 0 )
             {
                 //  YES:    Change the state
                 auip_scan_state = AUIPS_DASH;
@@ -808,8 +808,8 @@ DECODE_MXP__auip(
         case    AUIPS_DASH:
         {
             //  Is this the AUIP separator line ?
-            if(    ( strncmp( tmp_data_p, MXP_CAT_END_2, MXP_CAT_END_2_L ) == 0 )
-                || ( strncmp( tmp_data_p, MXP_CAT_END_3, MXP_CAT_END_3_L ) == 0 ) )
+            if (    ( strncmp( tmp_data_p, MXP_CAT_END_2, MXP_CAT_END_2_L ) == 0 )
+                 || ( strncmp( tmp_data_p, MXP_CAT_END_3, MXP_CAT_END_3_L ) == 0 ) )
             {
                 //  YES:    Change the state
                 auip_scan_state = AUIPS_AMIP;
@@ -818,7 +818,7 @@ DECODE_MXP__auip(
         case    AUIPS_AMIP:
         {
             //  Is this a blank line ?
-            if( text_is_blank_line( tmp_data_p ) == true )
+            if ( text_is_blank_line( tmp_data_p ) == true )
             {
                 //  YES:    DONE: Change the return code.
                 mxp_rc = true;
@@ -835,7 +835,7 @@ DECODE_MXP__auip(
         case    AUIPS_COMPLETE:
         {
             //  Is this a blank line ?
-            if( text_is_blank_line( tmp_data_p ) == true )
+            if ( text_is_blank_line( tmp_data_p ) == true )
             {
                 //  YES:    DONE: Change the return code.
                 mxp_rc = true;
@@ -846,8 +846,8 @@ DECODE_MXP__auip(
         }   break;
     }
     //  Is this the start of a MasterCook MXP recipe ?
-    if(    ( strncmp( tmp_data_p, MXP_END_1, MXP_END_1_L ) == 0 )
-        || ( strncmp( tmp_data_p, MXP_END_2, MXP_END_2_L ) == 0 ) )
+    if (    ( strncmp( tmp_data_p, MXP_END_1, MXP_END_1_L ) == 0 )
+         || ( strncmp( tmp_data_p, MXP_END_2, MXP_END_2_L ) == 0 ) )
     {
         //  YES:    Change the return code
         mxp_rc = true;
@@ -907,7 +907,7 @@ DECODE_MXP__directions(
      ************************************************************************/
 
     //  Is this the end of the recipe ?
-    if( DECODE_MXP__end( tmp_data_p ) == true )
+    if ( DECODE_MXP__end( tmp_data_p ) == true )
     {
         //  YES:    Change the return code
         mxp_rc = true;
@@ -918,8 +918,8 @@ DECODE_MXP__directions(
     else
     {
         //  First blank line before directions start ?
-        if(    ( text_is_blank_line( tmp_data_p ) == true )
-            && ( direction_scan_state            == DSS_IDLE ) )
+        if (    ( text_is_blank_line( tmp_data_p ) == true )
+             && ( direction_scan_state            == DSS_IDLE ) )
         {
             //  YES:    Just move on to the next line
         }
@@ -988,7 +988,7 @@ DECODE_MXP__notes(
      ************************************************************************/
 
     //  Is this the start of a MasterCook MXP recipe ?
-    if(    ( strncmp( tmp_data_p, MXP_END_1, MXP_END_1_L ) == 0 ) )
+    if (    ( strncmp( tmp_data_p, MXP_END_1, MXP_END_1_L ) == 0 ) )
     {
         //  YES:    Change the return code
         mxp_rc = true;
@@ -1044,9 +1044,9 @@ DECODE_MXP__end(
      ************************************************************************/
 
     //  Is this the end of a MasterCook MXP recipe ?
-    if(    ( strncmp( tmp_data_p, MXP_END_1, MXP_END_1_L ) == 0 )
-        || ( email_is_group_break( tmp_data_p )         == true )
-        || ( email_is_start( tmp_data_p )               == true ) )
+    if (    ( strncmp( tmp_data_p, MXP_END_1, MXP_END_1_L ) == 0 )
+         || ( email_is_group_break( tmp_data_p )         == true )
+         || ( email_is_start( tmp_data_p )               == true ) )
     {
         //  YES:    Change the return code
         mxp_rc = true;

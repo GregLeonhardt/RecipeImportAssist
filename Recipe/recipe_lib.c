@@ -128,10 +128,10 @@ RECIPE__is_preperations(
      ************************************************************************/
 
     //  Test the input line
-    if(    ( strncmp( tmp_data_p, PREP_1, PREP_1_L ) == 0 )
-        || ( strncmp( tmp_data_p, PREP_2, PREP_2_L ) == 0 )
-        || ( strncmp( tmp_data_p, PREP_3, PREP_3_L ) == 0 )
-        || ( strncmp( tmp_data_p, PREP_4, PREP_4_L ) == 0 ) )
+    if (    ( strncmp( tmp_data_p, PREP_1, PREP_1_L ) == 0 )
+         || ( strncmp( tmp_data_p, PREP_2, PREP_2_L ) == 0 )
+         || ( strncmp( tmp_data_p, PREP_3, PREP_3_L ) == 0 )
+         || ( strncmp( tmp_data_p, PREP_4, PREP_4_L ) == 0 ) )
     {
         //  YES:    Change the return code.
         recipe_rc = true;
@@ -186,7 +186,7 @@ RECIPE__fmt_amount(
      ************************************************************************/
 
     //  Does this line ONLY contain 'preperations' ?
-    if( RECIPE__is_preperations( in_amount_p ) == false )
+    if ( RECIPE__is_preperations( in_amount_p ) == false )
     {
         //  NO:     Start moving the amount to it's temporary buffer
         for( ndx = 0;
@@ -194,7 +194,7 @@ RECIPE__fmt_amount(
              ndx += 1 )
         {
             //  Did someone put a dash between whole number and fraction ?
-            if( in_amount_p[ ndx ] == '-' )
+            if ( in_amount_p[ ndx ] == '-' )
             {
                 //  YES:    Change the character to a space [' ']
                 in_amount_p[ ndx ] = ' ';
@@ -205,17 +205,17 @@ RECIPE__fmt_amount(
             //      space   [' ']
             //      period  ['.']
             //      slash   ['/']   character ?
-            if(    ( isdigit( in_amount_p[ ndx ] ) !=  0  )
-                || (          in_amount_p[ ndx ]   == ' ' )
-                || (          in_amount_p[ ndx ]   == '.' )
-                || (          in_amount_p[ ndx ]   == '/' ) )
+            if (    ( isdigit( in_amount_p[ ndx ] ) !=  0  )
+                 || (          in_amount_p[ ndx ]   == ' ' )
+                 || (          in_amount_p[ ndx ]   == '.' )
+                 || (          in_amount_p[ ndx ]   == '/' ) )
             {
                 //  YES:    Copy the character to the output buffer
                 amount_p[ ndx ] = in_amount_p[ ndx ];
 
                 //  Two spaces back to back ?
-                if(    ( in_amount_p[ ndx     ]   == ' ' )
-                    && ( in_amount_p[ ndx + 1 ]   == ' ' ) )
+                if (    ( in_amount_p[ ndx     ]   == ' ' )
+                     && ( in_amount_p[ ndx + 1 ]   == ' ' ) )
                 {
                     //  Time to leave
                     break;
@@ -231,14 +231,14 @@ RECIPE__fmt_amount(
         //  If the next character is alpha the line is compressed
         //  and is probably something like 12Cups.  In this case
         //  back up one position and make it a space.
-        if(    ( isalpha( in_amount_p[ ndx ] ) != 0 )
-            && (                       ndx     != 0 ) )
+        if (    ( isalpha( in_amount_p[ ndx ] ) != 0 )
+             && (                       ndx     != 0 ) )
         {
             in_amount_p[ --ndx ] = ' ';
         }
 
         //  Did we locate an amount field ?
-        if( strlen( amount_p ) != 0 )
+        if ( strlen( amount_p ) != 0 )
         {
             //  YES:    Set the return address to the end of the amount field
             in_amount_p = &(in_amount_p[ ndx ]);
@@ -313,7 +313,7 @@ RECIPE__fmt_unit(
      ************************************************************************/
 
     //  Does this line ONLY contain 'preperations' ?
-    if( RECIPE__is_preperations( in_unit_p ) == false )
+    if ( RECIPE__is_preperations( in_unit_p ) == false )
     {
         //  NO:     Start moving the amount to it's temporary buffer
         for( ndx = 0;
@@ -321,14 +321,14 @@ RECIPE__fmt_unit(
              ndx += 1 )
         {
             //  Is this an alpha [a-zA-Z] character ?
-            if( isalpha( in_unit_p[ ndx ] ) != 0 )
+            if ( isalpha( in_unit_p[ ndx ] ) != 0 )
             {
                 //  YES:    Copy it to the temporary unit buffer
                 tmp_unit[ ndx ] = in_unit_p[ ndx ];
             }
             //  Is this a period ['.']
             else
-            if( in_unit_p[ ndx ] == '.' )
+            if ( in_unit_p[ ndx ] == '.' )
             {
                 //  YES:    Throw it away
                 ndx += 1;
@@ -344,7 +344,7 @@ RECIPE__fmt_unit(
         xlate_unit_p = xlate_units( tmp_unit );
 
         //  Was a translated unit of measurement located ?
-        if( xlate_unit_p != NULL )
+        if ( xlate_unit_p != NULL )
         {
             //  YES:    Copy the translation to the output buffer
             strncpy( unit_p, xlate_unit_p, out_buf_size );
@@ -415,7 +415,7 @@ RECIPE__fmt_ingredient(
      ************************************************************************/
 
     //  Does this line ONLY contain 'preperations' ?
-    if( RECIPE__is_preperations( in_ingredient_p ) == false )
+    if ( RECIPE__is_preperations( in_ingredient_p ) == false )
     {
         //  NO:     Start moving the amount to it's temporary buffer
         for( ndx = 0;
@@ -423,24 +423,24 @@ RECIPE__fmt_ingredient(
              ndx += 1 )
         {
             //  Is this something that marks the start of preparations ?
-            if(    ( in_ingredient_p[ ndx ] != ';'  )
-                && ( in_ingredient_p[ ndx ] != ','  )
-                && ( in_ingredient_p[ ndx ] != '('  )
-                && ( in_ingredient_p[ ndx ] != '{'  )
-                && ( in_ingredient_p[ ndx ] != '['  )
-                && ( in_ingredient_p[ ndx ] != '\t' )
-                && ( in_ingredient_p[ ndx ] != '\0' ) )
+            if (    ( in_ingredient_p[ ndx ] != ';'  )
+                 && ( in_ingredient_p[ ndx ] != ','  )
+                 && ( in_ingredient_p[ ndx ] != '('  )
+                 && ( in_ingredient_p[ ndx ] != '{'  )
+                 && ( in_ingredient_p[ ndx ] != '['  )
+                 && ( in_ingredient_p[ ndx ] != '\t' )
+                 && ( in_ingredient_p[ ndx ] != '\0' ) )
             {
                 //  NO:     Is this a hyphenated word ?
-                if(    (          in_ingredient_p[ ndx     ]   == '-' )
-                    && ( isalpha( in_ingredient_p[ ndx + 1 ] ) !=  0  ) )
+                if (    (          in_ingredient_p[ ndx     ]   == '-' )
+                     && ( isalpha( in_ingredient_p[ ndx + 1 ] ) !=  0  ) )
                 {
                     //  YES:    Continue copying to the ingredients
                     ingredient_p[ ndx ] = in_ingredient_p[ ndx ];
                 }
                 //  MAYBE:  Is this a hyphen by itself ?
                 else
-                if( in_ingredient_p[ ndx ] != '-' )
+                if ( in_ingredient_p[ ndx ] != '-' )
                 {
                     //  NO:     Copy the current character to the output buffer
                 ingredient_p[ ndx ] = in_ingredient_p[ ndx ];
@@ -459,7 +459,7 @@ RECIPE__fmt_ingredient(
         }
 
         //  Did we locate an ingredient field ?
-        if( strlen( ingredient_p ) == 0 )
+        if ( strlen( ingredient_p ) == 0 )
         {
             //  NO:     Return the entry pointer
             in_ingredient_p = in_auip_p;
@@ -533,12 +533,12 @@ RECIPE__fmt_preparation(
     ndx = 0;
 
     //  NO:     Is this a comment line ?
-    if(    ( tmp_prep_p[ ndx     ] == '-' )
-        && ( tmp_prep_p[ ndx + 1 ] == '-' )
-        && ( tmp_prep_p[ ndx + 2 ] == '-' )
-        && ( tmp_prep_p[ eol     ] == '-' )
-        && ( tmp_prep_p[ eol - 1 ] == '-' )
-        && ( tmp_prep_p[ eol - 2 ] == '-' ) )
+    if (    ( tmp_prep_p[ ndx     ] == '-' )
+         && ( tmp_prep_p[ ndx + 1 ] == '-' )
+         && ( tmp_prep_p[ ndx + 2 ] == '-' )
+         && ( tmp_prep_p[ eol     ] == '-' )
+         && ( tmp_prep_p[ eol - 1 ] == '-' )
+         && ( tmp_prep_p[ eol - 2 ] == '-' ) )
     {
         //  YES:    Alter leading '-'
         for( ndx = 0;
@@ -573,7 +573,7 @@ RECIPE__fmt_preparation(
          ndx += 1 )
     {
         //  Are we at the end of this line ?
-        if( tmp_prep_p[ ndx ] != '\0' )
+        if ( tmp_prep_p[ ndx ] != '\0' )
         {
             //  Copy this character to the output buffer
             preparation_p[ ndx ] = tmp_prep_p[ ndx ];
@@ -639,28 +639,28 @@ RECIPE__new_auip(
     auip_p = mem_malloc( sizeof( struct auip_t ) );
 
     //  AMOUNT
-    if( strlen( amount_p ) > 0 )
+    if ( strlen( amount_p ) > 0 )
     {
         //  Copy source information to the new buffer
         auip_p->amount_p = text_copy_to_new( amount_p );
     }
 
     //  UNIT
-    if( strlen( unit_p ) > 0 )
+    if ( strlen( unit_p ) > 0 )
     {
         //  Copy source information to the new buffer
         auip_p->unit_p = text_copy_to_new( unit_p );
     }
 
     //  INGREDIENT
-    if( strlen( ingredient_p ) > 0 )
+    if ( strlen( ingredient_p ) > 0 )
     {
         //  Copy source information to the new buffer
         auip_p->ingredient_p = text_copy_to_new( ingredient_p );
     }
 
     //  PREPERATION
-    if( strlen( preparation_p ) > 0 )
+    if ( strlen( preparation_p ) > 0 )
     {
         //  Copy source information to the new buffer
         auip_p->preparation_p = text_copy_to_new( preparation_p );

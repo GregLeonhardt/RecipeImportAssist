@@ -165,7 +165,7 @@ decode_nyc(
             case NYC_DS_START:
             {
                 //  Locate and process the recipe title
-                if( decode_nyc_start( list_data_p ) == true )
+                if ( decode_nyc_start( list_data_p ) == true )
                 {
                     //  When rc == true, the title search is complete.
                     //  Change state to looking for the recipe categories.
@@ -180,7 +180,7 @@ decode_nyc(
             case NYC_DS_TITLE:
             {
                 //  Locate and process the recipe title
-                if( DECODE_NYC__title( recipe_p, list_data_p ) == true )
+                if ( DECODE_NYC__title( recipe_p, list_data_p ) == true )
                 {
                     //  Change to Title Case
                     text_title_case( recipe_p->name, recipe_p->name );
@@ -202,7 +202,7 @@ decode_nyc(
             case NYC_DS_BLANK_1:
             {
                 //  Locate and process the recipe title
-                if( text_is_blank_line( list_data_p ) == true )
+                if ( text_is_blank_line( list_data_p ) == true )
                 {
                     //  When rc == true, the title search is complete.
                     //  Change state to looking for the recipe categories.
@@ -217,7 +217,7 @@ decode_nyc(
             case NYC_DS_CATEGORIES:
             {
                 //  Locate and process the recipe title
-                if( DECODE_NYC__categories( recipe_p, list_data_p ) == true )
+                if ( DECODE_NYC__categories( recipe_p, list_data_p ) == true )
                 {
                     //  When rc == true, the title search is complete.
                     //  Change state to looking for the recipe yield.
@@ -232,7 +232,7 @@ decode_nyc(
             case NYC_DS_AUIP:
             {
                 //  Locate and process the recipe title
-                if( DECODE_NYC__auip( recipe_p, list_data_p ) == true )
+                if ( DECODE_NYC__auip( recipe_p, list_data_p ) == true )
                 {
                     //  When rc == true, the title search is complete.
                     //  Change state to looking for the recipe directions.
@@ -247,7 +247,7 @@ decode_nyc(
             case NYC_DS_DIRECTIONS:
             {
                 //  Locate and process the recipe title
-                if( DECODE_NYC__directions( recipe_p, list_data_p ) == true )
+                if ( DECODE_NYC__directions( recipe_p, list_data_p ) == true )
                 {
                     //  When rc == true, the title search is complete.
                     //  Change state to recipe decode complete.

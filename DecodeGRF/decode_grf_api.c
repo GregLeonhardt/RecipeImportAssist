@@ -169,7 +169,7 @@ decode_grf(
             case GRF_DS_START:
             {
                 //  Locate and process the recipe title
-                if( DECODE_GRF__start( list_data_p ) == true )
+                if ( DECODE_GRF__start( list_data_p ) == true )
                 {
                     //  When rc == true, the title search is complete.
                     //  Change state to looking for the recipe categories.
@@ -184,7 +184,7 @@ decode_grf(
             case GRF_DS_TITLE:
             {
                 //  Locate and process the recipe title
-                if( DECODE_GRF__title( recipe_p, list_data_p ) == true )
+                if ( DECODE_GRF__title( recipe_p, list_data_p ) == true )
                 {
                     //  Change to Title Case
                     text_title_case( recipe_p->name, recipe_p->name );
@@ -206,7 +206,7 @@ decode_grf(
             case GRF_DS_BLANK_1:
             {
                 //  Skip everything if this is a blank line
-                if( text_is_blank_line( list_data_p ) == true )
+                if ( text_is_blank_line( list_data_p ) == true )
                 {
                     //  When rc == true, the title search is complete.
                     //  Change state to looking for the recipe categories.
@@ -222,7 +222,7 @@ decode_grf(
             case GRF_DS_AUIP:
             {
                 //  Locate and process the recipe title
-                if( DECODE_GRF__auip( recipe_p, list_data_p ) != true )
+                if ( DECODE_GRF__auip( recipe_p, list_data_p ) != true )
                 {
                     //  When rc == true, the title search is complete.
                     //  Change state to looking for the recipe directions.
@@ -237,7 +237,7 @@ decode_grf(
             case GRF_DS_DIRECTIONS:
             {
                 //  Locate and process the recipe title
-                if( DECODE_GRF__directions( recipe_p, list_data_p ) != true )
+                if ( DECODE_GRF__directions( recipe_p, list_data_p ) != true )
                 {
                     //  When rc == true, the title search is complete.
                     //  Change state to recipe decode complete.
@@ -278,7 +278,7 @@ decode_grf(
     list_user_unlock( grf_list_p, list_lock_key );
 
     //  Is there anything still on the list ?
-    if( list_query_count( grf_list_p ) != 0 )
+    if ( list_query_count( grf_list_p ) != 0 )
     {
         //  YES:    There shouldn't be!
         log_write( MID_FATAL, "decode_grf",

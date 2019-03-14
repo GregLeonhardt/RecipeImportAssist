@@ -131,7 +131,7 @@ DECODE__is_auip(
      ************************************************************************/
 
     //  Is it numeric ?
-    if( isdigit( data_p[ 0 ] ) != 0 )
+    if ( isdigit( data_p[ 0 ] ) != 0 )
     {
         //  YES:    Set the flag
         start_numeric = true;
@@ -142,7 +142,7 @@ DECODE__is_auip(
      ************************************************************************/
 
     //  Don't bother if it didn't start numeric
-    if( start_numeric == true )
+    if ( start_numeric == true )
     {
         //  @param  tmp_unit        Buffer to hold the units data           */
         char                            tmp_unit[ UNIT_L ];
@@ -151,8 +151,8 @@ DECODE__is_auip(
         while( 1 )
         {
             //  Is this the end of the amount field ?
-            if(    ( isalpha( data_p[ 0 ] ) != 0  )
-                || (          data_p[ 0 ] == '\0' ) )
+            if (    ( isalpha( data_p[ 0 ] ) != 0  )
+                 || (          data_p[ 0 ] == '\0' ) )
             {
                 //  YES:    We are done here.
                 break;
@@ -167,7 +167,7 @@ DECODE__is_auip(
         //  Copy the next word to the temporary buffer
         memset( tmp_unit, '\0', sizeof( tmp_unit ) );
 
-        if( strchr( data_p, ' ' ) != NULL )
+        if ( strchr( data_p, ' ' ) != NULL )
         {
             //  Will it fit in the buffer ?
             if ( ( strchr( data_p, ' ' ) - data_p )  < UNIT_L )
@@ -190,7 +190,7 @@ DECODE__is_auip(
 
         //  Remove any period (.) that may be at the end of the word
         unit_p = strchr( tmp_unit, '.' );
-        if( unit_p != NULL )
+        if ( unit_p != NULL )
         {
             unit_p[ 0 ] = '\0';
         }
@@ -199,7 +199,7 @@ DECODE__is_auip(
         unit_p = xlate_units( tmp_unit );
 
         //  Is it a Unit of measurement ?
-        if( unit_p != NULL )
+        if ( unit_p != NULL )
         {
             //  YES:    Change the return code
             decode_rc = true;
@@ -262,10 +262,10 @@ DECODE_TXT__dump(
 
     //  Change the file extention
     data_p = strrchr( out_name, '.' );
-    if( data_p != NULL ) data_p[ 0 ] = '\0';
+    if ( data_p != NULL ) data_p[ 0 ] = '\0';
 
     //  Is this an unformatted recipe ?
-    if( file == FILE_UNFORMATTED )
+    if ( file == FILE_UNFORMATTED )
     {
         //  YES:
         strncat( out_name, ".unformatted_recipes", sizeof( out_name ) );
@@ -330,7 +330,7 @@ DECODE_TXT__dump(
     file_close( out_file_fp );
 
     //  Is there anything still on the list ?
-    if( list_query_count( dump_list_p ) != 0 )
+    if ( list_query_count( dump_list_p ) != 0 )
     {
         //  YES:    There shouldn't be!
         log_write( MID_FATAL, "DECODE_TXT__dump",
@@ -404,9 +404,9 @@ DECODE_TXT__decode(
          line_number += 1 )
     {
         //  Do we have three AUIP lines ?
-        if(    ( txt_msg_array[ line_number     ].line_type == LINE_TYPE_AUIP )
-            && ( txt_msg_array[ line_number - 1 ].line_type == LINE_TYPE_AUIP )
-            && ( txt_msg_array[ line_number + 1 ].line_type == LINE_TYPE_AUIP ) )
+        if (    ( txt_msg_array[ line_number     ].line_type == LINE_TYPE_AUIP )
+             && ( txt_msg_array[ line_number - 1 ].line_type == LINE_TYPE_AUIP )
+             && ( txt_msg_array[ line_number + 1 ].line_type == LINE_TYPE_AUIP ) )
         {
             //  YES:    Set the flag
             auip_found = true;
@@ -423,7 +423,7 @@ DECODE_TXT__decode(
          line_number += 1 )
     {
         //  Is there something in this cell ?
-        if( txt_msg_array[ line_number ].line_type != LINE_TYPE_EMPTY )
+        if ( txt_msg_array[ line_number ].line_type != LINE_TYPE_EMPTY )
         {
             //  YES:    Move it to the list
             list_put_last( grf_list_p, txt_msg_array[ line_number ].line_p );
@@ -433,7 +433,7 @@ DECODE_TXT__decode(
     }
 
     //  Is this possibly a recipe ?
-    if( auip_found  == true )
+    if ( auip_found  == true )
     {
         //  YES:    Put it in the unformatted file
         DECODE_TXT__dump( grf_list_p, source_info_p, FILE_UNFORMATTED );
@@ -449,7 +449,7 @@ DECODE_TXT__decode(
      ************************************************************************/
 
     //  Do we have a valid recipe title ?
-    if( auip_found == true )
+    if ( auip_found == true )
     {
         //  Loop through all lines in the current buffer
         for( line_number = 0;
@@ -460,15 +460,15 @@ DECODE_TXT__decode(
             tmp_p = text_skip_past_whitespace( txt_msg_array[ line_number ].line_p );
 
             //  Is this the first AUIP line ?
-            if(    ( txt_msg_array[ line_number ].line_type == LINE_TYPE_TEXT )
-                && ( strncmp( tmp_p, NOT_A_TITLE_01, NOT_A_TITLE_01_L ) != 0 )
-                && ( strncmp( tmp_p, NOT_A_TITLE_02, NOT_A_TITLE_02_L ) != 0 )
-                && ( strncmp( tmp_p, NOT_A_TITLE_03, NOT_A_TITLE_03_L ) != 0 ) )
+            if (    ( txt_msg_array[ line_number ].line_type == LINE_TYPE_TEXT )
+                 && ( strncmp( tmp_p, NOT_A_TITLE_01, NOT_A_TITLE_01_L ) != 0 )
+                 && ( strncmp( tmp_p, NOT_A_TITLE_02, NOT_A_TITLE_02_L ) != 0 )
+                 && ( strncmp( tmp_p, NOT_A_TITLE_03, NOT_A_TITLE_03_L ) != 0 ) )
             {
                 //  Identify the recipe title
-                if(    (    ( txt_msg_array[ line_number - 1 ].line_type == LINE_TYPE_BLANK )
-                         || ( line_number <= 1                                              ) )
-                    && ( txt_msg_array[ line_number + 1 ].line_type == LINE_TYPE_BLANK ) )
+                if (    (    ( txt_msg_array[ line_number - 1 ].line_type == LINE_TYPE_BLANK )
+                          || ( line_number <= 1                                              ) )
+                     && ( txt_msg_array[ line_number + 1 ].line_type == LINE_TYPE_BLANK ) )
                 {
                     //  Change the line type to TITLE
                     txt_msg_array[ line_number ].line_type = LINE_TYPE_TITLE;
@@ -491,7 +491,7 @@ DECODE_TXT__decode(
      ************************************************************************/
 
     //  Do we have a valid recipe title ?
-    if( title_found == true )
+    if ( title_found == true )
     {
         //  YES:    Reset the number of NOT AUIP lines
         not_auip_count = 0;
@@ -501,14 +501,14 @@ DECODE_TXT__decode(
              txt_msg_array[ line_number ].line_type != LINE_TYPE_UNKNOWN;
              line_number += 1 )
         {
-            if( line_number >= MAX_LINE_COUNT )
+            if ( line_number >= MAX_LINE_COUNT )
             {
                 log_write( MID_FATAL, "DECODE_TXT__decode",
                               "Working past the array size.\n" );
             }
 
             //  Is this the first AUIP line ?
-            if( txt_msg_array[ line_number ].line_type == LINE_TYPE_AUIP )
+            if ( txt_msg_array[ line_number ].line_type == LINE_TYPE_AUIP )
             {
                 /**
                  *  @param  tmp_ndx                                             */
@@ -522,7 +522,7 @@ DECODE_TXT__decode(
                      txt_msg_array[ tmp_ndx ].line_type != LINE_TYPE_BLANK;
                      tmp_ndx -= 1 )
                 {
-                    if( tmp_ndx <= title_line )
+                    if ( tmp_ndx <= title_line )
                     {
                         log_write( MID_INFO, "DECODE_TXT__decode",
                                       "Working before recipe title.\n" );
@@ -548,7 +548,7 @@ DECODE_TXT__decode(
             else
             {
                 //  Are we into the directions ?
-                if( ++not_auip_count == NOT_AUIP_MAX_COUNT )
+                if ( ++not_auip_count == NOT_AUIP_MAX_COUNT )
                 {
                     //  YES:    We are done here.
                     break;
@@ -562,7 +562,7 @@ DECODE_TXT__decode(
      ************************************************************************/
 
     //  Verify that there is a title and AUIP
-    if(    ( title_found == true )
+    if (    ( title_found == true )
         && ( auip_found  == true ) )
     {
         //  YES:    Loop through all lines in the current buffer
@@ -571,7 +571,7 @@ DECODE_TXT__decode(
              line_number += 1 )
         {
             //  Is this the first AUIP line ?
-            if( txt_msg_array[ line_number ].line_type != LINE_TYPE_BLANK )
+            if ( txt_msg_array[ line_number ].line_type != LINE_TYPE_BLANK )
             {
                 //  Change the line type to TEXT
                 txt_msg_array[ line_number ].line_type = LINE_TYPE_TEXT;
@@ -584,8 +584,8 @@ DECODE_TXT__decode(
      ************************************************************************/
 
     //  Verify that there is a title and AUIP
-    if(    ( title_found == true )
-        && ( auip_found  == true ) )
+    if (    ( title_found == true )
+         && ( auip_found  == true ) )
     {
         //  YES:    Loop through all lines in the current buffer
         for( line_number = title_line;
@@ -593,7 +593,7 @@ DECODE_TXT__decode(
              line_number += 1 )
         {
             //  Is this the recipe title ?
-            if( txt_msg_array[ line_number ].line_type == LINE_TYPE_TITLE )
+            if ( txt_msg_array[ line_number ].line_type == LINE_TYPE_TITLE )
             {
                 //  YES:    Insert the recipe start tag into the list
                 tmp_p = text_copy_to_new( "[[[[[" );
@@ -610,7 +610,7 @@ DECODE_TXT__decode(
             }
 
             //  Is this the recipe title ?
-            if( txt_msg_array[ line_number ].line_type == LINE_TYPE_AUIP )
+            if ( txt_msg_array[ line_number ].line_type == LINE_TYPE_AUIP )
             {
                 //  YES:    Move the new ingredient to the list
                 list_put_last( grf_list_p, txt_msg_array[ line_number ].line_p );
@@ -625,8 +625,8 @@ DECODE_TXT__decode(
              line_number += 1 )
         {
             //  Is this the recipe title ?
-            if(    ( txt_msg_array[ line_number ].line_type == LINE_TYPE_BLANK )
-                || ( txt_msg_array[ line_number ].line_type == LINE_TYPE_TEXT  ) )
+            if (    ( txt_msg_array[ line_number ].line_type == LINE_TYPE_BLANK )
+                 || ( txt_msg_array[ line_number ].line_type == LINE_TYPE_TEXT  ) )
             {
                 //  YES:    Move it to the list
                 list_put_last( grf_list_p, txt_msg_array[ line_number ].line_p );
@@ -647,13 +647,13 @@ DECODE_TXT__decode(
              txt_msg_array[ line_number ].line_type != LINE_TYPE_UNKNOWN;
              line_number += 1 )
         {
-            if( ( txt_msg_array[ line_number ].line_p != NULL ) && ( strncmp( txt_msg_array[ line_number ].line_p, "1. Lime Garlic Shrimp", 21 ) == 0 ) )
+            if ( ( txt_msg_array[ line_number ].line_p != NULL ) && ( strncmp( txt_msg_array[ line_number ].line_p, "1. Lime Garlic Shrimp", 21 ) == 0 ) )
             {
                 int a = 0;
             }
 
             //  Is this the recipe title ?
-            if( txt_msg_array[ line_number ].line_type != LINE_TYPE_EMPTY )
+            if ( txt_msg_array[ line_number ].line_type != LINE_TYPE_EMPTY )
             {
                 //  YES:    Release the storage for this line
                 mem_free( txt_msg_array[ line_number ].line_p );
@@ -670,12 +670,12 @@ DECODE_TXT__decode(
              txt_msg_array[ line_number ].line_type != LINE_TYPE_UNKNOWN;
              line_number += 1 )
         {
-            if( ( txt_msg_array[ line_number ].line_p != NULL ) && ( strncmp( txt_msg_array[ line_number ].line_p, "1. Lime Garlic Shrimp", 21 ) == 0 ) )
+            if ( ( txt_msg_array[ line_number ].line_p != NULL ) && ( strncmp( txt_msg_array[ line_number ].line_p, "1. Lime Garlic Shrimp", 21 ) == 0 ) )
             {
                 int a = 0;
             }
             //  Is there something in this cell ?
-            if( txt_msg_array[ line_number ].line_type != LINE_TYPE_EMPTY )
+            if ( txt_msg_array[ line_number ].line_type != LINE_TYPE_EMPTY )
             {
                 //  YES:    Move it to the list
                 list_put_last( grf_list_p, txt_msg_array[ line_number ].line_p );
@@ -685,7 +685,7 @@ DECODE_TXT__decode(
         }
 
         //  Is this possibly a recipe ?
-        if( auip_found  == true )
+        if ( auip_found  == true )
         {
             //  YES:    Put it in the unformatted file
             DECODE_TXT__dump( grf_list_p, source_info_p, FILE_UNFORMATTED );
@@ -703,7 +703,7 @@ DECODE_TXT__decode(
 #endif
 
     //  Finally, kill the recipe structure
-    if( list_kill( grf_list_p ) != true )
+    if ( list_kill( grf_list_p ) != true )
     {
         list_debug_dump_list( grf_list_p );
         log_write( MID_FATAL, "DECODE_TXT__decode",
@@ -758,8 +758,8 @@ DECODE_TXT__line_type(
      ************************************************************************/
 
     //  Is this the start marker for "Generic Format" ?
-    if(    ( strncmp( tmp_p, "@@@@@", 5 ) == 0 )
-       &&  ( strlen(  tmp_p )             == 5 ) )
+    if (    ( strncmp( tmp_p, "@@@@@", 5 ) == 0 )
+         && ( strlen(  tmp_p )             == 5 ) )
     {
         //  YES:    Delete it
         memset( tmp_p, '\0', 5 );
@@ -770,7 +770,7 @@ DECODE_TXT__line_type(
      ************************************************************************/
 
     //  Is this line empty ?
-    if( text_is_blank_line( tmp_p ) == true )
+    if ( text_is_blank_line( tmp_p ) == true )
     {
         //  YES:    Set the line type
         line_type = LINE_TYPE_BLANK;
@@ -782,7 +782,7 @@ DECODE_TXT__line_type(
 
     //  Does this line contain AUIP (Amount-Unit-Ingredient-Preparation)
     else
-    if( DECODE__is_auip( tmp_p ) == true )
+    if ( DECODE__is_auip( tmp_p ) == true )
     {
         //  YES:    Set the line type
         line_type = LINE_TYPE_AUIP;

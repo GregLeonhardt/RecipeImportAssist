@@ -131,10 +131,10 @@ DECODE_NYC__start (
      ************************************************************************/
 
     //  Skip this test if a previous test was TRUE
-    if( nyc_rc == false )
+    if ( nyc_rc == false )
     {
         //  Is this the start of a Meal-Master NYC recipe ?
-        if(    ( strncmp( tmp_data_p, NYC_START_1,  NYC_START_1_L  ) == 0 ) )
+        if (    ( strncmp( tmp_data_p, NYC_START_1,  NYC_START_1_L  ) == 0 ) )
         {
             //  YES:    Change the return code
             nyc_rc = true;
@@ -194,8 +194,8 @@ DECODE_NYC__end(
      ************************************************************************/
 
     //  Is this the start of a Meal-Master NYC recipe ?
-    if(    ( strncmp( tmp_data_p, NYC_END_1,  NYC_END_1_L  ) == 0 )
-        || ( strncmp( tmp_data_p, NYC_END_2,  NYC_END_2_L  ) == 0 ) )
+    if (    ( strncmp( tmp_data_p, NYC_END_1,  NYC_END_1_L  ) == 0 )
+         || ( strncmp( tmp_data_p, NYC_END_2,  NYC_END_2_L  ) == 0 ) )
     {
         //  YES:    Change the return code
         nyc_rc = true;
@@ -245,7 +245,7 @@ DECODE_NYC__title(
      ************************************************************************/
 
     //  Skip everything if this is a blank line
-    if( text_is_blank_line( title_p ) != true )
+    if ( text_is_blank_line( title_p ) != true )
     {
         title_p = text_skip_past_whitespace( title_p );
 
@@ -309,7 +309,7 @@ DECODE_NYC__categories(
      ************************************************************************/
 
     //  Skip everything if this is a blank line
-    if( text_is_blank_line( categories_p ) != true )
+    if ( text_is_blank_line( categories_p ) != true )
     {
         categories_p = text_skip_past_whitespace( categories_p );
 
@@ -403,7 +403,7 @@ DECODE_NYC__yield(
             sizeof ( local_unit ) );
 
     //  Skip everything if this is a blank line
-    if( text_is_blank_line( yield_p ) != true )
+    if ( text_is_blank_line( yield_p ) != true )
     {
         yield_p = text_skip_past_whitespace( yield_p );
 
@@ -465,7 +465,7 @@ DECODE_NYC__yield(
                     toupper( tmp_unit[ strlen( tmp_unit ) - 1 ] );
             }
             //  Is the units field empty
-            if( strlen( tmp_unit ) == 0 )
+            if ( strlen( tmp_unit ) == 0 )
             {
                 //  YES:    This is a serves amount, not a MAKES amount
                 recipe_p->serves = text_copy_to_new( local_amount );
@@ -528,7 +528,7 @@ DECODE_NYC__auip(
      ************************************************************************/
 
     //  Skip everything if this is a blank line
-    if( text_is_blank_line( in_buffer_p ) != true )
+    if ( text_is_blank_line( in_buffer_p ) != true )
     {
         //  Process the first half (or the entire line)
         in_buffer_p = text_skip_past_whitespace( in_buffer_p );
@@ -586,7 +586,7 @@ DECODE_NYC__directions(
      ************************************************************************/
 
     //  Is this the end of the recipe ?
-    if( DECODE_NYC__end( in_buffer_p ) == true )
+    if ( DECODE_NYC__end( in_buffer_p ) == true )
     {
         //  YES:    Change the return code
         nyc_rc = true;

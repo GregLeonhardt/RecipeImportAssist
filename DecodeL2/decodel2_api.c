@@ -188,50 +188,50 @@ decodel2_parse(
          ********************************************************************/
 
         //  Is this the first line of a new e-Mail ?
-        if( list_query_count( level3_list_p ) == 1 )
+        if ( list_query_count( level3_list_p ) == 1 )
         {
             /**
              *  @param subject          This is possibly a subject          */
             int                             subject;
 
             //  YES:    (0-9).
-            if(    ( isdigit( list_data_p[ 0 ] ) !=  0  )
-                && (          list_data_p[ 1 ]   == '.' )
-                && (          list_data_p[ 2 ]   == ' ' ) )
+            if (    ( isdigit( list_data_p[ 0 ] ) !=  0  )
+                 && (          list_data_p[ 1 ]   == '.' )
+                 && (          list_data_p[ 2 ]   == ' ' ) )
             {
                 subject = 3;
             }
             else    //  (0-9)(a-z).
-            if(    ( isdigit( list_data_p[ 0 ] ) !=  0  )
-                && ( isalpha( list_data_p[ 1 ] ) !=  0  )
-                && (          list_data_p[ 2 ]   == '.' )
-                && (          list_data_p[ 3 ]   == ' ' ) )
+            if (    ( isdigit( list_data_p[ 0 ] ) !=  0  )
+                 && ( isalpha( list_data_p[ 1 ] ) !=  0  )
+                 && (          list_data_p[ 2 ]   == '.' )
+                 && (          list_data_p[ 3 ]   == ' ' ) )
             {
                 subject = 4;
             }
             else    //  (0-9)(0-9).
-            if(    ( isdigit( list_data_p[ 0 ] ) !=  0  )
-                && ( isdigit( list_data_p[ 1 ] ) !=  0  )
-                && (          list_data_p[ 2 ]   == '.' )
-                && (          list_data_p[ 3 ]   == ' ' ) )
+            if (    ( isdigit( list_data_p[ 0 ] ) !=  0  )
+                 && ( isdigit( list_data_p[ 1 ] ) !=  0  )
+                 && (          list_data_p[ 2 ]   == '.' )
+                 && (          list_data_p[ 3 ]   == ' ' ) )
             {
                 subject = 4;
             }
             else    //  (0-9)(0-9)(a-z).
-            if(    ( isdigit( list_data_p[ 0 ] ) !=  0  )
-                && ( isdigit( list_data_p[ 1 ] ) !=  0  )
-                && ( isalpha( list_data_p[ 2 ] ) !=  0  )
-                && (          list_data_p[ 3 ]   == '.' )
-                && (          list_data_p[ 4 ]   == ' ' ) )
+            if (    ( isdigit( list_data_p[ 0 ] ) !=  0  )
+                 && ( isdigit( list_data_p[ 1 ] ) !=  0  )
+                 && ( isalpha( list_data_p[ 2 ] ) !=  0  )
+                 && (          list_data_p[ 3 ]   == '.' )
+                 && (          list_data_p[ 4 ]   == ' ' ) )
             {
                 subject = 5;
             }
             else    //  (0-9).(a-z).
-            if(    ( isdigit( list_data_p[ 0 ] ) !=  0  )
-                && (          list_data_p[ 1 ]   == '.' )
-                && ( isdigit( list_data_p[ 2 ] ) !=  0  )
-                && (          list_data_p[ 3 ]   == '.' )
-                && (          list_data_p[ 4 ]   == ' ' ) )
+            if (    ( isdigit( list_data_p[ 0 ] ) !=  0  )
+                 && (          list_data_p[ 1 ]   == '.' )
+                 && ( isdigit( list_data_p[ 2 ] ) !=  0  )
+                 && (          list_data_p[ 3 ]   == '.' )
+                 && (          list_data_p[ 4 ]   == ' ' ) )
             {
                 subject = 5;
             }
@@ -241,7 +241,7 @@ decodel2_parse(
             }
 
             //  Did we find a subject ?
-            if( subject != 0 )
+            if ( subject != 0 )
             {
                 //  Save the e-Mail 'Subject' data
                 memset( source_info_p->e_subject, '\0',
@@ -257,8 +257,8 @@ decodel2_parse(
          ********************************************************************/
 
         //  Do we need to process an existing recipe ?
-        if(    ( list_query_count( level3_list_p )    >    0 )
-            && ( decode_end_of_recipe( list_data_p ) == true ) )
+        if (    ( list_query_count( level3_list_p )    >    0 )
+             && ( decode_end_of_recipe( list_data_p ) == true ) )
         {
             //  YES:    Go do it.
             decode_xxx( recipe_format, level3_list_p, source_info_p );
@@ -266,7 +266,7 @@ decodel2_parse(
             //  Reset the recipe format.
             recipe_format = RECIPE_FORMAT_NONE;
 
-            if( list_query_count( level3_list_p ) != 0 )
+            if ( list_query_count( level3_list_p ) != 0 )
             {
                 //  Something hasn't been released.  Dump it to assist in
                 //  figuring out what it is.
@@ -283,8 +283,8 @@ decodel2_parse(
          ********************************************************************/
 
         //  MasterCook MXP
-        if(    ( recipe_format == RECIPE_FORMAT_NONE )
-            && ( decode_mxp_start( list_data_p ) == true ) )
+        if (    ( recipe_format == RECIPE_FORMAT_NONE )
+             && ( decode_mxp_start( list_data_p ) == true ) )
         {
             //  YES:    Set the format to use
             recipe_format = RECIPE_FORMAT_MXP;
@@ -294,8 +294,8 @@ decodel2_parse(
         }
         else
             //  Meal-Master
-        if(    ( recipe_format == RECIPE_FORMAT_NONE )
-            && ( decode_mmf_start( list_data_p ) == true ) )
+        if (    ( recipe_format == RECIPE_FORMAT_NONE )
+             && ( decode_mmf_start( list_data_p ) == true ) )
         {
             //  YES:    Set the format to use
             recipe_format = RECIPE_FORMAT_MMF;
@@ -305,8 +305,8 @@ decodel2_parse(
         }
         else
             //  MasterCook MX2
-        if(    ( recipe_format == RECIPE_FORMAT_NONE )
-            && ( decode_mx2_start( list_data_p ) == true ) )
+        if (    ( recipe_format == RECIPE_FORMAT_NONE )
+             && ( decode_mx2_start( list_data_p ) == true ) )
         {
             //  YES:    Set the format to use
             recipe_format = RECIPE_FORMAT_MX2;
@@ -316,8 +316,8 @@ decodel2_parse(
         }
         else
             //  Big-Oven BOF
-        if(    ( recipe_format == RECIPE_FORMAT_NONE )
-            && ( decode_bof_start( list_data_p ) == true ) )
+        if (    ( recipe_format == RECIPE_FORMAT_NONE )
+             && ( decode_bof_start( list_data_p ) == true ) )
         {
             //  YES:    Set the format to use
             recipe_format = RECIPE_FORMAT_BOF;
@@ -327,8 +327,8 @@ decodel2_parse(
         }
         else
             //  Now You're Cooking!
-        if(    ( recipe_format == RECIPE_FORMAT_NONE )
-            && ( decode_nyc_start( list_data_p ) == true ) )
+        if (    ( recipe_format == RECIPE_FORMAT_NONE )
+             && ( decode_nyc_start( list_data_p ) == true ) )
         {
             //  YES:    Set the format to use
             recipe_format = RECIPE_FORMAT_NYC;
@@ -338,8 +338,8 @@ decodel2_parse(
         }
         else
             //  Generic-Recipe-Format [[[[[
-        if(    ( recipe_format == RECIPE_FORMAT_NONE )
-            && ( decode_grf_start( list_data_p ) == true ) )
+        if (    ( recipe_format == RECIPE_FORMAT_NONE )
+             && ( decode_grf_start( list_data_p ) == true ) )
         {
             //  YES:    Set the format to use
             recipe_format = RECIPE_FORMAT_GRF;
@@ -349,8 +349,8 @@ decodel2_parse(
         }
         else
             //  Generic-Recipe-Format @@@@@
-        if(    ( recipe_format == RECIPE_FORMAT_NONE )
-            && ( decode_gf2_start( list_data_p ) == true ) )
+        if (    ( recipe_format == RECIPE_FORMAT_NONE )
+             && ( decode_gf2_start( list_data_p ) == true ) )
         {
             //  YES:    Set the format to use
             recipe_format = RECIPE_FORMAT_GF2;
@@ -375,8 +375,8 @@ decodel2_parse(
 
         //--------------------------------------------------------------------
         //  MasterCook MXP
-        if(    ( recipe_format == RECIPE_FORMAT_MXP )
-            && ( decode_mxp_end( list_data_p ) == true ) )
+        if (    ( recipe_format == RECIPE_FORMAT_MXP )
+             && ( decode_mxp_end( list_data_p ) == true ) )
         {
             //  YES:    Process the recipe
             decode_xxx( recipe_format, level3_list_p, source_info_p );
@@ -384,7 +384,7 @@ decodel2_parse(
             //  Done with this recipe
             recipe_format = RECIPE_FORMAT_NONE;
 
-            if( list_query_count( level3_list_p ) != 0 )
+            if ( list_query_count( level3_list_p ) != 0 )
             {
                 //  Something hasn't been released.  Dump it to assist in
                 //  figuring out what it is.
@@ -397,8 +397,8 @@ decodel2_parse(
         }
         //--------------------------------------------------------------------
         //  MealMaster MMF
-        if(    ( recipe_format == RECIPE_FORMAT_MMF )
-            && ( decode_mmf_end( list_data_p ) == true ) )
+        if (    ( recipe_format == RECIPE_FORMAT_MMF )
+             && ( decode_mmf_end( list_data_p ) == true ) )
         {
             //  YES:    Process the recipe
             decode_xxx( recipe_format, level3_list_p, source_info_p );
@@ -406,7 +406,7 @@ decodel2_parse(
             //  Done with this recipe
             recipe_format = RECIPE_FORMAT_NONE;
 
-            if( list_query_count( level3_list_p ) != 0 )
+            if ( list_query_count( level3_list_p ) != 0 )
             {
                 //  Something hasn't been released.  Dump it to assist in
                 //  figuring out what it is.
@@ -419,8 +419,8 @@ decodel2_parse(
         }
         //--------------------------------------------------------------------
         //  MasterCook MX2
-        if(    ( recipe_format == RECIPE_FORMAT_MX2 )
-            && ( decode_mx2_end( list_data_p ) == true ) )
+        if (    ( recipe_format == RECIPE_FORMAT_MX2 )
+             && ( decode_mx2_end( list_data_p ) == true ) )
         {
             //  YES:    Process the recipe
             decode_xxx( recipe_format, level3_list_p, source_info_p );
@@ -428,7 +428,7 @@ decodel2_parse(
             //  Done with this recipe
             recipe_format = RECIPE_FORMAT_NONE;
 
-            if( list_query_count( level3_list_p ) != 0 )
+            if ( list_query_count( level3_list_p ) != 0 )
             {
                 //  Something hasn't been released.  Dump it to assist in
                 //  figuring out what it is.
@@ -441,8 +441,8 @@ decodel2_parse(
         }
         //--------------------------------------------------------------------
         //  Big-Oven BOF
-        if(    ( recipe_format == RECIPE_FORMAT_BOF )
-            && ( decode_bof_end( list_data_p ) == true ) )
+        if (    ( recipe_format == RECIPE_FORMAT_BOF )
+             && ( decode_bof_end( list_data_p ) == true ) )
         {
             //  YES:    Process the recipe
             decode_xxx( recipe_format, level3_list_p, source_info_p );
@@ -450,7 +450,7 @@ decodel2_parse(
             //  Done with this recipe
             recipe_format = RECIPE_FORMAT_NONE;
 
-            if( list_query_count( level3_list_p ) != 0 )
+            if ( list_query_count( level3_list_p ) != 0 )
             {
                 //  Something hasn't been released.  Dump it to assist in
                 //  figuring out what it is.
@@ -463,8 +463,8 @@ decodel2_parse(
         }
         //--------------------------------------------------------------------
         //  Now You're Cooking!
-        if(    ( recipe_format == RECIPE_FORMAT_NYC )
-            && ( decode_nyc_end( list_data_p ) == true ) )
+        if (    ( recipe_format == RECIPE_FORMAT_NYC )
+             && ( decode_nyc_end( list_data_p ) == true ) )
         {
             //  YES:    Process the recipe
             decode_xxx( recipe_format, level3_list_p, source_info_p );
@@ -472,7 +472,7 @@ decodel2_parse(
             //  Done with this recipe
             recipe_format = RECIPE_FORMAT_NONE;
 
-            if( list_query_count( level3_list_p ) != 0 )
+            if ( list_query_count( level3_list_p ) != 0 )
             {
                 //  Something hasn't been released.  Dump it to assist in
                 //  figuring out what it is.
@@ -485,8 +485,8 @@ decodel2_parse(
         }
         //--------------------------------------------------------------------
         //  Generic-Recipe-Format   '[[[[['
-        if(    ( recipe_format == RECIPE_FORMAT_GRF )
-            && ( decode_grf_end( list_data_p ) == true ) )
+        if (    ( recipe_format == RECIPE_FORMAT_GRF )
+             && ( decode_grf_end( list_data_p ) == true ) )
         {
             //  YES:    Process the recipe
             decode_xxx( recipe_format, level3_list_p, source_info_p );
@@ -494,7 +494,7 @@ decodel2_parse(
             //  Done with this recipe
             recipe_format = RECIPE_FORMAT_NONE;
 
-            if( list_query_count( level3_list_p ) != 0 )
+            if ( list_query_count( level3_list_p ) != 0 )
             {
                 //  Something hasn't been released.  Dump it to assist in
                 //  figuring out what it is.
@@ -507,8 +507,8 @@ decodel2_parse(
         }
         //--------------------------------------------------------------------
         //  Generic-Recipe-Format  '@@@@@'
-        if(    ( recipe_format == RECIPE_FORMAT_GF2 )
-            && ( decode_gf2_end( list_data_p ) == true ) )
+        if (    ( recipe_format == RECIPE_FORMAT_GF2 )
+             && ( decode_gf2_end( list_data_p ) == true ) )
         {
             //  YES:    Process the recipe
             decode_xxx( recipe_format, level3_list_p, source_info_p );
@@ -516,7 +516,7 @@ decodel2_parse(
             //  Done with this recipe
             recipe_format = RECIPE_FORMAT_NONE;
 
-            if( list_query_count( level3_list_p ) != 0 )
+            if ( list_query_count( level3_list_p ) != 0 )
             {
                 //  Something hasn't been released.  Dump it to assist in
                 //  figuring out what it is.
@@ -530,7 +530,7 @@ decodel2_parse(
     }
 
     //  Is there anything still on the list ?
-    if( list_query_count( level3_list_p ) > 0 )
+    if ( list_query_count( level3_list_p ) > 0 )
     {
         //  @note   This can be caused by finding a recipe start but the
         //          recipe terminator marker is missing.  THIS HAPPENS A LOT!
@@ -538,7 +538,7 @@ decodel2_parse(
         //  YES:    See if it can be decoded.
         decode_xxx( recipe_format, level3_list_p, source_info_p );
 
-        if( list_query_count( level3_list_p ) != 0 )
+        if ( list_query_count( level3_list_p ) != 0 )
         {
             //  Something hasn't been released.  Dump it to assist in
             //  figuring out what it is.
@@ -567,7 +567,7 @@ decodel2_parse(
     }
 
     //  All done, delete the list
-    if( list_kill( level3_list_p ) != true )
+    if ( list_kill( level3_list_p ) != true )
     {
         list_debug_dump_list( level3_list_p );
         log_write( MID_FATAL, "decodel2_parse",
@@ -589,7 +589,7 @@ decodel2_parse(
                   list_query_count( level2_list_p ) );
 
     //  Did we process everything in the list ?
-    if( list_query_count( level2_list_p ) != 0 )
+    if ( list_query_count( level2_list_p ) != 0 )
     {
         //  Something hasn't been released.  Dump it to assist in
         //  figuring out what it is.

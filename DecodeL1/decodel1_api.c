@@ -148,7 +148,7 @@ decodel1_parse(
     log_write( MID_DEBUG_0, "decodel1_parse",
                   "'%s'\n", list_data_p );
 
-    if( email_is_start( list_data_p ) == true )
+    if ( email_is_start( list_data_p ) == true )
     {
         //  YES:    Set a flag so we can track it.
         email_flag = true;
@@ -172,16 +172,16 @@ decodel1_parse(
         //  Sender: bread-bakers-errors@lists.best.com
 
         //  Did we locate e-Mail source data ?
-        if(    ( email_flag                                        == true )
-            && ( ( tmp_data_p = email_find_source( list_data_p ) ) != NULL )
-            && ( strlen( source_info_p->g_from )                   ==    0 ) )
+        if (    ( email_flag                                        == true )
+             && ( ( tmp_data_p = email_find_source( list_data_p ) ) != NULL )
+             && ( strlen( source_info_p->g_from )                   ==    0 ) )
         {
             //  YES:    Log what we found
             log_write( MID_DEBUG_0, "decodel1_parse",
                           "Source:    '%.60s'\n", tmp_data_p );
 
             //  Will the e-Mail source information fit in the buffer ?
-            if( sizeof( source_info_p->g_from ) > strlen( tmp_data_p ) )
+            if ( sizeof( source_info_p->g_from ) > strlen( tmp_data_p ) )
             {
                 //  YES:    Overwrite the e-Mail 'source' data
                 memset( source_info_p->g_from, '\0',
@@ -201,16 +201,16 @@ decodel1_parse(
 
         //  Did we locate e-Mail from data ?
         else
-        if(    ( email_flag                                      == true )
-            && ( ( tmp_data_p = email_find_from( list_data_p ) ) != NULL )
-            && ( strlen( source_info_p->e_from )                 ==    0 ) )
+        if (    ( email_flag                                      == true )
+             && ( ( tmp_data_p = email_find_from( list_data_p ) ) != NULL )
+             && ( strlen( source_info_p->e_from )                 ==    0 ) )
         {
             //  YES:    Log what we found
                 log_write( MID_DEBUG_0, "decodel1_parse",
                               "From:      '%.60s'\n", tmp_data_p );
 
             //  Will the e-Mail from information fit in the buffer ?
-            if( sizeof( source_info_p->e_from ) > strlen( tmp_data_p ) )
+            if ( sizeof( source_info_p->e_from ) > strlen( tmp_data_p ) )
             {
                 //  YES:    Overwrite the e-Mail 'from' data
                 memset( source_info_p->e_from, '\0',
@@ -230,18 +230,18 @@ decodel1_parse(
 
         //  Did we locate e-Mail from data ?
         else
-        if(    ( email_flag                                           == true )
-            && ( ( tmp_data_p = email_find_datetime( list_data_p ) )  != NULL ) )
+        if (    ( email_flag                                           == true )
+             && ( ( tmp_data_p = email_find_datetime( list_data_p ) )  != NULL ) )
         {
             //  YES:    Log what we found
             log_write( MID_DEBUG_0, "decodel1_parse",
                           "DataTime   '%.60s'\n", tmp_data_p );
 
             //  Is there something is the group date/time field ?
-            if( strlen( source_info_p->g_datetime ) == 0 )
+            if ( strlen( source_info_p->g_datetime ) == 0 )
             {
                 //  NO:     Will the e-Mail date/time information fit in the buffer ?
-                if( sizeof( source_info_p->g_datetime ) > strlen( tmp_data_p ) )
+                if ( sizeof( source_info_p->g_datetime ) > strlen( tmp_data_p ) )
                 {
                     //  YES:    Write the e-Mail 'group date/time' data
                     memset( source_info_p->g_datetime, '\0',
@@ -251,10 +251,10 @@ decodel1_parse(
             }
             //  Is there something is the subject field ?
             else
-            if( strlen( source_info_p->e_datetime ) == 0 )
+            if ( strlen( source_info_p->e_datetime ) == 0 )
             {
                 //  NO:     Will the e-Mail date/time information fit in the buffer ?
-                if( sizeof( source_info_p->g_datetime ) > strlen( tmp_data_p ) )
+                if ( sizeof( source_info_p->g_datetime ) > strlen( tmp_data_p ) )
                 {
                     //  YES:    Write the e-Mail 'date/time' data
                     memset( source_info_p->e_datetime, '\0',
@@ -275,18 +275,18 @@ decodel1_parse(
 
         //  Did we locate the e-Mail subject ?
         else
-        if(    ( email_flag                                         == true )
-            && ( ( tmp_data_p = email_find_subject( list_data_p ) ) != NULL ) )
+        if (    ( email_flag                                         == true )
+             && ( ( tmp_data_p = email_find_subject( list_data_p ) ) != NULL ) )
         {
             //  YES:    Log what we found
             log_write( MID_DEBUG_0, "decodel1_parse",
                           "Subject:   '%.60s'\n", tmp_data_p );
 
             //  Is there something is the group subject field ?
-            if( strlen( source_info_p->g_subject ) == 0 )
+            if ( strlen( source_info_p->g_subject ) == 0 )
             {
                 //  NO:     Will the e-Mail subject information fit in the buffer ?
-                if( sizeof( source_info_p->g_subject ) > strlen( tmp_data_p ) )
+                if ( sizeof( source_info_p->g_subject ) > strlen( tmp_data_p ) )
                 {
                     //  YES:    Write the e-Mail group subject data
                     memset( source_info_p->g_subject, '\0',
@@ -296,10 +296,10 @@ decodel1_parse(
             }
             //  Is there something is the subject field ?
             else
-            if( strlen( source_info_p->e_subject ) == 0 )
+            if ( strlen( source_info_p->e_subject ) == 0 )
             {
                 //  YES:    Will the e-Mail subject information fit in the buffer ?
-                if( sizeof( source_info_p->e_subject ) > strlen( tmp_data_p ) )
+                if ( sizeof( source_info_p->e_subject ) > strlen( tmp_data_p ) )
                 {
                     //  YES:    Write the e-Mail subject data
                     memset( source_info_p->e_subject, '\0',
@@ -318,8 +318,8 @@ decodel1_parse(
         /********************************************************************/
         //  Is this the start of a new e-Mail message ?
         else
-        if(    ( email_flag                          == true )
-            && ( email_is_group_break( list_data_p ) == true ) )
+        if (    ( email_flag                          == true )
+             && ( email_is_group_break( list_data_p ) == true ) )
         {
             //  YES:    Log what we found
             log_write( MID_DEBUG_0, "decodel1_parse",
@@ -336,7 +336,7 @@ decodel1_parse(
             //  Done with this text line
             list_fdelete( level1_list_p, list_data_p, list_lock_key );
 
-            if( list_query_count( level2_list_p ) != 0 )
+            if ( list_query_count( level2_list_p ) != 0 )
             {
                 log_write( MID_FATAL, "decodel1_parse",
                            "There is still something on the list\n" );
@@ -368,12 +368,12 @@ decodel1_parse(
      ************************************************************************/
 
     //  Is there still something on the list ?
-    if( list_query_count( level2_list_p ) != 0 )
+    if ( list_query_count( level2_list_p ) != 0 )
     {
         //  Pass the data to level 2 processing
         decodel2_parse( level2_list_p, source_info_p );
 
-        if( list_query_count( level2_list_p ) != 0 )
+        if ( list_query_count( level2_list_p ) != 0 )
         {
             log_write( MID_FATAL, "decodel1_parse",
                        "There is still something on the list\n" );
@@ -384,14 +384,14 @@ decodel1_parse(
      *  Function Exit
      ************************************************************************/
 
-#if( MEM_DUMP == true )
+#if ( MEM_DUMP == true )
     //  Watch for false triggers because of threading when the encode thread
     //  takes a little longer then normal.
     mem_dump( );
 #endif
 
     //  Close the level 2 list
-    if( list_kill( level2_list_p ) != true )
+    if ( list_kill( level2_list_p ) != true )
     {
         log_write( MID_FATAL, "decodel1_parse",
                       "list_kill( level2_list_p ) failed\n" );
@@ -412,7 +412,7 @@ decodel1_parse(
                   list_query_count( level1_list_p ) );
 
     //  Sanity check.  The list should be empty, make sure it is.
-    if( list_query_count( level1_list_p ) != 0 )
+    if ( list_query_count( level1_list_p ) != 0 )
     {
         //  Debug dump whatever is on the list
         for( list_data_p = list_get_first( level1_list_p );

@@ -253,38 +253,38 @@ recipe_kill(
      ************************************************************************/
 
     //  Release storage buffers for all
-    if( recipe_p->name != NULL)             mem_free( recipe_p->name );
-    if( recipe_p->recipe_id != NULL)        mem_free( recipe_p->recipe_id );
-    if( recipe_p->dir_name != NULL)         mem_free( recipe_p->dir_name );
-    if( recipe_p->file_name != NULL)        mem_free( recipe_p->file_name );
-    if( recipe_p->file_date_time != NULL)   mem_free( recipe_p->file_date_time );
-    if( recipe_p->file_size != NULL)        mem_free( recipe_p->file_size );
-    if( recipe_p->author != NULL)           mem_free( recipe_p->author );
-    if( recipe_p->source_format != NULL)    mem_free( recipe_p->source_format );
-    if( recipe_p->group_from != NULL)       mem_free( recipe_p->group_from );
-    if( recipe_p->copyright != NULL)        mem_free( recipe_p->copyright );
-    if( recipe_p->imported_from != NULL)    mem_free( recipe_p->imported_from );
-    if( recipe_p->posted_by != NULL)        mem_free( recipe_p->posted_by );
-    if( recipe_p->posted_date != NULL)      mem_free( recipe_p->posted_date );
-    if( recipe_p->posted_subject != NULL)   mem_free( recipe_p->posted_subject );
-    if( recipe_p->edited_by != NULL)        mem_free( recipe_p->edited_by );
-    if( recipe_p->formatted_by != NULL)     mem_free( recipe_p->formatted_by );
-    if( recipe_p->serves != NULL)           mem_free( recipe_p->serves );
-    if( recipe_p->servings_size != NULL)    mem_free( recipe_p->servings_size );
-    if( recipe_p->makes != NULL)            mem_free( recipe_p->makes );
-    if( recipe_p->makes_unit != NULL)       mem_free( recipe_p->makes_unit );
-    if( recipe_p->time_prep != NULL)        mem_free( recipe_p->time_prep );
-    if( recipe_p->time_cook != NULL)        mem_free( recipe_p->time_cook );
-    if( recipe_p->time_resting != NULL)     mem_free( recipe_p->time_resting );
-    if( recipe_p->time_total != NULL)       mem_free( recipe_p->time_total );
-    if( recipe_p->description != NULL)      mem_free( recipe_p->description );
-    if( recipe_p->based_on != NULL)         mem_free( recipe_p->based_on );
-    if( recipe_p->serve_with != NULL)       mem_free( recipe_p->serve_with );
-    if( recipe_p->rating != NULL)           mem_free( recipe_p->rating );
-    if( recipe_p->skill != NULL)            mem_free( recipe_p->skill );
-    if( recipe_p->instructions != NULL )    mem_free( recipe_p->instructions );
+    if ( recipe_p->name != NULL)             mem_free( recipe_p->name );
+    if ( recipe_p->recipe_id != NULL)        mem_free( recipe_p->recipe_id );
+    if ( recipe_p->dir_name != NULL)         mem_free( recipe_p->dir_name );
+    if ( recipe_p->file_name != NULL)        mem_free( recipe_p->file_name );
+    if ( recipe_p->file_date_time != NULL)   mem_free( recipe_p->file_date_time );
+    if ( recipe_p->file_size != NULL)        mem_free( recipe_p->file_size );
+    if ( recipe_p->author != NULL)           mem_free( recipe_p->author );
+    if ( recipe_p->source_format != NULL)    mem_free( recipe_p->source_format );
+    if ( recipe_p->group_from != NULL)       mem_free( recipe_p->group_from );
+    if ( recipe_p->copyright != NULL)        mem_free( recipe_p->copyright );
+    if ( recipe_p->imported_from != NULL)    mem_free( recipe_p->imported_from );
+    if ( recipe_p->posted_by != NULL)        mem_free( recipe_p->posted_by );
+    if ( recipe_p->posted_date != NULL)      mem_free( recipe_p->posted_date );
+    if ( recipe_p->posted_subject != NULL)   mem_free( recipe_p->posted_subject );
+    if ( recipe_p->edited_by != NULL)        mem_free( recipe_p->edited_by );
+    if ( recipe_p->formatted_by != NULL)     mem_free( recipe_p->formatted_by );
+    if ( recipe_p->serves != NULL)           mem_free( recipe_p->serves );
+    if ( recipe_p->servings_size != NULL)    mem_free( recipe_p->servings_size );
+    if ( recipe_p->makes != NULL)            mem_free( recipe_p->makes );
+    if ( recipe_p->makes_unit != NULL)       mem_free( recipe_p->makes_unit );
+    if ( recipe_p->time_prep != NULL)        mem_free( recipe_p->time_prep );
+    if ( recipe_p->time_cook != NULL)        mem_free( recipe_p->time_cook );
+    if ( recipe_p->time_resting != NULL)     mem_free( recipe_p->time_resting );
+    if ( recipe_p->time_total != NULL)       mem_free( recipe_p->time_total );
+    if ( recipe_p->description != NULL)      mem_free( recipe_p->description );
+    if ( recipe_p->based_on != NULL)         mem_free( recipe_p->based_on );
+    if ( recipe_p->serve_with != NULL)       mem_free( recipe_p->serve_with );
+    if ( recipe_p->rating != NULL)           mem_free( recipe_p->rating );
+    if ( recipe_p->skill != NULL)            mem_free( recipe_p->skill );
+    if ( recipe_p->instructions != NULL )    mem_free( recipe_p->instructions );
     //------------------------------------------------------------------------
-    if( list_query_count( recipe_p->appliance ) > 0 )
+    if ( list_query_count( recipe_p->appliance ) > 0 )
     {
         while( ( data_p = list_get_first( recipe_p->appliance ) ) != NULL )
         {
@@ -292,13 +292,13 @@ recipe_kill(
             mem_free( data_p );
         }
     }
-    if( list_kill( recipe_p->appliance ) != true )
+    if ( list_kill( recipe_p->appliance ) != true )
     {
         log_write( MID_FATAL, "recipe_kill",
                       "list_kill( recipe_p->appliance ) failed\n" );
     }
     //------------------------------------------------------------------------
-    if( list_query_count( recipe_p->cuisine ) > 0 )
+    if ( list_query_count( recipe_p->cuisine ) > 0 )
     {
         while( ( data_p = list_get_first( recipe_p->cuisine ) ) != NULL )
         {
@@ -306,13 +306,13 @@ recipe_kill(
             mem_free( data_p );
         }
     }
-    if( list_kill( recipe_p->cuisine ) != true )
+    if ( list_kill( recipe_p->cuisine ) != true )
     {
         log_write( MID_FATAL, "recipe_kill",
                       "list_kill( recipe_p->cuisine ) failed\n" );
     }
     //------------------------------------------------------------------------
-    if( list_query_count( recipe_p->occasion ) > 0 )
+    if ( list_query_count( recipe_p->occasion ) > 0 )
     {
         while( ( data_p = list_get_first( recipe_p->occasion ) ) != NULL )
         {
@@ -320,13 +320,13 @@ recipe_kill(
             mem_free( data_p );
         }
     }
-    if( list_kill( recipe_p->occasion ) != true )
+    if ( list_kill( recipe_p->occasion ) != true )
     {
         log_write( MID_FATAL, "recipe_kill",
                       "list_kill( recipe_p->occasion ) failed\n" );
     }
     //------------------------------------------------------------------------
-    if( list_query_count( recipe_p->course ) > 0 )
+    if ( list_query_count( recipe_p->course ) > 0 )
     {
         while( ( data_p = list_get_first( recipe_p->course ) ) != NULL )
         {
@@ -334,13 +334,13 @@ recipe_kill(
             mem_free( data_p );
         }
     }
-    if( list_kill( recipe_p->course ) != true )
+    if ( list_kill( recipe_p->course ) != true )
     {
         log_write( MID_FATAL, "recipe_kill",
                       "list_kill( recipe_p->course ) failed\n" );
     }
     //------------------------------------------------------------------------
-    if( list_query_count( recipe_p->diet ) > 0 )
+    if ( list_query_count( recipe_p->diet ) > 0 )
     {
         while( ( data_p = list_get_first( recipe_p->diet ) ) != NULL )
         {
@@ -348,13 +348,13 @@ recipe_kill(
             mem_free( data_p );
         }
     }
-    if( list_kill( recipe_p->diet ) != true )
+    if ( list_kill( recipe_p->diet ) != true )
     {
         log_write( MID_FATAL, "recipe_kill",
                       "list_kill( recipe_p->diet ) failed\n" );
     }
     //------------------------------------------------------------------------
-    if( list_query_count( recipe_p->chapter ) > 0 )
+    if ( list_query_count( recipe_p->chapter ) > 0 )
     {
         while( ( data_p = list_get_first( recipe_p->chapter ) ) != NULL )
         {
@@ -362,31 +362,31 @@ recipe_kill(
             mem_free( data_p );
         }
     }
-    if( list_kill( recipe_p->chapter ) != true )
+    if ( list_kill( recipe_p->chapter ) != true )
     {
         log_write( MID_FATAL, "recipe_kill",
                       "list_kill( recipe_p->chapter ) failed\n" );
     }
     //------------------------------------------------------------------------
-    if( list_query_count( recipe_p->ingredient ) > 0 )
+    if ( list_query_count( recipe_p->ingredient ) > 0 )
     {
         while( ( auip_p = list_get_first( recipe_p->ingredient ) ) != NULL )
         {
-            if( auip_p->amount_p != NULL )      mem_free( auip_p->amount_p );
-            if( auip_p->unit_p != NULL )        mem_free( auip_p->unit_p );
-            if( auip_p->ingredient_p != NULL )  mem_free( auip_p->ingredient_p );
-            if( auip_p->preparation_p != NULL ) mem_free( auip_p->preparation_p );
-            if( auip_p != NULL )                mem_free( auip_p );
+            if ( auip_p->amount_p != NULL )      mem_free( auip_p->amount_p );
+            if ( auip_p->unit_p != NULL )        mem_free( auip_p->unit_p );
+            if ( auip_p->ingredient_p != NULL )  mem_free( auip_p->ingredient_p );
+            if ( auip_p->preparation_p != NULL ) mem_free( auip_p->preparation_p );
+            if ( auip_p != NULL )                mem_free( auip_p );
             list_delete( recipe_p->ingredient, auip_p );
         }
     }
-    if( list_kill( recipe_p->ingredient ) != true )
+    if ( list_kill( recipe_p->ingredient ) != true )
     {
         log_write( MID_FATAL, "recipe_kill",
                       "list_kill( recipe_p->ingredient ) failed\n" );
     }
     //------------------------------------------------------------------------
-    if( list_query_count( recipe_p->directions ) > 0 )
+    if ( list_query_count( recipe_p->directions ) > 0 )
     {
         while( ( data_p = list_get_first( recipe_p->directions ) ) != NULL )
         {
@@ -394,13 +394,13 @@ recipe_kill(
             mem_free( data_p );
         }
     }
-    if( list_kill( recipe_p->directions ) != true )
+    if ( list_kill( recipe_p->directions ) != true )
     {
         log_write( MID_FATAL, "recipe_kill",
                       "list_kill( recipe_p->directions ) failed\n" );
     }
     //------------------------------------------------------------------------
-    if( list_query_count( recipe_p->notes ) > 0 )
+    if ( list_query_count( recipe_p->notes ) > 0 )
     {
         while( ( data_p = list_get_first( recipe_p->notes ) ) != NULL )
         {
@@ -408,7 +408,7 @@ recipe_kill(
             mem_free( data_p );
         }
     }
-    if( list_kill( recipe_p->notes ) != true )
+    if ( list_kill( recipe_p->notes ) != true )
     {
         log_write( MID_FATAL, "recipe_kill",
                       "list_kill( recipe_p->notes ) failed\n" );
@@ -509,12 +509,12 @@ recipe_fmt_auip(
         tmp_data_p = RECIPE__fmt_amount( tmp_data_p, local_amount, SIZE_AMOUNT );
 
         //  Format the Unit field
-        if( strlen( local_amount ) != 0 )
+        if ( strlen( local_amount ) != 0 )
         {
             tmp_data_p = RECIPE__fmt_unit( tmp_data_p, local_unit, SIZE_UNIT );
         }
 
-        if( recipe_format == RECIPE_FORMAT_MMF )
+        if ( recipe_format == RECIPE_FORMAT_MMF )
         {
             //  Format the Ingredient field
             save_data_p = tmp_data_p;
@@ -528,7 +528,7 @@ recipe_fmt_auip(
             tmp_data_p = RECIPE__fmt_preparation( tmp_data_p, local_prep,
                                                   mmf_length, SIZE_PREPARATION );
             tmp_data_p = save_data_p + MMF_INGRED_L;
-            if( tmp_data_p > ( auip_data_p + strlen( auip_data_p ) ) )
+            if ( tmp_data_p > ( auip_data_p + strlen( auip_data_p ) ) )
             {
                 tmp_data_p = ( auip_data_p + strlen( auip_data_p ) );
             }
@@ -547,10 +547,10 @@ recipe_fmt_auip(
 
 #if 0
         //  @Debug  20171025    This is just some temporary debug code
-        if(    ( strlen( local_amount )      >= SIZE_AMOUNT      )
-            || ( strlen( local_unit )        >= SIZE_UNIT        )
-            || ( strlen( local_ingred )  >= SIZE_INGREDIENT  )
-            || ( strlen( local_prep ) >= SIZE_PREPARATION ) )
+        if (    ( strlen( local_amount )      >= SIZE_AMOUNT      )
+             || ( strlen( local_unit )        >= SIZE_UNIT        )
+             || ( strlen( local_ingred )  >= SIZE_INGREDIENT  )
+             || ( strlen( local_prep ) >= SIZE_PREPARATION ) )
         {
             log_write( MID_WARNING, "recipe_fmt_auip",
                           "A: '%s' U: '%s' I: '%s' P: '%s'\n",
@@ -634,24 +634,24 @@ recipe_name_cleanup(
     right_paren_p = strrchr( name_p, ')' );
 
     //  Did we find a good set of both ?
-    if(    ( left_paren_p  == NULL )
-        || ( right_paren_p == NULL ) )
+    if (    ( left_paren_p  == NULL )
+         || ( right_paren_p == NULL ) )
     {
         //  NO:     '{' and '}'
         left_paren_p  = strrchr( name_p, '{' );
         right_paren_p = strrchr( name_p, '}' );
 
         //  Did we find a good set of both ?
-        if(    ( left_paren_p  == NULL )
-            || ( right_paren_p == NULL ) )
+        if (    ( left_paren_p  == NULL )
+             || ( right_paren_p == NULL ) )
         {
             //  NO:     '[' and ']'
             left_paren_p  = strrchr( name_p, '[' );
             right_paren_p = strrchr( name_p, ']' );
 
             //  Did we find a good set of both ?
-            if(    ( left_paren_p  == NULL )
-                || ( right_paren_p == NULL ) )
+            if (    ( left_paren_p  == NULL )
+                 || ( right_paren_p == NULL ) )
             {
                 //  NO:     '<' and '>'
                 left_paren_p  = strrchr( name_p, '<' );
@@ -661,9 +661,9 @@ recipe_name_cleanup(
     }
 
     //  Do we have both left and right ?
-    if(    ( left_paren_p  !=        NULL )
-        && ( right_paren_p !=        NULL )
-        && ( left_paren_p < right_paren_p )  )
+    if (    ( left_paren_p  !=        NULL )
+         && ( right_paren_p !=        NULL )
+         && ( left_paren_p < right_paren_p )  )
     {
         int                         ndx;
         int                         not_digit;
@@ -677,12 +677,12 @@ recipe_name_cleanup(
              ndx += 1 )
         {
             //  Is this a digit or Roman numeral ?
-            if(    ( isdigit( left_paren_p[ ndx ] ) ==  0  )
-                && ( isspace( left_paren_p[ ndx ] ) ==  0  )
-                && ( ispunct( left_paren_p[ ndx ] ) ==  0  )
-                && ( toupper( left_paren_p[ ndx ] ) != 'I' )
-                && ( toupper( left_paren_p[ ndx ] ) != 'V' )
-                && ( toupper( left_paren_p[ ndx ] ) != 'X' ) )
+            if (    ( isdigit( left_paren_p[ ndx ] ) ==  0  )
+                 && ( isspace( left_paren_p[ ndx ] ) ==  0  )
+                 && ( ispunct( left_paren_p[ ndx ] ) ==  0  )
+                 && ( toupper( left_paren_p[ ndx ] ) != 'I' )
+                 && ( toupper( left_paren_p[ ndx ] ) != 'V' )
+                 && ( toupper( left_paren_p[ ndx ] ) != 'X' ) )
             {
                 //  NO:     Set the flag
                 not_digit = true;
@@ -690,7 +690,7 @@ recipe_name_cleanup(
         }
 
         //  Were they all digits ?
-        if( not_digit == false )
+        if ( not_digit == false )
         {
             //  Step through the numeric string
             for( ndx = 0;
@@ -713,22 +713,22 @@ recipe_name_cleanup(
         altered = false;
 
         //  Is this a "JUNK" character ?
-        if(    ( name_p[ ndx ] == ' ' )     //  Space
-            || ( name_p[ ndx ] == '.' )     //  Period
-            || ( name_p[ ndx ] == '-' )     //  Dash
-            || ( name_p[ ndx ] == '*' )     //  Asterisk
-            || ( name_p[ ndx ] == '=' )     //  Equal
-            || ( name_p[ ndx ] == '#' )     //  Number Sign
-            || ( name_p[ ndx ] == '0' )     //  0
-            || ( name_p[ ndx ] == '1' )     //  1
-            || ( name_p[ ndx ] == '2' )     //  2
-            || ( name_p[ ndx ] == '3' )     //  3
-            || ( name_p[ ndx ] == '4' )     //  4
-            || ( name_p[ ndx ] == '5' )     //  5
-            || ( name_p[ ndx ] == '6' )     //  6
-            || ( name_p[ ndx ] == '7' )     //  7
-            || ( name_p[ ndx ] == '8' )     //  8
-            || ( name_p[ ndx ] == '9' ) )   //  9
+        if (    ( name_p[ ndx ] == ' ' )     //  Space
+             || ( name_p[ ndx ] == '.' )     //  Period
+             || ( name_p[ ndx ] == '-' )     //  Dash
+             || ( name_p[ ndx ] == '*' )     //  Asterisk
+             || ( name_p[ ndx ] == '=' )     //  Equal
+             || ( name_p[ ndx ] == '#' )     //  Number Sign
+             || ( name_p[ ndx ] == '0' )     //  0
+             || ( name_p[ ndx ] == '1' )     //  1
+             || ( name_p[ ndx ] == '2' )     //  2
+             || ( name_p[ ndx ] == '3' )     //  3
+             || ( name_p[ ndx ] == '4' )     //  4
+             || ( name_p[ ndx ] == '5' )     //  5
+             || ( name_p[ ndx ] == '6' )     //  6
+             || ( name_p[ ndx ] == '7' )     //  7
+             || ( name_p[ ndx ] == '8' )     //  8
+             || ( name_p[ ndx ] == '9' ) )   //  9
         {
             //  YES:    Dump it.
             name_p[ ndx ] = '\0';
@@ -736,7 +736,7 @@ recipe_name_cleanup(
         }
 
         //  Was anything altered during this pass ?
-        if( altered == false )
+        if ( altered == false )
         {
             //  NO:     That is the end.
             break;
@@ -750,19 +750,19 @@ recipe_name_cleanup(
     for( ndx = ( name_l - 1 ); ndx > 0; ndx -= 1 )
     {
         //  Is this Roman Numeral ?
-        if(    ( toupper( name_p[ ndx     ] ) == 'I' )
-            || ( toupper( name_p[ ndx     ] ) == 'V' )
-            || ( toupper( name_p[ ndx     ] ) == 'X' )
-            || (          name_p[ ndx     ]   == '(' )
-            || (          name_p[ ndx     ]   == ')' )
-            || (          name_p[ ndx     ]   == '[' )
-            || (          name_p[ ndx     ]   == ']' )
-            || (          name_p[ ndx     ]   == '<' )
-            || (          name_p[ ndx     ]   == '>' )
-            || (          name_p[ ndx     ]   == ' ' ) )
+        if (    ( toupper( name_p[ ndx     ] ) == 'I' )
+             || ( toupper( name_p[ ndx     ] ) == 'V' )
+             || ( toupper( name_p[ ndx     ] ) == 'X' )
+             || (          name_p[ ndx     ]   == '(' )
+             || (          name_p[ ndx     ]   == ')' )
+             || (          name_p[ ndx     ]   == '[' )
+             || (          name_p[ ndx     ]   == ']' )
+             || (          name_p[ ndx     ]   == '<' )
+             || (          name_p[ ndx     ]   == '>' )
+             || (          name_p[ ndx     ]   == ' ' ) )
         {
             //  YES:    Is this a 'Space' character ?
-            if( name_p[ ndx ] == ' ' )
+            if ( name_p[ ndx ] == ' ' )
             {
                 //  YES:    Truncate the line here
                 name_p[ ndx ] = '\0';
@@ -782,8 +782,8 @@ recipe_name_cleanup(
     for( ndx = ( name_l - 2 ); ndx > 0; ndx -= 1 )
     {
         //  Two spaces back-to-back ?
-        if(    ( name_p[ ndx     ]   == ' ' )
-            && ( name_p[ ndx + 1 ]   == ' ' ) )
+        if (    ( name_p[ ndx     ]   == ' ' )
+             && ( name_p[ ndx + 1 ]   == ' ' ) )
         {
             /**
              * @param   shift_ndx       File list key                       */
@@ -806,10 +806,10 @@ recipe_name_cleanup(
     for( ndx = 0; ndx < strlen( name_p ); ndx += 1 )
     {
         //  Two spaces back-to-back ?
-        if( name_p[ ndx ]   == '"' )
+        if ( name_p[ ndx ]   == '"' )
         {
             //  Is this the last character of the string ?
-            if( name_p[ ndx + 1 ] == '\0' )
+            if ( name_p[ ndx + 1 ] == '\0' )
             {
                 //  YES:    Just delete it
                 name_p[ ndx ] = '\0';
@@ -889,7 +889,7 @@ recipe_append(
      ************************************************************************/
 
     //  Is the list empty ?
-    if( list_query_count( list_p ) > 0 )
+    if ( list_query_count( list_p ) > 0 )
     {
         //  NO:     Lock the list for fast(er) access
         list_key = list_user_lock( list_p );
@@ -900,7 +900,7 @@ recipe_append(
              table_data_p = list_fget_next( list_p, table_data_p, list_key ) )
         {
             //  Is this a match for the new thing we are adding ?
-            if( strncmp( search_data, table_data_p, strlen( table_data_p ) ) == 0 )
+            if ( strncmp( search_data, table_data_p, strlen( table_data_p ) ) == 0 )
             {
                 //  YES:    This entry matches the new entry
                 break;
@@ -912,7 +912,7 @@ recipe_append(
     }
 
     //  Did we find a match on the list ?
-    if( table_data_p == NULL )
+    if ( table_data_p == NULL )
     {
         //  NO:     Cleanup the new entry before adding it to the list.
         memset( search_data, ' ', sizeof( search_data ) );
@@ -970,7 +970,7 @@ recipe_add_instructions(
      ************************************************************************/
 
     //  Is this the first thing for the instructions buffer ?
-    if( recipe_p->instructions == NULL )
+    if ( recipe_p->instructions == NULL )
     {
         //  YES:    Just use this buffer
         recipe_p->instructions = text_copy_to_new( data_p );
@@ -1047,7 +1047,7 @@ recipe_fmt_directions(
      ************************************************************************/
 
     //  Are we starting the directions for a new recipe ?
-    if( list_query_count( recipe_p->directions ) == 0 )
+    if ( list_query_count( recipe_p->directions ) == 0 )
     {
         //  YES:    Reset the first word flags
         fwos = true;
@@ -1055,13 +1055,13 @@ recipe_fmt_directions(
     }
 
     //  Is the first word of a new line ?
-    if( fwol == true )
+    if ( fwol == true )
     {
         //  YES:    Clear the formatted line buffer
         memset( formatted_text, '\0', sizeof( formatted_text ) );
     }
     else
-    if( list_query_count( recipe_p->directions ) != 0 )
+    if ( list_query_count( recipe_p->directions ) != 0 )
     {
         //  NO:     Get the saved partial line of text from the list.
         tmp_p = list_get_last( recipe_p->directions );
@@ -1081,7 +1081,7 @@ recipe_fmt_directions(
      ************************************************************************/
 
     //  Did we just get passed a blank line ?
-    if( text_is_blank_line( recipe_p->instructions ) == false )
+    if ( text_is_blank_line( recipe_p->instructions ) == false )
     {
         //  NO:     Clean the next word buffer
         memset( next_word, '\0', sizeof( next_word ) );
@@ -1100,13 +1100,13 @@ recipe_fmt_directions(
                  index < strlen( next_word );
                  index++ )
             {
-                if( next_word[ index ] != '-' )
+                if ( next_word[ index ] != '-' )
                 {
                     break;
                 }
             }
             //  Was it just a line of dashes ?
-            if( index == strlen( next_word ) )
+            if ( index == strlen( next_word ) )
             {
                 //  YES:    Ignore it..
                 continue;
@@ -1117,13 +1117,13 @@ recipe_fmt_directions(
              ****************************************************************/
 
              // Is this a numbered directions sequence ?
-            if(    ( fwos == true )
-                && ( isdigit( next_word[ 0 ] ) !=  0  )
-                && (    ( next_word[ 1 ]   == '.' )
-                     || ( next_word[ 1 ]   == ')' )
-                     || ( next_word[ 1 ]   == ']' )
-                     || ( next_word[ 1 ]   == ';' )
-                     || ( next_word[ 1 ]   == ':' ) ) )
+            if (    ( fwos == true )
+                 && ( isdigit( next_word[ 0 ] ) !=  0  )
+                 && (    ( next_word[ 1 ]   == '.' )
+                      || ( next_word[ 1 ]   == ')' )
+                      || ( next_word[ 1 ]   == ']' )
+                      || ( next_word[ 1 ]   == ';' )
+                      || ( next_word[ 1 ]   == ':' ) ) )
             {
                 //  YES:    Throw it away
                 next_word[ 0 ] = '\0';
@@ -1137,7 +1137,7 @@ recipe_fmt_directions(
              *  start of a new paragraph.
              ****************************************************************/
 
-            if( next_word[ 0 ] == '*' )
+            if ( next_word[ 0 ] == '*' )
             {
                 fwos = true;
                 fwol = false;
@@ -1148,7 +1148,7 @@ recipe_fmt_directions(
              *  write it and start a new line.
              ****************************************************************/
 
-            if(   ( strlen( formatted_text ) + strlen( next_word ) + 1 )
+            if (   ( strlen( formatted_text ) + strlen( next_word ) + 1 )
                 > MAX_LINE_L )
             {
                 tmp_p = text_copy_to_new( formatted_text );
@@ -1173,7 +1173,7 @@ recipe_fmt_directions(
                 fwol = true;
 
                 //  Is there anything in the formatted text buffer ?
-                if( strlen( formatted_text ) > 0 )
+                if ( strlen( formatted_text ) > 0 )
                 {
                     //  YES:    Copy it to an allocated buffer
                     tmp_p = text_copy_to_new( formatted_text );
@@ -1190,9 +1190,9 @@ recipe_fmt_directions(
              *  First Word of Sentence and First-Word-of-Line
              ****************************************************************/
 
-            if(    ( fwos == true )
-                && ( fwol == true )
-                && ( strlen( next_word ) > 0 ) )
+            if (    ( fwos == true )
+                 && ( fwol == true )
+                 && ( strlen( next_word ) > 0 ) )
             {
                 strncpy( formatted_text, next_word, MAX_LINE_L );
                 strncat( formatted_text, " ",
@@ -1207,9 +1207,9 @@ recipe_fmt_directions(
              ****************************************************************/
 
             else
-            if(    ( fwos == true  )
-                && ( fwol == false )
-                && ( strlen( next_word ) > 0 ) )
+            if (    ( fwos == true  )
+                 && ( fwol == false )
+                 && ( strlen( next_word ) > 0 ) )
             {
                 //  This is the first word of a new sentence but not
                 //  the first word of a new output line.  Test the
@@ -1243,9 +1243,9 @@ recipe_fmt_directions(
              ****************************************************************/
 
             else
-            if(    ( fwos == false )
-                && ( fwol == true  )
-                && ( strlen( next_word ) > 0 ) )
+            if (    ( fwos == false )
+                 && ( fwol == true  )
+                 && ( strlen( next_word ) > 0 ) )
             {
                 //  Append the new word to an existing sentence.
                 strncat( formatted_text, next_word, MAX_LINE_L );
@@ -1259,9 +1259,9 @@ recipe_fmt_directions(
              ****************************************************************/
 
             else
-            if(    ( fwos == false )
-                && ( fwol == false )
-                && ( strlen( next_word ) > 0 ) )
+            if (    ( fwos == false )
+                 && ( fwol == false )
+                 && ( strlen( next_word ) > 0 ) )
             {
                 //  Append the new word to an existing sentence.
                 strncat( formatted_text, next_word, MAX_LINE_L );
@@ -1271,7 +1271,7 @@ recipe_fmt_directions(
                 fwol = false;
             }
             //  Is this the end of a sentence ?
-            if( next_word[ strlen( next_word ) - 1 ] == '.' )
+            if ( next_word[ strlen( next_word ) - 1 ] == '.' )
             {
                 //  YES:    Insert an extra space in the formatted text.
                 strncat( formatted_text, " ",
@@ -1279,8 +1279,8 @@ recipe_fmt_directions(
                 fwos = true;
             }
             //  Is this a special ?
-            if(    ( fwos == true )
-                && ( formatted_text[ 0 ] == '*' ) )
+            if (    ( fwos == true )
+                 && ( formatted_text[ 0 ] == '*' ) )
             {
                 //  YES:    Make sure there is something in the current line
                 if ( text_is_blank_line( formatted_text ) == false )
@@ -1381,7 +1381,7 @@ recipe_fmt_notes(
      ************************************************************************/
 
     //  Are we starting the directions for a new recipe ?
-    if( list_query_count( recipe_p->notes ) == 0 )
+    if ( list_query_count( recipe_p->notes ) == 0 )
     {
         //  YES:    Reset the first word flags
         fwos = true;
@@ -1389,13 +1389,13 @@ recipe_fmt_notes(
     }
 
     //  Is the first word of a new line ?
-    if( fwol == true )
+    if ( fwol == true )
     {
         //  YES:    Clear the formatted line buffer
         memset( formatted_text, '\0', sizeof( formatted_text ) );
     }
     else
-    if( list_query_count( recipe_p->notes ) != 0 )
+    if ( list_query_count( recipe_p->notes ) != 0 )
     {
         //  NO:     Get the saved partial line of text from the list.
         tmp_p = list_get_last( recipe_p->notes );
@@ -1415,7 +1415,7 @@ recipe_fmt_notes(
      ************************************************************************/
 
     //  Did we just get passed a blank line ?
-    if( text_is_blank_line( data_p ) == false )
+    if ( text_is_blank_line( data_p ) == false )
     {
         //  NO:     Clean the next word buffer
         memset( next_word, '\0', sizeof( next_word ) );
@@ -1434,13 +1434,13 @@ recipe_fmt_notes(
                  index < strlen( next_word );
                  index++ )
             {
-                if( next_word[ index ] != '-' )
+                if ( next_word[ index ] != '-' )
                 {
                     break;
                 }
             }
             //  Was it just a line of dashes ?
-            if( index == strlen( next_word ) )
+            if ( index == strlen( next_word ) )
             {
                 //  YES:    Ignore it..
                 continue;
@@ -1451,13 +1451,13 @@ recipe_fmt_notes(
              ****************************************************************/
 
              // Is this a numbered directions sequence ?
-            if(    ( fwos == true )
-                && ( isdigit( next_word[ 0 ] ) !=  0  )
-                && (    ( next_word[ 1 ]   == '.' )
-                     || ( next_word[ 1 ]   == ')' )
-                     || ( next_word[ 1 ]   == ']' )
-                     || ( next_word[ 1 ]   == ';' )
-                     || ( next_word[ 1 ]   == ':' ) ) )
+            if (    ( fwos == true )
+                 && ( isdigit( next_word[ 0 ] ) !=  0  )
+                 && (    ( next_word[ 1 ]   == '.' )
+                      || ( next_word[ 1 ]   == ')' )
+                      || ( next_word[ 1 ]   == ']' )
+                      || ( next_word[ 1 ]   == ';' )
+                      || ( next_word[ 1 ]   == ':' ) ) )
             {
                 //  YES:    Throw it away
                 next_word[ 0 ] = '\0';
@@ -1471,7 +1471,7 @@ recipe_fmt_notes(
              *  start of a new paragraph.
              ****************************************************************/
 
-            if( next_word[ 0 ] == '*' )
+            if ( next_word[ 0 ] == '*' )
             {
                 fwos = true;
                 fwol = false;
@@ -1482,8 +1482,8 @@ recipe_fmt_notes(
              *  write it and start a new line.
              ****************************************************************/
 
-            if(   ( strlen( formatted_text ) + strlen( next_word ) + 1 )
-                >= MAX_LINE_L )
+            if (   ( strlen( formatted_text ) + strlen( next_word ) + 1 )
+                 >= MAX_LINE_L )
             {
 
                 tmp_p = text_copy_to_new( formatted_text );
@@ -1499,9 +1499,9 @@ recipe_fmt_notes(
              *  First Word of Sentence and First-Word-of-Line
              ****************************************************************/
 
-            if(    ( fwos == true )
-                && ( fwol == true )
-                && ( strlen( next_word ) > 0 ) )
+            if (    ( fwos == true )
+                 && ( fwol == true )
+                 && ( strlen( next_word ) > 0 ) )
             {
                 strncpy( formatted_text, next_word, MAX_LINE_L );
                 strncat( formatted_text, " ",
@@ -1516,9 +1516,9 @@ recipe_fmt_notes(
              ****************************************************************/
 
             else
-            if(    ( fwos == true  )
-                && ( fwol == false )
-                && ( strlen( next_word ) > 0 ) )
+            if (    ( fwos == true  )
+                 && ( fwol == false )
+                 && ( strlen( next_word ) > 0 ) )
             {
                 //  This is the first word of a new sentence but not
                 //  the first word of a new output line.  Test the
@@ -1552,9 +1552,9 @@ recipe_fmt_notes(
              ****************************************************************/
 
             else
-            if(    ( fwos == false )
-                && ( fwol == true  )
-                && ( strlen( next_word ) > 0 ) )
+            if (    ( fwos == false )
+                 && ( fwol == true  )
+                 && ( strlen( next_word ) > 0 ) )
             {
                 //  Append the new word to an existing sentence.
                 strncat( formatted_text, next_word, MAX_LINE_L );
@@ -1568,9 +1568,9 @@ recipe_fmt_notes(
              ****************************************************************/
 
             else
-            if(    ( fwos == false )
-                && ( fwol == false )
-                && ( strlen( next_word ) > 0 ) )
+            if (    ( fwos == false )
+                 && ( fwol == false )
+                 && ( strlen( next_word ) > 0 ) )
             {
                 //  Append the new word to an existing sentence.
                 strncat( formatted_text, next_word, MAX_LINE_L );
@@ -1580,8 +1580,8 @@ recipe_fmt_notes(
                 fwol = false;
             }
             //  Is this the end of a sentence ?
-            if(    ( next_word[ strlen( next_word ) - 1 ] == '.' )
-                || ( next_word[ strlen( next_word ) - 1 ] == ':' ) )
+            if (    ( next_word[ strlen( next_word ) - 1 ] == '.' )
+                 || ( next_word[ strlen( next_word ) - 1 ] == ':' ) )
             {
                 //  YES:    Insert an extra space in the formatted text.
                 strncat( formatted_text, " ",
@@ -1589,8 +1589,8 @@ recipe_fmt_notes(
                 fwos = true;
             }
             //  Is this a special ?
-            if(    ( fwos == true )
-                && ( formatted_text[ 0 ] == '*' ) )
+            if (    ( fwos == true )
+                 && ( formatted_text[ 0 ] == '*' ) )
             {
                 //  YES:    Make sure there is something in the current line
                 if ( text_is_blank_line( formatted_text ) == false )

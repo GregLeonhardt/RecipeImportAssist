@@ -159,14 +159,14 @@ decode_bof(
 
         //--------------------------------------------------------------------
         //  -= Exported from BigOven =- ?
-        if( DECODE_BOF__start( list_data_p ) == true )
+        if ( DECODE_BOF__start( list_data_p ) == true )
         {
             //  YES:    Change the decode state
             bof_state = BOF_DS_START;
         }
         //--------------------------------------------------------------------
         //  Recipe By: ?
-        if( strncmp( tmp_data_p, BOF_BY, BOF_BY_L  ) == 0 )
+        if ( strncmp( tmp_data_p, BOF_BY, BOF_BY_L  ) == 0 )
         {
             //  YES:    Change the decode state
             bof_state = BOF_DS_BY;
@@ -174,7 +174,7 @@ decode_bof(
         //--------------------------------------------------------------------
         //  Serving Size: ?
         else
-        if( strncmp( tmp_data_p, BOF_SERVING, BOF_SERVING_L  ) == 0 )
+        if ( strncmp( tmp_data_p, BOF_SERVING, BOF_SERVING_L  ) == 0 )
         {
             //  YES:    Change the decode state
             bof_state = BOF_DS_SERVING;
@@ -182,7 +182,7 @@ decode_bof(
         //--------------------------------------------------------------------
         //  Cuisine: ?
         else
-        if( strncmp( tmp_data_p, BOF_CUISINE, BOF_CUISINE_L  ) == 0 )
+        if ( strncmp( tmp_data_p, BOF_CUISINE, BOF_CUISINE_L  ) == 0 )
         {
             //  YES:    Change the decode state
             bof_state = BOF_DS_CUISINE;
@@ -190,7 +190,7 @@ decode_bof(
         //--------------------------------------------------------------------
         //  Main Ingredient: ?
         else
-        if( strncmp( tmp_data_p, BOF_MAIN, BOF_MAIN_L  ) == 0 )
+        if ( strncmp( tmp_data_p, BOF_MAIN, BOF_MAIN_L  ) == 0 )
         {
             //  YES:    Change the decode state
             bof_state = BOF_DS_MAIN;
@@ -198,7 +198,7 @@ decode_bof(
         //--------------------------------------------------------------------
         //  Categories: ?
         else
-        if( strncmp( tmp_data_p, BOF_CATEGORY, BOF_CATEGORY_L  ) == 0 )
+        if ( strncmp( tmp_data_p, BOF_CATEGORY, BOF_CATEGORY_L  ) == 0 )
         {
             //  YES:    Change the decode state
             bof_state = BOF_DS_CATEGORY;
@@ -206,7 +206,7 @@ decode_bof(
         //--------------------------------------------------------------------
         //  -= Ingredients =- ?
         else
-        if( strncmp( tmp_data_p, BOF_INGREDIENTS, BOF_INGREDIENTS_L  ) == 0 )
+        if ( strncmp( tmp_data_p, BOF_INGREDIENTS, BOF_INGREDIENTS_L  ) == 0 )
         {
             //  YES:    Change the decode state
             bof_state = BOF_DS_INGREDIENTS;
@@ -214,7 +214,7 @@ decode_bof(
         //--------------------------------------------------------------------
         //  -= Instructions =- ?
         else
-        if( strncmp( tmp_data_p, BOF_INSTRUCTIONS, BOF_INSTRUCTIONS_L  ) == 0 )
+        if ( strncmp( tmp_data_p, BOF_INSTRUCTIONS, BOF_INSTRUCTIONS_L  ) == 0 )
         {
             //  YES:    Change the decode state
             bof_state = BOF_DS_INSTRUCTIONS;
@@ -222,7 +222,7 @@ decode_bof(
         //--------------------------------------------------------------------
         //  End-of-Recipe ?
         else
-        if( DECODE_BOF__pre_end( tmp_data_p ) == true )
+        if ( DECODE_BOF__pre_end( tmp_data_p ) == true )
         {
             //  YES:    Change the decode state
             bof_state = BOF_DS_END;
@@ -230,7 +230,7 @@ decode_bof(
         //--------------------------------------------------------------------
         //  End-of-Recipe ?
         else
-        if( DECODE_BOF__end( tmp_data_p ) == true )
+        if ( DECODE_BOF__end( tmp_data_p ) == true )
         {
             //  YES:    Change the decode state
             bof_state = BOF_DS_NEXT_SEGMENT;
@@ -259,7 +259,7 @@ decode_bof(
             case BOF_DS_TITLE:
             {
                 //  Locate and process the recipe title
-                if( DECODE_BOF__title( recipe_p, list_data_p ) == true )
+                if ( DECODE_BOF__title( recipe_p, list_data_p ) == true )
                 {
                     //  Change to Title Case
                     text_title_case( recipe_p->name, recipe_p->name );
@@ -280,7 +280,7 @@ decode_bof(
             case BOF_DS_BY:
             {
                 //  Locate and process the recipe title
-                if( DECODE_BOF__recipe_by( recipe_p, list_data_p ) == true )
+                if ( DECODE_BOF__recipe_by( recipe_p, list_data_p ) == true )
                 {
                     //  Change recipe Decode State
                     bof_state = BOF_DS_NEXT_SEGMENT;
@@ -294,7 +294,7 @@ decode_bof(
             case BOF_DS_SERVING:
             {
                 //  Locate and process the recipe title
-                if( DECODE_BOF__srv_size( recipe_p, list_data_p ) == true )
+                if ( DECODE_BOF__srv_size( recipe_p, list_data_p ) == true )
                 {
                     //  Change recipe Decode State
                     bof_state = BOF_DS_NEXT_SEGMENT;
@@ -312,7 +312,7 @@ decode_bof(
             case BOF_DS_CATEGORY:
             {
                 //  Locate and process the recipe title
-                if( DECODE_BOF__categories( recipe_p, list_data_p ) == true )
+                if ( DECODE_BOF__categories( recipe_p, list_data_p ) == true )
                 {
                     //  Change recipe Decode State
                     bof_state = BOF_DS_NEXT_SEGMENT;
@@ -337,7 +337,7 @@ decode_bof(
             case BOF_DS_AUIP:
             {
                 //  Locate and process the recipe title
-                if( DECODE_BOF__auip( recipe_p, list_data_p ) != true )
+                if ( DECODE_BOF__auip( recipe_p, list_data_p ) != true )
                 {
                     //  Change recipe Decode State
                     bof_state = BOF_DS_NEXT_SEGMENT;
@@ -362,7 +362,7 @@ decode_bof(
             case BOF_DS_DIRECTIONS:
             {
                 //  Locate and process the recipe title
-                if( DECODE_BOF__directions( recipe_p, list_data_p ) != true )
+                if ( DECODE_BOF__directions( recipe_p, list_data_p ) != true )
                 {
                     //  Change recipe Decode State
                     bof_state = BOF_DS_NEXT_SEGMENT;
@@ -414,7 +414,7 @@ decode_bof(
     list_user_unlock( bof_list_p, list_lock_key );
 
     //  Is there anything still on the list ?
-    if( list_query_count( bof_list_p ) != 0 )
+    if ( list_query_count( bof_list_p ) != 0 )
     {
         //  YES:    There shouldn't be!
         log_write( MID_FATAL, "decode_bof",

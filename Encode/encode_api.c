@@ -125,7 +125,7 @@ encode_thread(
         recipe_p = queue_get_payload( encode_queue_id );
 
         //  Did we get a new recipe to encode ?
-        if( recipe_p != NULL )
+        if ( recipe_p != NULL )
         {
             //  YES:    Go encode it.
 //          encode_mmf( recipe_p );     //  Does Not Exist

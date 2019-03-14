@@ -131,17 +131,17 @@ decode_html(
          list_data_p = list_get_next( html_list_p, list_data_p ) )
     {
         //  Will the new buffer fit into the HTML decode buffer ?
-        if( ( strlen( decode_data_p ) + strlen( list_data_p ) ) < ( DECODE_BUF_L + 10 ) )
+        if ( ( strlen( decode_data_p ) + strlen( list_data_p ) ) < ( DECODE_BUF_L + 10 ) )
         {
             //  YES:    Is there an HTML tag here ?
-            if( strstr( list_data_p, "<html>" ) != NULL )
+            if ( strstr( list_data_p, "<html>" ) != NULL )
             {
                 //  YES:    Set the HTML found flag
                 html_found = true;
             }
 
             //  Is there an HTML end tag here ?
-            if( strstr( list_data_p, "</html>" ) != NULL )
+            if ( strstr( list_data_p, "</html>" ) != NULL )
             {
                 //  YES:    Clear the HTML found flag
                 html_found = false;
@@ -151,7 +151,7 @@ decode_html(
             strcat( decode_data_p, list_data_p );
 
             //  Have we seen an HTML tag ?
-            if( html_found != true )
+            if ( html_found != true )
             {
                 //  NO:     Still in the header; add a carriage return.
                 strcat( decode_data_p, "<br>" );

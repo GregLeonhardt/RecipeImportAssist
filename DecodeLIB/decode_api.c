@@ -131,42 +131,42 @@ decode_save_chapter(
     if ( data_p != NULL )
     {
         //  Appliance ?
-        if( strncmp( APPLIANCE, data_p, APPLIANCE_L ) == 0 )
+        if ( strncmp( APPLIANCE, data_p, APPLIANCE_L ) == 0 )
         {
             recipe_append( recipe_p->appliance,
                            ( data_p + APPLIANCE_L ) );
         }
         //  Diet ?
         else
-        if( strncmp( DIET, data_p, DIET_L ) == 0 )
+        if ( strncmp( DIET, data_p, DIET_L ) == 0 )
         {
             recipe_append( recipe_p->diet,
                            ( data_p + DIET_L ) );
         }
         //  Course ?
         else
-        if( strncmp( COURSE, data_p, COURSE_L ) == 0 )
+        if ( strncmp( COURSE, data_p, COURSE_L ) == 0 )
         {
             recipe_append( recipe_p->course,
                            ( data_p + COURSE_L ) );
         }
         //  Cuisine ?
         else
-        if( strncmp( CUISINE, data_p, CUISINE_L ) == 0 )
+        if ( strncmp( CUISINE, data_p, CUISINE_L ) == 0 )
         {
             recipe_append( recipe_p->cuisine,
                            ( data_p + CUISINE_L ) );
         }
         //  Occasion ?
         else
-        if( strncmp( OCCASION, data_p, OCCASION_L ) == 0 )
+        if ( strncmp( OCCASION, data_p, OCCASION_L ) == 0 )
         {
             recipe_append( recipe_p->occasion,
                            ( data_p + OCCASION_L ) );
         }
         //  Category ?
         else
-        if( strncmp( CATEGORY, data_p, CATEGORY_L ) == 0 )
+        if ( strncmp( CATEGORY, data_p, CATEGORY_L ) == 0 )
         {
             recipe_append( recipe_p->chapter,
                            ( data_p + CATEGORY_L ) );
@@ -212,21 +212,21 @@ decode_copy_info_to_recipe(
 
     //------------------------------------------------------------------------
     //  Source:
-    if( strlen( source_info_p->g_from ) > 0 )
+    if ( strlen( source_info_p->g_from ) > 0 )
     {
         //  YES:    Save to the recipe
         recipe_p->group_from = text_copy_to_new( source_info_p->g_from );
     }
     //------------------------------------------------------------------------
     //  Subject:
-    if( strlen( source_info_p->g_subject ) > 0 )
+    if ( strlen( source_info_p->g_subject ) > 0 )
     {
         //  YES:    Save to the recipe
         recipe_p->group_subject = text_copy_to_new( source_info_p->g_subject );
     }
     //------------------------------------------------------------------------
     //  Date:
-    if( strlen( source_info_p->g_datetime ) > 0 )
+    if ( strlen( source_info_p->g_datetime ) > 0 )
     {
         //  YES:    Save to the recipe
         recipe_p->group_date = text_copy_to_new( source_info_p->g_datetime );
@@ -239,21 +239,21 @@ decode_copy_info_to_recipe(
 
     //------------------------------------------------------------------------
     //  Posted By:
-    if( strlen( source_info_p->e_from ) > 0 )
+    if ( strlen( source_info_p->e_from ) > 0 )
     {
         //  YES:    Save to the recipe
         recipe_p->posted_by = text_copy_to_new( source_info_p->e_from );
     }
     //------------------------------------------------------------------------
     //  Posted Subject:
-    if( strlen( source_info_p->e_subject ) > 0 )
+    if ( strlen( source_info_p->e_subject ) > 0 )
     {
         //  YES:    Save to the recipe
         recipe_p->posted_subject = text_copy_to_new( source_info_p->e_subject );
     }
     //------------------------------------------------------------------------
     //  Posted Date:
-    if( strlen( source_info_p->e_datetime ) > 0 )
+    if ( strlen( source_info_p->e_datetime ) > 0 )
     {
         //  YES:    Save to the recipe
         recipe_p->posted_date = text_copy_to_new( source_info_p->e_datetime );
@@ -266,28 +266,28 @@ decode_copy_info_to_recipe(
 
     //------------------------------------------------------------------------
     //  Directory Name:
-    if( strlen( source_info_p->f_file_name ) > 0 )
+    if ( strlen( source_info_p->f_file_name ) > 0 )
     {
         //  YES:    Save to the recipe
         recipe_p->dir_name = text_copy_to_new( source_info_p->f_dir_name );
     }
     //------------------------------------------------------------------------
     //  File Name:
-    if( strlen( source_info_p->f_file_name ) > 0 )
+    if ( strlen( source_info_p->f_file_name ) > 0 )
     {
         //  YES:    Save to the recipe
         recipe_p->file_name = text_copy_to_new( source_info_p->f_file_name );
     }
     //------------------------------------------------------------------------
     //  File Creation Data/Time:
-    if( strlen( source_info_p->f_date_time ) > 0 )
+    if ( strlen( source_info_p->f_date_time ) > 0 )
     {
         //  YES:    Save to the recipe
         recipe_p->file_date_time = text_copy_to_new( source_info_p->f_date_time );
     }
     //------------------------------------------------------------------------
     //  File Size:
-    if( strlen( source_info_p->f_date_time ) > 0 )
+    if ( strlen( source_info_p->f_date_time ) > 0 )
     {
         //  YES:    Save to the recipe
         recipe_p->file_size = text_copy_to_new( source_info_p->f_file_size );
@@ -351,15 +351,15 @@ decode_end_of_recipe(
 
 
     //  Is this something that can end a recipe ?
-    if(    ( email_is_start(       data_p ) == true )
-        || ( email_is_group_break( data_p ) == true )
-        || ( decode_mmf_start(     data_p ) == true )
-        || ( decode_mx2_start(     data_p ) == true )
-        || ( decode_mxp_start(     data_p ) == true ) )
+    if (    ( email_is_start(       data_p ) == true )
+         || ( email_is_group_break( data_p ) == true )
+         || ( decode_mmf_start(     data_p ) == true )
+         || ( decode_mx2_start(     data_p ) == true )
+         || ( decode_mxp_start(     data_p ) == true ) )
 #else
     //  Is this something that can end a recipe ?
-    if(    ( email_is_start(       data_p ) == true )
-        || ( email_is_group_break( data_p ) == true ) )
+    if (    ( email_is_start(       data_p ) == true )
+         || ( email_is_group_break( data_p ) == true ) )
 #endif
     {
         //  YES:    Change the return code
@@ -596,7 +596,7 @@ decode_thread(
         ********************************************************************/
 
         //  Is the data list empty like it is supposed to be ?
-        if( list_query_count( decode_data_p->thread_list_p ) != 0 )
+        if ( list_query_count( decode_data_p->thread_list_p ) != 0 )
         {
             //  YES:    Something bad happened.
             log_write( MID_FATAL, "decode_thread",
@@ -650,13 +650,13 @@ decode_finalize(
      ************************************************************************/
 
     //-----------------------------------------------------------------------
-    if( recipe_p->name == NULL )
+    if ( recipe_p->name == NULL )
     {
         //  Create a default string
         recipe_p->name = text_copy_to_new( "No Recipe Name Found" );
     }
     else
-    if( text_is_blank_line( recipe_p->name ) == true )
+    if ( text_is_blank_line( recipe_p->name ) == true )
     {
         //  Release the old buffer
         mem_free( recipe_p->name );
@@ -665,13 +665,13 @@ decode_finalize(
         recipe_p->name = text_copy_to_new( "No Recipe Name Found" );
     }
     //-----------------------------------------------------------------------
-    if( recipe_p->author == NULL )
+    if ( recipe_p->author == NULL )
     {
         //  Create a default string
         recipe_p->author = text_copy_to_new( "UNKNOWN" );
     }
     else
-    if( text_is_blank_line( recipe_p->author ) == true )
+    if ( text_is_blank_line( recipe_p->author ) == true )
     {
         //  Release the old buffer
         mem_free( recipe_p->author );
@@ -680,7 +680,7 @@ decode_finalize(
         recipe_p->author = text_copy_to_new( "UNKNOWN" );
     }
     //-----------------------------------------------------------------------
-    if( recipe_p->copyright == NULL )
+    if ( recipe_p->copyright == NULL )
     {
         //  Create a default string
         recipe_p->copyright = text_copy_to_new( "Copyright (c) and related "
@@ -688,7 +688,7 @@ decode_finalize(
                 "https://creativecommons.org/licenses/by-sa/4.0/" );
     }
     else
-    if( text_is_blank_line( recipe_p->copyright ) == true )
+    if ( text_is_blank_line( recipe_p->copyright ) == true )
     {
         //  Release the old buffer
         mem_free( recipe_p->copyright );
@@ -733,7 +733,7 @@ decode_finalize(
      *  Function Exit
      ************************************************************************/
 
-#if( THREADING == false )
+#if ( THREADING == false )
     encode_rxf( recipe_p );
 #else
     queue_put_payload( encode_queue_id, recipe_p );

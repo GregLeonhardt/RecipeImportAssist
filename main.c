@@ -187,8 +187,8 @@ command_line(
     in_dir_name_p = get_cmd_line_parm( argc, argv, "id" );
 
     //  DEBUG DEFAULTS
-    if(    ( in_file_name_p       == NULL )
-        && ( in_dir_name_p        == NULL ) )
+    if (    ( in_file_name_p       == NULL )
+         && ( in_dir_name_p        == NULL ) )
     {
 //      in_file_name_p       = "../samples/1996.mxp";
 //      in_file_name_p       = "../samples/Alacarte.mxp";
@@ -203,16 +203,16 @@ command_line(
      ************************************************************************/
 
     //  Is there an Input File name or an Input Directory name ?
-    if(    ( in_file_name_p == NULL )
-        && ( in_dir_name_p  == NULL ) )
+    if (    ( in_file_name_p == NULL )
+         && ( in_dir_name_p  == NULL ) )
     {
         //  NO:     Write some help information
         help( NO_IF_OR_ID );
     }
 
     //  Is there both an Input File name and an Input Directory name ?
-    if(    ( in_file_name_p != NULL )
-        && ( in_dir_name_p  != NULL ) )
+    if (    ( in_file_name_p != NULL )
+         && ( in_dir_name_p  != NULL ) )
     {
         //  YES:    Write some help information
         help( BOTH_IF_AND_ID );
@@ -223,7 +223,7 @@ command_line(
      ************************************************************************/
 
     //  Is there an Input File name ?
-    if( in_file_name_p != NULL )
+    if ( in_file_name_p != NULL )
     {
         //  YES:    Log it.
         log_write( MID_DEBUG_0, "main",
@@ -234,7 +234,7 @@ command_line(
     }
 
     //  Is there an Input File name ?
-    if( in_dir_name_p != NULL )
+    if ( in_dir_name_p != NULL )
     {
         //  YES:    Log it.
         log_write( MID_DEBUG_0, "main",
@@ -341,7 +341,7 @@ main(
         recipe_id_p = store_get( "RECIPE_ID" );
 
         //  Success ?
-        if( recipe_id_p == NULL )
+        if ( recipe_id_p == NULL )
         {
             //  NO:     Create it.
             snprintf( (char*)recipe_id, sizeof( recipe_id ), "%016d", 0 );
@@ -378,7 +378,7 @@ main(
     main_rc = queue_init( );
 
     //  Was the queue initialization successful ?
-    if( main_rc != QUEUE_RC_SUCCESS )
+    if ( main_rc != QUEUE_RC_SUCCESS )
     {
         //  NO:     Something bad happened.
         log_write( MID_FATAL, "main",
@@ -399,7 +399,7 @@ main(
     main_rc = xlate_init( );
 
     //  Was the queue initialization successful ?
-    if( main_rc != true )
+    if ( main_rc != true )
     {
         //  NO:     Something bad happened.
         log_write( MID_FATAL, "main",
@@ -445,7 +445,7 @@ main(
     file_list_p = list_new( );
 
     //  Are we processing a directory ?
-    if( in_dir_name_p != NULL )
+    if ( in_dir_name_p != NULL )
     {
         //  Unzip all "*.zip" files
         file_unzip( in_dir_name_p );
@@ -479,9 +479,9 @@ main(
          file_info_p = list_get_next( file_list_p, file_info_p ) )
     {
         //  Will the fully qualified file name will fit in the buffer ?
-        if(     (   ( strlen( file_info_p->dir_name  ) )
-                  + ( strlen( file_info_p->file_name ) ) )
-             >= ( sizeof( input_file_name ) ) )
+        if (     (   ( strlen( file_info_p->dir_name  ) )
+                   + ( strlen( file_info_p->file_name ) ) )
+              >= ( sizeof( input_file_name ) ) )
         {
             //  NO:     This is bad..
             log_write( MID_WARNING, "main",
@@ -502,7 +502,7 @@ main(
         read_data_p = strrchr( input_file_name, '.' );
 
         //  Is there one ?
-        if( read_data_p != NULL )
+        if ( read_data_p != NULL )
         {
             //  YES:    Copy the file extention to a new buffer
             strncpy( extention, ++read_data_p, sizeof( extention ) );
@@ -510,59 +510,59 @@ main(
             //  Make the file extention all lowercase
             text_to_lowercase( extention );
 
-            if(    ( strncmp( extention, "discarded_data",      14 ) == 0 )
-                || ( strncmp( extention, "unformatted_recipes", 19 ) == 0 )
-                || ( strncmp( extention, "bat",                  3 ) == 0 )
-                || ( strncmp( extention, "bmp",                  3 ) == 0 )
-                || ( strncmp( extention, "ccf",                  3 ) == 0 )
-                || ( strncmp( extention, "cdx",                  3 ) == 0 )
-                || ( strncmp( extention, "clb",                  3 ) == 0 )
-                || ( strncmp( extention, "cgi",                  3 ) == 0 )
-                || ( strncmp( extention, "cli",                  3 ) == 0 )
-                || ( strncmp( extention, "cwt",                  3 ) == 0 )
-                || ( strncmp( extention, "dbf",                  3 ) == 0 )
-                || ( strncmp( extention, "dbt",                  3 ) == 0 )
-                || ( strncmp( extention, "diz",                  3 ) == 0 )
-                || ( strncmp( extention, "dll",                  3 ) == 0 )
-                || ( strncmp( extention, "dtd",                  3 ) == 0 )
-                || ( strncmp( extention, "dvr",                  3 ) == 0 )
-                || ( strncmp( extention, "ex_",                  3 ) == 0 )
-                || ( strncmp( extention, "exe",                  3 ) == 0 )
-                || ( strncmp( extention, "gcf",                  3 ) == 0 )
-                || ( strncmp( extention, "ged",                  3 ) == 0 )
-                || ( strncmp( extention, "gif",                  3 ) == 0 )
-                || ( strncmp( extention, "idx",                  3 ) == 0 )
-                || ( strncmp( extention, "ima",                  3 ) == 0 )
-                || ( strncmp( extention, "imx",                  3 ) == 0 )
-                || ( strncmp( extention, "ini",                  3 ) == 0 )
-                || ( strncmp( extention, "jpg",                  3 ) == 0 )
-                || ( strncmp( extention, "mc2",                  3 ) == 0 )
-                || ( strncmp( extention, "mcd",                  3 ) == 0 )
-                || ( strncmp( extention, "mcf",                  3 ) == 0 )
-                || ( strncmp( extention, "mcx",                  3 ) == 0 )
-                || ( strncmp( extention, "mnu",                  3 ) == 0 )
-                || ( strncmp( extention, "mrf",                  3 ) == 0 )
-                || ( strncmp( extention, "ndx",                  3 ) == 0 )
-                || ( strncmp( extention, "otm",                  3 ) == 0 )
-                || ( strncmp( extention, "out",                  3 ) == 0 )
-                || ( strncmp( extention, "pdf",                  3 ) == 0 )
-                || ( strncmp( extention, "pgo",                  3 ) == 0 )
-                || ( strncmp( extention, "png",                  3 ) == 0 )
-                || ( strncmp( extention, "raw",                  3 ) == 0 )
-                || ( strncmp( extention, "rdf",                  3 ) == 0 )
-                || ( strncmp( extention, "rea",                  3 ) == 0 )
-                || ( strncmp( extention, "rli",                  3 ) == 0 )
-                || ( strncmp( extention, "rp_",                  3 ) == 0 )
-                || ( strncmp( extention, "rxf",                  3 ) == 0 )
-                || ( strncmp( extention, "sql",                  3 ) == 0 )
-                || ( strncmp( extention, "tag",                  3 ) == 0 )
-                || ( strncmp( extention, "tx_",                  3 ) == 0 )
-                || ( strncmp( extention, "vb_",                  3 ) == 0 )
-                || ( strncmp( extention, "wht",                  3 ) == 0 )
-                || ( strncmp( extention, "xml",                  3 ) == 0 )
-                || ( strncmp( extention, "xsi",                  3 ) == 0 )
-                || ( strncmp( extention, "yml",                  3 ) == 0 )
-                || ( strncmp( extention, "END",                  3 ) == 0 ) )
+            if (    ( strncmp( extention, "discarded_data",      14 ) == 0 )
+                 || ( strncmp( extention, "unformatted_recipes", 19 ) == 0 )
+                 || ( strncmp( extention, "bat",                  3 ) == 0 )
+                 || ( strncmp( extention, "bmp",                  3 ) == 0 )
+                 || ( strncmp( extention, "ccf",                  3 ) == 0 )
+                 || ( strncmp( extention, "cdx",                  3 ) == 0 )
+                 || ( strncmp( extention, "clb",                  3 ) == 0 )
+                 || ( strncmp( extention, "cgi",                  3 ) == 0 )
+                 || ( strncmp( extention, "cli",                  3 ) == 0 )
+                 || ( strncmp( extention, "cwt",                  3 ) == 0 )
+                 || ( strncmp( extention, "dbf",                  3 ) == 0 )
+                 || ( strncmp( extention, "dbt",                  3 ) == 0 )
+                 || ( strncmp( extention, "diz",                  3 ) == 0 )
+                 || ( strncmp( extention, "dll",                  3 ) == 0 )
+                 || ( strncmp( extention, "dtd",                  3 ) == 0 )
+                 || ( strncmp( extention, "dvr",                  3 ) == 0 )
+                 || ( strncmp( extention, "ex_",                  3 ) == 0 )
+                 || ( strncmp( extention, "exe",                  3 ) == 0 )
+                 || ( strncmp( extention, "gcf",                  3 ) == 0 )
+                 || ( strncmp( extention, "ged",                  3 ) == 0 )
+                 || ( strncmp( extention, "gif",                  3 ) == 0 )
+                 || ( strncmp( extention, "idx",                  3 ) == 0 )
+                 || ( strncmp( extention, "ima",                  3 ) == 0 )
+                 || ( strncmp( extention, "imx",                  3 ) == 0 )
+                 || ( strncmp( extention, "ini",                  3 ) == 0 )
+                 || ( strncmp( extention, "jpg",                  3 ) == 0 )
+                 || ( strncmp( extention, "mc2",                  3 ) == 0 )
+                 || ( strncmp( extention, "mcd",                  3 ) == 0 )
+                 || ( strncmp( extention, "mcf",                  3 ) == 0 )
+                 || ( strncmp( extention, "mcx",                  3 ) == 0 )
+                 || ( strncmp( extention, "mnu",                  3 ) == 0 )
+                 || ( strncmp( extention, "mrf",                  3 ) == 0 )
+                 || ( strncmp( extention, "ndx",                  3 ) == 0 )
+                 || ( strncmp( extention, "otm",                  3 ) == 0 )
+                 || ( strncmp( extention, "out",                  3 ) == 0 )
+                 || ( strncmp( extention, "pdf",                  3 ) == 0 )
+                 || ( strncmp( extention, "pgo",                  3 ) == 0 )
+                 || ( strncmp( extention, "png",                  3 ) == 0 )
+                 || ( strncmp( extention, "raw",                  3 ) == 0 )
+                 || ( strncmp( extention, "rdf",                  3 ) == 0 )
+                 || ( strncmp( extention, "rea",                  3 ) == 0 )
+                 || ( strncmp( extention, "rli",                  3 ) == 0 )
+                 || ( strncmp( extention, "rp_",                  3 ) == 0 )
+                 || ( strncmp( extention, "rxf",                  3 ) == 0 )
+                 || ( strncmp( extention, "sql",                  3 ) == 0 )
+                 || ( strncmp( extention, "tag",                  3 ) == 0 )
+                 || ( strncmp( extention, "tx_",                  3 ) == 0 )
+                 || ( strncmp( extention, "vb_",                  3 ) == 0 )
+                 || ( strncmp( extention, "wht",                  3 ) == 0 )
+                 || ( strncmp( extention, "xml",                  3 ) == 0 )
+                 || ( strncmp( extention, "xsi",                  3 ) == 0 )
+                 || ( strncmp( extention, "yml",                  3 ) == 0 )
+                 || ( strncmp( extention, "END",                  3 ) == 0 ) )
             {
                 //  YES:    Skip it.
                 continue;
@@ -593,11 +593,11 @@ main(
             read_data_p = file_read_text( in_file_fp, 0 );
 
             //  Was the read successful ?
-            if(    ( read_data_p != END_OF_FILE )
-                && ( read_data_p != NULL        ) )
+            if (    ( read_data_p != END_OF_FILE )
+                 && ( read_data_p != NULL        ) )
             {
                 //  YES:    Are we filtering out e-Mail junk (images etc.)
-                if( email_filter( read_data_p ) == true )
+                if ( email_filter( read_data_p ) == true )
                 {
                     //  YES:    Discard the data
                     mem_free( read_data_p );
@@ -605,20 +605,20 @@ main(
                 else
                 {
                     //  Is there an HTML tag here ?
-                    if( strstr( read_data_p, "<html>" ) != NULL )
+                    if ( strstr( read_data_p, "<html>" ) != NULL )
                     {
                         //  YES:    Set the HTML found flag
                         html_found = true;
                     }
 
                     //  Is this the start of a new e-Mail ?
-                    if( email_is_start( read_data_p ) == true )
+                    if ( email_is_start( read_data_p ) == true )
                     {
                         //  YES:    Is there something already in the list ?
-                        if( list_query_count( level1_list_p ) > 0 )
+                        if ( list_query_count( level1_list_p ) > 0 )
                         {
                             //  YES:    Have we seen an HTML tag ?
-                            if( html_found == true )
+                            if ( html_found == true )
                             {
                                 //  YES:    Convert HTML to TEXT
                                 decode_html( level1_list_p, source_info_p );
@@ -630,7 +630,7 @@ main(
                             //  YES:    Go process the list.
                             decodel1_parse( level1_list_p, source_info_p );
 
-                            if( list_query_count( level1_list_p ) != 0 )
+                            if ( list_query_count( level1_list_p ) != 0 )
                             {
                                 log_write( MID_FATAL, "main",
                                            "There is still something on the list\n" );
@@ -663,10 +663,10 @@ main(
          ********************************************************************/
 
         //  Is there something still in the list ?
-        if( list_query_count( level1_list_p ) > 0 )
+        if ( list_query_count( level1_list_p ) > 0 )
         {
             //  YES:    Have we seen an HTML tag ?
-            if( html_found == true )
+            if ( html_found == true )
             {
                 //  YES:    Convert HTML to TEXT
                 decode_html( level1_list_p, source_info_p );
@@ -677,7 +677,7 @@ main(
             //  YES:    Go process the list.
             decodel1_parse( level1_list_p, source_info_p );
 
-            if( list_query_count( level1_list_p ) != 0 )
+            if ( list_query_count( level1_list_p ) != 0 )
             {
                 log_write( MID_FATAL, "main",
                            "There is still something on the list\n" );
@@ -693,7 +693,7 @@ main(
      ************************************************************************/
 
     //  Was there an error terminating the list ?
-    if( list_kill( level1_list_p ) != true )
+    if ( list_kill( level1_list_p ) != true )
     {
         //  YES:    Let everyone know about the error
         log_write( MID_FATAL, "main",

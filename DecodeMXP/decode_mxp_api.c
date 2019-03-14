@@ -170,7 +170,7 @@ decode_mxp(
             case MXP_STATE_IDLE:
             {
                 //  Is it the start of a new recipe ?
-                if( ( mxp_rc = DECODE_MXP__start( list_data_p ) ) == true )
+                if ( ( mxp_rc = DECODE_MXP__start( list_data_p ) ) == true )
                 {
                     //  YES:    Change the active state.
                     mxp_state = MXP_STATE_TITLE;

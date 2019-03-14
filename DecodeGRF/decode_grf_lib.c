@@ -129,10 +129,10 @@ DECODE_GRF__start (
      ************************************************************************/
 
     //  Skip this test if a previous test was TRUE
-    if( grf_rc == false )
+    if ( grf_rc == false )
     {
         //  Does the string start with "[[[[[" ?
-        if( strncmp( tmp_data_p, GRF_START, GRF_START_L ) == 0 )
+        if ( strncmp( tmp_data_p, GRF_START, GRF_START_L ) == 0 )
         {
             //  YES:    Change the return code
             grf_rc = true;
@@ -189,7 +189,7 @@ DECODE_GRF__end(
      ************************************************************************/
 
     //  Is this the start of a Meal-Master GRF recipe ?
-    if( strncmp( tmp_data_p, GRF_END, GRF_END_L  ) == 0 )
+    if ( strncmp( tmp_data_p, GRF_END, GRF_END_L  ) == 0 )
     {
         //  YES:    Change the return code
         grf_rc = true;
@@ -239,7 +239,7 @@ DECODE_GRF__title(
      ************************************************************************/
 
     //  Skip everything if this is a blank line
-    if( text_is_blank_line( title_p ) != true )
+    if ( text_is_blank_line( title_p ) != true )
     {
         title_p = text_skip_past_whitespace( title_p );
 
@@ -297,7 +297,7 @@ DECODE_GRF__auip(
      ************************************************************************/
 
     //  Skip everything if this is a blank line
-    if( text_is_blank_line( in_buffer_p ) != true )
+    if ( text_is_blank_line( in_buffer_p ) != true )
     {
         //  Process the first half (or the entire line)
         in_buffer_p = text_skip_past_whitespace( in_buffer_p );
@@ -353,7 +353,7 @@ DECODE_GRF__directions(
      ************************************************************************/
 
     //  Is this the end-of-recipe tag ?
-    if( DECODE_GRF__end( in_buffer_p ) == false )
+    if ( DECODE_GRF__end( in_buffer_p ) == false )
     {
         //  Format the AUIP line
         recipe_add_instructions( recipe_p, in_buffer_p );

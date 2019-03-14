@@ -291,7 +291,7 @@ DECODE_MX2__attribute(
 
     //  Are we pointed at a tag ?
     else
-    if( xml_p[ 0 ] == '<' )
+    if ( xml_p[ 0 ] == '<' )
     {
         //  YES:    Is this the end of the tag element name ?
         for( tmp_p = xml_p;
@@ -303,7 +303,7 @@ DECODE_MX2__attribute(
         }
 
         //  Is there an attribute string here ?
-        if( tmp_p[ 0 ] == ' ' )
+        if ( tmp_p[ 0 ] == ' ' )
         {
             //  YES:    Advance the data pointer to the start of the data string
             tmp_p += 1;
@@ -318,7 +318,7 @@ DECODE_MX2__attribute(
                 attribute_p[ ndx ] = tmp_p[ ndx ];
 
                 //  Are we going inside quoted text ?
-                if( tmp_p[ ndx ] == '"' )
+                if ( tmp_p[ ndx ] == '"' )
                 {
                     //  Copy the everything until the next quotation
                     for( ndx ++ ; tmp_p[ ndx ] != '"' ; ndx ++ )
@@ -485,7 +485,7 @@ DECODE_MX2__srch(
     tmp_p = strstr( data_p, srch_p );
 
     //  Did we locate it ?
-    if( tmp_p != NULL )
+    if ( tmp_p != NULL )
     {
         //  YES:    Adjust the pointer to the start of data
         tmp_p = ( strchr( tmp_p, '"' ) + 1 );
@@ -499,7 +499,7 @@ DECODE_MX2__srch(
             tmp_data[ ndx ] = tmp_p[ ndx ];
 
             //  Have we exceeded the buffer size ?
-            if( strlen( tmp_data ) >= sizeof( tmp_data ) )
+            if ( strlen( tmp_data ) >= sizeof( tmp_data ) )
             {
                 //  YES:    OOPS!
                 log_write( MID_FATAL, "DECODE_MX2__srch",
@@ -571,7 +571,7 @@ DECODE_MX2__srce(
         tmp_data[ ndx ] = tmp_p[ ndx ];
 
         //  Have we exceeded the buffer size ?
-        if( strlen( tmp_data ) >= sizeof( tmp_data ) )
+        if ( strlen( tmp_data ) >= sizeof( tmp_data ) )
         {
             //  YES:    OOPS!
             log_write( MID_FATAL, "DECODE_MX2__srce",
@@ -640,7 +640,7 @@ DECODE_MX2__alts(
         tmp_data[ ndx ] = tmp_p[ ndx ];
 
         //  Have we exceeded the buffer size ?
-        if( strlen( tmp_data ) >= sizeof( tmp_data ) )
+        if ( strlen( tmp_data ) >= sizeof( tmp_data ) )
         {
             //  YES:    OOPS!
             log_write( MID_FATAL, "DECODE_MX2__alts",
@@ -707,7 +707,7 @@ DECODE_MX2__cpyr(
         tmp_data[ ndx ] = tmp_p[ ndx ];
 
         //  Have we exceeded the buffer size ?
-        if( strlen( tmp_data ) >= sizeof( tmp_data ) )
+        if ( strlen( tmp_data ) >= sizeof( tmp_data ) )
         {
             //  YES:    OOPS!
             log_write( MID_FATAL, "DECODE_MX2__cpyr",
@@ -922,7 +922,7 @@ DECODE_MX2__srvi(
         tmp_data[ ndx ] = tmp_p[ ndx ];
 
         //  Have we exceeded the buffer size ?
-        if( strlen( tmp_data ) >= sizeof( tmp_data ) )
+        if ( strlen( tmp_data ) >= sizeof( tmp_data ) )
         {
             //  YES:    OOPS!
             log_write( MID_FATAL, "DECODE_MX2__srvi",
@@ -989,7 +989,7 @@ DECODE_MX2__note(
         tmp_data[ ndx ] = tmp_p[ ndx ];
 
         //  Have we exceeded the buffer size ?
-        if( strlen( tmp_data ) >= sizeof( tmp_data ) )
+        if ( strlen( tmp_data ) >= sizeof( tmp_data ) )
         {
             //  YES:    OOPS!
             log_write( MID_FATAL, "DECODE_MX2__note",
@@ -1226,7 +1226,7 @@ DECODE_MX2__decode(
         mx2_offset_p = strchr(  mx2_offset_p, '<' );
 
         //  Did we find it ?
-        if( mx2_offset_p != NULL )
+        if ( mx2_offset_p != NULL )
         {
 
             /****************************************************************
@@ -1245,9 +1245,9 @@ DECODE_MX2__decode(
             {
 
                 //  Is the string a match to a MX2 Tag ?
-                if( strncmp( compare,
-                             mx2_table[ mx2_table_ndx ].mx2_tag,
-                             strlen( mx2_table[ mx2_table_ndx ].mx2_tag ) ) == 0 )
+                if ( strncmp( compare,
+                              mx2_table[ mx2_table_ndx ].mx2_tag,
+                              strlen( mx2_table[ mx2_table_ndx ].mx2_tag ) ) == 0 )
                 {
                     //  Get the attributes for this tag
                     tmp_a_p = DECODE_MX2__attribute( mx2_offset_p,
@@ -1279,7 +1279,7 @@ DECODE_MX2__decode(
                             decode_copy_info_to_recipe( recipe_p, source_info_p );
 
                             //  DATE="..."
-                            if( recipe_p->posted_date != NULL )
+                            if ( recipe_p->posted_date != NULL )
                             {
                                 //  YES:    There is already a posted date
                                 mem_free( recipe_p->posted_date );
@@ -1411,7 +1411,7 @@ DECODE_MX2__decode(
                             auip_p = list_get_last( recipe_p->ingredient );
 
                             //  Were we able to get the AUIP pointer ?
-                            if( auip_p != NULL )
+                            if ( auip_p != NULL )
                             {
                                 //  YES:    Remove it from the list
                                 list_delete( recipe_p->ingredient, auip_p );
@@ -1709,7 +1709,7 @@ DECODE_MX2__decode(
         }
 
         //  Still decoding ?
-        if( mx2_offset_p == NULL )
+        if ( mx2_offset_p == NULL )
         {
             //  NO:
             break;

@@ -150,17 +150,17 @@ decode_mx2(
         list_delete( mx2_list_p, list_data_p );
 
         //  Is this the start of a new recipe ?
-        if( strstr( list_data_p, "<mx2 " ) != NULL )
+        if ( strstr( list_data_p, "<mx2 " ) != NULL )
         {
             //  YES:    Set the flag ON
             mx2_active = true;
         }
 
         //  Are we actively copying a MX2 recipe ?
-        if( mx2_active == true )
+        if ( mx2_active == true )
         {
             //  Will the new buffer fit into the HTML decode buffer ?
-            if( ( strlen( decode_p ) + strlen( list_data_p ) ) < ( DECODE_BUF_L + 10 ) )
+            if ( ( strlen( decode_p ) + strlen( list_data_p ) ) < ( DECODE_BUF_L + 10 ) )
             {
                 //  YES:    Append the new to the existing
                 strncat( decode_p, " ", ( DECODE_BUF_L - 1 ) );
@@ -176,7 +176,7 @@ decode_mx2(
             }
 
             //  Is this the end of the active MX2 recipe ?
-            if( strstr( list_data_p, "</mx2" ) != NULL )
+            if ( strstr( list_data_p, "</mx2" ) != NULL )
             {
                 //  YES:    Set the flag OFF
                 mx2_active = false;
