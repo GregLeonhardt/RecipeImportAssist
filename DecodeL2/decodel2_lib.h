@@ -117,7 +117,7 @@ DECODEL2__start_decode(
     );
 //----------------------------------------------------------------------------
 int
-DECODEL2__recover_src_info(
+DECODEL2__recover_info(
     struct  source_info_t       *   source_info_p,
     char                        *   list_data_p
     );

@@ -170,8 +170,8 @@ decodel2_parse(
         if ( un_fmt_output == true )
         {
             //  YES:    Recover the saved source information
-            un_fmt_output = DECODEL2__recover_src_info( source_info_p,
-                                                        list_data_p );
+            un_fmt_output = DECODEL2__recover_info( source_info_p,
+                                                    list_data_p );
         }
         else
         {

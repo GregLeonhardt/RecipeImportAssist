@@ -195,7 +195,7 @@ DECODEL2__start_decode(
  ****************************************************************************/
 
 int
-DECODEL2__recover_src_info(
+DECODEL2__recover_info(
     struct  source_info_t       *   source_info_p,
     char                        *   list_data_p
     )
@@ -388,8 +388,11 @@ DECODEL2__recover_src_info(
     else
     {
         //  OOPS:   Shouldn't ever get here
-        log_write( MID_FATAL, "DECODEL2__recover_src_info",
+        log_write( MID_WARNING, "DECODEL2__recover_info",
                    "Failed to detect a valid file header\n" );
+        
+        //  All done, clear the flag
+        un_fmt_output = false;
     }
 
     /************************************************************************
