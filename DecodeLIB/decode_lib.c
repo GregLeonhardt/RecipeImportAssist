@@ -503,7 +503,7 @@ DECODE__directions_notes(
                 if ( text_is_blank_line( notes_p ) == false )
                 {
                     //  YES:    Add the remaining text to the notes.
-                    recipe_fmt_notes( recipe_p, text_copy_to_new( notes_p ) );
+                    recipe_fmt_notes( recipe_p, notes_p );
                 }
                 else
                 {
