@@ -456,6 +456,9 @@ DECODE__directions_notes(
     )
 {
     /**
+     *  @param  free_note       Flag to free memory for the buffer          */
+    int                             free_note;
+    /**
      *  @param  directions_p    Pointer to a line of the directions         */
     char                        *   directions_p;
     /**
@@ -466,6 +469,8 @@ DECODE__directions_notes(
      *  Function Initialization
      ************************************************************************/
 
+    //  The assumption is that the buffer will not be free'd when we are done
+    free_note = false;
 
     /************************************************************************
      *  Function
@@ -488,6 +493,9 @@ DECODE__directions_notes(
                 {
                     //  YES:    Remove it from the directions
                     list_delete( recipe_p->directions, directions_p );
+
+                    //  We are go to have to free this buffer later.
+                    free_note = true;
                 }
 
                 //  Remove the remaining text from directions by NULL terminating
@@ -504,10 +512,25 @@ DECODE__directions_notes(
                 {
                     //  YES:    Add the remaining text to the notes.
                     recipe_fmt_notes( recipe_p, notes_p );
+
+                    //  Are we supposed to free the buffer ?
+                    if ( free_note == true )
+                    {
+                        // YES: Release the storage buffer.
+                        mem_free( directions_p );
+                    }
                 }
                 else
                 {
-                    //  NO:     Add the next line to the notes:
+
+                    //  NO:     Are we supposed to free the buffer ?
+                    if ( free_note == true )
+                    {
+                        //  YES:    Release the storage buffer.
+                        mem_free( directions_p );
+                    }
+
+                    //  Add the next line to the notes:
                     directions_p = list_get_next( recipe_p->directions, directions_p );
 
                     //  Sanity check! Did we get something
@@ -518,6 +541,9 @@ DECODE__directions_notes(
 
                         //  Now add it to the notes
                         recipe_fmt_notes( recipe_p, directions_p );
+
+                        //  Release the storage buffer.
+                        mem_free( directions_p );
                     }
                 }
             }
