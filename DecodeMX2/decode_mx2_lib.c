@@ -512,6 +512,11 @@ DECODE_MX2__srch(
 
         //  Move the string to the recipe
         tmp_p = text_copy_to_new( tmp_data );
+log_write( MID_DEBUG_0, "DECODE_MX2__srch", "515\n" );
+log_write( MID_DEBUG_0, "DECODE_MX2__srch", "Searching for: '%s'\n", srch_p );
+log_write( MID_DEBUG_0, "DECODE_MX2__srch", "Found:         '%s'\n", tmp_p );
+log_write( MID_DEBUG_0, "DECODE_MX2__srch", "Data:          '%s'\n", data_p );
+
     }
 
     /************************************************************************
@@ -581,6 +586,7 @@ DECODE_MX2__srce(
 
     //  Move the description string to the recipe
     recipe_p->group_from = text_copy_to_new( tmp_data );
+ log_write( MID_DEBUG_0, "DECODE_MX2__srce", "585\n" );
 
     /************************************************************************
      *  Function Exit
@@ -717,6 +723,7 @@ DECODE_MX2__cpyr(
 
     //  Move the description string to the recipe
     recipe_p->copyright = text_copy_to_new( tmp_data );
+ log_write( MID_DEBUG_0, "DECODE_MX2__cpyr", "722\n" );
 
     /************************************************************************
      *  Function Exit
@@ -932,6 +939,7 @@ DECODE_MX2__srvi(
 
     //  Move the description string to the recipe
     recipe_p->serve_with = text_copy_to_new( tmp_data );
+log_write( MID_DEBUG_0, "decode_mx2_lib", "938\n" );
 
     /************************************************************************
      *  Function Exit
@@ -1200,9 +1208,11 @@ DECODE_MX2__decode(
 
     //  Allocate the attribute buffer
     attribute_p = mem_malloc( decode_l + 1 );
+log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1203\n" );
 
     //  Allocate the text buffer
     text_p = mem_malloc( decode_l + 1 );
+log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1207\n" );
 
     //  Null out the recipe pointer
     recipe_p = NULL;
@@ -1355,6 +1365,7 @@ DECODE_MX2__decode(
                         {
                             //  Allocate a new ingredient structure
                             auip_p = mem_malloc( sizeof( struct auip_t ) );
+log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1360\n" );
 
                             //  NAME="..."
                             auip_p->ingredient_p
@@ -1381,21 +1392,27 @@ DECODE_MX2__decode(
                         {
                             //  Allocate a new ingredient structure
                             auip_p = mem_malloc( sizeof( struct auip_t ) );
+log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1387\n" );
 
                             //  NAME="..."
                             auip_p->ingredient_p = text_copy_to_new( " " );
+log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1395\n" );
 
                             //  UNIT="..."
                             auip_p->unit_p = text_copy_to_new( " " );
+log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1399\n" );
 
                             //  QTY="..."
                             auip_p->amount_p = text_copy_to_new( " " );
+log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1403\n" );
 
                             //  CODE="..."
                             auip_p->type_p = text_copy_to_new( "T" );
+log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1407\n" );
 
                             //  PREPARATION=
                             auip_p->preparation_p = text_copy_to_new( " " );
+log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1411\n" );
 
                             //  Append the new ingredient to the list
                             list_put_last( recipe_p->ingredient, auip_p );
@@ -1420,10 +1437,12 @@ DECODE_MX2__decode(
                             {
                                 //  NO:     Allocate a new ingredient structure
                                 auip_p = mem_malloc( sizeof( struct auip_t ) );
+log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1427\n" );
                             }
 
                             //  Move the preparations string to the recipe
                             auip_p->preparation_p = text_copy_to_new( text_p );
+log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1441\n" );
 
                             //  Append the updated ingredient to the list
                             list_put_last( recipe_p->ingredient, auip_p );
@@ -1449,6 +1468,7 @@ DECODE_MX2__decode(
 
                             //  Add it to the Directions
                             recipe_p->description = text_copy_to_new( text_p );
+log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1467\n" );
 
                         }   break;
                         //----------------------------------------------------
@@ -1459,25 +1479,45 @@ DECODE_MX2__decode(
                             //  Copy the tag text filed (if there is one)
                             DECODE_MX2__text( mx2_offset_p, text_p, decode_l );
 
+                            //  Are we overwriting something ?
+                            if (    ( strlen( text_p ) > 0 )
+                                 && ( recipe_p->group_from != NULL ) )
+                            {
+                                //  YES:    Free storage for the old data
+                                mem_free( recipe_p->group_from );
+                            }
+
                             //  Move the description string to the recipe
                             recipe_p->group_from = text_copy_to_new( text_p );
+log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1480\n" );
 
                         }   break;
                         //----------------------------------------------------
                         case    MX2_TAG_ALTS:   //  Start of Alternate Source
                         {
-                            //  <AltS
+                            /**
+                             *  @param  label_p                             */
+                            char                        *   label_p;
+                            /**
+                             *  @param  source_p                            */
+                            char                        *   source_p;
+
+                            //  Locate the information
+                            label_p = DECODE_MX2__srch( attribute_p, "label=\"" );
+                            source_p = DECODE_MX2__srch( attribute_p, "source=\"" );
 
                             //  Add it to the directions
                             recipe_add_instructions( recipe_p, " " );
                             recipe_add_instructions( recipe_p, "SOURCE: " );
                             recipe_add_instructions( recipe_p, " " );
                             recipe_add_instructions( recipe_p, "<LABEL> " );
-                            recipe_add_instructions( recipe_p, text_copy_to_new(
-                                    DECODE_MX2__srch( attribute_p, "label=\"" ) ) );
+                            recipe_add_instructions( recipe_p, label_p );
                             recipe_add_instructions( recipe_p, "<SOURCE> " );
-                            recipe_add_instructions( recipe_p, text_copy_to_new(
-                                    DECODE_MX2__srch( attribute_p, "source=\"" ) ) );
+                            recipe_add_instructions( recipe_p, source_p );
+
+                            //  Release their buffers.
+                            mem_free( label_p );
+                            mem_free( source_p );
 
                         }   break;
                         //----------------------------------------------------
@@ -1488,6 +1528,7 @@ DECODE_MX2__decode(
 
                             //  Move the description string to the recipe
                             recipe_p->copyright = text_copy_to_new( text_p );
+log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1510\n" );
 
                         }   break;
                         //----------------------------------------------------
@@ -1513,46 +1554,85 @@ DECODE_MX2__decode(
                         //----------------------------------------------------
                         case    MX2_TAG_ALTT:   //  Start of Alternate Time
                         {
+                            /**
+                             *  @param  label_p                             */
+                            char                        *   label_p;
+                            /**
+                             *  @param  elapsed_p                           */
+                            char                        *   elapsed_p;
+
+                            //  Locate the information
+                            label_p = DECODE_MX2__srch( attribute_p, "label=\"" );
+                            elapsed_p = DECODE_MX2__srch( attribute_p, "elapsed=\"" );
+
                             //  <ALTT LABEL=".." SOURCE=".."
                             recipe_add_instructions( recipe_p, " "  );
                             recipe_add_instructions( recipe_p, "ALTERNATE TIME: " );
                             recipe_add_instructions( recipe_p, " " );
                             recipe_add_instructions( recipe_p, "<LABEL> " );
-                            recipe_add_instructions( recipe_p, text_copy_to_new(
-                                    DECODE_MX2__srch( attribute_p, "label=\"" ) ) );
+                            recipe_add_instructions( recipe_p, label_p );
                             recipe_add_instructions( recipe_p, "<ELAPSED> " );
-                            recipe_add_instructions( recipe_p, text_copy_to_new(
-                                    DECODE_MX2__srch( attribute_p, "elapsed=\"" ) ) );
+                            recipe_add_instructions( recipe_p, elapsed_p );
+
+                            //  Release their buffers.
+                            mem_free( label_p );
+                            mem_free( elapsed_p );
 
                         }   break;
                         //----------------------------------------------------
                         case    MX2_TAG_RATE:   //  Start of Ratings
                         {
+                            /**
+                             *  @param  name_p                              */
+                            char                        *   name_p;
+                            /**
+                             *  @param  value_p                             */
+                            char                        *   value_p;
+
+                            //  Locate the information
+                            name_p = DECODE_MX2__srch( attribute_p, "name=\"" );
+                            value_p = DECODE_MX2__srch( attribute_p, "value=\"" );
+
                             //  <RATE> NAME=".." VALUE=".."
                             recipe_add_instructions( recipe_p, " " );
                             recipe_add_instructions( recipe_p, "RATING: " );
                             recipe_add_instructions( recipe_p, " " );
                             recipe_add_instructions( recipe_p, "<NAME> " );
-                            recipe_add_instructions( recipe_p, text_copy_to_new(
-                                    DECODE_MX2__srch( attribute_p, "name=\"" ) ) );
+                            recipe_add_instructions( recipe_p, name_p );
                             recipe_add_instructions( recipe_p, "<VALUE> " );
-                            recipe_add_instructions( recipe_p, text_copy_to_new(
-                                    DECODE_MX2__srch( attribute_p, "value=\"" ) ) );
+                            recipe_add_instructions( recipe_p, value_p );
+
+                            //  Release their buffers.
+                            mem_free( name_p );
+                            mem_free( value_p );
 
                         }   break;
                         //----------------------------------------------------
                         case    MX2_TAG_RATT:   //  Start of Ratings
                         {
+                            /**
+                             *  @param  name_p                              */
+                            char                        *   name_p;
+                            /**
+                             *  @param  value_p                             */
+                            char                        *   value_p;
+
+                            //  Locate the information
+                            name_p = DECODE_MX2__srch( attribute_p, "name=\"" );
+                            value_p = DECODE_MX2__srch( attribute_p, "value=\"" );
+
                             //  <RATT> NAME=".." VALUE=".."
                             recipe_add_instructions( recipe_p, " " );
                             recipe_add_instructions( recipe_p, "RATING: " );
                             recipe_add_instructions( recipe_p, " " );
                             recipe_add_instructions( recipe_p, "<NAME> " );
-                            recipe_add_instructions( recipe_p, text_copy_to_new(
-                                    DECODE_MX2__srch( attribute_p, "name=\"" ) ) );
+                            recipe_add_instructions( recipe_p, name_p );
                             recipe_add_instructions( recipe_p, "<VALUE> " );
-                            recipe_add_instructions( recipe_p, text_copy_to_new(
-                                    DECODE_MX2__srch( attribute_p, "value=\"" ) ) );
+                            recipe_add_instructions( recipe_p, value_p );
+
+                            //  Release their buffers.
+                            mem_free( name_p );
+                            mem_free( value_p );
 
                         }   break;
                         //----------------------------------------------------
@@ -1562,6 +1642,7 @@ DECODE_MX2__decode(
                             DECODE_MX2__text( mx2_offset_p, text_p, decode_l );
 
                             recipe_p->wine = text_copy_to_new( text_p );
+log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1691\n" );
 
                         }   break;
                         //----------------------------------------------------
@@ -1571,6 +1652,7 @@ DECODE_MX2__decode(
                             DECODE_MX2__text( mx2_offset_p, text_p, decode_l );
 
                             recipe_p->serve_with = text_copy_to_new( text_p );
+log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1601\n" );
 
                         }   break;
                         //----------------------------------------------------
@@ -1719,6 +1801,10 @@ DECODE_MX2__decode(
     /************************************************************************
      *  Function Exit
      ************************************************************************/
+
+    //  Release storage allocated in this function.
+    mem_free( attribute_p );
+    mem_free( text_p );
 
     //  DONE!
 }
