@@ -62,8 +62,29 @@
 #define GRF_START               "[[[[["
 #define GRF_START_L             strlen( GRF_START )
 //----------------------------------------------------------------------------
-#define GRF_END                 "]]]]]"
-#define GRF_END_L               strlen( GRF_END )
+#define GRF_END_1               "]]]]]"
+#define GRF_END_1_L             strlen( GRF_END_1 )
+//----------------------------------------------------------------------------
+#define GRF_END_2               "-----"
+#define GRF_END_2_L             strlen( GRF_END_2 )
+//----------------------------------------------------------------------------
+#define GRF_C                   "C:"
+#define GRF_C_L                 strlen( GRF_C )
+//----------------------------------------------------------------------------
+#define GRF_S                   "S:"
+#define GRF_S_L                 strlen( GRF_S )
+//----------------------------------------------------------------------------
+#define GRF_B                   "B:"
+#define GRF_B_L                 strlen( GRF_B )
+//----------------------------------------------------------------------------
+#define GRF_N                   "N:"
+#define GRF_N_L                 strlen( GRF_N )
+//----------------------------------------------------------------------------
+#define GRF_F                   "F:"
+#define GRF_F_L                 strlen( GRF_F )
+//----------------------------------------------------------------------------
+#define GRF_D                   "D:"
+#define GRF_D_L                 strlen( GRF_D )
 //----------------------------------------------------------------------------
 
 /****************************************************************************
@@ -189,7 +210,8 @@ DECODE_GRF__end(
      ************************************************************************/
 
     //  Is this the start of a Meal-Master GRF recipe ?
-    if ( strncmp( tmp_data_p, GRF_END, GRF_END_L  ) == 0 )
+    if (    ( strncmp( tmp_data_p, GRF_END_1, GRF_END_1_L  ) == 0 )
+         || ( strncmp( tmp_data_p, GRF_END_2, GRF_END_2_L  ) == 0 ) )
     {
         //  YES:    Change the return code
         grf_rc = true;
@@ -200,6 +222,194 @@ DECODE_GRF__end(
      ************************************************************************/
 
     //  DONE!
+    return ( grf_rc );
+}
+
+/****************************************************************************/
+/**
+ *  Search for and process the 'C:' (category), 'S:' (servings),
+ *  'B:' (recipe by), 'N:' (note), 'F:' (from), 'D:' (description)
+ *
+ *  @param  recipe_p            Pointer to a recipe structure.
+ *  @param  data_p              Pointer to a a line of text to be scanned.
+ *
+ *  @return                     true when a the recipe title is located and
+ *                              processed else false.
+ *
+ *  @note
+ *
+ ****************************************************************************/
+
+int
+DECODE_GRF__csbnfd(
+    struct  recipe_t            *   recipe_p,
+    char                        *   data_p
+    )
+{
+    /**
+     * @param grf_rc            Return Code                                 */
+    int                             grf_rc;
+    /**
+     * @param tmp_p             Local pointer to data                       */
+    char    *                       tmp_p;
+    /**
+     * @param chapter_p         Pointer to the translated chapter name      */
+    char    *                       chapter_p;
+    /**
+     *  @param  raw_chapter     A temporary holding buffer for a chapter    */
+    char                            raw_chapter[ MAX_LINE_L ];
+
+    /************************************************************************
+     *  Function Initialization
+     ************************************************************************/
+
+    //  Assume this is a one of the following.
+    grf_rc = true;
+
+    /************************************************************************
+     *  Function Body
+     ************************************************************************/
+
+    //  ---------------------------------------------------------------------
+    //  'C:'    category
+    if ( strncmp( data_p, GRF_C, GRF_C_L  ) == 0 )
+    {
+        //  Skip past the tag
+        tmp_p = data_p + GRF_C_L;
+        tmp_p = text_skip_past_whitespace( tmp_p );
+
+        //  Save the information
+        if ( text_is_blank_line( tmp_p ) != true )
+        {
+
+            //  Should be pointing to the start of a chapter or
+            //  the end of the line.
+            while ( tmp_p[ 0 ] != '\0' )
+            {
+                //  Wipe the temporary chapter buffer clean
+                memset( &raw_chapter,
+                        '\0',
+                        sizeof ( raw_chapter ) );
+
+                tmp_p = text_skip_past_whitespace( tmp_p );
+
+                //  Copy the new chapter to the temp buffer
+                for (  ;
+                      (    ( tmp_p[ 0 ] != ',' )
+                        && ( tmp_p[ 0 ] != '\0' ) );
+                      tmp_p ++ )
+                {
+                    strncat( raw_chapter, tmp_p, 1 );
+                }
+                //  Skip past the ','
+                tmp_p += 1;
+
+                //  Translate the chapter
+                chapter_p = xlate_chapter( raw_chapter );
+
+                //  Do we have a chapter to save ?
+                if ( chapter_p != NULL )
+                {
+                    //  YES:    Save it
+                    decode_save_chapter( chapter_p, recipe_p );
+                }
+            }
+        }
+    }
+    //  ---------------------------------------------------------------------
+    //  'S:'    serving / makes
+    else
+    if ( strncmp( data_p, GRF_S, GRF_S_L  ) == 0 )
+    {
+        //  Skip past the tag
+        tmp_p = data_p + GRF_S_L;
+        tmp_p = text_skip_past_whitespace( tmp_p );
+
+        //  Save the information
+        if ( text_is_blank_line( tmp_p ) != true )
+        {
+            //  QTY="..."
+            recipe_p->serves = text_copy_to_new( tmp_p );
+        }
+    }
+    //  ---------------------------------------------------------------------
+    //  'B:'    recipe by
+    else
+    if ( strncmp( data_p, GRF_B, GRF_B_L  ) == 0 )
+    {
+        //  Skip past the tag
+        tmp_p = data_p + GRF_B_L;
+        tmp_p = text_skip_past_whitespace( tmp_p );
+
+        //  Save the information
+        if ( text_is_blank_line( tmp_p ) != true )
+        {
+            //  Posted By:
+            recipe_p->posted_by = text_copy_to_new( tmp_p );
+        }
+    }
+    //  ---------------------------------------------------------------------
+    //  'N:'    note
+    else
+    if ( strncmp( data_p, GRF_N, GRF_N_L  ) == 0 )
+    {
+        //  Skip past the tag
+        tmp_p = data_p + GRF_N_L;
+        tmp_p = text_skip_past_whitespace( tmp_p );
+
+        //  Save the information
+        if ( text_is_blank_line( tmp_p ) != true )
+        {
+            //  Add it to the instructions and parse it out later
+            recipe_fmt_notes( recipe_p, tmp_p );
+            recipe_fmt_notes( recipe_p, " " );
+        }
+    }
+    //  ---------------------------------------------------------------------
+    //  'F:'    recipe from
+    else
+    if ( strncmp( data_p, GRF_F, GRF_F_L  ) == 0 )
+    {
+        //  Skip past the tag
+        tmp_p = data_p + GRF_F_L;
+        tmp_p = text_skip_past_whitespace( tmp_p );
+
+        //  Save the information
+        if ( text_is_blank_line( tmp_p ) != true )
+        {
+            //  Author:
+            recipe_p->author = text_copy_to_new( tmp_p );
+        }
+    }
+    //  ---------------------------------------------------------------------
+    //  'D:'    description
+    else
+    if ( strncmp( data_p, GRF_D, GRF_D_L  ) == 0 )
+    {
+        //  Skip past the tag
+        tmp_p = data_p + GRF_D_L;
+        tmp_p = text_skip_past_whitespace( tmp_p );
+
+        //  Save the information
+        if ( text_is_blank_line( tmp_p ) != true )
+        {
+
+            //  Add it to the Directions
+            recipe_p->description = text_copy_to_new( tmp_p );
+        }
+    }
+    //  ---------------------------------------------------------------------
+    else
+    {
+        //  Didn't find one of the above.
+        grf_rc = false;
+    }
+
+    /************************************************************************
+     *  Function Exit
+     ************************************************************************/
+
+    // DONE with this line
     return ( grf_rc );
 }
 
@@ -248,6 +458,7 @@ DECODE_GRF__title(
 
         //  Save the recipe title (name)
         recipe_p->name = text_copy_to_new( title_p );
+log_write( MID_DEBUG_0, "DECODE_GRF__title", "251\n" );
 
         // Change the pass_fail flag to PASS
         grf_rc = true;

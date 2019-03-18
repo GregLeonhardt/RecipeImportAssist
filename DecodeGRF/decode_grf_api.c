@@ -171,8 +171,7 @@ decode_grf(
                 //  Locate and process the recipe title
                 if ( DECODE_GRF__start( list_data_p ) == true )
                 {
-                    //  When rc == true, the title search is complete.
-                    //  Change state to looking for the recipe categories.
+                    //  Change state.
                     grf_state = GRF_DS_TITLE;
                 }
             }   break;
@@ -193,8 +192,7 @@ decode_grf(
                     log_write( MID_INFO, "decode_grf",
                                "'%s'\n", recipe_p->name );
 
-                    //  When rc == true, the title search is complete.
-                    //  Change state to looking for the recipe categories.
+                    //  Change state.
                     grf_state = GRF_DS_BLANK_1;
                 }
             }   break;
@@ -208,9 +206,20 @@ decode_grf(
                 //  Skip everything if this is a blank line
                 if ( text_is_blank_line( list_data_p ) == true )
                 {
-                    //  When rc == true, the title search is complete.
-                    //  Change state to looking for the recipe categories.
+                    //  Change state.
                     grf_state = GRF_DS_AUIP;
+                }
+                else
+                {
+                    //  Is this additional information ?
+                    if ( DECODE_GRF__csbnfd( recipe_p, list_data_p ) == false )
+                    {
+                        //  NO:     process it as an AUIP.
+                        DECODE_GRF__auip( recipe_p, list_data_p );
+
+                        //  Change state.
+                        grf_state = GRF_DS_AUIP;
+                    }
                 }
             }   break;
 
@@ -221,12 +230,15 @@ decode_grf(
 
             case GRF_DS_AUIP:
             {
-                //  Locate and process the recipe title
-                if ( DECODE_GRF__auip( recipe_p, list_data_p ) != true )
+                //  Is this additional information ?
+                if ( DECODE_GRF__csbnfd( recipe_p, list_data_p ) == false )
                 {
-                    //  When rc == true, the title search is complete.
-                    //  Change state to looking for the recipe directions.
-                    grf_state = GRF_DS_DIRECTIONS;
+                    //  Locate and process the recipe title
+                    if ( DECODE_GRF__auip( recipe_p, list_data_p ) != true )
+                    {
+                        //  Change state.
+                        grf_state = GRF_DS_DIRECTIONS;
+                    }
                 }
             }   break;
 
@@ -239,8 +251,7 @@ decode_grf(
                 //  Locate and process the recipe title
                 if ( DECODE_GRF__directions( recipe_p, list_data_p ) != true )
                 {
-                    //  When rc == true, the title search is complete.
-                    //  Change state to recipe decode complete.
+                    //  Change state.
                     grf_state = GRF_DS_END;
 
                     //  There may be some data in the directions processing buffer.

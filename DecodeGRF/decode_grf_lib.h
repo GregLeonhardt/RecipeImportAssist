@@ -90,6 +90,12 @@ DECODE_GRF__title(
     );
 //----------------------------------------------------------------------------
 int
+DECODE_GRF__csbnfd(
+    struct  recipe_t            *   recipe_p,
+    char                        *   data_p
+    );
+//----------------------------------------------------------------------------
+int
 DECODE_GRF__auip(
     struct  recipe_t            *   recipe_p,
     char                        *   in_buffer_p
