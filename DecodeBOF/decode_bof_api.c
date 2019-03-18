@@ -122,7 +122,7 @@ decode_bof(
     list_lock_key = list_user_lock( bof_list_p );
 
     //  Change state to looking for the recipe title.
-    bof_state = BOF_DS_START;
+    bof_state = BOF_DS_NEXT_SEGMENT;
 
     /************************************************************************
      *  Copy e-Mail information
@@ -340,7 +340,7 @@ decode_bof(
                 if ( DECODE_BOF__auip( recipe_p, list_data_p ) != true )
                 {
                     //  Change recipe Decode State
-                    bof_state = BOF_DS_NEXT_SEGMENT;
+//                  bof_state = BOF_DS_NEXT_SEGMENT;
                 }
             }   break;
 
