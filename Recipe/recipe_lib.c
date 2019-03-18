@@ -525,7 +525,7 @@ RECIPE__fmt_preparation(
     tmp_prep_p = text_skip_past_whitespace( in_auip_p );
 
     /************************************************************************
-     *  Reformat foobar format
+     *  Reformat a section split  (--- SOMETHING ---)
      ************************************************************************/
 
     //  Set the line length
@@ -564,7 +564,36 @@ RECIPE__fmt_preparation(
     }
 
     /************************************************************************
-     *  Reformat foobar format
+     *  Skip past a leading double dash.
+     ************************************************************************/
+
+    //  Is the first character a coma
+    if (    ( tmp_prep_p[ 0 ] == '-' )
+         && ( tmp_prep_p[ 1 ] == '-' ) )
+    {
+        //  YES:    Jump over it
+        tmp_prep_p += 2;
+
+        //  And any spaces that may be here
+        tmp_prep_p = text_skip_past_whitespace( tmp_prep_p );
+    }
+
+    /************************************************************************
+     *  Skip past a leading coma.
+     ************************************************************************/
+
+    //  Is the first character a coma
+    if ( tmp_prep_p[ 0 ] == ',' )
+    {
+        //  YES:    Jump over it
+        tmp_prep_p += 1;
+
+        //  And any spaces that may be here
+        tmp_prep_p = text_skip_past_whitespace( tmp_prep_p );
+    }
+
+    /************************************************************************
+     *  Reformat AUIP - preparation format
      ************************************************************************/
 
     //  Start moving the preparations data to it's transfer buffer
@@ -637,12 +666,14 @@ RECIPE__new_auip(
 
     //  Allocate a new ingredient structure
     auip_p = mem_malloc( sizeof( struct auip_t ) );
+log_write( MID_DEBUG_0, "RECIPE__new_auip", "640\n" );
 
     //  AMOUNT
     if ( strlen( amount_p ) > 0 )
     {
         //  Copy source information to the new buffer
         auip_p->amount_p = text_copy_to_new( amount_p );
+log_write( MID_DEBUG_0, "RECIPE__new_auip", "647\n" );
     }
 
     //  UNIT
@@ -650,6 +681,7 @@ RECIPE__new_auip(
     {
         //  Copy source information to the new buffer
         auip_p->unit_p = text_copy_to_new( unit_p );
+log_write( MID_DEBUG_0, "RECIPE__new_auip", "655\n" );
     }
 
     //  INGREDIENT
@@ -657,6 +689,7 @@ RECIPE__new_auip(
     {
         //  Copy source information to the new buffer
         auip_p->ingredient_p = text_copy_to_new( ingredient_p );
+log_write( MID_DEBUG_0, "RECIPE__new_auip", "663\n" );
     }
 
     //  PREPERATION
@@ -664,6 +697,7 @@ RECIPE__new_auip(
     {
         //  Copy source information to the new buffer
         auip_p->preparation_p = text_copy_to_new( preparation_p );
+log_write( MID_DEBUG_0, "RECIPE__new_auip", "671\n" );
     }
 
     /************************************************************************
