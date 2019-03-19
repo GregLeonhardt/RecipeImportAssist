@@ -953,8 +953,14 @@ recipe_add_instructions(
      *  @param  new_data_p      Pointer to a new data buffer                */
     char                        *   new_data_p;
     /**
-     *  @param  new_data_l      Size needed for the combined (old & new)    */
+     *  @param  new_data_l      Size of the new data buffer                 */
     int                             new_data_l;
+    /**
+     *  @param  old_data_l      Size of the old data buffer                 */
+    int                             old_data_l;
+    /**
+     *  @param  data_l          Size of the new data buffer                 */
+    int                             data_l;
 
     /************************************************************************
      *  Function Initialization
@@ -965,31 +971,46 @@ recipe_add_instructions(
      *  Function
      ************************************************************************/
 
-    //  Is this the first thing for the instructions buffer ?
-    if ( recipe_p->instructions == NULL )
+    //  Is there anything in the data buffer to add ?
+    if ( strlen( data_p ) > 0 )
     {
-        //  YES:    Just use this buffer
-        recipe_p->instructions = text_copy_to_new( data_p );
-log_write( MID_DEBUG_0, "recipe_add_instructions", "991\n" );
-    }
-    else
-    {
-        //  NO:     Figure out how big it needs to be.
-        new_data_l = ( strlen( data_p ) + ( strlen( recipe_p->instructions ) ) + 1 );
+        //  YES:    Is this the first thing for the instructions buffer ?
+        if ( recipe_p->instructions == NULL )
+        {
+            //  YES:    Just use this buffer
+            recipe_p->instructions = text_copy_to_new( data_p );
+log_write( MID_DEBUG_0, "recipe_add_instructions", "987\n" );
+        }
+        else
+        {
+            //  NO:     Get the size of the old and new data buffers.
+            old_data_l = strlen( recipe_p->instructions );
+            new_data_l = strlen( data_p );
+            data_l     = ( old_data_l + new_data_l + 2 );
 
-        //  Create a new buffer with the old and the new
-        new_data_p = mem_malloc( new_data_l );
-log_write( MID_DEBUG_0, "recipe_add_instructions", "988\n" );
+            //  Create the new buffer
+            new_data_p = mem_malloc( data_l );
+log_write( MID_DEBUG_0, "recipe_add_instructions", "998\n" );
 
-        //  Merge the two buffers together.
-        strncpy( new_data_p, recipe_p->instructions, new_data_l );
-        strncat( new_data_p, data_p, new_data_l - strlen( new_data_p ) );
+            //  Copy the old data to the new buffer.
+            strncpy( new_data_p, recipe_p->instructions, data_l );
 
-        //  Release the (now) unused buffers
-        mem_free( recipe_p->instructions );
+            //  Did the previous saved data end with a space.
+            if( ( recipe_p->instructions[ old_data_l - 1 ] ) != ' ' )
+            {
+                //  NO:     Add a space between the two buffers
+                strncat( new_data_p, " ", data_l );
+            }
 
-        //  Update the instructions pointer
-        recipe_p->instructions = new_data_p;
+            //  Append the new data to the new buffer
+            strncat( new_data_p, data_p, data_l );
+
+            //  Release the (now) unused buffers
+            mem_free( recipe_p->instructions );
+
+            //  Update the instructions pointer
+            recipe_p->instructions = new_data_p;
+        }
     }
 
     /************************************************************************
