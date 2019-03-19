@@ -90,6 +90,12 @@ DECODE_GF2__title(
     );
 //----------------------------------------------------------------------------
 int
+DECODE_GF2__aspcy(
+    struct  recipe_t            *   recipe_p,
+    char                        *   data_p
+    );
+//----------------------------------------------------------------------------
+int
 DECODE_GF2__auip(
     struct  recipe_t            *   recipe_p,
     char                        *   in_buffer_p
