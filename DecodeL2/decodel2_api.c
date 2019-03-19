@@ -163,6 +163,9 @@ decodel2_parse(
          list_data_p = list_fget_next( level2_list_p, list_data_p, list_lock_key ) )
     {
 
+        //  Remove it from the level 2 list
+        list_fdelete( level2_list_p, list_data_p, list_lock_key );
+
         /********************************************************************
          *  Look to see if this is from an UNFORMATTED_RECIPE file
          ********************************************************************/
@@ -362,9 +365,6 @@ decodel2_parse(
         /********************************************************************
          *  Do something with the current line
          ********************************************************************/
-
-        //  Remove it from the level 2 list
-        list_fdelete( level2_list_p, list_data_p, list_lock_key );
 
         //  Move the data to the level 3 list
         list_put_last( level3_list_p, list_data_p );
