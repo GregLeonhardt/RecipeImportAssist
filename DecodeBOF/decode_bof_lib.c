@@ -240,7 +240,8 @@ DECODE_BOF__end(
      ************************************************************************/
 
     //  Is this the start of a Big-Oven BOF recipe ?
-    if (    ( strncmp( tmp_data_p, BOF_END_2, BOF_END_2_L  ) == 0 )
+    if (    ( strncmp( tmp_data_p, BOF_END_1, BOF_END_1_L  ) == 0 )
+         || ( strncmp( tmp_data_p, BOF_END_2, BOF_END_2_L  ) == 0 )
          || ( strncmp( tmp_data_p, BOF_END_3, BOF_END_3_L  ) == 0 ) )
     {
         //  YES:    Change the return code
@@ -300,6 +301,7 @@ DECODE_BOF__title(
 
         //  Save the recipe title (name)
         recipe_p->name = text_copy_to_new( title_p );
+log_write( MID_DEBUG_0, "DECODE_BOF__title", "303\n" );
 
         // Change the pass_fail flag to PASS
         bof_rc = true;
@@ -351,14 +353,24 @@ DECODE_BOF__recipe_by(
      *  Recipe By:
      ************************************************************************/
 
-    //  Search the data buffer
-    tmp_data_p = data_p + BOF_BY_L;
+    //  Is there something already there ?
+    if ( recipe_p->author == NULL )
+    {
+        //  YES:    Search the data buffer
+        tmp_data_p = data_p + BOF_BY_L;
 
-    //  Locate the first character in the buffer
-    tmp_data_p = text_skip_past_whitespace( tmp_data_p );
+        //  Locate the first character in the buffer
+        tmp_data_p = text_skip_past_whitespace( tmp_data_p );
 
-    //  Save the recipe title (name)
-    recipe_p->author = text_copy_to_new( tmp_data_p );
+        //  Save the recipe title (name)
+        recipe_p->author = text_copy_to_new( tmp_data_p );
+    }
+    else
+    {
+        //  NO:     OOPS.
+        log_write( MID_WARNING, "BOF_DECODE__",  "\tA second 'Recipe By:' "
+                   "was detected.\n" );
+    }
 
     //  Change the return code
     bof_rc = true;
@@ -409,14 +421,27 @@ DECODE_BOF__srv_size(
      *  Serving Size  :
      ************************************************************************/
 
-    //  YES:    Jump past the search string
-    tmp_data_p = data_p + BOF_SERVING_L;
+    //  Is there something already there ?
+    if ( recipe_p->serves == NULL )
+    {
+        //  YES:    Jump past the search string
+        tmp_data_p = data_p + BOF_SERVING_L;
 
-    //  Skip past any leading whitespace.
-    tmp_data_p = text_skip_past_whitespace( tmp_data_p );
+        //  Skip past any leading whitespace.
+        tmp_data_p = text_skip_past_whitespace( tmp_data_p );
 
-    //  Save the recipe title (name)
-    recipe_p->serves = text_copy_to_new( tmp_data_p );
+        //  Save the recipe title (name)
+        recipe_p->serves = text_copy_to_new( tmp_data_p );
+log_write( MID_DEBUG_0, "DECODE_BOF__srv_size", "422\n" );
+    }
+    else
+    {
+        //  NO:     OOPS.
+        log_write( MID_WARNING, "BOF_DECODE__",  "\tA second 'Serving Size:' "
+                   "was detected.\n" );
+    }
+
+
 
     //  Change the return code
     bof_rc = true;
