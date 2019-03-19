@@ -214,22 +214,43 @@ decode_copy_info_to_recipe(
     //  Source:
     if ( strlen( source_info_p->g_from ) > 0 )
     {
-        //  YES:    Save to the recipe
+        //  YES:    Is there something there already ?
+        if ( recipe_p->group_from != NULL )
+        {
+            //  YES:    Get rid of the old value.
+            mem_free( recipe_p->group_from );
+        }
+        //  Save to the recipe
         recipe_p->group_from = text_copy_to_new( source_info_p->g_from );
+log_write( MID_DEBUG_0, "decode_copy_info_to_recipe", "225\n" );
     }
     //------------------------------------------------------------------------
     //  Subject:
     if ( strlen( source_info_p->g_subject ) > 0 )
     {
-        //  YES:    Save to the recipe
+        //  YES:    Is there something there already ?
+        if ( recipe_p->group_subject != NULL )
+        {
+            //  YES:    Get rid of the old value.
+            mem_free( recipe_p->group_subject );
+        }
+        //  Save to the recipe
         recipe_p->group_subject = text_copy_to_new( source_info_p->g_subject );
+log_write( MID_DEBUG_0, "decode_copy_info_to_recipe", "239\n" );
     }
     //------------------------------------------------------------------------
     //  Date:
     if ( strlen( source_info_p->g_datetime ) > 0 )
     {
-        //  YES:    Save to the recipe
+        //  YES:    Is there something there already ?
+        if ( recipe_p->group_date != NULL )
+        {
+            //  YES:    Get rid of the old value.
+            mem_free( recipe_p->group_date );
+        }
+        //  Save to the recipe
         recipe_p->group_date = text_copy_to_new( source_info_p->g_datetime );
+log_write( MID_DEBUG_0, "decode_copy_info_to_recipe", "253\n" );
     }
     //------------------------------------------------------------------------
 
@@ -241,22 +262,43 @@ decode_copy_info_to_recipe(
     //  Posted By:
     if ( strlen( source_info_p->e_from ) > 0 )
     {
-        //  YES:    Save to the recipe
+        //  YES:    Is there something there already ?
+        if ( recipe_p->posted_by != NULL )
+        {
+            //  YES:    Get rid of the old value.
+            mem_free( recipe_p->posted_by );
+        }
+        //  Save to the recipe
         recipe_p->posted_by = text_copy_to_new( source_info_p->e_from );
+log_write( MID_DEBUG_0, "decode_copy_info_to_recipe", "273\n" );
     }
     //------------------------------------------------------------------------
     //  Posted Subject:
     if ( strlen( source_info_p->e_subject ) > 0 )
     {
-        //  YES:    Save to the recipe
+        //  YES:    Is there something there already ?
+        if ( recipe_p->posted_subject != NULL )
+        {
+            //  YES:    Get rid of the old value.
+            mem_free( recipe_p->posted_subject );
+        }
+        //  Save to the recipe
         recipe_p->posted_subject = text_copy_to_new( source_info_p->e_subject );
+log_write( MID_DEBUG_0, "decode_copy_info_to_recipe", "287\n" );
     }
     //------------------------------------------------------------------------
     //  Posted Date:
     if ( strlen( source_info_p->e_datetime ) > 0 )
     {
-        //  YES:    Save to the recipe
+        //  YES:    Is there something there already ?
+        if ( recipe_p->posted_date != NULL )
+        {
+            //  YES:    Get rid of the old value.
+            mem_free( recipe_p->posted_date );
+        }
+        //  Save to the recipe
         recipe_p->posted_date = text_copy_to_new( source_info_p->e_datetime );
+log_write( MID_DEBUG_0, "decode_copy_info_to_recipe", "301\n" );
     }
     //------------------------------------------------------------------------
 
@@ -268,29 +310,57 @@ decode_copy_info_to_recipe(
     //  Directory Name:
     if ( strlen( source_info_p->f_file_name ) > 0 )
     {
-        //  YES:    Save to the recipe
+        //  YES:    Is there something there already ?
+        if ( recipe_p->dir_name != NULL )
+        {
+            //  YES:    Get rid of the old value.
+            mem_free( recipe_p->dir_name );
+        }
+        //  Save to the recipe
         recipe_p->dir_name = text_copy_to_new( source_info_p->f_dir_name );
+log_write( MID_DEBUG_0, "decode_copy_info_to_recipe", "321\n" );
     }
     //------------------------------------------------------------------------
     //  File Name:
     if ( strlen( source_info_p->f_file_name ) > 0 )
     {
-        //  YES:    Save to the recipe
+        //  YES:    Is there something there already ?
+        if ( recipe_p->file_name != NULL )
+        {
+            //  YES:    Get rid of the old value.
+            mem_free( recipe_p->file_name );
+        }
+        //  Save to the recipe
         recipe_p->file_name = text_copy_to_new( source_info_p->f_file_name );
+log_write( MID_DEBUG_0, "decode_copy_info_to_recipe", "335\n" );
     }
     //------------------------------------------------------------------------
     //  File Creation Data/Time:
     if ( strlen( source_info_p->f_date_time ) > 0 )
     {
-        //  YES:    Save to the recipe
+        //  YES:    Is there something there already ?
+        if ( recipe_p->file_date_time != NULL )
+        {
+            //  YES:    Get rid of the old value.
+            mem_free( recipe_p->file_date_time );
+        }
+        //  Save to the recipe
         recipe_p->file_date_time = text_copy_to_new( source_info_p->f_date_time );
+log_write( MID_DEBUG_0, "decode_copy_info_to_recipe", "349\n" );
     }
     //------------------------------------------------------------------------
     //  File Size:
     if ( strlen( source_info_p->f_date_time ) > 0 )
     {
-        //  YES:    Save to the recipe
+        //  YES:    Is there something there already ?
+        if ( recipe_p->file_size != NULL )
+        {
+            //  YES:    Get rid of the old value.
+            mem_free( recipe_p->file_size );
+        }
+        //  Save to the recipe
         recipe_p->file_size = text_copy_to_new( source_info_p->f_file_size );
+log_write( MID_DEBUG_0, "decode_copy_info_to_recipe", "363\n" );
     }
     //------------------------------------------------------------------------
 
@@ -343,19 +413,22 @@ decode_end_of_recipe(
      *  Function
      ************************************************************************/
 
-#if 0
+#if 1
     //  NOTE:
     //  When a MXP formatted recipe is embedded inside a MX2, this was producing
     //  a false positive for a recipe break.  If this creates a problem then
     //  I will have to pass the current recipe type for additional testing.
 
-
     //  Is this something that can end a recipe ?
     if (    ( email_is_start(       data_p ) == true )
          || ( email_is_group_break( data_p ) == true )
+         || ( decode_bof_start(     data_p ) == true )
+         || ( decode_gf2_start(     data_p ) == true )
+         || ( decode_grf_start(     data_p ) == true )
          || ( decode_mmf_start(     data_p ) == true )
          || ( decode_mx2_start(     data_p ) == true )
-         || ( decode_mxp_start(     data_p ) == true ) )
+         || ( decode_mxp_start(     data_p ) == true )
+         || ( decode_nyc_start(     data_p ) == true ) )
 #else
     //  Is this something that can end a recipe ?
     if (    ( email_is_start(       data_p ) == true )
@@ -654,6 +727,7 @@ decode_finalize(
     {
         //  Create a default string
         recipe_p->name = text_copy_to_new( "No Recipe Name Found" );
+log_write( MID_DEBUG_0, "decode_finalize", "726\n" );
     }
     else
     if ( text_is_blank_line( recipe_p->name ) == true )
@@ -663,12 +737,14 @@ decode_finalize(
 
         //  Create a default string
         recipe_p->name = text_copy_to_new( "No Recipe Name Found" );
+log_write( MID_DEBUG_0, "decode_finalize", "736\n" );
     }
     //-----------------------------------------------------------------------
     if ( recipe_p->author == NULL )
     {
         //  Create a default string
         recipe_p->author = text_copy_to_new( "UNKNOWN" );
+log_write( MID_DEBUG_0, "decode_finalize", "743\n" );
     }
     else
     if ( text_is_blank_line( recipe_p->author ) == true )
@@ -678,6 +754,7 @@ decode_finalize(
 
         //  Create a default string
         recipe_p->author = text_copy_to_new( "UNKNOWN" );
+log_write( MID_DEBUG_0, "decode_finalize", "753\n" );
     }
     //-----------------------------------------------------------------------
     if ( recipe_p->copyright == NULL )
@@ -686,6 +763,7 @@ decode_finalize(
         recipe_p->copyright = text_copy_to_new( "Copyright (c) and related "
                 "rights reserved via Creative Commons [CC BY-SA 4.0]\n\t"
                 "https://creativecommons.org/licenses/by-sa/4.0/" );
+log_write( MID_DEBUG_0, "decode_finalize", "762\n" );
     }
     else
     if ( text_is_blank_line( recipe_p->copyright ) == true )
@@ -697,6 +775,7 @@ decode_finalize(
         recipe_p->copyright = text_copy_to_new( "Copyright (c) and related "
                 "rights reserved via Creative Commons [CC BY-SA 4.0]\n\t"
                 "https://creativecommons.org/licenses/by-sa/4.0/" );
+log_write( MID_DEBUG_0, "decode_finalize", "774\n" );
     }
     //-----------------------------------------------------------------------
 
