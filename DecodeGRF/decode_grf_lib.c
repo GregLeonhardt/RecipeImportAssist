@@ -328,7 +328,13 @@ DECODE_GRF__csbnfd(
         //  Save the information
         if ( text_is_blank_line( tmp_p ) != true )
         {
-            //  QTY="..."
+            //  Is there something already there ?
+            if ( recipe_p->serves != NULL )
+            {
+                //  YES:    Release it
+                mem_free( recipe_p->serves );
+            }
+            //  Now add the new information
             recipe_p->serves = text_copy_to_new( tmp_p );
         }
     }
@@ -344,7 +350,13 @@ DECODE_GRF__csbnfd(
         //  Save the information
         if ( text_is_blank_line( tmp_p ) != true )
         {
-            //  Posted By:
+            //  Is there something already there ?
+            if ( recipe_p->posted_by != NULL )
+            {
+                //  YES:    Release it
+                mem_free( recipe_p->posted_by );
+            }
+            //  Now add the new information
             recipe_p->posted_by = text_copy_to_new( tmp_p );
         }
     }
@@ -377,7 +389,13 @@ DECODE_GRF__csbnfd(
         //  Save the information
         if ( text_is_blank_line( tmp_p ) != true )
         {
-            //  Author:
+            //  Is there something already there ?
+            if ( recipe_p->author != NULL )
+            {
+                //  YES:    Release it
+                mem_free( recipe_p->author );
+            }
+            //  Now add the new information
             recipe_p->author = text_copy_to_new( tmp_p );
         }
     }
