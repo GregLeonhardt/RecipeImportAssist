@@ -1323,7 +1323,7 @@ log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1207\n" );
 
                         }   break;
                         //----------------------------------------------------
-                        case    MX2_TAG_PREPT:  //  Start of Preparation Time
+                        case    MX2_TAG_PREPT:  //  Start of Total Time
                         {
                             //  ELAPSED="..."
                             recipe_p->time_total
@@ -1506,18 +1506,25 @@ log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1480\n" );
                             label_p = DECODE_MX2__srch( attribute_p, "label=\"" );
                             source_p = DECODE_MX2__srch( attribute_p, "source=\"" );
 
-                            //  Add it to the directions
-                            recipe_add_instructions( recipe_p, " " );
-                            recipe_add_instructions( recipe_p, "SOURCE: " );
-                            recipe_add_instructions( recipe_p, " " );
-                            recipe_add_instructions( recipe_p, "<LABEL> " );
-                            recipe_add_instructions( recipe_p, label_p );
-                            recipe_add_instructions( recipe_p, "<SOURCE> " );
-                            recipe_add_instructions( recipe_p, source_p );
-
+                            //  Did we get the information ?
+                            if (    ( label_p  != NULL )
+                                 && ( source_p != NULL ) )
+                            {
+                                //  YES:    Add it to the directions
+                                recipe_add_instructions( recipe_p, " " );
+                                recipe_add_instructions( recipe_p, "SOURCE: " );
+                                recipe_add_instructions( recipe_p, " " );
+                                recipe_add_instructions( recipe_p, "<LABEL> " );
+                                recipe_add_instructions( recipe_p, label_p );
+                                recipe_add_instructions( recipe_p, "<SOURCE> " );
+                                recipe_add_instructions( recipe_p, source_p );
+                            }
+                            
                             //  Release their buffers.
-                            mem_free( label_p );
-                            mem_free( source_p );
+                            if ( label_p  != NULL )
+                                mem_free( label_p );
+                            if ( source_p  != NULL )
+                                mem_free( source_p );
 
                         }   break;
                         //----------------------------------------------------
@@ -1565,18 +1572,25 @@ log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1510\n" );
                             label_p = DECODE_MX2__srch( attribute_p, "label=\"" );
                             elapsed_p = DECODE_MX2__srch( attribute_p, "elapsed=\"" );
 
-                            //  <ALTT LABEL=".." SOURCE=".."
-                            recipe_add_instructions( recipe_p, " "  );
-                            recipe_add_instructions( recipe_p, "ALTERNATE TIME: " );
-                            recipe_add_instructions( recipe_p, " " );
-                            recipe_add_instructions( recipe_p, "<LABEL> " );
-                            recipe_add_instructions( recipe_p, label_p );
-                            recipe_add_instructions( recipe_p, "<ELAPSED> " );
-                            recipe_add_instructions( recipe_p, elapsed_p );
+                            //  Did we get the information ?
+                            if (    ( label_p   != NULL )
+                                 && ( elapsed_p != NULL ) )
+                            {
+                                //  <ALTT LABEL=".." SOURCE=".."
+                                recipe_add_instructions( recipe_p, " "  );
+                                recipe_add_instructions( recipe_p, "ALTERNATE TIME: " );
+                                recipe_add_instructions( recipe_p, " " );
+                                recipe_add_instructions( recipe_p, "<LABEL> " );
+                                recipe_add_instructions( recipe_p, label_p );
+                                recipe_add_instructions( recipe_p, "<ELAPSED> " );
+                                recipe_add_instructions( recipe_p, elapsed_p );
+                            }
 
                             //  Release their buffers.
-                            mem_free( label_p );
-                            mem_free( elapsed_p );
+                            if ( label_p  != NULL )
+                                mem_free( label_p );
+                            if ( elapsed_p  != NULL )
+                                mem_free( elapsed_p );
 
                         }   break;
                         //----------------------------------------------------
@@ -1593,18 +1607,25 @@ log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1510\n" );
                             name_p = DECODE_MX2__srch( attribute_p, "name=\"" );
                             value_p = DECODE_MX2__srch( attribute_p, "value=\"" );
 
-                            //  <RATE> NAME=".." VALUE=".."
-                            recipe_add_instructions( recipe_p, " " );
-                            recipe_add_instructions( recipe_p, "RATING: " );
-                            recipe_add_instructions( recipe_p, " " );
-                            recipe_add_instructions( recipe_p, "<NAME> " );
-                            recipe_add_instructions( recipe_p, name_p );
-                            recipe_add_instructions( recipe_p, "<VALUE> " );
-                            recipe_add_instructions( recipe_p, value_p );
+                            //  Did we get the information ?
+                            if (    ( name_p != NULL )
+                                 && ( value_p != NULL ) )
+                            {
+                                //  <RATE> NAME=".." VALUE=".."
+                                recipe_add_instructions( recipe_p, " " );
+                                recipe_add_instructions( recipe_p, "RATING: " );
+                                recipe_add_instructions( recipe_p, " " );
+                                recipe_add_instructions( recipe_p, "<NAME> " );
+                                recipe_add_instructions( recipe_p, name_p );
+                                recipe_add_instructions( recipe_p, "<VALUE> " );
+                                recipe_add_instructions( recipe_p, value_p );
+                            }
 
                             //  Release their buffers.
-                            mem_free( name_p );
-                            mem_free( value_p );
+                            if ( name_p  != NULL )
+                                mem_free( name_p );
+                            if ( value_p  != NULL )
+                                mem_free( value_p );
 
                         }   break;
                         //----------------------------------------------------
@@ -1621,18 +1642,25 @@ log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1510\n" );
                             name_p = DECODE_MX2__srch( attribute_p, "name=\"" );
                             value_p = DECODE_MX2__srch( attribute_p, "value=\"" );
 
-                            //  <RATT> NAME=".." VALUE=".."
-                            recipe_add_instructions( recipe_p, " " );
-                            recipe_add_instructions( recipe_p, "RATING: " );
-                            recipe_add_instructions( recipe_p, " " );
-                            recipe_add_instructions( recipe_p, "<NAME> " );
-                            recipe_add_instructions( recipe_p, name_p );
-                            recipe_add_instructions( recipe_p, "<VALUE> " );
-                            recipe_add_instructions( recipe_p, value_p );
+                            //  Did we get the information ?
+                            if (    ( name_p  != NULL )
+                                 && ( value_p != NULL ) )
+                            {
+                                //  <RATT> NAME=".." VALUE=".."
+                                recipe_add_instructions( recipe_p, " " );
+                                recipe_add_instructions( recipe_p, "RATING: " );
+                                recipe_add_instructions( recipe_p, " " );
+                                recipe_add_instructions( recipe_p, "<NAME> " );
+                                recipe_add_instructions( recipe_p, name_p );
+                                recipe_add_instructions( recipe_p, "<VALUE> " );
+                                recipe_add_instructions( recipe_p, value_p );
+                            }
 
                             //  Release their buffers.
-                            mem_free( name_p );
-                            mem_free( value_p );
+                            if ( name_p  != NULL )
+                                mem_free( name_p );
+                            if ( value_p  != NULL )
+                                mem_free( value_p );
 
                         }   break;
                         //----------------------------------------------------
