@@ -213,6 +213,9 @@ decode_gf2(
                 {
                     //  YES:    This is the old format style.
                     cookn_format = false;
+
+                    //  Set the next field
+                    gf2_state = GF2_DS_NOTE;
                 }
                 //  Is this a section break marker ?
                 else
@@ -220,10 +223,18 @@ decode_gf2(
                 {
                     //  This is present in the Cook'n format style.
                     cookn_format = true;
-                }
-                //  Set the next field
-                gf2_state = GF2_DS_NOTE;
 
+                    //  Set the next field
+                    gf2_state = GF2_DS_NOTE;
+                }
+                else
+                {
+                    //  ???:    None of the above
+                    gf2_state = GF2_DS_AUIP;
+
+                    //  Process the AUIP data.
+                    DECODE_GF2__auip( recipe_p, list_data_p );
+                }
             }   break;
 
             /****************************************************************
@@ -259,8 +270,8 @@ decode_gf2(
                     }
                     else
                     {
-                        //  Process some notes
-                        DECODE_GF2__note( recipe_p, list_data_p );
+                        //  Process the data
+                        DECODE_GF2__aspcy( recipe_p, list_data_p );
                     }
                 }
             }   break;
