@@ -155,6 +155,7 @@ email_is_start(
         email_rc = true;
     }
     //  Is this the start of a new e-Mail ?
+#if 0
     else
     if ( strncmp( tmp_data_p, SRCH_RETURN, SRCH_RETURN_L ) == 0 )
     {
@@ -168,6 +169,7 @@ email_is_start(
         //  YES:    Change the return code
         email_rc = true;
     }
+#endif
 
     /************************************************************************
      *  Function Exit
@@ -231,6 +233,8 @@ email_is_group_break(
               && ( strlen( tmp_data_p )                                        == 72 ) )
          || (    ( strncmp( tmp_data_p, "-----"                         ,  5 ) ==  0 )
               && ( strlen( tmp_data_p )                                        ==  5 ) )
+         || (    ( strncmp( tmp_data_p, "........................................", 40 ) ==  0 )
+              && ( strlen( tmp_data_p )                                        == 40 ) )
          || ( strncmp( tmp_data_p, "========================  Arch",      30 ) == 0 )
          || ( strncmp( tmp_data_p, "--------------- MESSAGE bread-",      30 ) == 0 )
          || ( strncmp( tmp_data_p, "--------------- END bread-bake",      30 ) == 0 ) )
@@ -588,6 +592,9 @@ email_filter(
                     //  YES:    Set the filter type.
                     email_filter_type = EMAIL_FILTER_BASE64;
                 }
+//  @ToDo   I think this is a part of the past and is no longer needed.
+//          It was here to allow processing of forwarded messages.
+#if 0
                 //  Is this part of a reply to an e-mail
                 else
                 if (    ( data_p[ 0 ] == '>' )
@@ -599,6 +606,7 @@ email_filter(
                     //  YES:    Throw it in the trash
                     email_filter_type = EMAIL_FILTER_REPLY;
                 }
+#endif
             }
         }
     }
