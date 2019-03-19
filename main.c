@@ -478,6 +478,9 @@ main(
          file_info_p != NULL;
          file_info_p = list_get_next( file_list_p, file_info_p ) )
     {
+        //  Remove it from the list
+        list_delete( file_list_p, file_info_p );
+
         //  Will the fully qualified file name will fit in the buffer ?
         if (     (   ( strlen( file_info_p->dir_name  ) )
                    + ( strlen( file_info_p->file_name ) ) )
@@ -564,7 +567,10 @@ main(
                  || ( strncmp( extention, "yml",                  3 ) == 0 )
                  || ( strncmp( extention, "END",                  3 ) == 0 ) )
             {
-                //  YES:    Skip it.
+                //  YES:    Free the buffer
+                mem_free( file_info_p );
+
+                //  Skip it.
                 continue;
             }
         }
@@ -573,6 +579,7 @@ main(
 
         //  Create a new source information structure
         source_info_p = mem_malloc( sizeof( struct source_info_t ) );
+log_write( MID_DEBUG_0, "main", "582\n" );
 
         //  Copy file information into source information structure
         strncpy( source_info_p->f_dir_name, file_info_p->dir_name,
@@ -627,8 +634,12 @@ main(
                                 html_found = false;
                             }
 
+//mem_dump( );
                             //  YES:    Go process the list.
                             decodel1_parse( level1_list_p, source_info_p );
+
+                            //  Check for a memory leak.
+                            mem_dump( );
 
                             if ( list_query_count( level1_list_p ) != 0 )
                             {
@@ -683,13 +694,18 @@ main(
                            "There is still something on the list\n" );
             }
         }
+        //  Free the buffer
+        mem_free( file_info_p );
+
+        //  Free the buffer
+        mem_free( source_info_p );
 
         //  Close the input file
         file_close( in_file_fp );
     }
 
     /************************************************************************
-     *  All done, delete the list
+     *  All done, delete the lists
      ************************************************************************/
 
     //  Was there an error terminating the list ?
@@ -704,6 +720,21 @@ main(
         //  NO:     Log the successful termination of the list.
         log_write( MID_DEBUG_0, "main",
                       "list_kill( [%p] level1_list_p ) complete.\n",
+                      level1_list_p );
+    }
+
+    //  Was there an error terminating the list ?
+    if ( list_kill( file_list_p ) != true )
+    {
+        //  YES:    Let everyone know about the error
+        log_write( MID_FATAL, "main",
+                      "list_kill( file_list_p ) failed\n" );
+    }
+    else
+    {
+        //  NO:     Log the successful termination of the list.
+        log_write( MID_DEBUG_0, "main",
+                      "list_kill( [%p] file_list_p ) complete.\n",
                       level1_list_p );
     }
 
@@ -731,9 +762,6 @@ main(
                   "End\n" );
     log_write( MID_INFO, "main",
                   "|==============================================|\n\n" );
-
-    //  All allocated memory should have been released.  Let's see
-    mem_dump( );
 
     return( 0 );
 }
