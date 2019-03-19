@@ -62,8 +62,26 @@
 #define GF2_START               "@@@@@"
 #define GF2_START_L             strlen( GF2_START )
 //----------------------------------------------------------------------------
-#define GF2_END                 "_____"
-#define GF2_END_L               strlen( GF2_END )
+#define GF2_END_1               "_____"
+#define GF2_END_1_L             strlen( GF2_END_1 )
+//----------------------------------------------------------------------------
+#define GF2_END_2               "-----"
+#define GF2_END_2_L             strlen( GF2_END_2 )
+//----------------------------------------------------------------------------
+#define GF2_A                   "Author:"
+#define GF2_A_L                 strlen( GF2_A )
+//----------------------------------------------------------------------------
+#define GF2_S                   "Serves:"
+#define GF2_S_L                 strlen( GF2_S )
+//----------------------------------------------------------------------------
+#define GF2_PT                  "Prep Time:"
+#define GF2_PT_L                strlen( GF2_PT )
+//----------------------------------------------------------------------------
+#define GF2_CT                  "Cook Time:"
+#define GF2_CT_L                strlen( GF2_CT )
+//----------------------------------------------------------------------------
+#define GF2_Y                   "Yield:"
+#define GF2_Y_L                 strlen( GF2_Y )
 //----------------------------------------------------------------------------
 #define GF2_NEW_FIELD           '|'
 //----------------------------------------------------------------------------
@@ -191,7 +209,8 @@ DECODE_GF2__end(
      ************************************************************************/
 
     //  Is this the start of a Meal-Master GF2 recipe ?
-    if ( strncmp( tmp_data_p, GF2_END,   GF2_END_L    ) == 0 )
+    if (    ( strncmp( tmp_data_p, GF2_END_1, GF2_END_1_L  ) == 0 )
+         || ( strncmp( tmp_data_p, GF2_END_2, GF2_END_2_L  ) == 0 ) )
     {
         //  YES:    Change the return code
         gf2_rc = true;
@@ -250,6 +269,7 @@ DECODE_GF2__title(
 
         //  Save the recipe title (name)
         recipe_p->name = text_copy_to_new( title_p );
+log_write( MID_DEBUG_0, "DECODE_GF2__title", "253\n" );
 
         // Change the pass_fail flag to PASS
         gf2_rc = true;
@@ -261,6 +281,175 @@ DECODE_GF2__title(
 
     // DONE with this line
     return ( gf2_rc );
+}
+
+/****************************************************************************/
+/**
+ *  Search for and process the 'Author:', 'Serves:', 'Prep Time:',
+ *                             'Cook Time:', 'Yield:'
+ *
+ *  @param  recipe_p            Pointer to a recipe structure.
+ *  @param  data_p              Pointer to a a line of text to be scanned.
+ *
+ *  @return                     true when a the recipe title is located and
+ *                              processed else false.
+ *
+ *  @note
+ *
+ ****************************************************************************/
+
+int
+DECODE_GF2__aspcy(
+    struct  recipe_t            *   recipe_p,
+    char                        *   data_p
+    )
+{
+    /**
+     * @param grf_rc            Return Code                                 */
+    int                             grf_rc;
+    /**
+     * @param tmp_p             Local pointer to data                       */
+    char    *                       tmp_p;
+
+    /************************************************************************
+     *  Function Initialization
+     ************************************************************************/
+
+    //  Assume this is a one of the following.
+    grf_rc = true;
+
+    /************************************************************************
+     *  Function Body
+     ************************************************************************/
+
+    //  ---------------------------------------------------------------------
+    //  'Author:'
+    if ( strncmp( data_p, GF2_A, GF2_A_L  ) == 0 )
+    {
+        //  Skip past the tag
+        tmp_p = data_p + GF2_A_L;
+        tmp_p = text_skip_past_whitespace( tmp_p );
+
+        //  Save the information
+        if ( text_is_blank_line( tmp_p ) != true )
+        {
+            //  Is there something already there ?
+            if ( recipe_p->author != NULL )
+            {
+                //  YES:    Release it
+                mem_free( recipe_p->author );
+            }
+            //  Now add the new information
+            recipe_p->author = text_copy_to_new( tmp_p );
+        }
+    }
+    //  ---------------------------------------------------------------------
+    //  'Serves:'
+    else
+    if ( strncmp( data_p, GF2_S, GF2_S_L  ) == 0 )
+    {
+        //  Skip past the tag
+        tmp_p = data_p + GF2_S_L;
+        tmp_p = text_skip_past_whitespace( tmp_p );
+
+        //  Save the information
+        if ( text_is_blank_line( tmp_p ) != true )
+        {
+            //  Is there something already there ?
+            if ( recipe_p->serves != NULL )
+            {
+                //  YES:    Release it
+                mem_free( recipe_p->serves );
+            }
+            //  Now add the new information
+            recipe_p->serves = text_copy_to_new( tmp_p );
+        }
+    }
+    //  ---------------------------------------------------------------------
+    //  'Prep Time:'
+    else
+    if ( strncmp( data_p, GF2_PT, GF2_PT_L  ) == 0 )
+    {
+        //  Skip past the tag
+        tmp_p = data_p + GF2_PT_L;
+        tmp_p = text_skip_past_whitespace( tmp_p );
+
+        //  Save the information
+        if ( text_is_blank_line( tmp_p ) != true )
+        {
+            //  Is there something already there ?
+            if ( recipe_p->time_prep != NULL )
+            {
+                //  YES:    Release it
+                mem_free( recipe_p->time_prep );
+            }
+            //  Now add the new information
+            recipe_p->time_prep = text_copy_to_new( tmp_p );
+        }
+    }
+    //  ---------------------------------------------------------------------
+    //  'Cook Time:'
+    else
+    if ( strncmp( data_p, GF2_CT, GF2_CT_L  ) == 0 )
+    {
+        //  Skip past the tag
+        tmp_p = data_p + GF2_CT_L;
+        tmp_p = text_skip_past_whitespace( tmp_p );
+
+        //  Save the information
+        if ( text_is_blank_line( tmp_p ) != true )
+        {
+            //  Is there something already there ?
+            if ( recipe_p->time_cook != NULL )
+            {
+                //  YES:    Release it
+                mem_free( recipe_p->time_cook );
+            }
+            //  Now add the new information
+            recipe_p->time_cook = text_copy_to_new( tmp_p );
+        }
+    }
+    //  ---------------------------------------------------------------------
+    //  'Yield:'
+    else
+    if ( strncmp( data_p, GF2_Y, GF2_Y_L  ) == 0 )
+    {
+        //  Skip past the tag
+        tmp_p = data_p + GF2_Y_L;
+        tmp_p = text_skip_past_whitespace( tmp_p );
+
+        //  Save the information
+        if ( text_is_blank_line( tmp_p ) != true )
+        {
+            //  Is there something already there ?
+            if ( recipe_p->makes != NULL )
+            {
+                //  YES:    Release it
+                mem_free( recipe_p->makes );
+            }
+            //  @ToDo   Before saving the yield information it is supposed to
+            //          be split into unit and amount fields.  Code is needed..
+
+            //  Now add the new information
+            recipe_p->makes = text_copy_to_new( tmp_p );
+
+            //  Now add the new information
+            recipe_p->makes_unit = text_copy_to_new( " " );
+        }
+    }
+    //  ---------------------------------------------------------------------
+    else
+    {
+        //  If it isn't any of the above it must be a note.
+        DECODE_GF2__note( recipe_p, data_p );
+    }
+
+    /************************************************************************
+     *  Function Exit
+     ************************************************************************/
+
+    // DONE with this line
+    return ( grf_rc );
 }
 
 /****************************************************************************/
