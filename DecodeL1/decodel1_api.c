@@ -167,6 +167,9 @@ decodel1_parse(
          list_data_p = list_fget_next( level1_list_p, list_data_p, list_lock_key ) )
     {
 
+        //  Remove the data from the level 1 list
+        list_fdelete( level1_list_p, list_data_p, list_lock_key );
+
         /********************************************************************/
         //  Mailing-List: list MC_recipes@onelist.com; contact MC_recipes-owner@onelist.com
         //  Sender: bread-bakers-errors@lists.best.com
@@ -187,12 +190,6 @@ decodel1_parse(
                 memset( source_info_p->g_from, '\0',
                         sizeof( source_info_p->g_from ) );
                 strncpy( source_info_p->g_from, tmp_data_p, SOURCE_L );
-
-                //  Done with this text line
-                list_fdelete( level1_list_p, list_data_p, list_lock_key );
-
-                //  Add the line to the level 2 list
-                list_put_last( level2_list_p, list_data_p );
             }
         }
 
@@ -216,12 +213,6 @@ decodel1_parse(
                 memset( source_info_p->e_from, '\0',
                         sizeof( source_info_p->e_from ) );
                 strncpy( source_info_p->e_from, tmp_data_p, FROM_L );
-
-                //  Done with this text line
-                list_fdelete( level1_list_p, list_data_p, list_lock_key );
-
-                //  Add the line to the level 2 list
-                list_put_last( level2_list_p, list_data_p );
             }
         }
 
@@ -262,12 +253,6 @@ decodel1_parse(
                     strncpy( source_info_p->e_datetime, tmp_data_p, DATETIME_L );
                 }
             }
-
-            //  Done with this text line
-            list_fdelete( level1_list_p, list_data_p, list_lock_key );
-
-            //  Add the line to the level 2 list
-            list_put_last( level2_list_p, list_data_p );
         }
 
         /********************************************************************/
@@ -307,12 +292,6 @@ decodel1_parse(
                     strncpy( source_info_p->e_subject, tmp_data_p, SUBJECT_L );
                 }
             }
-
-            //  Done with this text line
-            list_fdelete( level1_list_p, list_data_p, list_lock_key );
-
-            //  Add the line to the level 2 list
-            list_put_last( level2_list_p, list_data_p );
         }
 
         /********************************************************************/
@@ -333,17 +312,11 @@ decodel1_parse(
             memset( source_info_p->e_datetime, '\0', sizeof( source_info_p->e_datetime ) );
             memset( source_info_p->e_subject,  '\0', sizeof( source_info_p->e_subject  ) );
 
-            //  Done with this text line
-            list_fdelete( level1_list_p, list_data_p, list_lock_key );
-
             if ( list_query_count( level2_list_p ) != 0 )
             {
                 log_write( MID_FATAL, "decodel1_parse",
                            "There is still something on the list\n" );
             }
-
-            //  Add the line to the level 2 list
-            list_put_last( level2_list_p, list_data_p );
         }
 
         /********************************************************************/
@@ -352,13 +325,9 @@ decodel1_parse(
             log_write( MID_DEBUG_0, "decodel1_parse",
                           "Else       %p - %4d - '%.60s'\n",
                           list_data_p, list_query_count( level2_list_p ), list_data_p );
-
-            //  Remove the line from the level 1 list
-            list_fdelete( level1_list_p, list_data_p, list_lock_key );
-
-            //  Add the line to the level 2 list
-            list_put_last( level2_list_p, list_data_p );
         }
+        //  Add the line to the level 2 list
+        list_put_last( level2_list_p, list_data_p );
     }
 
     /************************************************************************
