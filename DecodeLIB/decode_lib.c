@@ -565,3 +565,104 @@ DECODE__directions_notes(
 }
 
 /****************************************************************************/
+/**
+ *  Scan the recipe title for information that can categorize the recipe.
+ *
+ *  @param recipe_t             Primary structure for a recipe
+ *
+ *  @return void                No return code from this function.
+ *
+ *  @note
+ *
+ ****************************************************************************/
+
+void
+DECODE__directions_from(
+    struct   recipe_t           *   recipe_p
+    )
+{
+    /**
+     *  @param  free_from       Flag to free memory for the buffer          */
+    int                             free_from;
+    /**
+     *  @param  directions_p    Pointer to a line of the directions         */
+    char                        *   directions_p;
+    /**
+     *  @param  from_p          Pointer to the start of a from string       */
+    char                        *   from_p;
+
+    /************************************************************************
+     *  Function Initialization
+     ************************************************************************/
+
+    //  The assumption is that the buffer will not be free'd when we are done
+    free_from = false;
+
+    /************************************************************************
+     *  Function
+     ************************************************************************/
+
+    if ( list_query_count( recipe_p->directions ) > 0 )
+    {
+        for( directions_p = list_get_first( recipe_p->directions );
+             directions_p != NULL;
+             directions_p = list_get_next( recipe_p->directions, directions_p ) )
+        {
+            //  Look for the keyword "NOTES:" or "NOTE:"
+            if (    ( ( from_p = strstr( directions_p, "FROM:"  ) ) != NULL )
+                 || ( ( from_p = strstr( directions_p, "from:"  ) ) != NULL )
+                 || ( ( from_p = strstr( directions_p, "From:"  ) ) != NULL ) )
+            {
+                //  Is this a Notes: ONLY directions line ?
+                if ( from_p == directions_p )
+                {
+                    //  YES:    Remove it from the directions
+                    list_delete( recipe_p->directions, directions_p );
+
+                    //  We are go to have to free this buffer later.
+                    free_from = true;
+                }
+
+                //  Remove the remaining text from directions by NULL terminating
+                from_p[ 0 ] = '\0';
+
+                //  Locate the end of the from tag
+                from_p = strchr( ++from_p, ':' );
+
+                //  Move past any leading whitespace
+                from_p = text_skip_past_whitespace( ++from_p );
+
+                //  Is there anything else on this line ?
+                if ( text_is_blank_line( from_p ) == false )
+                {
+                    //  YES:    Is there already a 'Recipe From:' ?
+                    if ( recipe_p->author != NULL )
+                    {
+                        //  YES:    Dump the old information
+                        mem_free( recipe_p->author );
+                    }
+                    //  Save the new 'Recipe From:'
+                    recipe_p->author = text_copy_to_new( from_p );
+                }
+
+                //  Are we supposed to free the buffer ?
+                if ( free_from == true )
+                {
+                    //  YES:    Release the storage buffer.
+                    mem_free( directions_p );
+
+                    //  And clear the flag
+                    free_from = false;
+                }
+            }
+        }
+    }
+
+    /************************************************************************
+     *  Function Exit
+     ************************************************************************/
+
+    //  DONE!
+}
+
+/****************************************************************************/

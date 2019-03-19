@@ -804,8 +804,11 @@ log_write( MID_DEBUG_0, "decode_finalize", "774\n" );
         //  Directions format
         recipe_fmt_directions( recipe_p );
 
-        //  Recipe Title analysis
+        //  Look for 'NOTES' inside the directions
         DECODE__directions_notes( recipe_p );
+
+        //  Look for 'FROM' inside the directions
+        DECODE__directions_from( recipe_p );
     }
 
     /************************************************************************
