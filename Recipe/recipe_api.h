@@ -208,7 +208,7 @@ struct   recipe_t
 //----------------------------------------------------------------------------
 struct  auip_t
 {
-    char                        *   type_p;           //  I=Ingredient
+    char                        *   type_p;         //  I=Ingredient
                                                     //  T=Text
                                                     //  R=Recipe
                                                     //  S=Subtitle
