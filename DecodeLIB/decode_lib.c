@@ -401,6 +401,7 @@ DECODE__title_information(
 
     //  Allocate storage for the local copy of the recipe title
     name_p = mem_malloc( ( strlen( recipe_p->name ) + 1 ) );
+log_write( MID_DEBUG_0, "DECODE__title_information", "404\n" );
 
     //  Copy the recipe title to the local buffer
     memcpy( name_p, recipe_p->name, strlen( recipe_p->name ) );
@@ -516,8 +517,11 @@ DECODE__directions_notes(
                     //  Are we supposed to free the buffer ?
                     if ( free_note == true )
                     {
-                        // YES: Release the storage buffer.
+                        //  YES:    Release the storage buffer.
                         mem_free( directions_p );
+
+                        //  And clear the flag
+                        free_note = false;
                     }
                 }
                 else
@@ -528,6 +532,9 @@ DECODE__directions_notes(
                     {
                         //  YES:    Release the storage buffer.
                         mem_free( directions_p );
+
+                        //  And clear the flag
+                        free_note = false;
                     }
 
                     //  Add the next line to the notes:
