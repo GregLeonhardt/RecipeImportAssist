@@ -29,6 +29,7 @@
 #include <stdio.h>              //  Standard I/O definitions
                                 //*******************************************
 #include <string.h>             //  Functions for managing strings
+#include <stdlib.h>             //  ANSI standard library.
                                 //*******************************************
 
 /****************************************************************************
@@ -370,7 +371,26 @@ log_write( MID_DEBUG_0, "decode_copy_info_to_recipe", "363\n" );
 
     //------------------------------------------------------------------------
     //  Recipe-ID:
-//  recipe_next_id( recipe_p, RECIPE_FORMAT_MXP );
+#if 0
+    recipe_next_id( recipe_p, RECIPE_FORMAT_MXP );
+#else
+{
+
+#define RECIPE_ID_L             ( 17 )
+    /**
+     *  @param  recipe_id_val   Value of the stored recipe_id               */
+    int                             recipe_id_val;
+
+    //  Convert the recipe-ID to an integer
+    recipe_id_val = atoi( recipe_id_p );
+
+    //  And increment it
+    recipe_id_val += 1;
+
+    //  Integer back to ASCII
+    snprintf( recipe_id_p, RECIPE_ID_L, "%016d", recipe_id_val );
+}
+#endif
 
     /************************************************************************
      *  Function Exit
