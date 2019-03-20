@@ -370,7 +370,7 @@ log_write( MID_DEBUG_0, "decode_copy_info_to_recipe", "363\n" );
 
     //------------------------------------------------------------------------
     //  Recipe-ID:
-    recipe_next_id( recipe_p, RECIPE_FORMAT_MXP );
+//  recipe_next_id( recipe_p, RECIPE_FORMAT_MXP );
 
     /************************************************************************
      *  Function Exit
@@ -809,6 +809,9 @@ log_write( MID_DEBUG_0, "decode_finalize", "774\n" );
 
         //  Look for 'FROM' inside the directions
         DECODE__directions_from( recipe_p );
+
+        //  Calculate the recipe-id based on the recipe contents.
+        recipe_id( recipe_p );
     }
 
     /************************************************************************
