@@ -579,7 +579,8 @@ main(
 
         //  Create a new source information structure
         source_info_p = mem_malloc( sizeof( struct source_info_t ) );
-log_write( MID_DEBUG_0, "main", "582\n" );
+
+        log_write( MID_DEBUG_1, "main.c", "Line: %d\n", __LINE__ );
 
         //  Copy file information into source information structure
         strncpy( source_info_p->f_dir_name, file_info_p->dir_name,
@@ -688,6 +689,9 @@ log_write( MID_DEBUG_0, "main", "582\n" );
             //  YES:    Go process the list.
             decodel1_parse( level1_list_p, source_info_p );
 
+            //  Check for a memory leak.
+            mem_dump( );
+
             if ( list_query_count( level1_list_p ) != 0 )
             {
                 log_write( MID_FATAL, "main",
@@ -702,6 +706,25 @@ log_write( MID_DEBUG_0, "main", "582\n" );
 
         //  Close the input file
         file_close( in_file_fp );
+
+        //  Log the current count
+        log_write( MID_INFO, "main",
+                      "RECIPE_ID = %s\n", recipe_id_p );
+
+        //  Log the breakdown of recipe formats
+        log_write( MID_INFO, "main",
+                      "  BOF    GF2    GRF    MMF    MX2    MXP    NYC    RXF    TXT\n" );
+        log_write( MID_INFO, "main",
+                      "%5d  %5d  %5d  %5d  %5d  %5d  %5d  %5d  %5d\n",
+                      count_bof, count_gf2, count_grf, count_mmf, count_mx2,
+                      count_mxp, count_nyc, count_rxf, count_txt );
+
+        //  Save the current recipe-id for the next file.
+        store_put( "RECIPE_ID", recipe_id_p );
+
+        //  Reset recipe type counters
+        count_bof = count_gf2 = count_grf = count_mmf = count_mx2 = \
+        count_mxp = count_nyc = count_rxf = count_txt = 0;
     }
 
     /************************************************************************
@@ -741,21 +764,6 @@ log_write( MID_DEBUG_0, "main", "582\n" );
     /************************************************************************
      *  Application Exit
      ************************************************************************/
-
-    //  Log the count
-    log_write( MID_INFO, "main",
-                  "RECIPE_ID = %s\n", recipe_id_p );
-
-    //  Log the breakdown of recipe formats
-    log_write( MID_INFO, "main",
-                  "  BOF    GF2    GRF    MMF    MX2    MXP    NYC    RXF    TXT\n" );
-    log_write( MID_INFO, "main",
-                  "%5d  %5d  %5d  %5d  %5d  %5d  %5d  %5d  %5d\n",
-                  count_bof, count_gf2, count_grf, count_mmf, count_mx2,
-                  count_mxp, count_nyc, count_rxf, count_txt );
-
-    //  Save the recipe-id for the next pass
-    store_put( "RECIPE_ID", recipe_id_p );
 
     //  Mark the end of the run in the log file
     log_write( MID_INFO, "main",

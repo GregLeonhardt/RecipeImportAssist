@@ -666,14 +666,16 @@ RECIPE__new_auip(
 
     //  Allocate a new ingredient structure
     auip_p = mem_malloc( sizeof( struct auip_t ) );
-log_write( MID_DEBUG_0, "RECIPE__new_auip", "640\n" );
+
+    log_write( MID_DEBUG_1, "recipe_lib.c", "Line: %d\n", __LINE__ );
 
     //  AMOUNT
     if ( strlen( amount_p ) > 0 )
     {
         //  Copy source information to the new buffer
         auip_p->amount_p = text_copy_to_new( amount_p );
-log_write( MID_DEBUG_0, "RECIPE__new_auip", "647\n" );
+
+        log_write( MID_DEBUG_1, "recipe_lib.c", "Line: %d\n", __LINE__ );
     }
 
     //  UNIT
@@ -681,7 +683,8 @@ log_write( MID_DEBUG_0, "RECIPE__new_auip", "647\n" );
     {
         //  Copy source information to the new buffer
         auip_p->unit_p = text_copy_to_new( unit_p );
-log_write( MID_DEBUG_0, "RECIPE__new_auip", "655\n" );
+
+        log_write( MID_DEBUG_1, "recipe_lib.c", "Line: %d\n", __LINE__ );
     }
 
     //  INGREDIENT
@@ -689,7 +692,8 @@ log_write( MID_DEBUG_0, "RECIPE__new_auip", "655\n" );
     {
         //  Copy source information to the new buffer
         auip_p->ingredient_p = text_copy_to_new( ingredient_p );
-log_write( MID_DEBUG_0, "RECIPE__new_auip", "663\n" );
+
+        log_write( MID_DEBUG_1, "recipe_lib.c", "Line: %d\n", __LINE__ );
     }
 
     //  PREPERATION
@@ -697,7 +701,8 @@ log_write( MID_DEBUG_0, "RECIPE__new_auip", "663\n" );
     {
         //  Copy source information to the new buffer
         auip_p->preparation_p = text_copy_to_new( preparation_p );
-log_write( MID_DEBUG_0, "RECIPE__new_auip", "671\n" );
+
+        log_write( MID_DEBUG_1, "recipe_lib.c", "Line: %d\n", __LINE__ );
     }
 
     /************************************************************************

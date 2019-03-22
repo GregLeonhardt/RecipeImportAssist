@@ -229,9 +229,16 @@ XLATE__table_input(
                 //  new table buffer and add it to the list.
                 table_data_p = mem_malloc( sizeof( struct table_data_t ) );
 
+                log_write( MID_DEBUG_1, "xlate_lib.c", "Line: %d\n", __LINE__ );
+
                 //  Save the translation to string
                 table_data_p->xlate_to_p   = text_copy_to_new(   to_string );
+
+                log_write( MID_DEBUG_1, "xlate_lib.c", "Line: %d\n", __LINE__ );
+
                 table_data_p->xlate_from_p = text_copy_to_new( from_string );
+
+                log_write( MID_DEBUG_1, "xlate_lib.c", "Line: %d\n", __LINE__ );
 
                 //  Append the new entry to the table
                 list_put_last( xlate_table_p, table_data_p );

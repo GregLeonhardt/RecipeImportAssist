@@ -254,6 +254,8 @@ DECODE_NYC__title(
 
         //  Save the recipe title (name)
         recipe_p->name = text_copy_to_new( title_p );
+        
+        log_write( MID_DEBUG_1, "decode_nyc_lib.c", "Line: %d\n", __LINE__ );
 
         // Change the pass_fail flag to PASS
         nyc_rc = true;
@@ -469,18 +471,27 @@ DECODE_NYC__yield(
             {
                 //  YES:    This is a serves amount, not a MAKES amount
                 recipe_p->serves = text_copy_to_new( local_amount );
+        
+                log_write( MID_DEBUG_1, "decode_nyc_lib.c", "Line: %d\n", __LINE__ );
             }
             else
             {
                 //  NO:     This is a serves amount, not a MAKES amount
                 recipe_p->makes      = text_copy_to_new( local_amount );
+        
+                log_write( MID_DEBUG_1, "decode_nyc_lib.c", "Line: %d\n", __LINE__ );
+                
                 recipe_p->makes_unit = text_copy_to_new( tmp_unit );
+        
+                log_write( MID_DEBUG_1, "decode_nyc_lib.c", "Line: %d\n", __LINE__ );
             }
         }
         else
         {
             //  This is a serves amount, not a MAKES amount
             recipe_p->serves = text_copy_to_new( local_amount );
+        
+            log_write( MID_DEBUG_1, "decode_nyc_lib.c", "Line: %d\n", __LINE__ );
         }
     }
 

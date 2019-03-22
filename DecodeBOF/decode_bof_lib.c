@@ -301,7 +301,8 @@ DECODE_BOF__title(
 
         //  Save the recipe title (name)
         recipe_p->name = text_copy_to_new( title_p );
-log_write( MID_DEBUG_0, "DECODE_BOF__title", "303\n" );
+        
+        log_write( MID_DEBUG_1, "decode_bof_lib.c", "Line: %d\n", __LINE__ );
 
         // Change the pass_fail flag to PASS
         bof_rc = true;
@@ -364,6 +365,8 @@ DECODE_BOF__recipe_by(
 
         //  Save the recipe title (name)
         recipe_p->author = text_copy_to_new( tmp_data_p );
+        
+        log_write( MID_DEBUG_1, "decode_bof_lib.c", "Line: %d\n", __LINE__ );
     }
     else
     {
@@ -432,7 +435,8 @@ DECODE_BOF__srv_size(
 
         //  Save the recipe title (name)
         recipe_p->serves = text_copy_to_new( tmp_data_p );
-log_write( MID_DEBUG_0, "DECODE_BOF__srv_size", "422\n" );
+
+        log_write( MID_DEBUG_1, "decode_bof_lib.c", "Line: %d\n", __LINE__ );
     }
     else
     {

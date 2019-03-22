@@ -222,7 +222,8 @@ decode_copy_info_to_recipe(
         }
         //  Save to the recipe
         recipe_p->group_from = text_copy_to_new( source_info_p->g_from );
-log_write( MID_DEBUG_0, "decode_copy_info_to_recipe", "225\n" );
+
+        log_write( MID_DEBUG_1, "decode_api.c", "Line: %d\n", __LINE__ );
     }
     //------------------------------------------------------------------------
     //  Subject:
@@ -236,7 +237,8 @@ log_write( MID_DEBUG_0, "decode_copy_info_to_recipe", "225\n" );
         }
         //  Save to the recipe
         recipe_p->group_subject = text_copy_to_new( source_info_p->g_subject );
-log_write( MID_DEBUG_0, "decode_copy_info_to_recipe", "239\n" );
+
+        log_write( MID_DEBUG_1, "decode_api.c", "Line: %d\n", __LINE__ );
     }
     //------------------------------------------------------------------------
     //  Date:
@@ -250,7 +252,8 @@ log_write( MID_DEBUG_0, "decode_copy_info_to_recipe", "239\n" );
         }
         //  Save to the recipe
         recipe_p->group_date = text_copy_to_new( source_info_p->g_datetime );
-log_write( MID_DEBUG_0, "decode_copy_info_to_recipe", "253\n" );
+
+        log_write( MID_DEBUG_1, "decode_api.c", "Line: %d\n", __LINE__ );
     }
     //------------------------------------------------------------------------
 
@@ -270,7 +273,8 @@ log_write( MID_DEBUG_0, "decode_copy_info_to_recipe", "253\n" );
         }
         //  Save to the recipe
         recipe_p->posted_by = text_copy_to_new( source_info_p->e_from );
-log_write( MID_DEBUG_0, "decode_copy_info_to_recipe", "273\n" );
+
+        log_write( MID_DEBUG_1, "decode_api.c", "Line: %d\n", __LINE__ );
     }
     //------------------------------------------------------------------------
     //  Posted Subject:
@@ -284,7 +288,8 @@ log_write( MID_DEBUG_0, "decode_copy_info_to_recipe", "273\n" );
         }
         //  Save to the recipe
         recipe_p->posted_subject = text_copy_to_new( source_info_p->e_subject );
-log_write( MID_DEBUG_0, "decode_copy_info_to_recipe", "287\n" );
+
+        log_write( MID_DEBUG_1, "decode_api.c", "Line: %d\n", __LINE__ );
     }
     //------------------------------------------------------------------------
     //  Posted Date:
@@ -298,7 +303,8 @@ log_write( MID_DEBUG_0, "decode_copy_info_to_recipe", "287\n" );
         }
         //  Save to the recipe
         recipe_p->posted_date = text_copy_to_new( source_info_p->e_datetime );
-log_write( MID_DEBUG_0, "decode_copy_info_to_recipe", "301\n" );
+
+        log_write( MID_DEBUG_1, "decode_api.c", "Line: %d\n", __LINE__ );
     }
     //------------------------------------------------------------------------
 
@@ -318,7 +324,8 @@ log_write( MID_DEBUG_0, "decode_copy_info_to_recipe", "301\n" );
         }
         //  Save to the recipe
         recipe_p->dir_name = text_copy_to_new( source_info_p->f_dir_name );
-log_write( MID_DEBUG_0, "decode_copy_info_to_recipe", "321\n" );
+
+        log_write( MID_DEBUG_1, "decode_api.c", "Line: %d\n", __LINE__ );
     }
     //------------------------------------------------------------------------
     //  File Name:
@@ -332,7 +339,8 @@ log_write( MID_DEBUG_0, "decode_copy_info_to_recipe", "321\n" );
         }
         //  Save to the recipe
         recipe_p->file_name = text_copy_to_new( source_info_p->f_file_name );
-log_write( MID_DEBUG_0, "decode_copy_info_to_recipe", "335\n" );
+
+        log_write( MID_DEBUG_1, "decode_api.c", "Line: %d\n", __LINE__ );
     }
     //------------------------------------------------------------------------
     //  File Creation Data/Time:
@@ -346,7 +354,8 @@ log_write( MID_DEBUG_0, "decode_copy_info_to_recipe", "335\n" );
         }
         //  Save to the recipe
         recipe_p->file_date_time = text_copy_to_new( source_info_p->f_date_time );
-log_write( MID_DEBUG_0, "decode_copy_info_to_recipe", "349\n" );
+
+        log_write( MID_DEBUG_1, "decode_api.c", "Line: %d\n", __LINE__ );
     }
     //------------------------------------------------------------------------
     //  File Size:
@@ -360,7 +369,8 @@ log_write( MID_DEBUG_0, "decode_copy_info_to_recipe", "349\n" );
         }
         //  Save to the recipe
         recipe_p->file_size = text_copy_to_new( source_info_p->f_file_size );
-log_write( MID_DEBUG_0, "decode_copy_info_to_recipe", "363\n" );
+
+        log_write( MID_DEBUG_1, "decode_api.c", "Line: %d\n", __LINE__ );
     }
     //------------------------------------------------------------------------
 
@@ -544,6 +554,8 @@ decode_xxx(
     //  Allocate storage for the parameter structure
     decode_data_p = mem_malloc( sizeof( struct decode_data_t ) );
 
+    log_write( MID_DEBUG_1, "decode_api.c", "Line: %d\n", __LINE__ );
+
     //  Create the file-list
     decode_data_p->thread_list_p = list_new( );
 
@@ -556,6 +568,9 @@ decode_xxx(
 
     //  Save the source information structure
     decode_data_p->source_info_p = mem_malloc( sizeof( struct source_info_t ) );
+
+    log_write( MID_DEBUG_1, "decode_api.c", "Line: %d\n", __LINE__ );
+
     memcpy( decode_data_p->source_info_p,
             source_info_p, sizeof( struct source_info_t ) );
 
@@ -727,7 +742,8 @@ decode_finalize(
     {
         //  Create a default string
         recipe_p->name = text_copy_to_new( "No Recipe Name Found" );
-log_write( MID_DEBUG_0, "decode_finalize", "726\n" );
+
+        log_write( MID_DEBUG_1, "decode_api.c", "Line: %d\n", __LINE__ );
     }
     else
     if ( text_is_blank_line( recipe_p->name ) == true )
@@ -737,14 +753,16 @@ log_write( MID_DEBUG_0, "decode_finalize", "726\n" );
 
         //  Create a default string
         recipe_p->name = text_copy_to_new( "No Recipe Name Found" );
-log_write( MID_DEBUG_0, "decode_finalize", "736\n" );
+
+        log_write( MID_DEBUG_1, "decode_api.c", "Line: %d\n", __LINE__ );
     }
     //-----------------------------------------------------------------------
     if ( recipe_p->author == NULL )
     {
         //  Create a default string
         recipe_p->author = text_copy_to_new( "UNKNOWN" );
-log_write( MID_DEBUG_0, "decode_finalize", "743\n" );
+
+        log_write( MID_DEBUG_1, "decode_api.c", "Line: %d\n", __LINE__ );
     }
     else
     if ( text_is_blank_line( recipe_p->author ) == true )
@@ -754,7 +772,8 @@ log_write( MID_DEBUG_0, "decode_finalize", "743\n" );
 
         //  Create a default string
         recipe_p->author = text_copy_to_new( "UNKNOWN" );
-log_write( MID_DEBUG_0, "decode_finalize", "753\n" );
+
+        log_write( MID_DEBUG_1, "decode_api.c", "Line: %d\n", __LINE__ );
     }
     //-----------------------------------------------------------------------
     if ( recipe_p->copyright == NULL )
@@ -763,7 +782,8 @@ log_write( MID_DEBUG_0, "decode_finalize", "753\n" );
         recipe_p->copyright = text_copy_to_new( "Copyright (c) and related "
                 "rights reserved via Creative Commons [CC BY-SA 4.0]\n\t"
                 "https://creativecommons.org/licenses/by-sa/4.0/" );
-log_write( MID_DEBUG_0, "decode_finalize", "762\n" );
+
+        log_write( MID_DEBUG_1, "decode_api.c", "Line: %d\n", __LINE__ );
     }
     else
     if ( text_is_blank_line( recipe_p->copyright ) == true )
@@ -775,7 +795,8 @@ log_write( MID_DEBUG_0, "decode_finalize", "762\n" );
         recipe_p->copyright = text_copy_to_new( "Copyright (c) and related "
                 "rights reserved via Creative Commons [CC BY-SA 4.0]\n\t"
                 "https://creativecommons.org/licenses/by-sa/4.0/" );
-log_write( MID_DEBUG_0, "decode_finalize", "774\n" );
+
+        log_write( MID_DEBUG_1, "decode_api.c", "Line: %d\n", __LINE__ );
     }
     //-----------------------------------------------------------------------
 

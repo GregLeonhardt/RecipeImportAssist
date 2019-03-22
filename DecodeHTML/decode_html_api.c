@@ -116,6 +116,8 @@ decode_html(
     //  Allocate storage for the decode buffer
     decode_data_p = mem_malloc( DECODE_BUF_L );
 
+    log_write( MID_DEBUG_1, "decode_html_api.c", "Line: %d\n", __LINE__ );
+
     //  Set the initial state of the HTML found flag
     html_found = false;
 
@@ -200,6 +202,8 @@ decode_html(
 
         //  Add the new line of text back to the list.
         list_put_last( html_list_p, text_copy_to_new( list_data_p ) );
+        
+        log_write( MID_DEBUG_1, "decode_html_api.c", "Line: %d\n", __LINE__ );
 
         //  Advance the buffer pointer to the start of the next line
         list_data_p = tmp_p + 1;

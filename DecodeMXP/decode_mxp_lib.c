@@ -332,6 +332,8 @@ DECODE_MXP__title(
 
         //  Save the recipe title (name)
         recipe_p->name = text_copy_to_new( tmp_data_p );
+        
+        log_write( MID_DEBUG_1, "decode_mxp_lib.c", "Line: %d\n", __LINE__ );
 
         //  Change the return code
         mxp_rc = true;
@@ -399,6 +401,8 @@ DECODE_MXP__recipe_by(
 
         //  Save the recipe title (name)
         recipe_p->author = text_copy_to_new( tmp_data_p );
+        
+        log_write( MID_DEBUG_1, "decode_mxp_lib.c", "Line: %d\n", __LINE__ );
 
         //  Change the return code
         mxp_rc = true;
@@ -466,6 +470,8 @@ DECODE_MXP__srv_size(
 
         //  Save the recipe title (name)
         recipe_p->serves = text_copy_to_new( tmp_data_p );
+        
+        log_write( MID_DEBUG_1, "decode_mxp_lib.c", "Line: %d\n", __LINE__ );
 
         //  Is there anything past the serving size on this line ?
         tmp_data_p = strchr( recipe_p->serves, ' ' );
@@ -541,6 +547,8 @@ DECODE_MXP__prep_time(
 
         //  Save the recipe title (name)
         recipe_p->time_prep = text_copy_to_new( tmp_data_p );
+        
+        log_write( MID_DEBUG_1, "decode_mxp_lib.c", "Line: %d\n", __LINE__ );
 
         //  Change the return code
         mxp_rc = true;

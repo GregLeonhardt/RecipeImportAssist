@@ -401,7 +401,8 @@ DECODE__title_information(
 
     //  Allocate storage for the local copy of the recipe title
     name_p = mem_malloc( ( strlen( recipe_p->name ) + 1 ) );
-log_write( MID_DEBUG_0, "DECODE__title_information", "404\n" );
+
+    log_write( MID_DEBUG_1, "decode_lib.c", "Line: %d\n", __LINE__ );
 
     //  Copy the recipe title to the local buffer
     memcpy( name_p, recipe_p->name, strlen( recipe_p->name ) );

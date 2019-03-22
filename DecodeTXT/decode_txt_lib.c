@@ -597,6 +597,9 @@ DECODE_TXT__decode(
             {
                 //  YES:    Insert the recipe start tag into the list
                 tmp_p = text_copy_to_new( "[[[[[" );
+        
+                log_write( MID_DEBUG_1, "decode_txt_lib.c", "Line: %d\n", __LINE__ );
+                
                 list_put_last( grf_list_p, tmp_p );
 
                 //  Move the Recipe title to the list
@@ -606,6 +609,9 @@ DECODE_TXT__decode(
 
                 //  And finally a blank line
                 tmp_p = text_copy_to_new( " " );
+        
+                log_write( MID_DEBUG_1, "decode_txt_lib.c", "Line: %d\n", __LINE__ );
+
                 list_put_last( grf_list_p, tmp_p );
             }
 
@@ -637,6 +643,9 @@ DECODE_TXT__decode(
 
         //  Insert the recipe end tag into the list
         tmp_p = text_copy_to_new( "]]]]]" );
+        
+        log_write( MID_DEBUG_1, "decode_txt_lib.c", "Line: %d\n", __LINE__ );
+
         list_put_last( grf_list_p, tmp_p );
 
         //  Pass the Generic Format Recipe to the decoder.

@@ -336,6 +336,8 @@ DECODE_GRF__csbnfd(
             }
             //  Now add the new information
             recipe_p->serves = text_copy_to_new( tmp_p );
+        
+            log_write( MID_DEBUG_1, "decode_bof_lib.c", "Line: %d\n", __LINE__ );
         }
     }
     //  ---------------------------------------------------------------------
@@ -358,6 +360,8 @@ DECODE_GRF__csbnfd(
             }
             //  Now add the new information
             recipe_p->posted_by = text_copy_to_new( tmp_p );
+        
+            log_write( MID_DEBUG_1, "decode_bof_lib.c", "Line: %d\n", __LINE__ );
         }
     }
     //  ---------------------------------------------------------------------
@@ -397,6 +401,8 @@ DECODE_GRF__csbnfd(
             }
             //  Now add the new information
             recipe_p->author = text_copy_to_new( tmp_p );
+        
+            log_write( MID_DEBUG_1, "decode_bof_lib.c", "Line: %d\n", __LINE__ );
         }
     }
     //  ---------------------------------------------------------------------
@@ -414,6 +420,8 @@ DECODE_GRF__csbnfd(
 
             //  Add it to the Directions
             recipe_p->description = text_copy_to_new( tmp_p );
+        
+            log_write( MID_DEBUG_1, "decode_bof_lib.c", "Line: %d\n", __LINE__ );
         }
     }
     //  ---------------------------------------------------------------------
@@ -476,7 +484,8 @@ DECODE_GRF__title(
 
         //  Save the recipe title (name)
         recipe_p->name = text_copy_to_new( title_p );
-log_write( MID_DEBUG_0, "DECODE_GRF__title", "251\n" );
+
+        log_write( MID_DEBUG_1, "decode_grf_lib.c", "Line: %d\n", __LINE__ );
 
         // Change the pass_fail flag to PASS
         grf_rc = true;

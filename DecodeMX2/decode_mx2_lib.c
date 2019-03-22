@@ -512,11 +512,8 @@ DECODE_MX2__srch(
 
         //  Move the string to the recipe
         tmp_p = text_copy_to_new( tmp_data );
-log_write( MID_DEBUG_0, "DECODE_MX2__srch", "515\n" );
-log_write( MID_DEBUG_0, "DECODE_MX2__srch", "Searching for: '%s'\n", srch_p );
-log_write( MID_DEBUG_0, "DECODE_MX2__srch", "Found:         '%s'\n", tmp_p );
-log_write( MID_DEBUG_0, "DECODE_MX2__srch", "Data:          '%s'\n", data_p );
 
+        log_write( MID_DEBUG_1, "decode_mx2_lib.c", "Line: %d\n", __LINE__ );
     }
 
     /************************************************************************
@@ -586,7 +583,8 @@ DECODE_MX2__srce(
 
     //  Move the description string to the recipe
     recipe_p->group_from = text_copy_to_new( tmp_data );
- log_write( MID_DEBUG_0, "DECODE_MX2__srce", "585\n" );
+ 
+    log_write( MID_DEBUG_1, "decode_mx2_lib.c", "Line: %d\n", __LINE__ );
 
     /************************************************************************
      *  Function Exit
@@ -723,7 +721,8 @@ DECODE_MX2__cpyr(
 
     //  Move the description string to the recipe
     recipe_p->copyright = text_copy_to_new( tmp_data );
- log_write( MID_DEBUG_0, "DECODE_MX2__cpyr", "722\n" );
+
+    log_write( MID_DEBUG_1, "decode_mx2_lib.c", "Line: %d\n", __LINE__ );
 
     /************************************************************************
      *  Function Exit
@@ -939,7 +938,8 @@ DECODE_MX2__srvi(
 
     //  Move the description string to the recipe
     recipe_p->serve_with = text_copy_to_new( tmp_data );
-log_write( MID_DEBUG_0, "decode_mx2_lib", "938\n" );
+
+    log_write( MID_DEBUG_1, "decode_mx2_lib.c", "Line: %d\n", __LINE__ );
 
     /************************************************************************
      *  Function Exit
@@ -1208,11 +1208,13 @@ DECODE_MX2__decode(
 
     //  Allocate the attribute buffer
     attribute_p = mem_malloc( decode_l + 1 );
-log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1203\n" );
+
+    log_write( MID_DEBUG_1, "decode_mx2_lib.c", "Line: %d\n", __LINE__ );
 
     //  Allocate the text buffer
     text_p = mem_malloc( decode_l + 1 );
-log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1207\n" );
+
+    log_write( MID_DEBUG_1, "decode_mx2_lib.c", "Line: %d\n", __LINE__ );
 
     //  Null out the recipe pointer
     recipe_p = NULL;
@@ -1365,7 +1367,9 @@ log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1207\n" );
                         {
                             //  Allocate a new ingredient structure
                             auip_p = mem_malloc( sizeof( struct auip_t ) );
-log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1360\n" );
+
+                            log_write( MID_DEBUG_1, "decode_mx2_lib.c", 
+                                    "Line: %d\n", __LINE__ );
 
                             //  NAME="..."
                             auip_p->ingredient_p
@@ -1392,27 +1396,39 @@ log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1360\n" );
                         {
                             //  Allocate a new ingredient structure
                             auip_p = mem_malloc( sizeof( struct auip_t ) );
-log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1387\n" );
+
+                            log_write( MID_DEBUG_1, "decode_mx2_lib.c", 
+                                    "Line: %d\n", __LINE__ );
 
                             //  NAME="..."
                             auip_p->ingredient_p = text_copy_to_new( " " );
-log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1395\n" );
+
+                            log_write( MID_DEBUG_1, "decode_mx2_lib.c", 
+                                    "Line: %d\n", __LINE__ );
 
                             //  UNIT="..."
                             auip_p->unit_p = text_copy_to_new( " " );
-log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1399\n" );
+
+                            log_write( MID_DEBUG_1, "decode_mx2_lib.c", 
+                                    "Line: %d\n", __LINE__ );
 
                             //  QTY="..."
                             auip_p->amount_p = text_copy_to_new( " " );
-log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1403\n" );
+
+                            log_write( MID_DEBUG_1, "decode_mx2_lib.c", 
+                                    "Line: %d\n", __LINE__ );
 
                             //  CODE="..."
                             auip_p->type_p = text_copy_to_new( "T" );
-log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1407\n" );
+
+                            log_write( MID_DEBUG_1, "decode_mx2_lib.c", 
+                                    "Line: %d\n", __LINE__ );
 
                             //  PREPARATION=
                             auip_p->preparation_p = text_copy_to_new( " " );
-log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1411\n" );
+
+                            log_write( MID_DEBUG_1, "decode_mx2_lib.c", 
+                                    "Line: %d\n", __LINE__ );
 
                             //  Append the new ingredient to the list
                             list_put_last( recipe_p->ingredient, auip_p );
@@ -1437,12 +1453,16 @@ log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1411\n" );
                             {
                                 //  NO:     Allocate a new ingredient structure
                                 auip_p = mem_malloc( sizeof( struct auip_t ) );
-log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1427\n" );
+
+                                log_write( MID_DEBUG_1, "decode_mx2_lib.c", 
+                                        "Line: %d\n", __LINE__ );
                             }
 
                             //  Move the preparations string to the recipe
                             auip_p->preparation_p = text_copy_to_new( text_p );
-log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1441\n" );
+
+                            log_write( MID_DEBUG_1, "decode_mx2_lib.c", 
+                                    "Line: %d\n", __LINE__ );
 
                             //  Append the updated ingredient to the list
                             list_put_last( recipe_p->ingredient, auip_p );
@@ -1468,7 +1488,9 @@ log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1441\n" );
 
                             //  Add it to the Directions
                             recipe_p->description = text_copy_to_new( text_p );
-log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1467\n" );
+
+                            log_write( MID_DEBUG_1, "decode_mx2_lib.c", 
+                                    "Line: %d\n", __LINE__ );
 
                         }   break;
                         //----------------------------------------------------
@@ -1489,7 +1511,9 @@ log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1467\n" );
 
                             //  Move the description string to the recipe
                             recipe_p->group_from = text_copy_to_new( text_p );
-log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1480\n" );
+
+                            log_write( MID_DEBUG_1, "decode_mx2_lib.c", 
+                                    "Line: %d\n", __LINE__ );
 
                         }   break;
                         //----------------------------------------------------
@@ -1535,7 +1559,9 @@ log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1480\n" );
 
                             //  Move the description string to the recipe
                             recipe_p->copyright = text_copy_to_new( text_p );
-log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1510\n" );
+
+                            log_write( MID_DEBUG_1, "decode_mx2_lib.c", 
+                                    "Line: %d\n", __LINE__ );
 
                         }   break;
                         //----------------------------------------------------
@@ -1670,7 +1696,9 @@ log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1510\n" );
                             DECODE_MX2__text( mx2_offset_p, text_p, decode_l );
 
                             recipe_p->wine = text_copy_to_new( text_p );
-log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1691\n" );
+
+                            log_write( MID_DEBUG_1, "decode_mx2_lib.c", 
+                                    "Line: %d\n", __LINE__ );
 
                         }   break;
                         //----------------------------------------------------
@@ -1680,7 +1708,9 @@ log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1691\n" );
                             DECODE_MX2__text( mx2_offset_p, text_p, decode_l );
 
                             recipe_p->serve_with = text_copy_to_new( text_p );
-log_write( MID_DEBUG_0, "DECODE_MX2__decode", "1601\n" );
+
+                            log_write( MID_DEBUG_1, "decode_mx2_lib.c", 
+                                    "Line: %d\n", __LINE__ );
 
                         }   break;
                         //----------------------------------------------------

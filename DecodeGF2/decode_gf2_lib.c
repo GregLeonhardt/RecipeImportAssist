@@ -269,7 +269,8 @@ DECODE_GF2__title(
 
         //  Save the recipe title (name)
         recipe_p->name = text_copy_to_new( title_p );
-log_write( MID_DEBUG_0, "DECODE_GF2__title", "253\n" );
+
+        log_write( MID_DEBUG_1, "decode_gf2_lib.c", "Line: %d\n", __LINE__ );
 
         // Change the pass_fail flag to PASS
         gf2_rc = true;
@@ -341,6 +342,8 @@ DECODE_GF2__aspcy(
             }
             //  Now add the new information
             recipe_p->author = text_copy_to_new( tmp_p );
+        
+            log_write( MID_DEBUG_1, "decode_gf2_lib.c", "Line: %d\n", __LINE__ );
         }
     }
     //  ---------------------------------------------------------------------
@@ -363,6 +366,8 @@ DECODE_GF2__aspcy(
             }
             //  Now add the new information
             recipe_p->serves = text_copy_to_new( tmp_p );
+        
+            log_write( MID_DEBUG_1, "decode_bof_lib.c", "Line: %d\n", __LINE__ );
         }
     }
     //  ---------------------------------------------------------------------
@@ -385,6 +390,8 @@ DECODE_GF2__aspcy(
             }
             //  Now add the new information
             recipe_p->time_prep = text_copy_to_new( tmp_p );
+        
+            log_write( MID_DEBUG_1, "decode_bof_lib.c", "Line: %d\n", __LINE__ );
         }
     }
     //  ---------------------------------------------------------------------
@@ -407,6 +414,8 @@ DECODE_GF2__aspcy(
             }
             //  Now add the new information
             recipe_p->time_cook = text_copy_to_new( tmp_p );
+        
+            log_write( MID_DEBUG_1, "decode_bof_lib.c", "Line: %d\n", __LINE__ );
         }
     }
     //  ---------------------------------------------------------------------
@@ -432,9 +441,13 @@ DECODE_GF2__aspcy(
 
             //  Now add the new information
             recipe_p->makes = text_copy_to_new( tmp_p );
+        
+            log_write( MID_DEBUG_1, "decode_bof_lib.c", "Line: %d\n", __LINE__ );
 
             //  Now add the new information
             recipe_p->makes_unit = text_copy_to_new( " " );
+        
+            log_write( MID_DEBUG_1, "decode_bof_lib.c", "Line: %d\n", __LINE__ );
         }
     }
     //  ---------------------------------------------------------------------

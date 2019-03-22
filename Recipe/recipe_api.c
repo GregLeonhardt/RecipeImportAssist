@@ -115,7 +115,8 @@ recipe_new(
 
     //  Allocate storage for the structure
     recipe_p = mem_malloc( sizeof( struct recipe_t ) );
-log_write( MID_DEBUG_0, "recipe_new", "118\n" );
+
+    log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
     //  Initialize the new storage.
     memset( (char*)recipe_p, 0x00, sizeof( struct recipe_t ) );
@@ -139,7 +140,8 @@ log_write( MID_DEBUG_0, "recipe_new", "118\n" );
         {
             //  MasterCook eXport
             recipe_p->source_format = text_copy_to_new( "MXP" );
-log_write( MID_DEBUG_0, "recipe_new", "142\n" );
+
+            log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
         }   break;
         //--------------------------------------------------------------------
@@ -147,7 +149,8 @@ log_write( MID_DEBUG_0, "recipe_new", "142\n" );
         {
             //  MasterCook eXport Ver. 2
             recipe_p->source_format = text_copy_to_new( "MX2" );
-log_write( MID_DEBUG_0, "recipe_new", "150\n" );
+
+            log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
         }   break;
         //--------------------------------------------------------------------
@@ -155,7 +158,8 @@ log_write( MID_DEBUG_0, "recipe_new", "150\n" );
         {
             //  Meal-Master Format
             recipe_p->source_format = text_copy_to_new( "MMF" );
-log_write( MID_DEBUG_0, "recipe_new", "158\n" );
+
+            log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
         }   break;
         //--------------------------------------------------------------------
@@ -163,7 +167,8 @@ log_write( MID_DEBUG_0, "recipe_new", "158\n" );
         {
             //  Recipe eXchange Format (Native)
             recipe_p->source_format = text_copy_to_new( "RXF" );
-log_write( MID_DEBUG_0, "recipe_new", "166\n" );
+
+            log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
         }   break;
         //--------------------------------------------------------------------
@@ -171,7 +176,8 @@ log_write( MID_DEBUG_0, "recipe_new", "166\n" );
         {
             //  Generic Text Format
             recipe_p->source_format = text_copy_to_new( "NYC" );
-log_write( MID_DEBUG_0, "recipe_new", "174\n" );
+
+            log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
         }   break;
         //--------------------------------------------------------------------
@@ -179,7 +185,8 @@ log_write( MID_DEBUG_0, "recipe_new", "174\n" );
         {
             //  Big Oven Format
             recipe_p->source_format = text_copy_to_new( "BOF" );
-log_write( MID_DEBUG_0, "recipe_new", "182\n" );
+
+            log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
         }   break;
         //--------------------------------------------------------------------
@@ -187,7 +194,8 @@ log_write( MID_DEBUG_0, "recipe_new", "182\n" );
         {
             //  Cooken Pro 2.0
             recipe_p->source_format = text_copy_to_new( "CP2" );
-log_write( MID_DEBUG_0, "recipe_new", "190\n" );
+
+            log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
         }   break;
         //--------------------------------------------------------------------
@@ -195,7 +203,8 @@ log_write( MID_DEBUG_0, "recipe_new", "190\n" );
         {
             //  Generic Format #1     [[[[[
             recipe_p->source_format = text_copy_to_new( "GRF" );
-log_write( MID_DEBUG_0, "recipe_new", "198\n" );
+
+            log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
         }   break;
         //--------------------------------------------------------------------
@@ -203,7 +212,8 @@ log_write( MID_DEBUG_0, "recipe_new", "198\n" );
         {
             //  Generic Format #2     @@@@@
             recipe_p->source_format = text_copy_to_new( "GF2" );
-log_write( MID_DEBUG_0, "recipe_new", "206\n" );
+
+            log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
         }   break;
         //--------------------------------------------------------------------
@@ -211,7 +221,8 @@ log_write( MID_DEBUG_0, "recipe_new", "206\n" );
         {
             //  Unformatted text data
             recipe_p->source_format = text_copy_to_new( "TXT" );
-log_write( MID_DEBUG_0, "recipe_new", "214\n" );
+
+            log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
         }   break;
         //--------------------------------------------------------------------
@@ -917,7 +928,8 @@ recipe_append(
 
         //  Copy the new data to a buffer
         table_data_p = text_copy_to_new( search_data );
-log_write( MID_DEBUG_0, "recipe_append", "142\n" );
+
+        log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
         //  Add it to the list.
         list_put_last( list_p, table_data_p );
@@ -970,7 +982,8 @@ recipe_add_instructions(
     {
         //  YES:    Just use this buffer
         recipe_p->instructions = text_copy_to_new( data_p );
-log_write( MID_DEBUG_0, "recipe_add_instructions", "991\n" );
+
+        log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
     }
     else
     {
@@ -979,7 +992,8 @@ log_write( MID_DEBUG_0, "recipe_add_instructions", "991\n" );
 
         //  Create a new buffer with the old and the new
         new_data_p = mem_malloc( new_data_l );
-log_write( MID_DEBUG_0, "recipe_add_instructions", "988\n" );
+
+        log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
         //  Merge the two buffers together.
         strncpy( new_data_p, recipe_p->instructions, new_data_l );
@@ -1150,7 +1164,8 @@ recipe_fmt_directions(
                 > MAX_LINE_L )
             {
                 tmp_p = text_copy_to_new( formatted_text );
-log_write( MID_DEBUG_0, "recipe_fmt_directions", "1171\n" );
+
+                log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
                 //  Add it to the list.
                 list_put_last( recipe_p->directions, tmp_p );
@@ -1176,8 +1191,8 @@ log_write( MID_DEBUG_0, "recipe_fmt_directions", "1171\n" );
                 {
                     //  YES:    Copy it to an allocated buffer
                     tmp_p = text_copy_to_new( formatted_text );
-log_write( MID_DEBUG_0, "recipe_fmt_directions", "1197\n" );
-log_write( MID_DEBUG_0, "recipe_fmt_directions", "%s\n", formatted_text );
+
+                    log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
                     //  Add it to the list.
                     list_put_last( recipe_p->directions, tmp_p );
@@ -1223,7 +1238,9 @@ log_write( MID_DEBUG_0, "recipe_fmt_directions", "%s\n", formatted_text );
                         //  This word marks the start of a new sentence.
                         //  Write the current output line and start a new one
                         tmp_p = text_copy_to_new( formatted_text );
-log_write( MID_DEBUG_0, "recipe_fmt_directions", "1243\n" );
+
+                        log_write( MID_DEBUG_1, "recipe_api.c", 
+                                "Line: %d\n", __LINE__ );
 
                         //  Add it to the list.
                         list_put_last( recipe_p->directions, tmp_p );
@@ -1290,7 +1307,8 @@ log_write( MID_DEBUG_0, "recipe_fmt_directions", "1243\n" );
                     //  This word marks the start of a new sentence.
                     //  Write the current output line and start a new one
                     tmp_p = text_copy_to_new( formatted_text );
-log_write( MID_DEBUG_0, "recipe_fmt_directions", "1310\n" );
+
+                    log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
                     //  Add it to the list.
                     list_put_last( recipe_p->directions, tmp_p );
@@ -1321,8 +1339,8 @@ log_write( MID_DEBUG_0, "recipe_fmt_directions", "1310\n" );
     {
         //  YES:    Copy it to a temporary buffer.
         tmp_p = text_copy_to_new( formatted_text );
-log_write( MID_DEBUG_0, "recipe_fmt_directions", "1341\n" );
-log_write( MID_DEBUG_0, "recipe_fmt_directions", "%s\n", formatted_text );
+
+        log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
         //  Add it to the list.
         list_put_last( recipe_p->directions, tmp_p );
@@ -1492,7 +1510,8 @@ recipe_fmt_notes(
             {
 
                 tmp_p = text_copy_to_new( formatted_text );
-log_write( MID_DEBUG_0, "recipe_fmt_notes", "1511\n" );
+
+                log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
                 //  Add it to the list.
                 list_put_last( recipe_p->notes, tmp_p );
@@ -1537,7 +1556,9 @@ log_write( MID_DEBUG_0, "recipe_fmt_notes", "1511\n" );
                         //  This word marks the start of a new sentence.
                         //  Write the current output line and start a new one
                         tmp_p = text_copy_to_new( formatted_text );
-log_write( MID_DEBUG_0, "recipe_fmt_notes", "1556\n" );
+
+                        log_write( MID_DEBUG_1, "recipe_api.c", 
+                                "Line: %d\n", __LINE__ );
 
                         //  Add it to the list.
                         list_put_last( recipe_p->notes, tmp_p );
@@ -1605,7 +1626,8 @@ log_write( MID_DEBUG_0, "recipe_fmt_notes", "1556\n" );
                     //  This word marks the start of a new sentence.
                     //  Write the current output line and start a new one
                     tmp_p = text_copy_to_new( formatted_text );
-log_write( MID_DEBUG_0, "recipe_fmt_notes", "1624\n" );
+
+                    log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
                     //  Add it to the list.
                     list_put_last( recipe_p->notes, tmp_p );
@@ -1636,7 +1658,8 @@ log_write( MID_DEBUG_0, "recipe_fmt_notes", "1624\n" );
     {
         //  YES:    Copy it to a temporary buffer.
         tmp_p = text_copy_to_new( formatted_text );
-log_write( MID_DEBUG_0, "recipe_fmt_notes", "1655\n" );
+
+        log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
         //  Add it to the list.
         list_put_last( recipe_p->notes, tmp_p );
@@ -1724,7 +1747,8 @@ recipe_next_id(
 
     //  Add it to the recipe
     recipe_p->recipe_id = text_copy_to_new( id_string );
-log_write( MID_DEBUG_0, "recipe_next_id", "1743\n" );
+
+    log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
     /************************************************************************
      *  Function Exit
