@@ -576,7 +576,7 @@ DECODE_MMF__yield(
             {
                 //  YES:    This is a serves amount, not a MAKES amount
                 recipe_p->serves = text_copy_to_new( local_amount );
-            }
+           }
             else
             {
                 //  NO:     This is a serves amount, not a MAKES amount
