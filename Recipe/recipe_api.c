@@ -965,39 +965,59 @@ recipe_add_instructions(
      *  @param  new_data_p      Pointer to a new data buffer                */
     char                        *   new_data_p;
     /**
-     *  @param  new_data_l      Size needed for the combined (old & new)    */
+     *  @param  new_data_l      Size of the new data buffer                 */
     int                             new_data_l;
+    /**
+     *  @param  old_data_l      Size of the old data buffer                 */
+    int                             old_data_l;
+    /**
+     *  @param  data_l          Size of the new data buffer                 */
+    int                             data_l;
 
     /************************************************************************
      *  Function Initialization
      ************************************************************************/
 
+    //  NO:     Get the size of the old and new data buffers.
+    old_data_l = strlen( recipe_p->instructions );
+    new_data_l = strlen( data_p );
+    data_l     = ( old_data_l + new_data_l + 2 );
 
     /************************************************************************
      *  Function
      ************************************************************************/
 
-    //  Is this the first thing for the instructions buffer ?
-    if ( recipe_p->instructions == NULL )
+    //  Is there anything in the data buffer to add ?
+    if ( strlen( data_p ) > 0 )
     {
-        //  YES:    Just use this buffer
-        recipe_p->instructions = text_copy_to_new( data_p );
+        //  YES:    Is this the first thing for the instructions buffer ?
+        if ( recipe_p->instructions == NULL )
+        {
+            //  YES:    Just use this buffer
+            recipe_p->instructions = text_copy_to_new( data_p );
 
-        log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
+            log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
+        }
     }
     else
     {
-        //  NO:     Figure out how big it needs to be.
-        new_data_l = ( strlen( data_p ) + ( strlen( recipe_p->instructions ) ) + 1 );
-
-        //  Create a new buffer with the old and the new
+        //  NO:     Create a new buffer for the old and the new together.
         new_data_p = mem_malloc( new_data_l );
 
         log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
-        //  Merge the two buffers together.
-        strncpy( new_data_p, recipe_p->instructions, new_data_l );
-        strncat( new_data_p, data_p, new_data_l - strlen( new_data_p ) );
+        //  Copy the old data to the new buffer.
+        strncpy( new_data_p, recipe_p->instructions, data_l );
+
+        //  Did the previous saved data end with a space.
+        if( ( recipe_p->instructions[ old_data_l - 1 ] ) != ' ' )
+        {
+            //  NO:     Add a space between the two buffers
+            strncat( new_data_p, " ", data_l );
+        }
+
+        //  Append the new data to the new buffer
+        strncat( new_data_p, data_p, data_l );
 
         //  Release the (now) unused buffers
         mem_free( recipe_p->instructions );
@@ -1666,6 +1686,205 @@ recipe_fmt_notes(
 
         //  Clear the formatted text buffer.
         memset( formatted_text, '\0', sizeof( formatted_text ) );
+    }
+
+    /************************************************************************
+     *  Function Exit
+     ************************************************************************/
+
+    //  DONE!
+}
+
+/****************************************************************************/
+/**
+ *  Create a new unique recipe.
+ *
+ *  @param  recipe_p            Primary structure for a recipe.
+ *  @param  recipe_format       Indicator of the decode recipe format.
+ *
+ *  @return void                No return code from this function.
+ *
+ *  @note
+ *
+ ****************************************************************************/
+
+void
+recipe_id(
+    struct  recipe_t            *   recipe_p
+    )
+{
+    /**
+     *  @param  context         Control structure used by SHA1 functions    */
+    SHA1_CTX                        context;
+    /**
+     *  @param  store_value_p   Pointer to data get                         */
+    char                        *   store_value_p;
+    /**
+     *  @param  id_string       Recipe-ID string to identify a recipe       */
+    char                            id_string[ ( SHA1_DIGEST_SIZE * 2 ) + 1 ];
+    /**
+     *  @param  recipe_id       Temporary data buffer for the recipe id     */
+    unsigned char                   recipe_id[ SHA1_DIGEST_SIZE + 1 ];
+    /**
+     *  @param  auip_p          Pointer to AUIP structure                   */
+    struct  auip_t              *   auip_p;
+    /**
+     *  @param  amount_l        Length in bytes of the amount string        */
+    int                             amount_l;
+    /**
+     *  @param  amount_new      Value of the new amount field               */
+    int                             amount_new;
+    /**
+     *  @param  amount_sum      Sum of all amounts                          */
+    int                             amount_sum;
+    /**
+     *  @param  unit_l          Length in bytes of the unit string          */
+    int                             unit_l;
+    /**
+     *  @param  unit_new        Value of the new unit field                 */
+    int                             unit_new;
+    /**
+     *  @param  unit_sum        Sum of all units                            */
+    int                             unit_sum;
+    /**
+     *  @param  ingredient_l    Length in bytes of the ingredient string    */
+    int                             ingredient_l;
+    /**
+     *  @param  ingredient_new  Value of the new ingredient field           */
+    int                             ingredient_new;
+    /**
+     *  @param  ingredient_sum  Sum of all ingredients                      */
+    int                             ingredient_sum;
+
+    /************************************************************************
+     *  Function Initialization
+     ************************************************************************/
+
+    //  Set an initialization value
+    store_value_p = recipe_id_p;
+
+    //  Set the initial value.
+    amount_sum = 0;
+    unit_sum = 0;
+    ingredient_sum = 0;
+
+    /************************************************************************
+     *  RECIPE-ID
+     ************************************************************************/
+
+    if ( list_query_count( recipe_p->ingredient ) > 0 )
+    {
+        for( auip_p = list_get_first( recipe_p->ingredient );
+             auip_p != NULL;
+             auip_p = list_get_next( recipe_p->ingredient, auip_p ) )
+        {
+            //---------------------------------------------------------------
+            //  Reset all the variables.
+            amount_new = 0;
+            unit_new = 0;
+            ingredient_new = 0;
+
+            //---------------------------------------------------------------
+            //  Is there an amount ?
+            if ( auip_p->amount_p != NULL )
+            {
+                //  Get the size
+                amount_l = strlen( auip_p->amount_p );
+
+                //  Will the amount field fit into the buffer ?
+                if ( amount_l <= sizeof( amount_new ) )
+                {
+                    //  YES:    Copy the new amount value.
+                    memcpy( &amount_new, auip_p->amount_p, amount_l );
+                }
+                else
+                {
+                    //  NO:     Copy what will fit of the new amount value.
+                    memcpy( &amount_new, auip_p->amount_p, sizeof( amount_new ) );
+                }
+
+                //  Sum the two values
+                amount_sum = ( amount_sum + amount_new );
+            }
+            //---------------------------------------------------------------
+            //  Is there a unit of measurement ?
+            if ( auip_p->unit_p != NULL )
+            {
+                //  Get the size
+                unit_l = strlen( auip_p->unit_p );
+
+                //  Will the unit field fit into the buffer ?
+                if ( unit_l <= sizeof( unit_new ) )
+                {
+                    //  YES:    Copy the new unit value.
+                    memcpy( &unit_new, auip_p->unit_p, unit_l );
+                }
+                else
+                {
+                    //  NO:     Copy what will fit of the new unit value.
+                    memcpy( &unit_new, auip_p->unit_p, sizeof( unit_new ) );
+                }
+
+                //  Sum the two values
+                unit_sum = ( unit_sum + unit_new );
+            }
+            //---------------------------------------------------------------
+            //  Is there an ingredient ?
+            if ( auip_p->ingredient_p != NULL )
+            {
+                //  Get the size
+                ingredient_l = strlen( auip_p->ingredient_p );
+
+                //  Will the ingredient field fit into the buffer ?
+                if ( ingredient_l <= sizeof( ingredient_new ) )
+                {
+                    //  YES:    Copy the new ingredient value.
+                    memcpy( &ingredient_new, auip_p->ingredient_p, ingredient_l );
+                }
+                else
+                {
+                    //  NO:     Copy what will fit of the new ingredient value.
+                    memcpy( &ingredient_new, auip_p->ingredient_p, sizeof( ingredient_new ) );
+                }
+
+                //  Sum the two values
+                ingredient_sum = ( ingredient_sum + ingredient_new );
+            }
+        }
+
+        //  Integer back to ASCII
+        snprintf( store_value_p, RECIPE_ID_L, "%016d",
+                 ( amount_sum + unit_sum + ingredient_sum ) );
+
+        //-----------------------------------------------------------------------
+        //  Compute the checksum of the ingredients
+
+        //  Initialize SHA1
+        sha1_init( &context );
+
+        //  Build SHA1 version of the recipe id
+        sha1_update( &context, store_value_p, ( SHA1_DIGEST_SIZE ) );
+
+        //  Finalize the SHA1 operation
+        sha1_final( &context, (char*)recipe_id );
+
+        //  Format the Recipe-ID as a hex string
+        snprintf( id_string, sizeof( id_string ),
+                  "%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X"
+                  "%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X",
+                  recipe_id[  0 ], recipe_id[  1 ], recipe_id[  2 ], recipe_id[  3 ], recipe_id[  4 ],
+                  recipe_id[  5 ], recipe_id[  6 ], recipe_id[  7 ], recipe_id[  8 ], recipe_id[  9 ],
+                  recipe_id[ 10 ], recipe_id[ 11 ], recipe_id[ 12 ], recipe_id[ 13 ], recipe_id[ 14 ],
+                  recipe_id[ 15 ], recipe_id[ 16 ], recipe_id[ 17 ], recipe_id[ 18 ], recipe_id[ 19 ] );
+
+        //  Add it to the recipe
+        recipe_p->recipe_id = text_copy_to_new( id_string );
+log_write( MID_DEBUG_0, "recipe_id", "1860\n" );
+    }
+    else
+    {
+        //  NO:     There isn't a recipe title.
+        recipe_next_id( recipe_p, 0 );
     }
 
     /************************************************************************
