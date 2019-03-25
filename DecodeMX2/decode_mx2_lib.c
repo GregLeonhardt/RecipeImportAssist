@@ -283,8 +283,14 @@ DECODE_MX2__attribute(
         {
             //  Search for the end of the comment string
             tmp_p = strchr(  &tmp_p[ 1 ], ']' );
-        }   while ( strncmp( tmp_p, "]]>", 3 ) != 0 );
-
+        }   while (    ( strncmp( tmp_p, "]]>",  3 ) != 0 )
+                    && ( strncmp( tmp_p, "]] >", 4 ) != 0 ) );
+        //  NOTE:   The above test for ']] >' is for when the ']]' are the
+        //          last two characters of the buffer.  When the next read
+        //          occurs a pad space is inserted into the line.  I
+        //          suppose I should also add a test for '] ]>' but that is 
+        //          for another day.
+        
         //  Now point to the next tag
         tmp_p = strchr(  tmp_p, '<' );
     }
