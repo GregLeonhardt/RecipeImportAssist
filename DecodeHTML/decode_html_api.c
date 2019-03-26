@@ -106,6 +106,12 @@ decode_html(
      * @param   list_data_p     Pointer to the read data                    */
     char                        *   list_data_p;
     /**
+     * @param   text_data_p     Pointer to the post xml data                */
+    char                        *   text_data_p;
+    /**
+     * @param   save_data_p     Pointer to data to write back to the list.  */
+    char                        *   save_data_p;
+    /**
      *  @param  html_found      Flag showing that an HTML tag was found      */
     int                             html_found;
 
@@ -132,6 +138,9 @@ decode_html(
          list_data_p != NULL;
          list_data_p = list_get_next( html_list_p, list_data_p ) )
     {
+        //  Remove the line from the list.
+        list_delete( html_list_p, list_data_p );
+
         //  Will the new buffer fit into the HTML decode buffer ?
         if ( ( strlen( decode_data_p ) + strlen( list_data_p ) ) < ( DECODE_BUF_L + 10 ) )
         {
@@ -158,12 +167,6 @@ decode_html(
                 //  NO:     Still in the header; add a carriage return.
                 strcat( decode_data_p, "<br>" );
             }
-
-            //  Remove the line from the list.
-            list_delete( html_list_p, list_data_p );
-
-            //  Release the input data buffer
-            mem_free( list_data_p );
         }
         else
         {
@@ -173,6 +176,8 @@ decode_html(
             log_write( MID_FATAL, "decode_html",
                           "increase the size of 'DECODE_BUF_L' and recompile.\n" );
         }
+        //  Release the input data buffer
+        mem_free( list_data_p );
     }
 
     /************************************************************************
@@ -180,33 +185,32 @@ decode_html(
      ************************************************************************/
 
     //  Strip out consecutive spaces
-    list_data_p = html2txt( decode_data_p );
+    text_data_p = html2txt( decode_data_p );
 
     //  The rendered text is in the changed buffer so delete the source
     mem_free( decode_data_p );
-
-    //  Fix the source pointer.
-    decode_data_p = list_data_p;
 
     /************************************************************************
      *  Rebuild the list with what is now text only
      ************************************************************************/
 
+    //  Copy the start point of the text buffer.
+    save_data_p = text_data_p;
+    
     //  Go through the entire message
-    for( tmp_p = strchr( list_data_p, '\n' );
+    for( tmp_p = strchr( save_data_p, '\n' );
          tmp_p != NULL;
-         tmp_p = strchr( list_data_p, '\n' ) )
+         tmp_p = strchr( save_data_p, '\n' ) )
     {
         //  Terminate at the carriage return
         tmp_p[ 0 ] = '\0';
 
         //  Add the new line of text back to the list.
-        list_put_last( html_list_p, text_copy_to_new( list_data_p ) );
-        
+        list_put_last( html_list_p, text_copy_to_new( save_data_p ) );
         log_write( MID_DEBUG_1, "decode_html_api.c", "Line: %d\n", __LINE__ );
 
         //  Advance the buffer pointer to the start of the next line
-        list_data_p = tmp_p + 1;
+        save_data_p = ( tmp_p + 1 );
     }
 
     /************************************************************************
@@ -214,7 +218,7 @@ decode_html(
      ************************************************************************/
 
     //  Release the HTML decode buffer
-    mem_free( decode_data_p );
+    mem_free( text_data_p );
 
     //  DONE!
 }
