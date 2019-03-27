@@ -60,6 +60,9 @@
 #define SRCH_SOURCE                 "From - "
 #define SRCH_SOURCE_L               strlen( SRCH_SOURCE )
 //----------------------------------------------------------------------------
+#define SRCH_PGO                    "PGO-ID:"
+#define SRCH_PGO_L                  strlen( SRCH_PGO )
+//----------------------------------------------------------------------------
 #define SRCH_RETURN                 "Return-Path:"
 #define SRCH_RETURN_L               strlen( SRCH_RETURN )
 //----------------------------------------------------------------------------
@@ -149,7 +152,8 @@ email_is_start(
      ************************************************************************/
 
     //  Is this the start of a new e-Mail ?
-    if ( strncmp( tmp_data_p, SRCH_SOURCE, SRCH_SOURCE_L ) == 0 )
+    if (    ( strncmp( tmp_data_p, SRCH_SOURCE, SRCH_SOURCE_L ) == 0 )
+         || ( strncmp( tmp_data_p, SRCH_PGO,    SRCH_PGO_L    ) == 0 ) )
     {
         //  YES:    Change the return code
         email_rc = true;

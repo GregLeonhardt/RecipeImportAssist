@@ -660,7 +660,6 @@ main(
                                 html_found = false;
                             }
 
-//mem_dump( );
                             //  YES:    Go process the list.
                             decodel1_parse( level1_list_p, source_info_p );
 
