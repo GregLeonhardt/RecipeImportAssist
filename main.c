@@ -501,8 +501,8 @@ main(
                        file_info_p->dir_name, file_info_p->file_name );
         }
 
-        //  Is this a restricted file type ?
-        read_data_p = strrchr( input_file_name, '.' );
+        //  Locate the start of the file extention.
+        read_data_p = strrchr( file_info_p->file_name, '.' );
 
         //  Is there one ?
         if ( read_data_p != NULL )
