@@ -1836,6 +1836,13 @@ DECODE_MX2__decode(
             }
         }
 
+        //  Still decoding ?
+        if ( mx2_offset_p == NULL )
+        {
+            //  NO:
+            break;
+        }
+
         //  Did we locate the search tag in the tag table ?
         if ( mx2_table[ mx2_table_ndx ].code == MX2_TAG_END )
         {
@@ -1852,13 +1859,6 @@ DECODE_MX2__decode(
 
             //  Move on past the tag
             mx2_offset_p += 1;
-        }
-
-        //  Still decoding ?
-        if ( mx2_offset_p == NULL )
-        {
-            //  NO:
-            break;
         }
     }
 
