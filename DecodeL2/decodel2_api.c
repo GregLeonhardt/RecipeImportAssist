@@ -42,6 +42,7 @@
                                 //*******************************************
 #include <decode_api.h>         //  API for all decode_*            PUBLIC
 #include <decode_bof_api.h>     //  API for all decode_bof_*        PUBLIC
+#include <decode_cp2_api.h>     //  API for all decode_cp2_*        PUBLIC
 #include <decode_grf_api.h>     //  API for all decode_grf_*        PUBLIC
 #include <decode_gf2_api.h>     //  API for all decode_gf2_*        PUBLIC
 #include <decode_mmf_api.h>     //  API for all decode_mmf_*        PUBLIC
@@ -329,6 +330,17 @@ decodel2_parse(
             count_bof += 1;
         }
         else
+            //  CookenPro 2.0                   
+        if (    ( recipe_format == RECIPE_FORMAT_NONE )
+             && ( decode_cp2_start( list_data_p ) == true ) )
+        {
+            //  YES:    Set the format to use
+            recipe_format = RECIPE_FORMAT_CP2;
+
+            //  Increment the number of CP2 recipes
+            count_cp2 += 1;
+        }
+        else
             //  Now You're Cooking!
         if (    ( recipe_format == RECIPE_FORMAT_NONE )
              && ( decode_nyc_start( list_data_p ) == true ) )
@@ -459,6 +471,28 @@ decodel2_parse(
                 //  Error message and terminate
                 log_write( MID_FATAL, "decodel2_parse",
                            "There is still something on the list. (BOF)\n" );
+            }
+        }
+        //--------------------------------------------------------------------
+        //  CookenPro 2.0                   
+        if (    ( recipe_format == RECIPE_FORMAT_CP2 )
+             && ( decode_cp2_end( list_data_p ) == true ) )
+        {
+            //  YES:    Process the recipe
+            decode_xxx( recipe_format, level3_list_p, source_info_p );
+
+            //  Done with this recipe
+            recipe_format = RECIPE_FORMAT_NONE;
+
+            if ( list_query_count( level3_list_p ) != 0 )
+            {
+                //  Something hasn't been released.  Dump it to assist in
+                //  figuring out what it is.
+                mem_dump( );
+
+                //  Error message and terminate
+                log_write( MID_FATAL, "decodel2_parse",
+                           "There is still something on the list. (CP2)\n" );
             }
         }
         //--------------------------------------------------------------------

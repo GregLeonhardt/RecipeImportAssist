@@ -40,6 +40,7 @@
 #include <libtools_api.h>       //  My Tools Library
                                 //*******************************************
 #include <decode_bof_api.h>     //  API for all decode_bof_*        PUBLIC
+#include <decode_cp2_api.h>     //  API for all decode_cp2_*        PUBLIC
 #include <decode_gf2_api.h>     //  API for all decode_gf2_*        PUBLIC
 #include <decode_grf_api.h>     //  API for all decode_grf_*        PUBLIC
 #include <decode_mmf_api.h>     //  API for all decode_mmf_*        PUBLIC
@@ -423,7 +424,6 @@ decode_end_of_recipe(
      *  Function
      ************************************************************************/
 
-#if 1
     //  NOTE:
     //  When a MXP formatted recipe is embedded inside a MX2, this was producing
     //  a false positive for a recipe break.  If this creates a problem then
@@ -433,17 +433,13 @@ decode_end_of_recipe(
     if (    ( email_is_start(       data_p ) == true )
          || ( email_is_group_break( data_p ) == true )
          || ( decode_bof_start(     data_p ) == true )
+         || ( decode_cp2_start(     data_p ) == true )
          || ( decode_gf2_start(     data_p ) == true )
          || ( decode_grf_start(     data_p ) == true )
          || ( decode_mmf_start(     data_p ) == true )
          || ( decode_mx2_start(     data_p ) == true )
          || ( decode_mxp_start(     data_p ) == true )
          || ( decode_nyc_start(     data_p ) == true ) )
-#else
-    //  Is this something that can end a recipe ?
-    if (    ( email_is_start(       data_p ) == true )
-         || ( email_is_group_break( data_p ) == true ) )
-#endif
     {
         //  YES:    Change the return code
         decode_rc = true;
@@ -497,6 +493,11 @@ decode_xxx(
         case    RECIPE_FORMAT_BOF:
         {
             decode_bof( level3_list_p, source_info_p );
+        }   break;
+        //--------------------------------------------------------------------
+        case    RECIPE_FORMAT_CP2:
+        {
+            decode_cp2( level3_list_p, source_info_p );
         }   break;
         //--------------------------------------------------------------------
         case    RECIPE_FORMAT_GRF:
@@ -655,6 +656,12 @@ decode_thread(
             case    RECIPE_FORMAT_BOF:
             {
                 decode_bof( decode_data_p->thread_list_p,
+                            decode_data_p->source_info_p );
+            }   break;
+            //----------------------------------------------------------------
+            case    RECIPE_FORMAT_CP2:
+            {
+                decode_cp2( decode_data_p->thread_list_p,
                             decode_data_p->source_info_p );
             }   break;
             //----------------------------------------------------------------

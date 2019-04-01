@@ -37,6 +37,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/DecodeBOF/decode_bof_api.o \
 	${OBJECTDIR}/DecodeBOF/decode_bof_lib.o \
+	${OBJECTDIR}/DecodeCP2/decode_cp2_api.o \
+	${OBJECTDIR}/DecodeCP2/decode_cp2_lib.o \
 	${OBJECTDIR}/DecodeGF2/decode_gf2_api.o \
 	${OBJECTDIR}/DecodeGF2/decode_gf2_lib.o \
 	${OBJECTDIR}/DecodeGRF/decode_grf_api.o \
@@ -109,6 +111,16 @@ ${OBJECTDIR}/DecodeBOF/decode_bof_lib.o: DecodeBOF/decode_bof_lib.c
 	${MKDIR} -p ${OBJECTDIR}/DecodeBOF
 	${RM} "$@.d"
 	$(COMPILE.c) -g -Wall -I../LibTools/include -Iinclude -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DecodeBOF/decode_bof_lib.o DecodeBOF/decode_bof_lib.c
+
+${OBJECTDIR}/DecodeCP2/decode_cp2_api.o: DecodeCP2/decode_cp2_api.c
+	${MKDIR} -p ${OBJECTDIR}/DecodeCP2
+	${RM} "$@.d"
+	$(COMPILE.c) -g -Wall -I../LibTools/include -Iinclude -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DecodeCP2/decode_cp2_api.o DecodeCP2/decode_cp2_api.c
+
+${OBJECTDIR}/DecodeCP2/decode_cp2_lib.o: DecodeCP2/decode_cp2_lib.c
+	${MKDIR} -p ${OBJECTDIR}/DecodeCP2
+	${RM} "$@.d"
+	$(COMPILE.c) -g -Wall -I../LibTools/include -Iinclude -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DecodeCP2/decode_cp2_lib.o DecodeCP2/decode_cp2_lib.c
 
 ${OBJECTDIR}/DecodeGF2/decode_gf2_api.o: DecodeGF2/decode_gf2_api.c
 	${MKDIR} -p ${OBJECTDIR}/DecodeGF2

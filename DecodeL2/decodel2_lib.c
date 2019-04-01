@@ -139,6 +139,11 @@ DECODEL2__start_decode(
 
         }   break;
 
+        case    RECIPE_FORMAT_CP2:
+        {
+
+        }   break;
+
         case    RECIPE_FORMAT_RXF:
         {
 
@@ -148,11 +153,6 @@ DECODEL2__start_decode(
         {
             //  Process the recipe
             decode_nyc( level3_list_p, source_info_p );
-        }   break;
-
-        case    RECIPE_FORMAT_CP2:
-        {
-
         }   break;
 
         case    RECIPE_FORMAT_GRF:
