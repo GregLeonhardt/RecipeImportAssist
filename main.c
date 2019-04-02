@@ -594,6 +594,10 @@ main(
             {
                 //  YES:    Free the buffer
                 mem_free( file_info_p );
+                
+                //  Log skipping the file
+                log_write( MID_INFO, "main",
+                           "Skipping file: '%s'\n", input_file_name );
 
                 //  Skip it.
                 continue;
