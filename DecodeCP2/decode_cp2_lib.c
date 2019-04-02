@@ -513,6 +513,9 @@ DECODE_CP2__vegetarian(
     /**
      * @param tmp_data_p        Pointer to a temp data buffer               */
     char                        *   tmp_data_p;
+    /**
+     * @param found_category_p  Pointer to a temp data buffer               */
+    char                        *   found_category_p;
 
     /************************************************************************
      *  Function Initialization
@@ -530,10 +533,17 @@ DECODE_CP2__vegetarian(
     tmp_data_p = text_skip_past_whitespace( tmp_data_p );
     
     //  Yes or No
-    if ( strncasecmp( tmp_data_p, "YES", 3 ) != 0 )
+    if ( strncasecmp( tmp_data_p, "YES", 3 ) == 0 )
     {
         //  YES:    Add vegetarian to the categories list
-        decode_save_chapter( "Vegetarian", recipe_p );
+        found_category_p = xlate_chapter( "Vegetarian" );
+
+        //  Do we have a chapter to save ?
+        if ( found_category_p != NULL )
+        {
+            //  YES:    Save it
+            decode_save_chapter( found_category_p, recipe_p );
+        }
     }
 
     /************************************************************************
