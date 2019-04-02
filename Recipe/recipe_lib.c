@@ -354,6 +354,23 @@ RECIPE__fmt_unit(
 
             //  Set the return pointer to after the unit field
             in_unit_p = &( in_unit_p[ ndx ] );
+            
+            //---------------------------------------------------------------
+            //  Some recipe formats (CookenPro 2) add a '(s)' following the
+            //  unit of measurement.  We will now skip past it [if it is there].
+            //---------------------------------------------------------------
+            
+            //  Does the character string '(s)' exist ?
+            if (    ( in_unit_p[ 0 ] == '(' )
+                 && ( in_unit_p[ 1 ] == 's' )
+                 && ( in_unit_p[ 2 ] == ')' ) )
+            {
+                //  YES:    Skip past it.
+                in_unit_p += 3;
+                
+                //  And any white space following it.
+                text_strip_whitespace( in_unit_p );
+            }
         }
         else
         {
@@ -424,6 +441,7 @@ RECIPE__fmt_ingredient(
         {
             //  Is this something that marks the start of preparations ?
             if (    ( in_ingredient_p[ ndx ] != ';'  )
+                 && ( in_ingredient_p[ ndx ] != ':'  )
                  && ( in_ingredient_p[ ndx ] != ','  )
                  && ( in_ingredient_p[ ndx ] != '('  )
                  && ( in_ingredient_p[ ndx ] != '{'  )
@@ -583,7 +601,8 @@ RECIPE__fmt_preparation(
      ************************************************************************/
 
     //  Is the first character a coma
-    if ( tmp_prep_p[ 0 ] == ',' )
+    if (    ( tmp_prep_p[ 0 ] == ',' )
+         || ( tmp_prep_p[ 0 ] == ':' ) )
     {
         //  YES:    Jump over it
         tmp_prep_p += 1;
