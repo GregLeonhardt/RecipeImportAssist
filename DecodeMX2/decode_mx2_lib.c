@@ -17,6 +17,7 @@
  *  Compiler directives
  ****************************************************************************/
 
+#define _GNU_SOURCE
 
 /****************************************************************************
  * System Function API
@@ -288,9 +289,9 @@ DECODE_MX2__attribute(
         //  NOTE:   The above test for ']] >' is for when the ']]' are the
         //          last two characters of the buffer.  When the next read
         //          occurs a pad space is inserted into the line.  I
-        //          suppose I should also add a test for '] ]>' but that is 
+        //          suppose I should also add a test for '] ]>' but that is
         //          for another day.
-        
+
         //  Now point to the next tag
         tmp_p = strchr(  tmp_p, '<' );
     }
@@ -359,9 +360,6 @@ DECODE_MX2__attribute(
     /************************************************************************
      *  Function Exit
      ************************************************************************/
-
-    //  Convert any encoded characters to ASCII
-    html2txt_str_2_char( attribute_p );
 
     //  DONE!
     return( tmp_p );
@@ -587,9 +585,12 @@ DECODE_MX2__srce(
         }
     }
 
+    //  Convert any encoded characters to ASCII
+    html2txt_str_2_char( tmp_data );
+
     //  Move the description string to the recipe
     recipe_p->group_from = text_copy_to_new( tmp_data );
- 
+
     log_write( MID_DEBUG_1, "decode_mx2_lib.c", "Line: %d\n", __LINE__ );
 
     /************************************************************************
@@ -658,6 +659,9 @@ DECODE_MX2__alts(
         }
     }
 
+    //  Convert any encoded characters to ASCII
+    html2txt_str_2_char( tmp_data );
+
     //  Add it to the directions
     recipe_add_instructions( recipe_p, &(tmp_data[ 0 ]) );
 
@@ -724,6 +728,9 @@ DECODE_MX2__cpyr(
                        "The Copyright string ts too large!\n" );
         }
     }
+
+    //  Convert any encoded characters to ASCII
+    html2txt_str_2_char( tmp_data );
 
     //  Move the description string to the recipe
     recipe_p->copyright = text_copy_to_new( tmp_data );
@@ -942,6 +949,9 @@ DECODE_MX2__srvi(
         }
     }
 
+    //  Convert any encoded characters to ASCII
+    html2txt_str_2_char( tmp_data );
+
     //  Move the description string to the recipe
     recipe_p->serve_with = text_copy_to_new( tmp_data );
 
@@ -1010,6 +1020,9 @@ DECODE_MX2__note(
                        "The Notes string ts too large!\n" );
         }
     }
+
+    //  Convert any encoded characters to ASCII
+    html2txt_str_2_char( tmp_data );
 
     //  Add it to the directions
     recipe_fmt_notes( recipe_p, &(tmp_data[ 0 ]) );
@@ -1094,7 +1107,7 @@ DECODE_MX2__start(
      *  |<RcpE name=|
      ************************************************************************/
 
-    if ( strstr( data_p, "<mx2" ) != NULL )
+    if ( strcasestr( data_p, "<rcpe" ) != NULL )
     {
         mx2_rc = true;
     }
@@ -1142,7 +1155,7 @@ DECODE_MX2__end(
      *  |</RcpE>|
      ************************************************************************/
 
-    if ( strstr( data_p, "</mx2>" ) != NULL )
+    if ( strcasestr( data_p, "</rcpe>" ) != NULL )
     {
         mx2_rc = true;
     }
@@ -1374,7 +1387,7 @@ DECODE_MX2__decode(
                             //  Allocate a new ingredient structure
                             auip_p = mem_malloc( sizeof( struct auip_t ) );
 
-                            log_write( MID_DEBUG_1, "decode_mx2_lib.c", 
+                            log_write( MID_DEBUG_1, "decode_mx2_lib.c",
                                     "Line: %d\n", __LINE__ );
 
                             //  NAME="..."
@@ -1403,37 +1416,37 @@ DECODE_MX2__decode(
                             //  Allocate a new ingredient structure
                             auip_p = mem_malloc( sizeof( struct auip_t ) );
 
-                            log_write( MID_DEBUG_1, "decode_mx2_lib.c", 
+                            log_write( MID_DEBUG_1, "decode_mx2_lib.c",
                                     "Line: %d\n", __LINE__ );
 
                             //  NAME="..."
                             auip_p->ingredient_p = text_copy_to_new( " " );
 
-                            log_write( MID_DEBUG_1, "decode_mx2_lib.c", 
+                            log_write( MID_DEBUG_1, "decode_mx2_lib.c",
                                     "Line: %d\n", __LINE__ );
 
                             //  UNIT="..."
                             auip_p->unit_p = text_copy_to_new( " " );
 
-                            log_write( MID_DEBUG_1, "decode_mx2_lib.c", 
+                            log_write( MID_DEBUG_1, "decode_mx2_lib.c",
                                     "Line: %d\n", __LINE__ );
 
                             //  QTY="..."
                             auip_p->amount_p = text_copy_to_new( " " );
 
-                            log_write( MID_DEBUG_1, "decode_mx2_lib.c", 
+                            log_write( MID_DEBUG_1, "decode_mx2_lib.c",
                                     "Line: %d\n", __LINE__ );
 
                             //  CODE="..."
                             auip_p->type_p = text_copy_to_new( "T" );
 
-                            log_write( MID_DEBUG_1, "decode_mx2_lib.c", 
+                            log_write( MID_DEBUG_1, "decode_mx2_lib.c",
                                     "Line: %d\n", __LINE__ );
 
                             //  PREPARATION=
                             auip_p->preparation_p = text_copy_to_new( " " );
 
-                            log_write( MID_DEBUG_1, "decode_mx2_lib.c", 
+                            log_write( MID_DEBUG_1, "decode_mx2_lib.c",
                                     "Line: %d\n", __LINE__ );
 
                             //  Append the new ingredient to the list
@@ -1460,14 +1473,14 @@ DECODE_MX2__decode(
                                 //  NO:     Allocate a new ingredient structure
                                 auip_p = mem_malloc( sizeof( struct auip_t ) );
 
-                                log_write( MID_DEBUG_1, "decode_mx2_lib.c", 
+                                log_write( MID_DEBUG_1, "decode_mx2_lib.c",
                                         "Line: %d\n", __LINE__ );
                             }
 
                             //  Move the preparations string to the recipe
                             auip_p->preparation_p = text_copy_to_new( text_p );
 
-                            log_write( MID_DEBUG_1, "decode_mx2_lib.c", 
+                            log_write( MID_DEBUG_1, "decode_mx2_lib.c",
                                     "Line: %d\n", __LINE__ );
 
                             //  Append the updated ingredient to the list
@@ -1495,7 +1508,7 @@ DECODE_MX2__decode(
                             //  Add it to the Directions
                             recipe_p->description = text_copy_to_new( text_p );
 
-                            log_write( MID_DEBUG_1, "decode_mx2_lib.c", 
+                            log_write( MID_DEBUG_1, "decode_mx2_lib.c",
                                     "Line: %d\n", __LINE__ );
 
                         }   break;
@@ -1518,7 +1531,7 @@ DECODE_MX2__decode(
                             //  Move the description string to the recipe
                             recipe_p->group_from = text_copy_to_new( text_p );
 
-                            log_write( MID_DEBUG_1, "decode_mx2_lib.c", 
+                            log_write( MID_DEBUG_1, "decode_mx2_lib.c",
                                     "Line: %d\n", __LINE__ );
 
                         }   break;
@@ -1549,7 +1562,7 @@ DECODE_MX2__decode(
                                 recipe_add_instructions( recipe_p, "<SOURCE> " );
                                 recipe_add_instructions( recipe_p, source_p );
                             }
-                            
+
                             //  Release their buffers.
                             if ( label_p  != NULL )
                                 mem_free( label_p );
@@ -1566,7 +1579,7 @@ DECODE_MX2__decode(
                             //  Move the description string to the recipe
                             recipe_p->copyright = text_copy_to_new( text_p );
 
-                            log_write( MID_DEBUG_1, "decode_mx2_lib.c", 
+                            log_write( MID_DEBUG_1, "decode_mx2_lib.c",
                                     "Line: %d\n", __LINE__ );
 
                         }   break;
@@ -1703,7 +1716,7 @@ DECODE_MX2__decode(
 
                             recipe_p->wine = text_copy_to_new( text_p );
 
-                            log_write( MID_DEBUG_1, "decode_mx2_lib.c", 
+                            log_write( MID_DEBUG_1, "decode_mx2_lib.c",
                                     "Line: %d\n", __LINE__ );
 
                         }   break;
@@ -1715,7 +1728,7 @@ DECODE_MX2__decode(
 
                             recipe_p->serve_with = text_copy_to_new( text_p );
 
-                            log_write( MID_DEBUG_1, "decode_mx2_lib.c", 
+                            log_write( MID_DEBUG_1, "decode_mx2_lib.c",
                                     "Line: %d\n", __LINE__ );
 
                         }   break;

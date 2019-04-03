@@ -150,7 +150,7 @@ decode_mx2(
         list_delete( mx2_list_p, list_data_p );
 
         //  Is this the start of a new recipe ?
-        if ( strstr( list_data_p, "<mx2 " ) != NULL )
+        if ( DECODE_MX2__start( list_data_p ) == true )
         {
             //  YES:    Set the flag ON
             mx2_active = true;
@@ -176,7 +176,7 @@ decode_mx2(
             }
 
             //  Is this the end of the active MX2 recipe ?
-            if ( strstr( list_data_p, "</mx2" ) != NULL )
+            if ( DECODE_MX2__end( list_data_p ) == true )
             {
                 //  YES:    Set the flag OFF
                 mx2_active = false;

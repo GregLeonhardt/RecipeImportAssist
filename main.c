@@ -273,8 +273,8 @@ command_line(
 int
 main(
     int                             argc,
-    char                        *   argv[]
-      )
+    char                        *   argv[ ]
+    )
 {
     /**
      * @param main_rc           Return code from called functions.          */
@@ -594,7 +594,7 @@ main(
             {
                 //  YES:    Free the buffer
                 mem_free( file_info_p );
-                
+
                 //  Log skipping the file
                 log_write( MID_INFO, "main",
                            "Skipping file: '%s'\n", input_file_name );
@@ -744,7 +744,7 @@ main(
                       "  BOF    CP2    GF2    GRF    MMF    MX2    MXP    NYC    RXF    TXT\n" );
         log_write( MID_INFO, "main",
                       "%5d  %5d  %5d  %5d  %5d  %5d  %5d  %5d  %5d  %5d\n",
-                      count_bof, count_cp2, count_gf2, count_grf, count_mmf, 
+                      count_bof, count_cp2, count_gf2, count_grf, count_mmf,
                       count_mx2, count_mxp, count_nyc, count_rxf, count_txt );
 
         //  Save the current recipe-id for the next file.
