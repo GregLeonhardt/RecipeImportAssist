@@ -92,13 +92,14 @@
 #define MX2_TAG_DIRS            ( 26 )
 #define MX2_TAG_EDIRS           ( 27 )
 #define MX2_TAG_DIRT            ( 28 )
-#define MX2_TAG_EDIRT           ( 29 )
-#define MX2_TAG_DESC            ( 30 )
-#define MX2_TAG_EDESC           ( 31 )
-#define MX2_TAG_NATN            ( 32 )
-#define MX2_TAG_ENATN           ( 33 )
-#define MX2_TAG_SRCE            ( 34 )
-#define MX2_TAG_ESRCE           ( 35 )
+#define MX2_TAG_DIRTI           ( 29 )
+#define MX2_TAG_EDIRT           ( 30 )
+#define MX2_TAG_DESC            ( 31 )
+#define MX2_TAG_EDESC           ( 32 )
+#define MX2_TAG_NATN            ( 33 )
+#define MX2_TAG_ENATN           ( 34 )
+#define MX2_TAG_SRCE            ( 35 )
+#define MX2_TAG_ESRCE           ( 36 )
 #define MX2_TAG_ALTSE           ( 37 )
 #define MX2_TAG_ALTS            ( 38 )
 #define MX2_TAG_EALTS           ( 39 )
@@ -186,6 +187,7 @@ struct  mx2_tag_t                   mx2_table[ ] =
     {   "<dirs>",       MX2_TAG_DIRS    },  //  Start of Directions
     {   "</dirs>",      MX2_TAG_EDIRS   },  //  End   of     "
     {   "<dirt>",       MX2_TAG_DIRT    },  //  Start of Directions Text
+    {   "<dirt ",       MX2_TAG_DIRTI   },  //  Start of Directions w/Image Text
     {   "</dirt>",      MX2_TAG_EDIRT   },  //  End   of     "        "
     {   "<desc>",       MX2_TAG_DESC    },  //  Start of Description
     {   "</desc>",      MX2_TAG_EDESC   },  //  End   of     "
@@ -1488,6 +1490,14 @@ DECODE_MX2__decode(
 
                         }   break;
                         //----------------------------------------------------
+                        //  NOTE:   'MX2_TAG_DIRTI' is formatted as:
+                        //              <DirT img=" ">
+                        //          and 'MX2_TAG_DIRT' is formatted as:
+                        //              <DirT>
+                        //          I expect that the 'img=" " has the capability
+                        //          of including an image but I am discarding
+                        //          all images.
+                        case    MX2_TAG_DIRTI:  //  Start of Directions w/Image Text
                         case    MX2_TAG_DIRT:   //  Start of Directions Text
                         {
                             //  Copy the tag text filed (if there is one)
