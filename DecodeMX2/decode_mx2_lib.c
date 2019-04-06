@@ -363,6 +363,9 @@ DECODE_MX2__attribute(
      *  Function Exit
      ************************************************************************/
 
+    //  Convert any encoded characters to ASCII
+    html2txt_str_2_char( tmp_p );
+
     //  DONE!
     return( tmp_p );
 }
