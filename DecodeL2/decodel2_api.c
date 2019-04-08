@@ -262,7 +262,7 @@ decodel2_parse(
 
         //  Do we need to process an existing recipe ?
         if (    ( list_query_count( level3_list_p )    >    0 )
-             && ( decode_end_of_recipe( list_data_p ) == true ) )
+             && ( decode_end_of_recipe( recipe_format, list_data_p ) == true ) )
         {
             //  YES:    Go do it.
             decode_xxx( recipe_format, level3_list_p, source_info_p );
@@ -330,7 +330,7 @@ decodel2_parse(
             count_bof += 1;
         }
         else
-            //  CookenPro 2.0                   
+            //  CookenPro 2.0
         if (    ( recipe_format == RECIPE_FORMAT_NONE )
              && ( decode_cp2_start( list_data_p ) == true ) )
         {
@@ -474,7 +474,7 @@ decodel2_parse(
             }
         }
         //--------------------------------------------------------------------
-        //  CookenPro 2.0                   
+        //  CookenPro 2.0
         if (    ( recipe_format == RECIPE_FORMAT_CP2 )
              && ( decode_cp2_end( list_data_p ) == true ) )
         {
