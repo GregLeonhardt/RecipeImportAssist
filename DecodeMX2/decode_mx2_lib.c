@@ -256,6 +256,7 @@ DECODE_MX2__attribute(
     int                             attribute_l
     )
 {
+#if 0
     /**
      *  @param  tmp_p           Pointer inside the tag                      */
     char                        *   tmp_p;
@@ -318,10 +319,17 @@ DECODE_MX2__attribute(
             tmp_p += 1;
 
             //  Copy the data to the buffer
+#if 0
             for( ndx = 0;
                  (    ( tmp_p[ ndx ] != '>' )
                    && ( tmp_p[ ndx ] != '/' ) );
                  ndx ++ )
+#else
+            //  NOTE:   Removed '/' because of [qty="1 1/2">]
+            for( ndx = 0;
+                 tmp_p[ ndx ] != '>';
+                 ndx ++ )
+#endif
             {
                 //  Copy the data one byte at a time
                 attribute_p[ ndx ] = tmp_p[ ndx ];
@@ -368,6 +376,118 @@ DECODE_MX2__attribute(
 
     //  DONE!
     return( tmp_p );
+#else
+    /**
+     *  @param  attr_start_p    Pointer to start of attribute               */
+    char                        *   attr_start_p;
+    /**
+     *  @param  attr_end_p      Pointer to end of attribute                 */
+    char                        *   attr_end_p;
+    /**
+     *  @param  attr_l          Attribute length                            */
+    int                             attr_l;
+    /**
+     *  @param  tmp_p           Temporary string pointer                    */
+    char                        *   tmp_p;
+
+    /************************************************************************
+     *  Function Initialization
+     ************************************************************************/
+
+    //  Assume that we don't have any attributes for this tag.
+    tmp_p = NULL;
+
+    //  Clear out the attribute buffer
+    memset( attribute_p, '\0', attribute_l );
+
+    /************************************************************************
+     *  Locate the start of the data
+     ************************************************************************/
+
+    //  Is this the special <![CDATA[
+    if ( strncmp( xml_p, "<![", 3 ) == 0 )
+    {
+        //  YES:    Skip past it
+        tmp_p = &xml_p[ 1 ];
+        do
+        {
+            //  Search for the end of the comment string
+            tmp_p = strchr(  &tmp_p[ 1 ], ']' );
+        }   while (    ( strncmp( tmp_p, "]]>",  3 ) != 0 )
+                    && ( strncmp( tmp_p, "]] >", 4 ) != 0 ) );
+        //  NOTE:   The above test for ']] >' is for when the ']]' are the
+        //          last two characters of the buffer.  When the next read
+        //          occurs a pad space is inserted into the line.  I
+        //          suppose I should also add a test for '] ]>' but that is
+        //          for another day.
+
+        //  Now point to the next tag
+        tmp_p = strchr(  tmp_p, '<' );
+    }
+
+    //  Are we pointed at a tag ?
+    else
+    if ( xml_p[ 0 ] == '<' )
+    {
+        //  YES:    Is this the end of the tag element name ?
+        for( attr_start_p = xml_p;
+             (    ( attr_start_p[ 0 ] != ' ' )
+               && ( attr_start_p[ 0 ] != '>' ) );
+             attr_start_p += 1 )
+        {
+            //  Nothing to do here, we are just moving the pointer
+        }
+
+        //  Is there an attribute string here ?
+        if ( attr_start_p[ 0 ] == ' ' )
+        {
+            //  YES:    Locate the next NON-whitespace character
+            attr_start_p = text_skip_past_whitespace( attr_start_p );
+
+            //  Now locate the end of the attribute
+            if (    ( ( attr_end_p = strstr( attr_start_p, "> <" )) != NULL )
+                 || ( ( attr_end_p = strstr( attr_start_p, "><"  )) != NULL ) )
+            {
+                //  Good, figure out it's size.
+                attr_l = ( attr_end_p - attr_start_p );
+
+                //  Is there room for it ?
+                if ( attr_l >= attribute_l )
+                {
+                    //  NO:     Error message and terminate
+                    log_write( MID_WARNING, "DECODE_MX2__attribute",
+                            "The defined buffer size is too small for "
+                            "the text data.\n" );
+                    log_write( MID_FATAL, " ", "%s\n", tmp_p );
+                }
+                else
+                {
+                    //  YES:    Copy it to the attribute buffer
+                    memcpy( attribute_p, attr_start_p, attr_l );
+                }
+                //  Update the return pointer
+                tmp_p = ( attr_end_p + 1 );
+
+                //  Convert any encoded characters to ASCII
+                html2txt_str_2_char( attribute_p );
+            }
+            //  NOTE:   What if this is the end of the buffer?
+            //          ? attr_end_p = strchrnul( attr_start_p, '>' );
+        }
+        else
+        {
+            //  NO:     There isn't an attribute to get.
+            tmp_p = attr_start_p;
+        }
+    }
+
+    /************************************************************************
+     *  Function Exit
+     ************************************************************************/
+
+    //  DONE!
+    return( tmp_p );
+#endif
 }
 
 /****************************************************************************/
@@ -471,6 +591,7 @@ DECODE_MX2__srch(
     char                        *   srch_p
     )
 {
+#if 0
     /**
      *  @param  tmp_p           Temporary data buffer pointer               */
     char                        *   tmp_p;
@@ -521,7 +642,6 @@ DECODE_MX2__srch(
 
         //  Move the string to the recipe
         tmp_p = text_copy_to_new( tmp_data );
-
         log_write( MID_DEBUG_1, "decode_mx2_lib.c", "Line: %d\n", __LINE__ );
     }
 
@@ -532,6 +652,108 @@ DECODE_MX2__srch(
     //  DONE!
     return( tmp_p );
 }
+
+#else
+    /**
+     *  @param  str_start_p     Start of quoted text                        */
+    char                        *   str_start_p;
+    /**
+     *  @param  str_end_p       End of quoted text                          */
+    char                        *   str_end_p;
+    /**
+     *  @param  str_l           Length of quoted text                       */
+    int                             str_l;
+    /**
+     *  @param  eq_p            Pointer to end of quoted text               */
+    char                        *   eq_p;
+    /**
+     *  @param  tmp_data        Temporary data buffer                       */
+    char                            tmp_data[ 2048 ];
+    /**
+     *  @param  quoted_text_p   Pointer to a buffer with the quoted text    */
+    char                        *   quoted_text_p;
+
+    /************************************************************************
+     *  Function Initialization
+     ************************************************************************/
+
+    //  Assume the search string will not be located.
+    quoted_text_p = NULL;
+
+    /************************************************************************
+     *  Find a match for the search string
+     ************************************************************************/
+
+    //  Locate the search string
+    str_start_p = strstr( data_p, srch_p );
+
+    //  Did we locate it ?
+    if ( str_start_p != NULL )
+    {
+        //  YES:    Clean out the temporary data buffer
+        memset( tmp_data, '\0', sizeof( tmp_data ) );
+
+        //  Now locate the start of the quoted text
+        str_start_p = ( strchr( str_start_p, '"' ) + 1 );
+
+        //  Find the next equal in the string.
+        eq_p = ( strstr( &str_start_p[ strlen( srch_p ) ], "=\"" ) );
+
+        //  Did we find one ?
+        if ( eq_p == NULL )
+        {
+            //  NO:     Get a pointer to the ending quote
+            str_end_p = ( strrchr( str_start_p, '"' ) );
+        }
+        else
+        {
+            //  Temporally NULL terminate at the equal, find the last
+            //  equal in the string, then replace the equal.
+            eq_p[ 0 ] = '\0';
+            str_end_p = ( strrchr( str_start_p, '"' ) );
+            eq_p[ 0 ] = '=';
+        }
+
+        //  Did we locate the end ?
+        if ( str_end_p != NULL )
+        {
+            //  YES:    Calculate the length of the quoted text.
+            str_l = str_end_p - str_start_p;
+        }
+        else
+        {
+            //  NO:     Use everything in the string
+            str_l = ( strlen( str_start_p ) - 1 );
+        }
+
+        //  Will the quoted text fit into the buffer ?
+        if ( str_l > sizeof( tmp_data ) )
+        {
+            //  NO:     OOPS!
+            log_write( MID_FATAL, "DECODE_MX2__srch",
+                       "'%s' The string is too large!\n", srch_p );
+        }
+
+        //  Is there any quoted data ?
+        if ( str_l > 0 )
+        {
+            //  YES:    Copy the quoted text to the temporary buffer.
+            memcpy( tmp_data, str_start_p, str_l );
+
+            //  Move the string to the recipe
+            quoted_text_p = text_copy_to_new( tmp_data );
+            log_write( MID_DEBUG_1, "decode_mx2_lib.c", "Line: %d\n", __LINE__ );
+        }
+    }
+
+    /************************************************************************
+     *  Function Exit
+     ************************************************************************/
+
+    //  DONE!
+    return( quoted_text_p );
+}
+#endif
 
 /****************************************************************************/
 /**
@@ -1391,7 +1613,6 @@ DECODE_MX2__decode(
                         {
                             //  Allocate a new ingredient structure
                             auip_p = mem_malloc( sizeof( struct auip_t ) );
-
                             log_write( MID_DEBUG_1, "decode_mx2_lib.c",
                                     "Line: %d\n", __LINE__ );
 
