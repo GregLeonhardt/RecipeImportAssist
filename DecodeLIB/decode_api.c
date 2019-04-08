@@ -406,7 +406,6 @@ decode_copy_info_to_recipe(
 
 int
 decode_end_of_recipe(
-    enum    recipe_format_e         recipe_format,
     char                        *   data_p
     )
 {
@@ -430,10 +429,6 @@ decode_end_of_recipe(
     //  a false positive for a recipe break.  If this creates a problem then
     //  I will have to pass the current recipe type for additional testing.
 
-    //  NOTE:
-    //  MX2 is a special case because it may contain an embedded MXP recipe
-    //  inside it.
-
     //  Is this something that can end a recipe ?
     if (    ( email_is_start(       data_p ) == true )
          || ( email_is_group_break( data_p ) == true )
@@ -443,8 +438,7 @@ decode_end_of_recipe(
          || ( decode_grf_start(     data_p ) == true )
          || ( decode_mmf_start(     data_p ) == true )
          || ( decode_mx2_start(     data_p ) == true )
-         || (    ( recipe_format != RECIPE_FORMAT_MX2 )
-              && ( decode_mxp_start(     data_p ) == true ) )
+         || ( decode_mxp_start(     data_p ) == true )
          || ( decode_nyc_start(     data_p ) == true ) )
     {
         //  YES:    Change the return code
