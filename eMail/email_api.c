@@ -134,8 +134,8 @@ email_is_start(
      * @param email_rc          Return code for this function               */
     int                             email_rc;
     /**
-     * @param tmp_data_p        Pointer to a temp data buffer               */
-    char                        *   tmp_data_p;
+     * @param start_p           Pointer to a temp data buffer               */
+    char                        *   start_p;
 
     /************************************************************************
      *  Function Initialization
@@ -145,35 +145,23 @@ email_is_start(
     email_rc = false;
 
     //  Locate the first character in the buffer
-    tmp_data_p = text_skip_past_whitespace( data_p );
+    start_p = text_skip_past_whitespace( data_p );
 
     /************************************************************************
      *  Function
      ************************************************************************/
 
-    //  Is this the start of a new e-Mail ?
-    if (    ( strncmp( tmp_data_p, SRCH_SOURCE, SRCH_SOURCE_L ) == 0 )
-         || ( strncmp( tmp_data_p, SRCH_PGO,    SRCH_PGO_L    ) == 0 ) )
+    if (    ( start_p != NULL )                           //  Data is present
+         && ( start_p[ 0 ] != '>' ) )                     //  Not forwarded e-mail
     {
-        //  YES:    Change the return code
-        email_rc = true;
+        //  Is this the start of a new e-Mail ?
+        if (    ( strncmp( start_p, SRCH_SOURCE, SRCH_SOURCE_L ) == 0 )
+             || ( strncmp( start_p, SRCH_PGO,    SRCH_PGO_L    ) == 0 ) )
+        {
+            //  YES:    Change the return code
+            email_rc = true;
+        }
     }
-    //  Is this the start of a new e-Mail ?
-#if 0
-    else
-    if ( strncmp( tmp_data_p, SRCH_RETURN, SRCH_RETURN_L ) == 0 )
-    {
-        //  YES:    Change the return code
-        email_rc = true;
-    }
-    //  Is this the start of a new e-Mail ?
-    else
-    if ( strncmp( tmp_data_p, SRCH_RXF_BREAK, SRCH_RXF_BREAK_L ) == 0 )
-    {
-        //  YES:    Change the return code
-        email_rc = true;
-    }
-#endif
 
     /************************************************************************
      *  Function Exit

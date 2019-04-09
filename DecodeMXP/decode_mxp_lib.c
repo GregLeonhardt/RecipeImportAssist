@@ -222,8 +222,8 @@ DECODE_MXP__start(
      * @param mxp_rc            Return Code                                 */
     int                             mxp_rc;
     /**
-     * @param tmp_data_p        Pointer to a temp data buffer               */
-    char                        *   tmp_data_p;
+     * @param start_p           Pointer to a temp data buffer               */
+    char                        *   start_p;
 
     /************************************************************************
      *  Function Initialization
@@ -233,7 +233,7 @@ DECODE_MXP__start(
     mxp_rc = false;
 
     //  Locate the first character in the buffer
-    tmp_data_p = text_skip_past_whitespace( data_p );
+    start_p = text_skip_past_whitespace( data_p );
 
     //  Initialize process state registers
     categories_scan_state = CSS_IDLE;
@@ -244,35 +244,39 @@ DECODE_MXP__start(
      *  Generic Detection
      ************************************************************************/
 
-    //  Is this the start of a MasterCook MXP recipe ?
-    if ( strncmp( tmp_data_p, MXP_S_PART_1,  MXP_S_PART_1_L  ) == 0 )
+    if (    ( start_p != NULL )                           //  Data is present
+         && ( start_p[ 0 ] != '>' ) )                     //  Not forwarded e-mail
     {
-            if (    ( strstr( tmp_data_p, MXP_S_PART_2 ) != NULL )     //  Exported
-                 && ( strstr( tmp_data_p, MXP_S_PART_3 ) != NULL ) )   //  from
-            {
-                //  YES:    Change the return code
-                mxp_rc = true;
-            }
-    }
+        //  Is this the start of a MasterCook MXP recipe ?
+        if ( strncmp( start_p, MXP_S_PART_1,  MXP_S_PART_1_L  ) == 0 )
+        {
+                if (    ( strstr( start_p, MXP_S_PART_2 ) != NULL )     //  Exported
+                     && ( strstr( start_p, MXP_S_PART_3 ) != NULL ) )   //  from
+                {
+                    //  YES:    Change the return code
+                    mxp_rc = true;
+                }
+        }
 
-    /************************************************************************
-     *  Specific Detection
-     ************************************************************************/
+        /********************************************************************
+         *  Specific Detection
+         ********************************************************************/
 
-    //  Is this the start of a MasterCook MXP recipe ?
-    if (    ( strncmp( tmp_data_p, MXP_START_1,  MXP_START_1_L  ) == 0 )
-         || ( strncmp( tmp_data_p, MXP_START_2,  MXP_START_2_L  ) == 0 )
-         || ( strncmp( tmp_data_p, MXP_START_3,  MXP_START_3_L  ) == 0 )
-         || ( strncmp( tmp_data_p, MXP_START_4,  MXP_START_4_L  ) == 0 )
-         || ( strncmp( tmp_data_p, MXP_START_5,  MXP_START_5_L  ) == 0 )
-         || ( strncmp( tmp_data_p, MXP_START_6,  MXP_START_6_L  ) == 0 )
-         || ( strncmp( tmp_data_p, MXP_START_7,  MXP_START_7_L  ) == 0 )
-         || ( strncmp( tmp_data_p, MXP_START_8,  MXP_START_8_L  ) == 0 )
-         || ( strncmp( tmp_data_p, MXP_START_9,  MXP_START_9_L  ) == 0 )
-         || ( strncmp( tmp_data_p, MXP_START_10, MXP_START_10_L ) == 0 ) )
-    {
-        //  YES:    Change the return code
-        mxp_rc = true;
+        //  Is this the start of a MasterCook MXP recipe ?
+        if (    ( strncmp( start_p, MXP_START_1,  MXP_START_1_L  ) == 0 )
+             || ( strncmp( start_p, MXP_START_2,  MXP_START_2_L  ) == 0 )
+             || ( strncmp( start_p, MXP_START_3,  MXP_START_3_L  ) == 0 )
+             || ( strncmp( start_p, MXP_START_4,  MXP_START_4_L  ) == 0 )
+             || ( strncmp( start_p, MXP_START_5,  MXP_START_5_L  ) == 0 )
+             || ( strncmp( start_p, MXP_START_6,  MXP_START_6_L  ) == 0 )
+             || ( strncmp( start_p, MXP_START_7,  MXP_START_7_L  ) == 0 )
+             || ( strncmp( start_p, MXP_START_8,  MXP_START_8_L  ) == 0 )
+             || ( strncmp( start_p, MXP_START_9,  MXP_START_9_L  ) == 0 )
+             || ( strncmp( start_p, MXP_START_10, MXP_START_10_L ) == 0 ) )
+        {
+            //  YES:    Change the return code
+            mxp_rc = true;
+        }
     }
 
     /************************************************************************
@@ -332,7 +336,7 @@ DECODE_MXP__title(
 
         //  Save the recipe title (name)
         recipe_p->name = text_copy_to_new( tmp_data_p );
-        
+
         log_write( MID_DEBUG_1, "decode_mxp_lib.c", "Line: %d\n", __LINE__ );
 
         //  Change the return code
@@ -401,7 +405,7 @@ DECODE_MXP__recipe_by(
 
         //  Save the recipe title (name)
         recipe_p->author = text_copy_to_new( tmp_data_p );
-        
+
         log_write( MID_DEBUG_1, "decode_mxp_lib.c", "Line: %d\n", __LINE__ );
 
         //  Change the return code
@@ -470,7 +474,7 @@ DECODE_MXP__srv_size(
 
         //  Save the recipe title (name)
         recipe_p->serves = text_copy_to_new( tmp_data_p );
-        
+
         log_write( MID_DEBUG_1, "decode_mxp_lib.c", "Line: %d\n", __LINE__ );
 
         //  Is there anything past the serving size on this line ?
@@ -547,7 +551,7 @@ DECODE_MXP__prep_time(
 
         //  Save the recipe title (name)
         recipe_p->time_prep = text_copy_to_new( tmp_data_p );
-        
+
         log_write( MID_DEBUG_1, "decode_mxp_lib.c", "Line: %d\n", __LINE__ );
 
         //  Change the return code

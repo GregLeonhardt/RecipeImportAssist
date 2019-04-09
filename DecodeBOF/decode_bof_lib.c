@@ -105,8 +105,8 @@ DECODE_BOF__start (
      * @param bof_rc            Return Code                                 */
     int                             bof_rc;
     /**
-     * @param tmp_data_p        Pointer to a temp data buffer               */
-    char                        *   tmp_data_p;
+     * @param start_p           Pointer to a temp data buffer               */
+    char                        *   start_p;
 
     /************************************************************************
      *  Function Initialization
@@ -116,22 +116,20 @@ DECODE_BOF__start (
     bof_rc = false;
 
     //  Locate the first character in the buffer
-    tmp_data_p = text_skip_past_whitespace( data_p );
+    start_p = text_skip_past_whitespace( data_p );
 
 
     /************************************************************************
      *  Anything that starts with "-= Exported from BigOven =-"
      ************************************************************************/
 
-    //  Skip this test if a previous test was TRUE
-    if ( bof_rc == false )
+    //  Is the a BOF start tag ?
+    if (    ( start_p != NULL )                           //  Data is present
+         && ( start_p[ 0 ] != '>' )                       //  Not forwarded e-mail
+         && ( strncmp( start_p, BOF_START, BOF_START_L ) == 0 ) )
     {
-        //  Does the string start with "-= Exported from BigOven =-" ?
-        if ( strncmp( tmp_data_p, BOF_START, BOF_START_L ) == 0 )
-        {
-            //  YES:    Change the return code
-            bof_rc = true;
-        }
+        //  YES:    Change the return code
+        bof_rc = true;
     }
 
     /************************************************************************
@@ -301,7 +299,7 @@ DECODE_BOF__title(
 
         //  Save the recipe title (name)
         recipe_p->name = text_copy_to_new( title_p );
-        
+
         log_write( MID_DEBUG_1, "decode_bof_lib.c", "Line: %d\n", __LINE__ );
 
         // Change the pass_fail flag to PASS
@@ -365,7 +363,7 @@ DECODE_BOF__recipe_by(
 
         //  Save the recipe title (name)
         recipe_p->author = text_copy_to_new( tmp_data_p );
-        
+
         log_write( MID_DEBUG_1, "decode_bof_lib.c", "Line: %d\n", __LINE__ );
     }
     else

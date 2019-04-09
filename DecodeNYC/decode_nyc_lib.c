@@ -113,8 +113,8 @@ DECODE_NYC__start (
      * @param nyc_rc            Return Code                                 */
     int                             nyc_rc;
     /**
-     * @param tmp_data_p        Pointer to a temp data buffer               */
-    char                        *   tmp_data_p;
+     * @param start_p           Pointer to a temp data buffer               */
+    char                        *   start_p;
 
     /************************************************************************
      *  Function Initialization
@@ -124,21 +124,19 @@ DECODE_NYC__start (
     nyc_rc = false;
 
     //  Locate the first character in the buffer
-    tmp_data_p = text_skip_past_whitespace( data_p );
+    start_p = text_skip_past_whitespace( data_p );
 
     /************************************************************************
      *  |Recipe via Meal-Master|
      ************************************************************************/
 
-    //  Skip this test if a previous test was TRUE
-    if ( nyc_rc == false )
+    //  Is the a CP2 start tag ?
+    if (    ( start_p != NULL )                           //  Data is present
+         && ( start_p[ 0 ] != '>' )                       //  Not forwarded e-mail
+         && ( strncmp( start_p, NYC_START_1,  NYC_START_1_L  ) == 0 ) )
     {
-        //  Is this the start of a Meal-Master NYC recipe ?
-        if (    ( strncmp( tmp_data_p, NYC_START_1,  NYC_START_1_L  ) == 0 ) )
-        {
-            //  YES:    Change the return code
-            nyc_rc = true;
-        }
+        //  YES:    Change the return code
+        nyc_rc = true;
     }
 
     /************************************************************************
@@ -254,7 +252,7 @@ DECODE_NYC__title(
 
         //  Save the recipe title (name)
         recipe_p->name = text_copy_to_new( title_p );
-        
+
         log_write( MID_DEBUG_1, "decode_nyc_lib.c", "Line: %d\n", __LINE__ );
 
         // Change the pass_fail flag to PASS
@@ -471,18 +469,18 @@ DECODE_NYC__yield(
             {
                 //  YES:    This is a serves amount, not a MAKES amount
                 recipe_p->serves = text_copy_to_new( local_amount );
-        
+
                 log_write( MID_DEBUG_1, "decode_nyc_lib.c", "Line: %d\n", __LINE__ );
             }
             else
             {
                 //  NO:     This is a serves amount, not a MAKES amount
                 recipe_p->makes      = text_copy_to_new( local_amount );
-        
+
                 log_write( MID_DEBUG_1, "decode_nyc_lib.c", "Line: %d\n", __LINE__ );
-                
+
                 recipe_p->makes_unit = text_copy_to_new( tmp_unit );
-        
+
                 log_write( MID_DEBUG_1, "decode_nyc_lib.c", "Line: %d\n", __LINE__ );
             }
         }
@@ -490,7 +488,7 @@ DECODE_NYC__yield(
         {
             //  This is a serves amount, not a MAKES amount
             recipe_p->serves = text_copy_to_new( local_amount );
-        
+
             log_write( MID_DEBUG_1, "decode_nyc_lib.c", "Line: %d\n", __LINE__ );
         }
     }

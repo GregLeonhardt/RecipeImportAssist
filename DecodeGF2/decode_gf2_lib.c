@@ -130,8 +130,8 @@ DECODE_GF2__start (
      * @param gf2_rc            Return Code                                 */
     int                             gf2_rc;
     /**
-     * @param tmp_data_p        Pointer to a temp data buffer               */
-    char                        *   tmp_data_p;
+     * @param start_p           Pointer to a temp data buffer               */
+    char                        *   start_p;
 
     /************************************************************************
      *  Function Initialization
@@ -141,22 +141,20 @@ DECODE_GF2__start (
     gf2_rc = false;
 
     //  Locate the first character in the buffer
-    tmp_data_p = text_skip_past_whitespace( data_p );
+    start_p = text_skip_past_whitespace( data_p );
 
 
     /************************************************************************
      *  Anything that starts with "@@@@@"
      ************************************************************************/
 
-    //  Skip this test if a previous test was TRUE
-    if ( gf2_rc == false )
+    //  Is the a CP2 start tag ?
+    if (    ( start_p != NULL )                           //  Data is present
+         && ( start_p[ 0 ] != '>' )                       //  Not forwarded e-mail
+         && ( strncmp( start_p, GF2_START, GF2_START_L ) == 0 ) )
     {
-        //  Does the string start with "@@@@@" ?
-        if ( strncmp( tmp_data_p, GF2_START, GF2_START_L ) == 0 )
-        {
-            //  YES:    Change the return code
-            gf2_rc = true;
-        }
+        //  YES:    Change the return code
+        gf2_rc = true;
     }
 
     /************************************************************************
@@ -342,7 +340,7 @@ DECODE_GF2__aspcy(
             }
             //  Now add the new information
             recipe_p->author = text_copy_to_new( tmp_p );
-        
+
             log_write( MID_DEBUG_1, "decode_gf2_lib.c", "Line: %d\n", __LINE__ );
         }
     }
@@ -366,7 +364,7 @@ DECODE_GF2__aspcy(
             }
             //  Now add the new information
             recipe_p->serves = text_copy_to_new( tmp_p );
-        
+
             log_write( MID_DEBUG_1, "decode_gf2_lib.c", "Line: %d\n", __LINE__ );
         }
     }
@@ -390,7 +388,7 @@ DECODE_GF2__aspcy(
             }
             //  Now add the new information
             recipe_p->time_prep = text_copy_to_new( tmp_p );
-        
+
             log_write( MID_DEBUG_1, "decode_gf2_lib.c", "Line: %d\n", __LINE__ );
         }
     }
@@ -414,7 +412,7 @@ DECODE_GF2__aspcy(
             }
             //  Now add the new information
             recipe_p->time_cook = text_copy_to_new( tmp_p );
-        
+
             log_write( MID_DEBUG_1, "decode_gf2_lib.c", "Line: %d\n", __LINE__ );
         }
     }
@@ -441,12 +439,12 @@ DECODE_GF2__aspcy(
 
             //  Now add the new information
             recipe_p->makes = text_copy_to_new( tmp_p );
-        
+
             log_write( MID_DEBUG_1, "decode_gf2_lib.c", "Line: %d\n", __LINE__ );
 
             //  Now add the new information
             recipe_p->makes_unit = text_copy_to_new( " " );
-        
+
             log_write( MID_DEBUG_1, "decode_gf2_lib.c", "Line: %d\n", __LINE__ );
         }
     }

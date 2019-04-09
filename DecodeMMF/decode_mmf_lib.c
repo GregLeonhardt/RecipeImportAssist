@@ -167,8 +167,8 @@ DECODE_MMF__start (
      * @param mmf_rc            Return Code                                 */
     int                             mmf_rc;
     /**
-     * @param tmp_data_p        Pointer to a temp data buffer               */
-    char                        *   tmp_data_p;
+     * @param start_p           Pointer to a temp data buffer               */
+    char                        *   start_p;
 
     /************************************************************************
      *  Function Initialization
@@ -178,50 +178,51 @@ DECODE_MMF__start (
     mmf_rc = false;
 
     //  Locate the first character in the buffer
-    tmp_data_p = text_skip_past_whitespace( data_p );
+    start_p = text_skip_past_whitespace( data_p );
 
 
     /************************************************************************
      *  Look for a generic recipe start message for Meal-Master format
      ************************************************************************/
 
-    //  Skip this test if a previous test was TRUE
-    if ( mmf_rc == false )
+    //  Is the a CP2 start tag ?
+    if (    ( start_p != NULL )                           //  Data is present
+         && ( start_p[ 0 ] != '>' ) )                     //  Not forwarded e-mail
     {
         //  Does the string start with one of out line prefixes?
-        if (    ( strncmp( tmp_data_p, MMF_PREFIX_1, MMF_PREFIX_1_L ) == 0 )    //  -----
-             || ( strncmp( tmp_data_p, MMF_PREFIX_2, MMF_PREFIX_2_L ) == 0 )    //  MMMMM
-             || ( strncmp( tmp_data_p, MMF_PREFIX_3, MMF_PREFIX_3_L ) == 0 ) )  //  - -----
+        if (    ( strncmp( start_p, MMF_PREFIX_1, MMF_PREFIX_1_L ) == 0 )    //  -----
+             || ( strncmp( start_p, MMF_PREFIX_2, MMF_PREFIX_2_L ) == 0 )    //  MMMMM
+             || ( strncmp( start_p, MMF_PREFIX_3, MMF_PREFIX_3_L ) == 0 ) )  //  - -----
         {
             //  YES:    Does it contain contain a software tag ?
-            if (    ( strstr( tmp_data_p, MMF_MMF_1 ) != NULL )     //  Meal-Master
-                 || ( strstr( tmp_data_p, MMF_NYC_1 ) != NULL ) )   //  Now You're Cooking!
+            if (    ( strstr( start_p, MMF_MMF_1 ) != NULL )     //  Meal-Master
+                 || ( strstr( start_p, MMF_NYC_1 ) != NULL ) )   //  Now You're Cooking!
             {
                 //  YES:    Change the return code
                 mmf_rc = true;
             }
         }
-    }
 
-    /************************************************************************
-     *  Look for other more specialized start messages
-     ************************************************************************/
+        /********************************************************************
+         *  Look for other more specialized start messages
+         ********************************************************************/
 
-    //  Skip this test if a previous test was TRUE
-    if ( mmf_rc == false )
-    {
-        //  Is this the start of a Meal-Master MMF recipe ?
-        if (    ( strncmp( tmp_data_p, MMF_START_1,  MMF_START_1_L  ) == 0 )
-             || ( strncmp( tmp_data_p, MMF_START_2,  MMF_START_2_L  ) == 0 )
-             || ( strncmp( tmp_data_p, MMF_START_3,  MMF_START_3_L  ) == 0 )
-             || ( strncmp( tmp_data_p, MMF_START_4,  MMF_START_4_L  ) == 0 )
-             || ( strncmp( tmp_data_p, MMF_START_5,  MMF_START_5_L  ) == 0 )
-             || ( strncmp( tmp_data_p, MMF_START_6,  MMF_START_6_L  ) == 0 )
-             || ( strncmp( tmp_data_p, MMF_START_7,  MMF_START_7_L  ) == 0 )
-             || ( strncmp( tmp_data_p, MMF_START_8,  MMF_START_8_L  ) == 0 ) )
+        //  Skip this test if a previous test was TRUE
+        if ( mmf_rc == false )
         {
-            //  YES:    Change the return code
-            mmf_rc = true;
+            //  Is this the start of a Meal-Master MMF recipe ?
+            if (    ( strncmp( start_p, MMF_START_1,  MMF_START_1_L  ) == 0 )
+                 || ( strncmp( start_p, MMF_START_2,  MMF_START_2_L  ) == 0 )
+                 || ( strncmp( start_p, MMF_START_3,  MMF_START_3_L  ) == 0 )
+                 || ( strncmp( start_p, MMF_START_4,  MMF_START_4_L  ) == 0 )
+                 || ( strncmp( start_p, MMF_START_5,  MMF_START_5_L  ) == 0 )
+                 || ( strncmp( start_p, MMF_START_6,  MMF_START_6_L  ) == 0 )
+                 || ( strncmp( start_p, MMF_START_7,  MMF_START_7_L  ) == 0 )
+                 || ( strncmp( start_p, MMF_START_8,  MMF_START_8_L  ) == 0 ) )
+            {
+                //  YES:    Change the return code
+                mmf_rc = true;
+            }
         }
     }
 
@@ -352,7 +353,7 @@ DECODE_MMF__title(
 
             //  Save the recipe title (name)
             recipe_p->name = text_copy_to_new( title_p );
-        
+
             log_write( MID_DEBUG_1, "decode_mmf_lib.c", "Line: %d\n", __LINE__ );
 
             // Change the pass_fail flag to PASS
@@ -578,18 +579,18 @@ DECODE_MMF__yield(
             {
                 //  YES:    This is a serves amount, not a MAKES amount
                 recipe_p->serves = text_copy_to_new( local_amount );
-        
+
                 log_write( MID_DEBUG_1, "decode_mmf_lib.c", "Line: %d\n", __LINE__ );
             }
             else
             {
                 //  NO:     This is a serves amount, not a MAKES amount
                 recipe_p->makes      = text_copy_to_new( local_amount );
-        
+
                 log_write( MID_DEBUG_1, "decode_mmf_lib.c", "Line: %d\n", __LINE__ );
-                
+
                 recipe_p->makes_unit = text_copy_to_new( tmp_unit );
-        
+
                 log_write( MID_DEBUG_1, "decode_mmf_lib.c", "Line: %d\n", __LINE__ );
             }
         }
@@ -597,7 +598,7 @@ DECODE_MMF__yield(
         {
             //  This is a serves amount, not a MAKES amount
             recipe_p->serves = text_copy_to_new( local_amount );
-        
+
             log_write( MID_DEBUG_1, "decode_mmf_lib.c", "Line: %d\n", __LINE__ );
         }
     }

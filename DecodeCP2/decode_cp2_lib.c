@@ -105,8 +105,8 @@ DECODE_CP2__start (
      * @param cp2_rc            Return Code                                 */
     int                             cp2_rc;
     /**
-     * @param tmp_data_p        Pointer to a temp data buffer               */
-    char                        *   tmp_data_p;
+     * @param start_p           Pointer to a temp data buffer               */
+    char                        *   start_p;
 
     /************************************************************************
      *  Function Initialization
@@ -116,22 +116,20 @@ DECODE_CP2__start (
     cp2_rc = false;
 
     //  Locate the first character in the buffer
-    tmp_data_p = text_skip_past_whitespace( data_p );
+    start_p = text_skip_past_whitespace( data_p );
 
 
     /************************************************************************
      *  Anything that starts with "-= Exported from BigOven =-"
      ************************************************************************/
 
-    //  Skip this test if a previous test was TRUE
-    if ( cp2_rc == false )
+    //  Is the a CP2 start tag ?
+    if (    ( start_p != NULL )                           //  Data is present
+         && ( start_p[ 0 ] != '>' )                       //  Not forwarded e-mail
+         && ( strncmp( start_p, CP2_START, CP2_START_L ) == 0 ) )
     {
-        //  Does the string start with "-= Exported from BigOven =-" ?
-        if ( strncmp( tmp_data_p, CP2_START, CP2_START_L ) == 0 )
-        {
-            //  YES:    Change the return code
-            cp2_rc = true;
-        }
+        //  YES:    Change the return code
+        cp2_rc = true;
     }
 
     /************************************************************************
@@ -234,7 +232,7 @@ DECODE_CP2__title(
     //  Set the pointer to the first character of the recipe title.
     tmp_title_p = title_p + CP2_TITLE_L;
     tmp_title_p = text_skip_past_whitespace( tmp_title_p );
-    
+
     //  Cleanup the recipe name before saving it.
     recipe_name_cleanup( tmp_title_p, strlen( tmp_title_p ) );
 
@@ -531,7 +529,7 @@ DECODE_CP2__vegetarian(
 
     //  Skip past any leading whitespace.
     tmp_data_p = text_skip_past_whitespace( tmp_data_p );
-    
+
     //  Yes or No
     if ( strncasecmp( tmp_data_p, "YES", 3 ) == 0 )
     {
