@@ -366,6 +366,13 @@ main(
                   "Starting: Recipe Import Assist Version %s %s.\n",
                   __DATE__, __TIME__ );
 
+    for ( int count = 0;
+              count < argc;
+              count ++ )
+    {
+        log_write( MID_INFO, "main", "arcv[ %d ]: '%s'\n", count, argv[ count ] );
+    }
+
     //  Log the event
     log_write( MID_INFO, "main",
                   "Log initialization complete.\n" );
