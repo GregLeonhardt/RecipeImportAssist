@@ -144,11 +144,6 @@ decode_txt(
     //  Count the number of text lines on the list
     line_count = list_query_count( txt_list_p );
 
-#if 0   //  Why is this here
-    //  Assume there is NOT an AUIP line
-    auip_found = false;
-#endif
-
     //  Clean the Text Message Array
     memset( (char*)txt_msg_array, 0x00,
             ( sizeof( struct txt_msg_t ) * MAX_LINE_COUNT ) );
@@ -179,24 +174,6 @@ decode_txt(
             txt_msg_array[ line_number ].line_type
                     = DECODE_TXT__line_type( txt_msg_array[ line_number ].line_p );
 
-#if 0       //  @ToDo   Why was this code written ?  Is it needed ?
-            //  Do we have three consecutive blank lines ?
-            if (    (                line_number                 >=               1 )
-                 && ( txt_msg_array[ line_number     ].line_type == LINE_TYPE_BLANK )
-                 && ( txt_msg_array[ line_number - 1 ].line_type == LINE_TYPE_BLANK )
-                 && ( txt_msg_array[ line_number - 2 ].line_type == LINE_TYPE_BLANK ) )
-            {
-                //  YES:    Go process a text recipe
-                DECODE_TXT__decode( source_info_p );
-
-                //  Clean the Text Message Array
-                memset( (char*)txt_msg_array, 0x00,
-                        ( sizeof( struct txt_msg_t ) * MAX_LINE_COUNT ) );
-
-                //  Reset the starting line number
-                line_number = -1;
-            }
-#endif
             //  Advance to the next array cell
             line_number += 1;
         }
