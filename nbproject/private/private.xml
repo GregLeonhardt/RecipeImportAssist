@@ -9,7 +9,7 @@
         <group>
             <file>file:/home/greg/src/RecipeImportAssist/main.c</file>
             <file>file:/home/greg/src/RecipeImportAssist/DecodeMX2/decode_mx2_lib.c</file>
-            <file>file:/home/greg/src/RecipeImportAssist/DecodeL2/decodel2_api.c</file>
+            <file>file:/home/greg/src/RecipeImportAssist/DecodeMX2/decode_mx2_api.c</file>
         </group>
     </open-files>
 </project-private>

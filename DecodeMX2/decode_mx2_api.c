@@ -18,6 +18,7 @@
  ****************************************************************************/
 
 #define ALLOC_DECODE_MX2          ( "ALLOCATE STORAGE FOR DECODE_MX2" )
+#define _GNU_SOURCE
 
 /****************************************************************************
  * System Function API
@@ -119,6 +120,9 @@ decode_mx2(
      *  @param  decode_p        Pointer to the HTML decode buffer           */
     char                        *   decode_p;
     /**
+     *  @param  no_html_p       Pointer to the NO-HTML decode buffer        */
+    char                        *   no_html_p;
+    /**
      *  @param  mx2_active      Flag showing an MX2 recipe is active        */
     int                             mx2_active;
 
@@ -181,8 +185,12 @@ decode_mx2(
                 //  YES:    Set the flag OFF
                 mx2_active = false;
 
+                //  Convert any encoded characters to ASCII
+                no_html_p = html2txt( decode_p );
+
                 //  Decode the recipe
-                DECODE_MX2__decode( decode_p, source_info_p );
+                DECODE_MX2__decode( no_html_p, source_info_p );
+                mem_free( no_html_p );
 
                 //  Clean out the decode buffer
                 memset( decode_p, '\0', DECODE_BUF_L );

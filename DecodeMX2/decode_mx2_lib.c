@@ -257,11 +257,21 @@ DECODE_MX2__attribute(
     )
 {
     /**
-     *  @param  tmp_p           Pointer inside the tag                      */
+     *  @param  attr_start_p    Pointer to start of attribute               */
+    char                        *   attr_start_p;
+    /**
+     *  @param  attr_end_p      Pointer to end of attribute                 */
+    char                        *   attr_end_p;
+    /**
+     *  @param  attr_l          Attribute length                            */
+    int                             attr_l;
+    /**
+     *  @param  tmp_p           Temporary string pointer                    */
     char                        *   tmp_p;
     /**
-     *  @param  ndx             Data pointer index                          */
-    int                             ndx;
+     *
+     *  @param  tmp_1_p         Temporary pointer                           */
+    char                        *   tmp_1_p;
 
     /************************************************************************
      *  Function Initialization
@@ -286,6 +296,13 @@ DECODE_MX2__attribute(
         {
             //  Search for the end of the comment string
             tmp_p = strchr(  &tmp_p[ 1 ], ']' );
+
+            //  Did we locate the next possible end ?
+            if ( tmp_p == NULL )
+            {
+                //  NO:     Terminate the search.
+                break;
+            }
         }   while (    ( strncmp( tmp_p, "]]>",  3 ) != 0 )
                     && ( strncmp( tmp_p, "]] >", 4 ) != 0 ) );
         //  NOTE:   The above test for ']] >' is for when the ']]' are the
@@ -294,8 +311,12 @@ DECODE_MX2__attribute(
         //          suppose I should also add a test for '] ]>' but that is
         //          for another day.
 
-        //  Now point to the next tag
-        tmp_p = strchr(  tmp_p, '<' );
+        //  Did wl locate the end ?
+        if ( tmp_p != NULL )
+        {
+            //  YES:    Now point to the next tag
+            tmp_p = strchr(  tmp_p, '<' );
+        }
     }
 
     //  Are we pointed at a tag ?
@@ -303,59 +324,66 @@ DECODE_MX2__attribute(
     if ( xml_p[ 0 ] == '<' )
     {
         //  YES:    Is this the end of the tag element name ?
-        for( tmp_p = xml_p;
-             (    ( tmp_p[ 0 ] != ' ' )
-               && ( tmp_p[ 0 ] != '>' ) );
-             tmp_p += 1 )
+        for( attr_start_p = xml_p;
+             (    ( attr_start_p[ 0 ] != ' ' )
+               && ( attr_start_p[ 0 ] != '>' ) );
+             attr_start_p += 1 )
         {
             //  Nothing to do here, we are just moving the pointer
         }
 
         //  Is there an attribute string here ?
-        if ( tmp_p[ 0 ] == ' ' )
+        if ( attr_start_p[ 0 ] == ' ' )
         {
-            //  YES:    Advance the data pointer to the start of the data string
-            tmp_p += 1;
+            //  YES:    Locate the next NON-whitespace character
+            attr_start_p = text_skip_past_whitespace( attr_start_p );
 
-            //  Copy the data to the buffer
-            for( ndx = 0;
-                 (    ( tmp_p[ ndx ] != '>' )
-                   && ( tmp_p[ ndx ] != '/' ) );
-                 ndx ++ )
+            //  Now locate the end of the attribute
+
+            tmp_1_p = attr_start_p;
+
+            do
             {
-                //  Copy the data one byte at a time
-                attribute_p[ ndx ] = tmp_p[ ndx ];
-
-                //  Are we going inside quoted text ?
-                if ( tmp_p[ ndx ] == '"' )
+                attr_end_p = strchr( tmp_1_p, '>' );
+                if ( attr_end_p != NULL )
                 {
-                    //  Copy the everything until the next quotation
-                    for( ndx ++ ; tmp_p[ ndx ] != '"' ; ndx ++ )
-                    {
-                        //  Is there room for it ?
-                        if ( ndx == attribute_l )
-                        {
-                            //  NO:     Error message and terminate
-                            log_write( MID_WARNING, "DECODE_MX2__attribute",
-                                    "The defined buffer size is too small for "
-                                    "the text data.\n" );
-                            log_write( MID_FATAL, " ", "%s\n", tmp_p );
-                        }
+                    tmp_1_p = text_skip_past_whitespace( ++attr_end_p );
 
-                        //  Copy the data one byte at a time
-                        attribute_p[ ndx ] = tmp_p[ ndx ];
+                    if ( tmp_1_p[ 0 ] == '\0' )
+                    {
+                        attr_end_p = NULL;
                     }
-                    //  Also copy in the last quotation mark.
-                    attribute_p[ ndx ] = tmp_p[ ndx ];
                 }
+            }   while( ( tmp_1_p[ 0 ] != '<' ) && ( attr_end_p != NULL ) );
+            if ( attr_end_p != NULL )
+            {
+                //  Good, figure out it's size.
+                attr_l = ( attr_end_p - attr_start_p );
+
+                //  Is there room for it ?
+                if ( attr_l >= attribute_l )
+                {
+                    //  NO:     Error message and terminate
+                    log_write( MID_WARNING, "DECODE_MX2__attribute",
+                            "The defined buffer size is too small for "
+                            "the text data.\n" );
+                    log_write( MID_FATAL, " ", "%s\n", tmp_p );
+                }
+                else
+                {
+                    //  YES:    Copy it to the attribute buffer
+                    memcpy( attribute_p, attr_start_p, attr_l );
+                }
+                //  Update the return pointer
+                tmp_p = ( attr_end_p + 1 );
             }
-            //  Update the end of tag pointer
-            tmp_p = &(tmp_p[ ndx + 1 ] );
+            //  NOTE:   What if this is the end of the buffer?
+            //          ? attr_end_p = strchrnul( attr_start_p, '>' );
         }
         else
         {
-            //  Advance the pointer pase the closing brace
-            tmp_p += 1;
+            //  NO:     There isn't an attribute to get.
+            tmp_p = attr_start_p;
         }
     }
 
@@ -363,11 +391,9 @@ DECODE_MX2__attribute(
      *  Function Exit
      ************************************************************************/
 
-    //  Convert any encoded characters to ASCII
-    html2txt_str_2_char( tmp_p );
-
     //  DONE!
     return( tmp_p );
+#endif
 }
 
 /****************************************************************************/
@@ -446,9 +472,6 @@ DECODE_MX2__text(
      *  Function Exit
      ************************************************************************/
 
-    //  Convert any encoded characters to ASCII
-    html2txt_str_2_char( text_p );
-
     //  DONE!
 }
 
@@ -472,57 +495,95 @@ DECODE_MX2__srch(
     )
 {
     /**
-     *  @param  tmp_p           Temporary data buffer pointer               */
-    char                        *   tmp_p;
+     *  @param  str_start_p     Start of quoted text                        */
+    char                        *   str_start_p;
+    /**
+     *  @param  str_end_p       End of quoted text                          */
+    char                        *   str_end_p;
+    /**
+     *  @param  str_l           Length of quoted text                       */
+    int                             str_l;
+    /**
+     *  @param  eq_p            Pointer to end of quoted text               */
+    char                        *   eq_p;
     /**
      *  @param  tmp_data        Temporary data buffer                       */
     char                            tmp_data[ 2048 ];
     /**
-     *  @param  ndx             Data pointer index                          */
-    int                             ndx;
+     *  @param  quoted_text_p   Pointer to a buffer with the quoted text    */
+    char                        *   quoted_text_p;
 
     /************************************************************************
      *  Function Initialization
      ************************************************************************/
 
+    //  Assume the search string will not be located.
+    quoted_text_p = NULL;
 
     /************************************************************************
      *  Find a match for the search string
      ************************************************************************/
 
     //  Locate the search string
-    tmp_p = strstr( data_p, srch_p );
+    str_start_p = strstr( data_p, srch_p );
 
     //  Did we locate it ?
-    if ( tmp_p != NULL )
+    if ( str_start_p != NULL )
     {
-        //  YES:    Adjust the pointer to the start of data
-        tmp_p = ( strchr( tmp_p, '"' ) + 1 );
-
-        //  Clean out the temporary data buffer
+        //  YES:    Clean out the temporary data buffer
         memset( tmp_data, '\0', sizeof( tmp_data ) );
 
-        //  Copy the data to the temporary data buffer
-        for( ndx = 0; tmp_p[ ndx ] != '"'; ndx += 1 )
-        {
-            tmp_data[ ndx ] = tmp_p[ ndx ];
+        //  Now locate the start of the quoted text
+        str_start_p = ( strchr( str_start_p, '"' ) + 1 );
 
-            //  Have we exceeded the buffer size ?
-            if ( strlen( tmp_data ) >= sizeof( tmp_data ) )
-            {
-                //  YES:    OOPS!
-                log_write( MID_FATAL, "DECODE_MX2__srch",
-                           "The string ts too large!\n" );
-            }
+        //  Find the next equal in the string.
+        eq_p = ( strstr( &str_start_p[ strlen( srch_p ) ], "=\"" ) );
+
+        //  Did we find one ?
+        if ( eq_p == NULL )
+        {
+            //  NO:     Get a pointer to the ending quote
+            str_end_p = ( strrchr( str_start_p, '"' ) );
+        }
+        else
+        {
+            //  Temporally NULL terminate at the equal, find the last
+            //  equal in the string, then replace the equal.
+            eq_p[ 0 ] = '\0';
+            str_end_p = ( strrchr( str_start_p, '"' ) );
+            eq_p[ 0 ] = '=';
         }
 
-        //  Convert any encoded characters to ASCII
-        html2txt_str_2_char( tmp_data );
+        //  Did we locate the end ?
+        if ( str_end_p != NULL )
+        {
+            //  YES:    Calculate the length of the quoted text.
+            str_l = str_end_p - str_start_p;
+        }
+        else
+        {
+            //  NO:     Use everything in the string
+            str_l = ( strlen( str_start_p ) - 1 );
+        }
 
-        //  Move the string to the recipe
-        tmp_p = text_copy_to_new( tmp_data );
+        //  Will the quoted text fit into the buffer ?
+        if ( str_l > sizeof( tmp_data ) )
+        {
+            //  NO:     OOPS!
+            log_write( MID_FATAL, "DECODE_MX2__srch",
+                       "'%s' The string is too large!\n", srch_p );
+        }
 
-        log_write( MID_DEBUG_1, "decode_mx2_lib.c", "Line: %d\n", __LINE__ );
+        //  Is there any quoted data ?
+        if ( str_l > 0 )
+        {
+            //  YES:    Copy the quoted text to the temporary buffer.
+            memcpy( tmp_data, str_start_p, str_l );
+
+            //  Move the string to the recipe
+            quoted_text_p = text_copy_to_new( tmp_data );
+            log_write( MID_DEBUG_1, "decode_mx2_lib.c", "Line: %d\n", __LINE__ );
+        }
     }
 
     /************************************************************************
@@ -530,7 +591,7 @@ DECODE_MX2__srch(
      ************************************************************************/
 
     //  DONE!
-    return( tmp_p );
+    return( quoted_text_p );
 }
 
 /****************************************************************************/
@@ -589,9 +650,6 @@ DECODE_MX2__srce(
                        "The source string ts too large!\n" );
         }
     }
-
-    //  Convert any encoded characters to ASCII
-    html2txt_str_2_char( tmp_data );
 
     //  Move the description string to the recipe
     recipe_p->group_from = text_copy_to_new( tmp_data );
@@ -664,9 +722,6 @@ DECODE_MX2__alts(
         }
     }
 
-    //  Convert any encoded characters to ASCII
-    html2txt_str_2_char( tmp_data );
-
     //  Add it to the directions
     recipe_add_instructions( recipe_p, &(tmp_data[ 0 ]) );
 
@@ -733,9 +788,6 @@ DECODE_MX2__cpyr(
                        "The Copyright string ts too large!\n" );
         }
     }
-
-    //  Convert any encoded characters to ASCII
-    html2txt_str_2_char( tmp_data );
 
     //  Move the description string to the recipe
     recipe_p->copyright = text_copy_to_new( tmp_data );
@@ -954,9 +1006,6 @@ DECODE_MX2__srvi(
         }
     }
 
-    //  Convert any encoded characters to ASCII
-    html2txt_str_2_char( tmp_data );
-
     //  Move the description string to the recipe
     recipe_p->serve_with = text_copy_to_new( tmp_data );
 
@@ -1025,9 +1074,6 @@ DECODE_MX2__note(
                        "The Notes string ts too large!\n" );
         }
     }
-
-    //  Convert any encoded characters to ASCII
-    html2txt_str_2_char( tmp_data );
 
     //  Add it to the directions
     recipe_fmt_notes( recipe_p, &(tmp_data[ 0 ]) );
@@ -1100,6 +1146,9 @@ DECODE_MX2__start(
     /**
      * @param mmf_rc            Return Code                                 */
     int                             mx2_rc;
+    /**
+     * @param start_p           Temporary usage pointer.                    */
+    char                        *   start_p;
 
     /************************************************************************
      *  Function Initialization
@@ -1108,11 +1157,17 @@ DECODE_MX2__start(
     //  The assumption is that this is NOT the start a MX2 recipe
     mx2_rc = false;
 
+    //  Skip past any whitespace.
+    start_p = text_skip_past_whitespace( data_p );
+
     /************************************************************************
      *  |<RcpE name=|
      ************************************************************************/
 
-    if ( strcasestr( data_p, "<rcpe" ) != NULL )
+    //  Is the a MX2 start tag ?
+    if (    ( start_p != NULL )                           //  Data is present
+         && ( start_p[ 0 ] != '>' )                       //  Not forwarded e-mail
+         && ( strncasecmp( start_p, "<rcpe", 5 ) == 0 ) ) //  Is a MX2 start
     {
         mx2_rc = true;
     }
@@ -1222,6 +1277,9 @@ DECODE_MX2__decode(
     /**
      *  @param  mxp_inside_mx2  Flag indicating that we found a MXP recipe  */
     int                             mxp_inside_mx2;
+    /**
+     *  @param  decode_fail     Flag indicating that decode has failed      */
+    int                             decode_fail;
 
     /************************************************************************
      *  Function Initialization
@@ -1232,12 +1290,10 @@ DECODE_MX2__decode(
 
     //  Allocate the attribute buffer
     attribute_p = mem_malloc( decode_l + 1 );
-
     log_write( MID_DEBUG_1, "decode_mx2_lib.c", "Line: %d\n", __LINE__ );
 
     //  Allocate the text buffer
     text_p = mem_malloc( decode_l + 1 );
-
     log_write( MID_DEBUG_1, "decode_mx2_lib.c", "Line: %d\n", __LINE__ );
 
     //  Null out the recipe pointer
@@ -1246,6 +1302,9 @@ DECODE_MX2__decode(
     //  Set the found MXP recipe flag FALSE
     mxp_inside_mx2 = false;
 
+    //  The decode hasn't failed [yet].
+    decode_fail = false;
+
     /************************************************************************
      *  Look for character strings 'Entity', 'MX2 Tags'
      ************************************************************************/
@@ -1253,7 +1312,7 @@ DECODE_MX2__decode(
     //  Initialize the pointers
     mx2_offset_p = decode_p;
 
-    while( 1 )
+    while( decode_fail == false )
     {
         //  Just in case there is some white space before the tag
         mx2_offset_p = text_skip_past_whitespace( mx2_offset_p );
@@ -1289,6 +1348,13 @@ DECODE_MX2__decode(
                     tmp_a_p = DECODE_MX2__attribute( mx2_offset_p,
                             attribute_p, decode_l );
 
+                    //  Did we successfully parse the attribute ?
+                    if (tmp_a_p == NULL )
+                    {
+                        //  NO:     Abort this recipe.
+                        decode_fail = true;
+                    }
+
                     //  Did we find a MXP recipe inside a MX2 recipe ?
                     if ( mxp_inside_mx2 == true )
                     {
@@ -1315,7 +1381,8 @@ DECODE_MX2__decode(
                             decode_copy_info_to_recipe( recipe_p, source_info_p );
 
                             //  DATE="..."
-                            if ( recipe_p->posted_date != NULL )
+                            if (    ( recipe_p->posted_date != NULL )
+                                 && ( DECODE_MX2__srch( attribute_p, "date=\"" ) != NULL ) )
                             {
                                 //  YES:    There is already a posted date
                                 mem_free( recipe_p->posted_date );
@@ -1391,7 +1458,6 @@ DECODE_MX2__decode(
                         {
                             //  Allocate a new ingredient structure
                             auip_p = mem_malloc( sizeof( struct auip_t ) );
-
                             log_write( MID_DEBUG_1, "decode_mx2_lib.c",
                                     "Line: %d\n", __LINE__ );
 
@@ -1849,6 +1915,9 @@ DECODE_MX2__decode(
                             log_write( MID_FATAL, "DECODE_MX2__decode",
                                     "An unidentified MX2 tag '%s' was found\n",
                                     mx2_table[ mx2_table_ndx ].mx2_tag );
+
+                            //  Abort the recipe decode
+                            decode_fail = true;
                         }
                         //----------------------------------------------------
                     }
@@ -1857,6 +1926,12 @@ DECODE_MX2__decode(
                     mx2_offset_p = tmp_a_p;
 
                     //  We are done here.
+                    break;
+                }
+                //  Should we continue ?
+                if ( decode_fail == true )
+                {
+                    //  NO:     Abort the decode
                     break;
                 }
             }
@@ -1881,10 +1956,28 @@ DECODE_MX2__decode(
                         compare );
                 log_write( MID_WARNING, "DECODE_MX2__decode",
                         "'%.80s'\n", mx2_offset_p );
+
+                //  Abort the recipe decode
+                decode_fail = true;
             }
 
             //  Move on past the tag
             mx2_offset_p += 1;
+        }
+    }
+
+    /************************************************************************
+     *  Failed recipe decode cleanup.
+     ************************************************************************/
+
+    //  Did the decode fail ?
+    if ( decode_fail == true )
+    {
+        //  YES:    Was a recipe structure allocated ?
+        if( recipe_p != NULL )
+        {
+            //  YES:    Free all storage consumed by the recipe.
+            recipe_kill( recipe_p );
         }
     }
 
