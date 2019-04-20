@@ -29,6 +29,7 @@
                                 //*******************************************
 #include <string.h>             //  Functions for managing strings
 #include <stdlib.h>             //  ANSI standard library.
+#include <unistd.h>             //  UNIX standard library.
                                 //*******************************************
 
 /****************************************************************************
@@ -605,6 +606,9 @@ main(
                 //  Log skipping the file
                 log_write( MID_INFO, "main",
                            "Skipping file: '%s'\n", input_file_name );
+
+                //  Delete the file
+                unlink( input_file_name );
 
                 //  Skip it.
                 continue;
