@@ -528,6 +528,7 @@ main(
                  || ( strncmp( extention, "mobi",                 4 ) == 0 )
                  || ( strncmp( extention, "bat",                  3 ) == 0 )
                  || ( strncmp( extention, "bmp",                  3 ) == 0 )
+                 || ( strncmp( extention, "cab",                  3 ) == 0 )
                  || ( strncmp( extention, "ccf",                  3 ) == 0 )
                  || ( strncmp( extention, "cdx",                  3 ) == 0 )
                  || ( strncmp( extention, "cfg",                  3 ) == 0 )
