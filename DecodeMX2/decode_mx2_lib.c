@@ -1911,7 +1911,7 @@ DECODE_MX2__decode(
                         //----------------------------------------------------
                         default:
                         {
-                            log_write( MID_FATAL, "DECODE_MX2__decode",
+                            log_write( MID_WARNING, "DECODE_MX2__decode",
                                     "An unidentified MX2 tag '%s' was found\n",
                                     mx2_table[ mx2_table_ndx ].mx2_tag );
 
