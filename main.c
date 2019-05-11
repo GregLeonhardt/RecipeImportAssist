@@ -253,6 +253,175 @@ command_line(
 }
 
 /****************************************************************************/
+/**
+ *  Look to see if there are aouput files for the current input file.
+ *  If any already exist, assume the file has already been processed.
+ *
+ *  @param  file_info_p         Pointer to a file information structure
+ *
+ *  @return processed_rc        TRUE when the input file has already been
+ *                              processed, else FALSE is returned
+ *
+ *  @note
+ *
+ ****************************************************************************/
+
+static
+int
+is_file_processed(
+    struct  file_info_t         *   file_info_p
+    )
+{
+    /**
+     * @param processed_rc      This function's return code.                */
+    int                             processed_rc;
+    /**
+     * @param no_extention      Flag showing if there is a file extention   */
+    int                             no_extention;
+    /**
+     *  @param  input_file_name Buffer to hold the directory/file name      */
+    char                            input_file_name[ ( FILE_NAME_L * 3 ) ];
+    /**
+     *  @param  query_file_name File we are looking for                     */
+    char                            test_file_name[ ( FILE_NAME_L * 3 ) ];
+    /**
+     *  @param  period_p        Pointer to start of the file extention      */
+    char                        *   period_p;
+    /**
+     *  @param  slash_p         Pointer to start of the file name           */
+    char                        *   slash_p;
+    /**
+     *  @param  FILE            File open structure                         */
+    FILE                        *   test_fp;
+
+    /************************************************************************
+     *  Function Initialization
+     ************************************************************************/
+
+    //  Assume the file has NOT already been processed.
+    processed_rc = false;
+
+    //  Assume there is a file extention
+    no_extention = false;
+
+    /************************************************************************
+     *  Build the base filename
+     ************************************************************************/
+
+    //  Clear the filename buffer
+    memset( input_file_name, 0x00, sizeof( input_file_name ) );
+    memset( test_file_name, 0x00, sizeof( input_file_name ) );
+
+    snprintf( input_file_name, sizeof( input_file_name ),
+              "%s/%s", file_info_p->dir_name, file_info_p-> file_name );
+
+    //  Locate the start of the file name.
+    slash_p = strrchr( input_file_name, '/' );
+
+    //  Locate the start of the file extention.
+    period_p = strrchr( input_file_name, '.' );
+
+    //  Is the period before the slash ?
+    if( period_p == NULL )
+    {
+        no_extention = true;
+    }
+    else
+    if( slash_p > period_p )
+    {
+        no_extention = true;
+    }
+
+    /************************************************************************
+     *  Strip off the file extention
+     ************************************************************************/
+
+    if( no_extention == false )
+    {
+        period_p[ 0 ] = '\0';
+    }
+
+    /************************************************************************
+     *  file.discarded_data
+     ************************************************************************/
+
+    //  Have we already discovered the file has been processed ?
+    if ( processed_rc == false )
+    {
+        //  Build the test file name
+        snprintf( test_file_name, sizeof( test_file_name ) - 1,
+                  "%s.discarded_data", input_file_name );
+
+        //  Attempt to open the file
+        test_fp = fopen( test_file_name, "r" );
+
+        if( test_fp != NULL )
+        {
+            //  The file already exists.
+            processed_rc = true;
+
+            //  Close the file
+            fclose( test_fp );
+        }
+    }
+
+    /************************************************************************
+     *  file.unformatted_recipe
+     ************************************************************************/
+
+    //  Have we already discovered the file has been processed ?
+    if ( processed_rc == false )
+    {
+        //  Build the test file name
+        snprintf( test_file_name, sizeof( test_file_name ) - 1,
+                  "%s.unformatted_recipe", input_file_name );
+
+        //  Attempt to open the file
+        test_fp = fopen( test_file_name, "r" );
+
+        if( test_fp != NULL )
+        {
+            //  The file already exists.
+            processed_rc = true;
+
+            //  Close the file
+            fclose( test_fp );
+        }
+    }
+
+    /************************************************************************
+     *  file.rxf
+     ************************************************************************/
+
+    //  Have we already discovered the file has been processed ?
+    if ( processed_rc == false )
+    {
+        //  Build the test file name
+        snprintf( test_file_name, sizeof( test_file_name ) - 1,
+                  "%s.rxf", input_file_name );
+
+        //  Attempt to open the file
+        test_fp = fopen( test_file_name, "r" );
+
+        if( test_fp != NULL )
+        {
+            //  The file already exists.
+            processed_rc = true;
+
+            //  Close the file
+            fclose( test_fp );
+        }
+    }
+
+    /************************************************************************
+     *  Function Exit
+     ************************************************************************/
+
+    //  DONE!
+    return( processed_rc );
+}
+
+/****************************************************************************/
 
 /****************************************************************************
  * Public Functions
@@ -615,6 +784,17 @@ main(
                 continue;
             }
         }
+        //  Has this file already been processed ?
+        if ( is_file_processed( file_info_p ) == true )
+        {
+            //  YES:    Log the fact
+            log_write( MID_INFO, "main",
+                       "Skipping DONE: '%s'\n", input_file_name );
+
+            //  Don't do it again
+            continue;
+        }
+
         //  Open the input file
         in_file_fp = file_open_read( input_file_name );
 
