@@ -48,6 +48,7 @@
 #include <decode_mx2_api.h>     //  API for all decode_mx2_*        PUBLIC
 #include <decode_nyc_api.h>     //  API for all decode_nyc_*        PUBLIC
 #include <decode_txt_api.h>     //  API for all decode_txt_*        PUBLIC
+#include <decode_erd_api.h>     //  API for all encode_erd_*        PUBLIC
 #include <encode_rxf_api.h>     //  API for all encode_rxf_*        PUBLIC
                                 //*******************************************
 #include <decode_api.h>         //  API for all decode_*            PUBLIC
@@ -534,6 +535,11 @@ decode_xxx(
         case    RECIPE_FORMAT_NYC:
         {
             decode_nyc( level3_list_p, source_info_p );
+        }   break;
+        //--------------------------------------------------------------------
+        case    RECIPE_FORMAT_ERD:
+        {
+            decode_erd( level3_list_p, source_info_p );
         }   break;
         //--------------------------------------------------------------------
         default:

@@ -39,6 +39,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/DecodeBOF/decode_bof_lib.o \
 	${OBJECTDIR}/DecodeCP2/decode_cp2_api.o \
 	${OBJECTDIR}/DecodeCP2/decode_cp2_lib.o \
+	${OBJECTDIR}/DecodeERD/decode_erd_api.o \
+	${OBJECTDIR}/DecodeERD/decode_erd_lib.o \
 	${OBJECTDIR}/DecodeGF2/decode_gf2_api.o \
 	${OBJECTDIR}/DecodeGF2/decode_gf2_lib.o \
 	${OBJECTDIR}/DecodeGRF/decode_grf_api.o \
@@ -121,6 +123,16 @@ ${OBJECTDIR}/DecodeCP2/decode_cp2_lib.o: DecodeCP2/decode_cp2_lib.c
 	${MKDIR} -p ${OBJECTDIR}/DecodeCP2
 	${RM} "$@.d"
 	$(COMPILE.c) -g -Wall -I../LibTools/include -Iinclude -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DecodeCP2/decode_cp2_lib.o DecodeCP2/decode_cp2_lib.c
+
+${OBJECTDIR}/DecodeERD/decode_erd_api.o: DecodeERD/decode_erd_api.c
+	${MKDIR} -p ${OBJECTDIR}/DecodeERD
+	${RM} "$@.d"
+	$(COMPILE.c) -g -Wall -I../LibTools/include -Iinclude -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DecodeERD/decode_erd_api.o DecodeERD/decode_erd_api.c
+
+${OBJECTDIR}/DecodeERD/decode_erd_lib.o: DecodeERD/decode_erd_lib.c
+	${MKDIR} -p ${OBJECTDIR}/DecodeERD
+	${RM} "$@.d"
+	$(COMPILE.c) -g -Wall -I../LibTools/include -Iinclude -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DecodeERD/decode_erd_lib.o DecodeERD/decode_erd_lib.c
 
 ${OBJECTDIR}/DecodeGF2/decode_gf2_api.o: DecodeGF2/decode_gf2_api.c
 	${MKDIR} -p ${OBJECTDIR}/DecodeGF2

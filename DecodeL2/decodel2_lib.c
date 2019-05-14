@@ -40,6 +40,7 @@
                                 //*******************************************
 #include <decode_mxp_api.h>     //  API for all decode_mxp_*        PUBLIC
 #include <decode_nyc_api.h>     //  API for all decode_nyc_*        PUBLIC
+#include <decode_erd_api.h>     //  API for all decode_erd_*        PUBLIC
                                 //*******************************************
 #include <decodel2_api.h>       //  API for all decodel2_*          PUBLIC
 #include "decodel2_lib.h"       //  API for all DECODEL2__*         PRIVATE
@@ -113,58 +114,65 @@ DECODEL2__start_decode(
     //  Select the recipe format that is in use
     switch( recipe_format )
     {
+        //-------------------------------------------------------------------
         case    RECIPE_FORMAT_NONE:
         {
 
         }   break;
-
+        //-------------------------------------------------------------------
         case    RECIPE_FORMAT_MXP:
         {
             //  Process the recipe
             decode_mxp( level3_list_p, source_info_p );
         }   break;
-
+        //-------------------------------------------------------------------
         case    RECIPE_FORMAT_MMF:
         {
 
         }   break;
-
+        //-------------------------------------------------------------------
         case    RECIPE_FORMAT_MX2:
         {
 
         }   break;
-
+        //-------------------------------------------------------------------
         case    RECIPE_FORMAT_BOF:
         {
 
         }   break;
-
+        //-------------------------------------------------------------------
         case    RECIPE_FORMAT_CP2:
         {
 
         }   break;
-
+        //-------------------------------------------------------------------
         case    RECIPE_FORMAT_RXF:
         {
 
         }   break;
-
+        //-------------------------------------------------------------------
         case    RECIPE_FORMAT_NYC:
         {
             //  Process the recipe
             decode_nyc( level3_list_p, source_info_p );
         }   break;
-
+        //-------------------------------------------------------------------
+        case    RECIPE_FORMAT_ERD:
+        {
+            //  Process the recipe
+            decode_erd( level3_list_p, source_info_p );
+        }   break;
+        //-------------------------------------------------------------------
         case    RECIPE_FORMAT_GRF:
         {
 
         }   break;
-
+        //-------------------------------------------------------------------
         case    RECIPE_FORMAT_GF2:
         {
 
         }   break;
-
+        //-------------------------------------------------------------------
         case    RECIPE_FORMAT_TXT:
         {
 
@@ -390,7 +398,7 @@ DECODEL2__recover_info(
         //  OOPS:   Shouldn't ever get here
         log_write( MID_WARNING, "DECODEL2__recover_info",
                    "Failed to detect a valid file header\n" );
-        
+
         //  All done, clear the flag
         un_fmt_output = false;
     }

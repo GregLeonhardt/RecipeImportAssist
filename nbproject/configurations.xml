@@ -7,6 +7,7 @@
       <itemPath>include/decode_api.h</itemPath>
       <itemPath>include/decode_bof_api.h</itemPath>
       <itemPath>DecodeCP2/decode_cp2_api.h</itemPath>
+      <itemPath>DecodeERD/decode_erd_api.h</itemPath>
       <itemPath>DecodeGF2/decode_gf2_api.h</itemPath>
       <itemPath>include/decode_grf_api.h</itemPath>
       <itemPath>include/decode_html_api.h</itemPath>
@@ -42,6 +43,11 @@
         <itemPath>DecodeCP2/decode_cp2_api.c</itemPath>
         <itemPath>DecodeCP2/decode_cp2_lib.c</itemPath>
         <itemPath>DecodeCP2/decode_cp2_lib.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f16" displayName="DecodeERD" projectFiles="true">
+        <itemPath>DecodeERD/decode_erd_api.c</itemPath>
+        <itemPath>DecodeERD/decode_erd_lib.c</itemPath>
+        <itemPath>DecodeERD/decode_erd_lib.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f1" displayName="DecodeGF2" projectFiles="true">
         <itemPath>DecodeGF2/decode_gf2_api.c</itemPath>
@@ -215,6 +221,14 @@
       <item path="DecodeCP2/decode_cp2_lib.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="DecodeCP2/decode_cp2_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeERD/decode_erd_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeERD/decode_erd_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeERD/decode_erd_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeERD/decode_erd_lib.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="DecodeGF2/decode_gf2_api.c" ex="false" tool="0" flavor2="0">
       </item>
@@ -426,6 +440,14 @@
       <item path="DecodeCP2/decode_cp2_lib.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="DecodeCP2/decode_cp2_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeERD/decode_erd_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeERD/decode_erd_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DecodeERD/decode_erd_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="DecodeERD/decode_erd_lib.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="DecodeGF2/decode_gf2_api.c" ex="false" tool="0" flavor2="0">
       </item>

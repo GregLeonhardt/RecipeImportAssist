@@ -64,6 +64,7 @@ enum    recipe_format_e
     RECIPE_FORMAT_CP2           =   7,      //  Cooken Pro 2.0
     RECIPE_FORMAT_GRF           =   8,      //  Generic Format #1     [[[[[
     RECIPE_FORMAT_GF2           =   9,      //  Generic Format #2     @@@@@
+    RECIPE_FORMAT_ERD           =  10,      //  Easy Recipe Deluxe
     RECIPE_FORMAT_TXT           =  99       //  Unformatted text data
 };
 //----------------------------------------------------------------------------

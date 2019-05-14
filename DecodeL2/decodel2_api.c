@@ -49,6 +49,7 @@
 #include <decode_mxp_api.h>     //  API for all decode_mxp_*        PUBLIC
 #include <decode_mx2_api.h>     //  API for all decode_mx2_*        PUBLIC
 #include <decode_nyc_api.h>     //  API for all decode_nyc_*        PUBLIC
+#include <decode_erd_api.h>     //  API for all decode_erd_*        PUBLIC
 #include <recipe_api.h>         //  API for all recipe_*            PUBLIC
                                 //*******************************************
 #include <decodel2_api.h>       //  API for all decodel2_*          PUBLIC
@@ -286,39 +287,7 @@ decodel2_parse(
          *  Look for the start of a new recipe
          ********************************************************************/
 
-        //  MasterCook MXP
-        if (    ( recipe_format == RECIPE_FORMAT_NONE )
-             && ( decode_mxp_start( list_data_p ) == true ) )
-        {
-            //  YES:    Set the format to use
-            recipe_format = RECIPE_FORMAT_MXP;
-
-            //  Increment the number of MXP recipes
-            count_mxp += 1;
-        }
-        else
-            //  Meal-Master
-        if (    ( recipe_format == RECIPE_FORMAT_NONE )
-             && ( decode_mmf_start( list_data_p ) == true ) )
-        {
-            //  YES:    Set the format to use
-            recipe_format = RECIPE_FORMAT_MMF;
-
-            //  Increment the number of MMF recipes
-            count_mmf += 1;
-        }
-        else
-            //  MasterCook MX2
-        if (    ( recipe_format == RECIPE_FORMAT_NONE )
-             && ( decode_mx2_start( list_data_p ) == true ) )
-        {
-            //  YES:    Set the format to use
-            recipe_format = RECIPE_FORMAT_MX2;
-
-            //  Increment the number of MX2 recipes
-            count_mx2 += 1;
-        }
-        else
+        //-------------------------------------------------------------------
             //  Big-Oven BOF
         if (    ( recipe_format == RECIPE_FORMAT_NONE )
              && ( decode_bof_start( list_data_p ) == true ) )
@@ -329,8 +298,9 @@ decodel2_parse(
             //  Increment the number of BOF recipes
             count_bof += 1;
         }
+        //-------------------------------------------------------------------
+        //  CookenPro 2.0
         else
-            //  CookenPro 2.0
         if (    ( recipe_format == RECIPE_FORMAT_NONE )
              && ( decode_cp2_start( list_data_p ) == true ) )
         {
@@ -340,19 +310,33 @@ decodel2_parse(
             //  Increment the number of CP2 recipes
             count_cp2 += 1;
         }
+        //-------------------------------------------------------------------
+        //  Easy Recipe Deluxe
         else
-            //  Now You're Cooking!
         if (    ( recipe_format == RECIPE_FORMAT_NONE )
-             && ( decode_nyc_start( list_data_p ) == true ) )
+             && ( decode_erd_start( list_data_p ) == true ) )
         {
             //  YES:    Set the format to use
-            recipe_format = RECIPE_FORMAT_NYC;
+            recipe_format = RECIPE_FORMAT_ERD;
 
-            //  Increment the number of NYC recipes
-            count_nyc += 1;
+            //  Increment the number of GRF recipes
+            count_erd += 1;
         }
+        //-------------------------------------------------------------------
+        //  Generic-Recipe-Format @@@@@
         else
-            //  Generic-Recipe-Format [[[[[
+        if (    ( recipe_format == RECIPE_FORMAT_NONE )
+             && ( decode_gf2_start( list_data_p ) == true ) )
+        {
+            //  YES:    Set the format to use
+            recipe_format = RECIPE_FORMAT_GF2;
+
+            //  Increment the number of GRF recipes
+            count_gf2 += 1;
+        }
+        //-------------------------------------------------------------------
+        //  Generic-Recipe-Format [[[[[
+        else
         if (    ( recipe_format == RECIPE_FORMAT_NONE )
              && ( decode_grf_start( list_data_p ) == true ) )
         {
@@ -362,16 +346,53 @@ decodel2_parse(
             //  Increment the number of GRF recipes
             count_grf += 1;
         }
+        //-------------------------------------------------------------------
+        //  Meal-Master
         else
-            //  Generic-Recipe-Format @@@@@
         if (    ( recipe_format == RECIPE_FORMAT_NONE )
-             && ( decode_gf2_start( list_data_p ) == true ) )
+             && ( decode_mmf_start( list_data_p ) == true ) )
         {
             //  YES:    Set the format to use
-            recipe_format = RECIPE_FORMAT_GF2;
+            recipe_format = RECIPE_FORMAT_MMF;
 
-            //  Increment the number of GRF recipes
-            count_gf2 += 1;
+            //  Increment the number of MMF recipes
+            count_mmf += 1;
+        }
+        //-------------------------------------------------------------------
+        //  MasterCook MX2
+        else
+        if (    ( recipe_format == RECIPE_FORMAT_NONE )
+             && ( decode_mx2_start( list_data_p ) == true ) )
+        {
+            //  YES:    Set the format to use
+            recipe_format = RECIPE_FORMAT_MX2;
+
+            //  Increment the number of MX2 recipes
+            count_mx2 += 1;
+        }
+        //-------------------------------------------------------------------
+        //  MasterCook MXP
+        else
+        if (    ( recipe_format == RECIPE_FORMAT_NONE )
+             && ( decode_mxp_start( list_data_p ) == true ) )
+        {
+            //  YES:    Set the format to use
+            recipe_format = RECIPE_FORMAT_MXP;
+
+            //  Increment the number of MXP recipes
+            count_mxp += 1;
+        }
+        //-------------------------------------------------------------------
+        //  Now You're Cooking!
+        else
+        if (    ( recipe_format == RECIPE_FORMAT_NONE )
+             && ( decode_nyc_start( list_data_p ) == true ) )
+        {
+            //  YES:    Set the format to use
+            recipe_format = RECIPE_FORMAT_NYC;
+
+            //  Increment the number of NYC recipes
+            count_nyc += 1;
         }
 
         /********************************************************************
@@ -515,6 +536,28 @@ decodel2_parse(
                 //  Error message and terminate
                 log_write( MID_FATAL, "decodel2_parse",
                            "There is still something on the list. (NYC)\n" );
+            }
+        }
+        //--------------------------------------------------------------------
+        //  Easy Recipe Deluxe
+        if (    ( recipe_format == RECIPE_FORMAT_ERD )
+             && ( decode_erd_end( list_data_p ) == true ) )
+        {
+            //  YES:    Process the recipe
+            decode_xxx( recipe_format, level3_list_p, source_info_p );
+
+            //  Done with this recipe
+            recipe_format = RECIPE_FORMAT_NONE;
+
+            if ( list_query_count( level3_list_p ) != 0 )
+            {
+                //  Something hasn't been released.  Dump it to assist in
+                //  figuring out what it is.
+                mem_dump( );
+
+                //  Error message and terminate
+                log_write( MID_FATAL, "decodel2_parse",
+                           "There is still something on the list. (ERD)\n" );
             }
         }
         //--------------------------------------------------------------------

@@ -140,7 +140,6 @@ recipe_new(
         {
             //  MasterCook eXport
             recipe_p->source_format = text_copy_to_new( "MXP" );
-
             log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
         }   break;
@@ -149,7 +148,6 @@ recipe_new(
         {
             //  MasterCook eXport Ver. 2
             recipe_p->source_format = text_copy_to_new( "MX2" );
-
             log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
         }   break;
@@ -158,7 +156,6 @@ recipe_new(
         {
             //  Meal-Master Format
             recipe_p->source_format = text_copy_to_new( "MMF" );
-
             log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
         }   break;
@@ -167,16 +164,22 @@ recipe_new(
         {
             //  Recipe eXchange Format (Native)
             recipe_p->source_format = text_copy_to_new( "RXF" );
-
             log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
         }   break;
         //--------------------------------------------------------------------
         case    RECIPE_FORMAT_NYC:
         {
-            //  Generic Text Format
+            //  Now Your Cooking!
             recipe_p->source_format = text_copy_to_new( "NYC" );
+            log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
+        }   break;
+        //--------------------------------------------------------------------
+        case    RECIPE_FORMAT_ERD:
+        {
+            //  Easy Recipe Deluxe
+            recipe_p->source_format = text_copy_to_new( "ERD" );
             log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
         }   break;
@@ -185,7 +188,6 @@ recipe_new(
         {
             //  Big Oven Format
             recipe_p->source_format = text_copy_to_new( "BOF" );
-
             log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
         }   break;
@@ -194,7 +196,6 @@ recipe_new(
         {
             //  Cooken Pro 2.0
             recipe_p->source_format = text_copy_to_new( "CP2" );
-
             log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
         }   break;
@@ -203,7 +204,6 @@ recipe_new(
         {
             //  Generic Format #1     [[[[[
             recipe_p->source_format = text_copy_to_new( "GRF" );
-
             log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
         }   break;
@@ -212,7 +212,6 @@ recipe_new(
         {
             //  Generic Format #2     @@@@@
             recipe_p->source_format = text_copy_to_new( "GF2" );
-
             log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
         }   break;
@@ -221,7 +220,6 @@ recipe_new(
         {
             //  Unformatted text data
             recipe_p->source_format = text_copy_to_new( "TXT" );
-
             log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
         }   break;
@@ -1239,7 +1237,7 @@ recipe_fmt_directions(
                         //  Write the current output line and start a new one
                         tmp_p = text_copy_to_new( formatted_text );
 
-                        log_write( MID_DEBUG_1, "recipe_api.c", 
+                        log_write( MID_DEBUG_1, "recipe_api.c",
                                 "Line: %d\n", __LINE__ );
 
                         //  Add it to the list.
@@ -1557,7 +1555,7 @@ recipe_fmt_notes(
                         //  Write the current output line and start a new one
                         tmp_p = text_copy_to_new( formatted_text );
 
-                        log_write( MID_DEBUG_1, "recipe_api.c", 
+                        log_write( MID_DEBUG_1, "recipe_api.c",
                                 "Line: %d\n", __LINE__ );
 
                         //  Add it to the list.
