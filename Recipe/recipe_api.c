@@ -1694,10 +1694,10 @@ recipe_next_id(
 {
     /**
      *  @param  recipe_id       Temporary data buffer for the recipe id     */
-    unsigned char                   recipe_id[ SHA1_DIGEST_SIZE + 1 ];
+    unsigned char                   recipe_id[ SHA1_DIGEST_SIZE + 2 ];
     /**
      *  @param  id_string       Recipe-ID string to identify a recipe       */
-    char                            id_string[ ( SHA1_DIGEST_SIZE * 2 ) + 1 ];
+    char                            id_string[ ( SHA1_DIGEST_SIZE * 2 ) + 4 ];
     /**
      *  @param  store_value_p   Pointer to data get                         */
     char                        *   store_value_p;
@@ -1737,11 +1737,12 @@ recipe_next_id(
     //  Format the Recipe-ID as a hex string
     snprintf( id_string, sizeof( id_string ),
               "%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X"
-              "%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X",
+              "%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X",
               recipe_id[  0 ], recipe_id[  1 ], recipe_id[  2 ], recipe_id[  3 ], recipe_id[  4 ],
               recipe_id[  5 ], recipe_id[  6 ], recipe_id[  7 ], recipe_id[  8 ], recipe_id[  9 ],
               recipe_id[ 10 ], recipe_id[ 11 ], recipe_id[ 12 ], recipe_id[ 13 ], recipe_id[ 14 ],
-              recipe_id[ 15 ], recipe_id[ 16 ], recipe_id[ 17 ], recipe_id[ 18 ], recipe_id[ 19 ] );
+              recipe_id[ 15 ], recipe_id[ 16 ], recipe_id[ 17 ], recipe_id[ 18 ], recipe_id[ 19 ],
+              0x00 );
 
     //  Add it to the recipe
     recipe_p->recipe_id = text_copy_to_new( id_string );

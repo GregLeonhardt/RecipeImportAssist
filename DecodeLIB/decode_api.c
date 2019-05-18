@@ -224,7 +224,6 @@ decode_copy_info_to_recipe(
         }
         //  Save to the recipe
         recipe_p->group_from = text_copy_to_new( source_info_p->g_from );
-
         log_write( MID_DEBUG_1, "decode_api.c", "Line: %d\n", __LINE__ );
     }
     //------------------------------------------------------------------------
@@ -239,7 +238,6 @@ decode_copy_info_to_recipe(
         }
         //  Save to the recipe
         recipe_p->group_subject = text_copy_to_new( source_info_p->g_subject );
-
         log_write( MID_DEBUG_1, "decode_api.c", "Line: %d\n", __LINE__ );
     }
     //------------------------------------------------------------------------
@@ -254,7 +252,6 @@ decode_copy_info_to_recipe(
         }
         //  Save to the recipe
         recipe_p->group_date = text_copy_to_new( source_info_p->g_datetime );
-
         log_write( MID_DEBUG_1, "decode_api.c", "Line: %d\n", __LINE__ );
     }
     //------------------------------------------------------------------------
@@ -275,7 +272,6 @@ decode_copy_info_to_recipe(
         }
         //  Save to the recipe
         recipe_p->posted_by = text_copy_to_new( source_info_p->e_from );
-
         log_write( MID_DEBUG_1, "decode_api.c", "Line: %d\n", __LINE__ );
     }
     //------------------------------------------------------------------------
@@ -290,7 +286,6 @@ decode_copy_info_to_recipe(
         }
         //  Save to the recipe
         recipe_p->posted_subject = text_copy_to_new( source_info_p->e_subject );
-
         log_write( MID_DEBUG_1, "decode_api.c", "Line: %d\n", __LINE__ );
     }
     //------------------------------------------------------------------------
@@ -305,7 +300,6 @@ decode_copy_info_to_recipe(
         }
         //  Save to the recipe
         recipe_p->posted_date = text_copy_to_new( source_info_p->e_datetime );
-
         log_write( MID_DEBUG_1, "decode_api.c", "Line: %d\n", __LINE__ );
     }
     //------------------------------------------------------------------------
@@ -326,7 +320,6 @@ decode_copy_info_to_recipe(
         }
         //  Save to the recipe
         recipe_p->dir_name = text_copy_to_new( source_info_p->f_dir_name );
-
         log_write( MID_DEBUG_1, "decode_api.c", "Line: %d\n", __LINE__ );
     }
     //------------------------------------------------------------------------
@@ -341,7 +334,6 @@ decode_copy_info_to_recipe(
         }
         //  Save to the recipe
         recipe_p->file_name = text_copy_to_new( source_info_p->f_file_name );
-
         log_write( MID_DEBUG_1, "decode_api.c", "Line: %d\n", __LINE__ );
     }
     //------------------------------------------------------------------------
@@ -356,7 +348,6 @@ decode_copy_info_to_recipe(
         }
         //  Save to the recipe
         recipe_p->file_date_time = text_copy_to_new( source_info_p->f_date_time );
-
         log_write( MID_DEBUG_1, "decode_api.c", "Line: %d\n", __LINE__ );
     }
     //------------------------------------------------------------------------
@@ -371,7 +362,6 @@ decode_copy_info_to_recipe(
         }
         //  Save to the recipe
         recipe_p->file_size = text_copy_to_new( source_info_p->f_file_size );
-
         log_write( MID_DEBUG_1, "decode_api.c", "Line: %d\n", __LINE__ );
     }
     //------------------------------------------------------------------------
@@ -746,11 +736,81 @@ decode_finalize(
     struct   recipe_t           *   recipe_p
     )
 {
+    /**
+     *  @param  ingred_count    Number of ingredients in this recipe        */
+    int                             ingred_count;
+    /**
+     *  @param  recipe_id       Temporary data buffer for the recipe id     */
+    unsigned char                   recipe_id[ SHA1_DIGEST_SIZE + 2 ];
+    /**
+     *  @param  id_string       Recipe-ID string to identify a recipe       */
+    char                            id_string[ ( SHA1_DIGEST_SIZE * 2 ) + 4 ];
+    /**
+     *  @param  auip_p          Pointer to AUIP structure                   */
+    struct  auip_t              *   auip_p;
+    /**
+     *  @param  context         Control structure used by SHA1 functions    */
+    SHA1_CTX                        context;
 
     /************************************************************************
      *  Function Initialization
      ************************************************************************/
 
+
+    /************************************************************************
+     *  Compute the recipe checksum (Recipe-ID)
+     ************************************************************************/
+
+    //  Initialize SHA1
+    sha1_init( &context );
+
+    //  Query the number of ingredients for this recipe
+    ingred_count = list_query_count( recipe_p->ingredient );
+
+    //  Are there any ingredients in this recipe ?
+    if ( ingred_count > 0 )
+    {
+        //  YES:    Scan them all
+        for( auip_p = list_get_first( recipe_p->ingredient );
+             auip_p != NULL;
+             auip_p = list_get_next( recipe_p->ingredient, auip_p ) )
+        {
+            //  Is there an amount ?
+            if ( auip_p->amount_p != NULL )
+            {
+                //  Build SHA1 version of the recipe id
+                sha1_update( &context, auip_p->amount_p, ( SHA1_DIGEST_SIZE ) );
+            }
+            //  Is there a unit of measurement ?
+            if ( auip_p->unit_p != NULL )
+            {
+                //  Build SHA1 version of the recipe id
+                sha1_update( &context, auip_p->unit_p, ( SHA1_DIGEST_SIZE ) );
+            }
+            //  Is there an ingredient ?
+            if ( auip_p->ingredient_p != NULL )
+            {
+                //  Build SHA1 version of the recipe id
+                sha1_update( &context, auip_p->ingredient_p, ( SHA1_DIGEST_SIZE ) );
+            }
+        }
+    }
+
+    //  Finalize the SHA1 operation
+    sha1_final( &context, (char*)recipe_id );
+
+    //  Format the Recipe-ID as a hex string
+    snprintf( id_string, sizeof( id_string ),
+              "%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X"
+              "%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X",
+              recipe_id[  0 ], recipe_id[  1 ], recipe_id[  2 ], recipe_id[  3 ], recipe_id[  4 ],
+              recipe_id[  5 ], recipe_id[  6 ], recipe_id[  7 ], recipe_id[  8 ], recipe_id[  9 ],
+              recipe_id[ 10 ], recipe_id[ 11 ], recipe_id[ 12 ], recipe_id[ 13 ], recipe_id[ 14 ],
+              recipe_id[ 15 ], recipe_id[ 16 ], recipe_id[ 17 ], recipe_id[ 18 ], recipe_id[ 19 ],
+              ingred_count );
+
+    //  Add it to the recipe
+    recipe_p->recipe_id = text_copy_to_new( id_string );
 
     /************************************************************************
      *  Set the recipe defaults when information is not present
@@ -761,7 +821,6 @@ decode_finalize(
     {
         //  Create a default string
         recipe_p->name = text_copy_to_new( "No Recipe Name Found" );
-
         log_write( MID_DEBUG_1, "decode_api.c", "Line: %d\n", __LINE__ );
     }
     else
@@ -772,7 +831,6 @@ decode_finalize(
 
         //  Create a default string
         recipe_p->name = text_copy_to_new( "No Recipe Name Found" );
-
         log_write( MID_DEBUG_1, "decode_api.c", "Line: %d\n", __LINE__ );
     }
     //-----------------------------------------------------------------------
@@ -780,7 +838,6 @@ decode_finalize(
     {
         //  Create a default string
         recipe_p->author = text_copy_to_new( "UNKNOWN" );
-
         log_write( MID_DEBUG_1, "decode_api.c", "Line: %d\n", __LINE__ );
     }
     else
@@ -791,7 +848,6 @@ decode_finalize(
 
         //  Create a default string
         recipe_p->author = text_copy_to_new( "UNKNOWN" );
-
         log_write( MID_DEBUG_1, "decode_api.c", "Line: %d\n", __LINE__ );
     }
     //-----------------------------------------------------------------------
@@ -814,7 +870,6 @@ decode_finalize(
         recipe_p->copyright = text_copy_to_new( "Copyright (c) and related "
                 "rights reserved via Creative Commons [CC BY-SA 4.0]\n\t"
                 "https://creativecommons.org/licenses/by-sa/4.0/" );
-
         log_write( MID_DEBUG_1, "decode_api.c", "Line: %d\n", __LINE__ );
     }
     //-----------------------------------------------------------------------

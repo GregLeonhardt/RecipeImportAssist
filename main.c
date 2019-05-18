@@ -505,7 +505,7 @@ main(
     {
         /**
          *  @param  recipe_id       Temporary data buffer for the recipe id */
-        unsigned char                   recipe_id[ SHA1_DIGEST_SIZE + 1 ];
+        unsigned char                   recipe_id[ SHA1_DIGEST_SIZE + 2 ];
 
         //  Get the current recipe-id.
         recipe_id_p = store_get( "RECIPE_ID" );

@@ -8,8 +8,9 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/home/greg/src/RecipeImportAssist/main.c</file>
-            <file>file:/home/greg/src/RecipeImportAssist/include/main_api.h</file>
-            <file>file:/home/greg/src/RecipeImportAssist/DecodeL2/decodel2_api.c</file>
+            <file>file:/home/greg/src/RecipeImportAssist/Recipe/recipe_api.c</file>
+            <file>file:/home/greg/src/RecipeImportAssist/DecodeLIB/decode_api.c</file>
+            <file>file:/home/greg/src/RecipeImportAssist/EncodeRXF/encode_rxf_api.c</file>
         </group>
     </open-files>
 </project-private>
