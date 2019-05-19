@@ -131,20 +131,32 @@ enum    direction_state_e
 #define MXP_SRV_SIZE            "Serving Size  :"
 #define MXP_SRV_SIZE_L          strlen( MXP_SRV_SIZE )
 //----------------------------------------------------------------------------
-#define MXP_PREP_TIME           "Preparation Time :"
-#define MXP_PREP_TIME_L         strlen( MXP_PREP_TIME )
+#define MXP_PREP_TIME_F1        "Preparation Time:"
+#define MXP_PREP_TIME_F1_L      strlen( MXP_PREP_TIME_F1 )
+//----------------------------------------------------------------------------
+#define MXP_PREP_TIME_F2        "Preparation Time :"
+#define MXP_PREP_TIME_F2_L      strlen( MXP_PREP_TIME_F2 )
 //----------------------------------------------------------------------------
 #define MXP_CATEGORIES          "Categories    :"
 #define MXP_CATEGORIES_L        strlen( MXP_CATEGORIES )
 //----------------------------------------------------------------------------
-#define MXP_CAT_END_1           "Amount  Measure"
-#define MXP_CAT_END_1_L         strlen( MXP_CAT_END_1 )
+#define MXP_AUIP_HDR_1          "Amount"
+#define MXP_AUIP_HDR_1_L        strlen( MXP_AUIP_HDR_1 )
 //----------------------------------------------------------------------------
-#define MXP_CAT_END_2           "- --------  ------------"
-#define MXP_CAT_END_2_L         strlen( MXP_CAT_END_2 )
+#define MXP_AUIP_HDR_2          "Measure"
+#define MXP_AUIP_HDR_2_L        strlen( MXP_AUIP_HDR_2 )
 //----------------------------------------------------------------------------
-#define MXP_CAT_END_3           "--------  ------------"
-#define MXP_CAT_END_3_L         strlen( MXP_CAT_END_3 )
+#define MXP_AUIP_HDR_3          "Ingredient"
+#define MXP_AUIP_HDR_3_L        strlen( MXP_AUIP_HDR_3 )
+//----------------------------------------------------------------------------
+#define MXP_AUIP_HDR_4          "- --------  ------------"
+#define MXP_AUIP_HDR_4_L        strlen( MXP_AUIP_HDR_4 )
+//----------------------------------------------------------------------------
+#define MXP_AUIP_HDR_5          "--------  ------------"
+#define MXP_AUIP_HDR_5_L        strlen( MXP_AUIP_HDR_5 )
+//----------------------------------------------------------------------------
+#define MXP_AUIP_HDR_6          "-------- --------------------"
+#define MXP_AUIP_HDR_6_L        strlen( MXP_AUIP_HDR_6 )
 //----------------------------------------------------------------------------
 #define MXP_APPLIANCE           "Appliance:"
 #define MXP_APPLIANCE_L         strlen( MXP_APPLIANCE )
@@ -538,24 +550,45 @@ DECODE_MXP__prep_time(
      ************************************************************************/
 
     //  Search the data buffer
-    tmp_data_p = strstr( data_p, MXP_PREP_TIME );
+    tmp_data_p = strstr( data_p, MXP_PREP_TIME_F1 );
 
     //  Does this line contain
     if ( tmp_data_p != NULL )
     {
         //  YES:    Jump past the search string
-        tmp_data_p += MXP_PREP_TIME_L;
+        tmp_data_p += MXP_PREP_TIME_F1_L;
 
         //  Skip past any leading whitespace.
         tmp_data_p = text_skip_past_whitespace( tmp_data_p );
 
         //  Save the recipe title (name)
         recipe_p->time_prep = text_copy_to_new( tmp_data_p );
-
         log_write( MID_DEBUG_1, "decode_mxp_lib.c", "Line: %d\n", __LINE__ );
 
         //  Change the return code
         mxp_rc = true;
+    }
+    else
+    {
+        //  Search the data buffer
+        tmp_data_p = strstr( data_p, MXP_PREP_TIME_F2 );
+
+        //  Does this line contain
+        if ( tmp_data_p != NULL )
+        {
+            //  YES:    Jump past the search string
+            tmp_data_p += MXP_PREP_TIME_F2_L;
+
+            //  Skip past any leading whitespace.
+            tmp_data_p = text_skip_past_whitespace( tmp_data_p );
+
+            //  Save the recipe title (name)
+            recipe_p->time_prep = text_copy_to_new( tmp_data_p );
+            log_write( MID_DEBUG_1, "decode_mxp_lib.c", "Line: %d\n", __LINE__ );
+
+            //  Change the return code
+            mxp_rc = true;
+        }
     }
 
     /************************************************************************
@@ -637,9 +670,10 @@ DECODE_MXP__categories(
     if ( categories_scan_state == CSS_STARTED )
     {
         //  Is this the end of the categories list ?
-        if (    ( strncmp( tmp_data_p, MXP_CAT_END_1, MXP_CAT_END_1_L ) == 0 )
-             || ( strncmp( tmp_data_p, MXP_CAT_END_2, MXP_CAT_END_2_L ) == 0 )
-             || ( strncmp( tmp_data_p, MXP_CAT_END_3, MXP_CAT_END_3_L ) == 0 )
+        if (    ( strncmp( tmp_data_p, MXP_AUIP_HDR_1, MXP_AUIP_HDR_1_L ) == 0 )
+             || ( strncmp( tmp_data_p, MXP_AUIP_HDR_4, MXP_AUIP_HDR_4_L ) == 0 )
+             || ( strncmp( tmp_data_p, MXP_AUIP_HDR_5, MXP_AUIP_HDR_5_L ) == 0 )
+             || ( strncmp( tmp_data_p, MXP_AUIP_HDR_6, MXP_AUIP_HDR_6_L ) == 0 )
              || ( text_is_blank_line( tmp_data_p )                == true ) )
         {
             //  YES:    Then this is the end of the categories section
@@ -811,7 +845,9 @@ DECODE_MXP__auip(
         case    AUIPS_TEXT:
         {
             //  Is this the AUIP column description ?
-            if ( strncmp( tmp_data_p, MXP_CAT_END_1, MXP_CAT_END_1_L ) == 0 )
+            if (    ( strstr( tmp_data_p, MXP_AUIP_HDR_1 ) != NULL )
+                 && ( strstr( tmp_data_p, MXP_AUIP_HDR_2 ) != NULL )
+                 && ( strstr( tmp_data_p, MXP_AUIP_HDR_3 ) != NULL ) )
             {
                 //  YES:    Change the state
                 auip_scan_state = AUIPS_DASH;
@@ -820,8 +856,9 @@ DECODE_MXP__auip(
         case    AUIPS_DASH:
         {
             //  Is this the AUIP separator line ?
-            if (    ( strncmp( tmp_data_p, MXP_CAT_END_2, MXP_CAT_END_2_L ) == 0 )
-                 || ( strncmp( tmp_data_p, MXP_CAT_END_3, MXP_CAT_END_3_L ) == 0 ) )
+            if (    ( strncmp( tmp_data_p, MXP_AUIP_HDR_4, MXP_AUIP_HDR_4_L ) == 0 )
+                 || ( strncmp( tmp_data_p, MXP_AUIP_HDR_5, MXP_AUIP_HDR_5_L ) == 0 )
+                 || ( strncmp( tmp_data_p, MXP_AUIP_HDR_6, MXP_AUIP_HDR_6_L ) == 0 ) )
             {
                 //  YES:    Change the state
                 auip_scan_state = AUIPS_AMIP;
