@@ -187,6 +187,9 @@ command_line(
     //  Scan for        Input Directory name
     in_dir_name_p = get_cmd_line_parm( argc, argv, "id" );
 
+    //  Scan for        Input Directory name
+    out_dir_name_p = get_cmd_line_parm( argc, argv, "od" );
+
     //  DEBUG DEFAULTS
     if (    ( in_file_name_p       == NULL )
          && ( in_dir_name_p        == NULL ) )
@@ -690,8 +693,7 @@ main(
             //  Make the file extention all lowercase
             text_to_lowercase( extention );
 
-            if (    ( strncmp( extention, "discarded_data",      14 ) == 0 )
-                 || ( strncmp( extention, "unformatted_recipes", 19 ) == 0 )
+            if (    ( strncmp( extention, "trash",                5 ) == 0 )
                  || ( strncmp( extention, "epub",                 4 ) == 0 )
                  || ( strncmp( extention, "jpeg",                 4 ) == 0 )
                  || ( strncmp( extention, "mobi",                 4 ) == 0 )
@@ -751,6 +753,7 @@ main(
                  || ( strncmp( extention, "rea",                  3 ) == 0 )
                  || ( strncmp( extention, "rli",                  3 ) == 0 )
                  || ( strncmp( extention, "rp_",                  3 ) == 0 )
+                 || ( strncmp( extention, "ria",                  3 ) == 0 )
                  || ( strncmp( extention, "rxf",                  3 ) == 0 )
                  || ( strncmp( extention, "sql",                  3 ) == 0 )
                  || ( strncmp( extention, "tag",                  3 ) == 0 )
@@ -759,7 +762,6 @@ main(
                  || ( strncmp( extention, "vb_",                  3 ) == 0 )
                  || ( strncmp( extention, "wav",                  3 ) == 0 )
                  || ( strncmp( extention, "wht",                  3 ) == 0 )
-                 || ( strncmp( extention, "xml",                  3 ) == 0 )
                  || ( strncmp( extention, "xsi",                  3 ) == 0 )
                  || ( strncmp( extention, "yml",                  3 ) == 0 )
                  || ( strncmp( extention, "bl",                   2 ) == 0 )
@@ -797,6 +799,9 @@ main(
 
         //  Open the input file
         in_file_fp = file_open_read( input_file_name );
+        //  Log the event
+        log_write( MID_INFO, "main",
+                   "Working on file: '%s'\n", input_file_name );
 
         //  Create a new source information structure
         source_info_p = mem_malloc( sizeof( struct source_info_t ) );

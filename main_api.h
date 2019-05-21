@@ -55,6 +55,8 @@
  *                              FALSE will disable memory stack size        */
 #define MEM_DUMP                ( false )
 //----------------------------------------------------------------------------
+#define SUBDIRECTORY_L          ( 4 )
+//----------------------------------------------------------------------------
 
 /****************************************************************************
  * Library Public Enumerations
@@ -74,6 +76,10 @@
  * Library Public Storage Allocation
  ****************************************************************************/
 
+//----------------------------------------------------------------------------
+/**
+ * @param out_dir_name_p        Pointer to the output directory name        */
+char                        *   out_dir_name_p;
 //---------------------------------------------------------------------------
 /**
  *  @param  count_bof           Number of BOF recipes decoded               */
@@ -108,12 +114,14 @@ int                             count_rxf;
 /**
  *  @param  count_txt           Number of TXT recipes decoded               */
 int                             count_txt;
+//---------------------------------------------------------------------------
 /**
  *  @param  encode_queue_id     ID number for the ENCODE queue              */
 int                             encode_queue_id;
 /**
  *  @param  decode_queue_id     ID number for the DECODE queue              */
 int                             decode_queue_id;
+//---------------------------------------------------------------------------
 /**
  *  @param  store_value_p       ID number for the DECODE queue              */
 char                        *   recipe_id_p;

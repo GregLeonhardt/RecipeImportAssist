@@ -367,14 +367,6 @@ decode_copy_info_to_recipe(
     //------------------------------------------------------------------------
 
     /************************************************************************
-     *  Recipe-ID
-     ************************************************************************/
-
-    //------------------------------------------------------------------------
-    //  Recipe-ID:
-    recipe_next_id( recipe_p, RECIPE_FORMAT_MXP );
-
-    /************************************************************************
      *  Function Exit
      ************************************************************************/
 
@@ -737,8 +729,11 @@ decode_finalize(
     )
 {
     /**
-     *  @param  ingred_count    Number of ingredients in this recipe        */
-    int                             ingred_count;
+     *  @param  AUIP_count      Number of ingredients in this recipe        */
+    int                             AUIP_count;
+    /**
+     *  @param  AUIP_part       Temporary data buffer for an ingred part    */
+    unsigned char                   AUIP_part[ SHA1_DIGEST_SIZE + 2 ];
     /**
      *  @param  recipe_id       Temporary data buffer for the recipe id     */
     unsigned char                   recipe_id[ SHA1_DIGEST_SIZE + 2 ];
@@ -756,21 +751,20 @@ decode_finalize(
      *  Function Initialization
      ************************************************************************/
 
+    //  Initialize the final Recipe-ID storage buffer.
+    memset( recipe_id, 0x00, sizeof( recipe_id ) );
 
     /************************************************************************
      *  Compute the recipe checksum (Recipe-ID)
      ************************************************************************/
 
-    //  Initialize SHA1
-    sha1_init( &context );
-
     //  Query the number of ingredients for this recipe
-    ingred_count = list_query_count( recipe_p->ingredient );
+    AUIP_count = list_query_count( recipe_p->ingredient );
 
     //  Are there any ingredients in this recipe ?
-    if ( ingred_count > 0 )
+    if ( AUIP_count > 0 )
     {
-        //  YES:    Scan them all
+        //  YES:    Loop through all of the ingredients in this recipe
         for( auip_p = list_get_first( recipe_p->ingredient );
              auip_p != NULL;
              auip_p = list_get_next( recipe_p->ingredient, auip_p ) )
@@ -778,39 +772,68 @@ decode_finalize(
             //  Is there an amount ?
             if ( auip_p->amount_p != NULL )
             {
-                //  Build SHA1 version of the recipe id
-                sha1_update( &context, auip_p->amount_p, ( SHA1_DIGEST_SIZE ) );
+                //  YES:    Initialize SHA1
+                sha1_init( &context );
+
+                //  Build SHA1 version of the amount field
+                sha1_update( &context, auip_p->amount_p, strlen( auip_p->amount_p ) );
+
+                //  Finalize the SHA1 operation
+                sha1_final( &context, (char*)AUIP_part );
+
+                //  Add the two together
+                sha1_sum( (char*)recipe_id, (char*)recipe_id, (char*)AUIP_part );
             }
             //  Is there a unit of measurement ?
             if ( auip_p->unit_p != NULL )
             {
-                //  Build SHA1 version of the recipe id
-                sha1_update( &context, auip_p->unit_p, ( SHA1_DIGEST_SIZE ) );
+                //  YES:    Initialize SHA1
+                sha1_init( &context );
+
+                //  Build SHA1 version of the unit field
+                sha1_update( &context, auip_p->unit_p, strlen( auip_p->unit_p ) );
+
+                //  Finalize the SHA1 operation
+                sha1_final( &context, (char*)AUIP_part );
+
+                //  Add the two together
+                sha1_sum( (char*)recipe_id, (char*)recipe_id, (char*)AUIP_part );
             }
             //  Is there an ingredient ?
             if ( auip_p->ingredient_p != NULL )
             {
-                //  Build SHA1 version of the recipe id
-                sha1_update( &context, auip_p->ingredient_p, ( SHA1_DIGEST_SIZE ) );
+                //  YES:    Initialize SHA1
+                sha1_init( &context );
+
+                //  Build SHA1 version of the unit field
+                sha1_update( &context, auip_p->ingredient_p, strlen( auip_p->ingredient_p ) );
+
+                //  Finalize the SHA1 operation
+                sha1_final( &context, (char*)AUIP_part );
+
+                //  Add the two together
+                sha1_sum( (char*)recipe_id, (char*)recipe_id, (char*)AUIP_part );
             }
         }
+
+        //  Format the Recipe-ID as a hex string
+        snprintf( id_string, sizeof( id_string ),
+                  "%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X"
+                  "%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X",
+                  recipe_id[  0 ], recipe_id[  1 ], recipe_id[  2 ], recipe_id[  3 ], recipe_id[  4 ],
+                  recipe_id[  5 ], recipe_id[  6 ], recipe_id[  7 ], recipe_id[  8 ], recipe_id[  9 ],
+                  recipe_id[ 10 ], recipe_id[ 11 ], recipe_id[ 12 ], recipe_id[ 13 ], recipe_id[ 14 ],
+                  recipe_id[ 15 ], recipe_id[ 16 ], recipe_id[ 17 ], recipe_id[ 18 ], recipe_id[ 19 ],
+                  AUIP_count );
+
+        //  Add it to the recipe
+        recipe_p->recipe_id = text_copy_to_new( id_string );
     }
-
-    //  Finalize the SHA1 operation
-    sha1_final( &context, (char*)recipe_id );
-
-    //  Format the Recipe-ID as a hex string
-    snprintf( id_string, sizeof( id_string ),
-              "%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X"
-              "%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X",
-              recipe_id[  0 ], recipe_id[  1 ], recipe_id[  2 ], recipe_id[  3 ], recipe_id[  4 ],
-              recipe_id[  5 ], recipe_id[  6 ], recipe_id[  7 ], recipe_id[  8 ], recipe_id[  9 ],
-              recipe_id[ 10 ], recipe_id[ 11 ], recipe_id[ 12 ], recipe_id[ 13 ], recipe_id[ 14 ],
-              recipe_id[ 15 ], recipe_id[ 16 ], recipe_id[ 17 ], recipe_id[ 18 ], recipe_id[ 19 ],
-              ingred_count );
-
-    //  Add it to the recipe
-    recipe_p->recipe_id = text_copy_to_new( id_string );
+    else
+    {
+        //  NO:     A recipe without ingredients isn't a recipe.
+        recipe_p->recipe_id = text_copy_to_new( "000000000000000000000000000000000000000000" );
+    }
 
     /************************************************************************
      *  Set the recipe defaults when information is not present

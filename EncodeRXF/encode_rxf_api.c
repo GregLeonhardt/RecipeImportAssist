@@ -57,6 +57,7 @@
  ****************************************************************************/
 
 //----------------------------------------------------------------------------
+#define DIR_FORMATTED           "Recipes_Formatted"
 //----------------------------------------------------------------------------
 
 /****************************************************************************
@@ -133,15 +134,15 @@ encode_rxf(
     {
         //  Create a default string
         recipe_p->name = text_copy_to_new( "No Recipe Name Found" );
-        
+
         log_write( MID_DEBUG_1, "encode_rxf_lib.c", "Line: %d\n", __LINE__ );
     }
     //-----------------------------------------------------------------------
     if ( recipe_p->recipe_id == NULL )
     {
         //  Create a default string
-        recipe_p->recipe_id = text_copy_to_new( "0" );
-         
+        recipe_p->recipe_id = text_copy_to_new( "000000000000000000000" );
+
         log_write( MID_DEBUG_1, "encode_rxf_lib.c", "Line: %d\n", __LINE__ );
    }
     //-----------------------------------------------------------------------
@@ -149,7 +150,7 @@ encode_rxf(
     {
         //  Create a default string
         recipe_p->file_name = text_copy_to_new( "UNKNOWN" );
-          
+
         log_write( MID_DEBUG_1, "encode_rxf_lib.c", "Line: %d\n", __LINE__ );
   }
     //-----------------------------------------------------------------------
@@ -157,7 +158,7 @@ encode_rxf(
     {
         //  Create a default string
         recipe_p->file_date_time = text_copy_to_new( "UNKNOWN" );
-           
+
         log_write( MID_DEBUG_1, "encode_rxf_lib.c", "Line: %d\n", __LINE__ );
  }
     //-----------------------------------------------------------------------
@@ -165,7 +166,7 @@ encode_rxf(
     {
         //  Create a default string
         recipe_p->file_size = text_copy_to_new( "UNKNOWN" );
-        
+
         log_write( MID_DEBUG_1, "encode_rxf_lib.c", "Line: %d\n", __LINE__ );
     }
     //-----------------------------------------------------------------------
@@ -173,7 +174,7 @@ encode_rxf(
     {
         //  Create a default string
         recipe_p->author = text_copy_to_new( "UNKNOWN" );
-        
+
         log_write( MID_DEBUG_1, "encode_rxf_lib.c", "Line: %d\n", __LINE__ );
     }
     //-----------------------------------------------------------------------
@@ -181,7 +182,7 @@ encode_rxf(
     {
         //  Create a default string
         recipe_p->group_from = text_copy_to_new( "UNKNOWN" );
-         
+
         log_write( MID_DEBUG_1, "encode_rxf_lib.c", "Line: %d\n", __LINE__ );
    }
     //-----------------------------------------------------------------------
@@ -191,7 +192,7 @@ encode_rxf(
         recipe_p->copyright = text_copy_to_new( "Copyright (c) and related "
                 "rights reserved via Creative Commons [CC BY-SA 4.0]\n\t"
                 "https://creativecommons.org/licenses/by-sa/4.0/" );
-        
+
         log_write( MID_DEBUG_1, "encode_rxf_lib.c", "Line: %d\n", __LINE__ );
     }
     //-----------------------------------------------------------------------
@@ -199,7 +200,7 @@ encode_rxf(
     {
         //  Create a default string
         recipe_p->imported_from = text_copy_to_new( "UNKNOWN" );
-        
+
         log_write( MID_DEBUG_1, "encode_rxf_lib.c", "Line: %d\n", __LINE__ );
     }
     //-----------------------------------------------------------------------
@@ -207,7 +208,7 @@ encode_rxf(
     {
         //  Create a default string
         recipe_p->posted_by = text_copy_to_new( "UNKNOWN" );
-         
+
         log_write( MID_DEBUG_1, "encode_rxf_lib.c", "Line: %d\n", __LINE__ );
    }
     //-----------------------------------------------------------------------
@@ -215,7 +216,7 @@ encode_rxf(
     {
         //  Create a default string
         recipe_p->posted_date = text_copy_to_new( "UNKNOWN" );
-          
+
         log_write( MID_DEBUG_1, "encode_rxf_lib.c", "Line: %d\n", __LINE__ );
   }
     //-----------------------------------------------------------------------
@@ -223,7 +224,7 @@ encode_rxf(
     {
         //  Create a default string
         recipe_p->posted_subject = text_copy_to_new( "UNKNOWN" );
-        
+
         log_write( MID_DEBUG_1, "encode_rxf_lib.c", "Line: %d\n", __LINE__ );
     }
     //-----------------------------------------------------------------------
@@ -231,7 +232,7 @@ encode_rxf(
     {
         //  Create a default string
         recipe_p->edited_by = text_copy_to_new( "UNKNOWN" );
-        
+
         log_write( MID_DEBUG_1, "encode_rxf_lib.c", "Line: %d\n", __LINE__ );
     }
     //-----------------------------------------------------------------------
@@ -239,7 +240,7 @@ encode_rxf(
     {
         //  Create a default string
         recipe_p->formatted_by = text_copy_to_new( "UNKNOWN" );
-         
+
         log_write( MID_DEBUG_1, "encode_rxf_lib.c", "Line: %d\n", __LINE__ );
    }
     //-----------------------------------------------------------------------
@@ -247,7 +248,7 @@ encode_rxf(
     {
         //  Create a default string
         recipe_p->serves = text_copy_to_new( "0" );
-        
+
         log_write( MID_DEBUG_1, "encode_rxf_lib.c", "Line: %d\n", __LINE__ );
     }
     //-----------------------------------------------------------------------
@@ -255,7 +256,7 @@ encode_rxf(
     {
         //  Create a default string
         recipe_p->servings_size = text_copy_to_new( "Servings" );
-        
+
         log_write( MID_DEBUG_1, "encode_rxf_lib.c", "Line: %d\n", __LINE__ );
     }
     //-----------------------------------------------------------------------
@@ -263,7 +264,7 @@ encode_rxf(
     {
         //  Create a default string
         recipe_p->makes = text_copy_to_new( "0" );
-        
+
         log_write( MID_DEBUG_1, "encode_rxf_lib.c", "Line: %d\n", __LINE__ );
     }
     //-----------------------------------------------------------------------
@@ -271,7 +272,7 @@ encode_rxf(
     {
         //  Create a default string
         recipe_p->makes_unit = text_copy_to_new( " " );
-        
+
         log_write( MID_DEBUG_1, "encode_rxf_lib.c", "Line: %d\n", __LINE__ );
     }
     //-----------------------------------------------------------------------
@@ -279,7 +280,7 @@ encode_rxf(
     {
         //  Create a default string
         recipe_p->time_prep = text_copy_to_new( "0:00" );
-        
+
         log_write( MID_DEBUG_1, "encode_rxf_lib.c", "Line: %d\n", __LINE__ );
     }
     //-----------------------------------------------------------------------
@@ -287,7 +288,7 @@ encode_rxf(
     {
         //  Create a default string
         recipe_p->time_cook = text_copy_to_new( "0:00" );
-        
+
         log_write( MID_DEBUG_1, "encode_rxf_lib.c", "Line: %d\n", __LINE__ );
     }
     //-----------------------------------------------------------------------
@@ -295,7 +296,7 @@ encode_rxf(
     {
         //  Create a default string
         recipe_p->time_resting = text_copy_to_new( "0:00" );
-        
+
         log_write( MID_DEBUG_1, "encode_rxf_lib.c", "Line: %d\n", __LINE__ );
     }
     //-----------------------------------------------------------------------
@@ -303,7 +304,7 @@ encode_rxf(
     {
         //  Create a default string
         recipe_p->time_total = text_copy_to_new( "0:00" );
-        
+
         log_write( MID_DEBUG_1, "encode_rxf_lib.c", "Line: %d\n", __LINE__ );
     }
     //-----------------------------------------------------------------------
@@ -311,7 +312,7 @@ encode_rxf(
     {
         //  Create a default string
         recipe_p->description = text_copy_to_new( " " );
-        
+
         log_write( MID_DEBUG_1, "encode_rxf_lib.c", "Line: %d\n", __LINE__ );
     }
     //-----------------------------------------------------------------------
@@ -319,7 +320,7 @@ encode_rxf(
     {
         //  Create a default string
         recipe_p->based_on = text_copy_to_new( " " );
-        
+
         log_write( MID_DEBUG_1, "encode_rxf_lib.c", "Line: %d\n", __LINE__ );
     }
     //-----------------------------------------------------------------------
@@ -327,7 +328,7 @@ encode_rxf(
     {
         //  Create a default string
         recipe_p->serve_with = text_copy_to_new( " " );
-        
+
         log_write( MID_DEBUG_1, "encode_rxf_lib.c", "Line: %d\n", __LINE__ );
     }
     //-----------------------------------------------------------------------
@@ -335,7 +336,7 @@ encode_rxf(
     {
         //  Create a default string
         recipe_p->rating = text_copy_to_new( "0" );
-        
+
         log_write( MID_DEBUG_1, "encode_rxf_lib.c", "Line: %d\n", __LINE__ );
     }
     //-----------------------------------------------------------------------
@@ -343,7 +344,7 @@ encode_rxf(
     {
         //  Create a default string
         recipe_p->skill = text_copy_to_new( "0" );
-        
+
         log_write( MID_DEBUG_1, "encode_rxf_lib.c", "Line: %d\n", __LINE__ );
     }
     //-----------------------------------------------------------------------
@@ -572,7 +573,7 @@ encode_rxf(
             {
                 //  NO:     Use the filler
                 auip_p->amount_p = text_copy_to_new( " " );
-        
+
                 log_write( MID_DEBUG_1, "encode_rxf_lib.c", "Line: %d\n", __LINE__ );
             }
             //  Is there a unit of measurement ?
@@ -580,7 +581,7 @@ encode_rxf(
             {
                 //  NO:     Use the filler
                 auip_p->unit_p = text_copy_to_new( " " );
-        
+
                 log_write( MID_DEBUG_1, "encode_rxf_lib.c", "Line: %d\n", __LINE__ );
             }
             //  Is there an ingredient ?
@@ -588,7 +589,7 @@ encode_rxf(
             {
                 //  NO:     Use the filler
                 auip_p->ingredient_p = text_copy_to_new( " " );
-        
+
                 log_write( MID_DEBUG_1, "encode_rxf_lib.c", "Line: %d\n", __LINE__ );
             }
             //  Is there a preparation method ?
@@ -596,7 +597,7 @@ encode_rxf(
             {
                 //  NO:     Use the filler
                 auip_p->preparation_p = text_copy_to_new( " " );
-        
+
                 log_write( MID_DEBUG_1, "encode_rxf_lib.c", "Line: %d\n", __LINE__ );
             }
             //  Is there a preparation method here ?
@@ -691,6 +692,9 @@ encode_rxf(
      * @param out_name          Encoded output file name                    */
     char                            out_name[ FILE_NAME_L + 1 ];
     /**
+     * @param subdirectory      Sub Directory name based on the Recipe-ID   */
+    char                            subdirectory[ SUBDIRECTORY_L + 1 ];
+    /**
      * @param input_file_fp     Output File pointer                         */
     FILE                        *   out_file_fp;
     /**
@@ -704,22 +708,55 @@ encode_rxf(
      *  Function Initialization
      ************************************************************************/
 
+    //  Build the subdirectory name
+    snprintf( subdirectory, sizeof( subdirectory ),
+              "%s", recipe_p->recipe_id );
 
     /************************************************************************
      *  Open the output file
      ************************************************************************/
 
-    //  Build the source file path & name
+    //  Start building the output name
     snprintf( out_name, sizeof( out_name ),
-            "%s/%s", recipe_p->dir_name, recipe_p->file_name );
+              "%s", out_dir_name_p );
 
-    //  Change the file extention
-    data_p = strrchr( out_name, '.' );
-    if ( data_p != NULL ) data_p[ 0 ] = '\0';
-    strncat( out_name, ".rxf", sizeof( out_name ) );
+    //  If the directory does not already exist, create it.
+    file_dir_exist( out_name, true );
 
-    //  Open the input file
-    out_file_fp = file_open_append( out_name );
+    //  Append DIR_FORMATTED to the output name
+    snprintf( out_name, sizeof( out_name ),
+              "%s/%s", out_dir_name_p, DIR_FORMATTED );
+
+    //  If the directory does not already exist, create it.
+    file_dir_exist( out_name, true );
+
+    //  Append the subdirectory to the output name
+    snprintf( out_name, sizeof( out_name ),
+              "%s/%s/%s", out_dir_name_p, DIR_FORMATTED, subdirectory );
+
+    //  If the directory does not already exist, create it.
+    file_dir_exist( out_name, true );
+
+    //  Append the file name to the output name
+    snprintf( out_name, sizeof( out_name ),
+              "%s/%s/%s/%s.rxf", out_dir_name_p, DIR_FORMATTED,
+              subdirectory, recipe_p->recipe_id );
+
+    /************************************************************************
+     *  Open the output file
+     ************************************************************************/
+
+    //  Is this a recipe with no instructions ?
+    if ( strncmp( recipe_p->recipe_id, "0000000000", 10 ) == 0 )
+    {
+        //  YES:    Append to whatever is already there
+        out_file_fp = file_open_append( out_name );
+    }
+    else
+    {
+        //  NO:     Open a unique file for the output.
+        out_file_fp = file_open_write_no_dup( out_name, "duplicate_" );
+    }
 
     /************************************************************************
      *  Write RXF-XML to the file
@@ -844,7 +881,7 @@ encode_rxf(
              data_p != NULL;
              data_p = list_get_next( recipe_p->chapter, data_p ) )
         {
-            fprintf( out_file_fp, "  <Categories type=\"Group\" >"
+            fprintf( out_file_fp, "  <Categories type=\"Group\"      >"
                                   "  %s  </Categories>\n",
                      data_p );
         }

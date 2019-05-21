@@ -280,8 +280,7 @@ recipe_fmt_notes(
 //---------------------------------------------------------------------------
 void
 recipe_next_id(
-    struct  recipe_t            *   recipe_p,
-    enum    recipe_format_e         recipe_format
+    struct  recipe_t            *   recipe_p
     );
 //---------------------------------------------------------------------------
 

@@ -71,6 +71,9 @@
 //----------------------------------------------------------------------------
 #define UNIT_L                  ( 32 )
 //----------------------------------------------------------------------------
+#define DIR_UNFORMATTED         "Recipes_Unformatted"
+#define DIR_TRASH               "Trash"
+//----------------------------------------------------------------------------
 
 /****************************************************************************
  * Structures local to this file
@@ -246,34 +249,84 @@ DECODE_TXT__dump(
      * @param out_name          Encoded output file name                    */
     char                            out_name[ ( FILE_NAME_L * 3 ) ];
     /**
+     * @param subdirectory      Sub Directory name based on the Recipe-ID   */
+    char                            subdirectory[ SUBDIRECTORY_L + 1 ];
+    /**
      * @param input_file_fp     Output File pointer                         */
     FILE                        *   out_file_fp;
     /**
-     * @param list_data_p       Pointer to the read data                    */
-    char                        *   data_p;
+     *  @param recipe_t         Primary structure for a recipe              */
+    struct   recipe_t           *   recipe_p;
 
     /************************************************************************
      *  Function Initialization
      ************************************************************************/
 
-    //  Build the source file path & name
-    snprintf( out_name, sizeof( out_name ),
-            "%s/%s", source_info_p->f_dir_name, source_info_p->f_file_name );
+    //  Allocate a new recipe data structure
+    recipe_p = recipe_new( RECIPE_FORMAT_TXT );
 
-    //  Change the file extention
-    data_p = strrchr( out_name, '.' );
-    if ( data_p != NULL ) data_p[ 0 ] = '\0';
+    //  Recipe-ID:
+    recipe_next_id( recipe_p );
+
+    //  Copy source information to the recipe structure
+    decode_copy_info_to_recipe( recipe_p, source_info_p );
+
+    //  Build the subdirectory name
+    snprintf( subdirectory, sizeof( subdirectory ),
+              "%s", recipe_p->recipe_id );
+
+    /************************************************************************
+     *  Build the directory/file name and create directories when needed.
+     ************************************************************************/
+
+
+    //  Start building the output name
+    snprintf( out_name, sizeof( out_name ),
+              "%s", out_dir_name_p );
+
+    //  If the directory does not already exist, create it.
+    file_dir_exist( out_name, true );
 
     //  Is this an unformatted recipe ?
     if ( file == FILE_UNFORMATTED )
     {
-        //  YES:
-        strncat( out_name, ".unformatted_recipes", sizeof( out_name ) );
+        //  YES:    Append DIR_UNFORMATTED to the output name
+        snprintf( out_name, sizeof( out_name ),
+                  "%s/%s", out_dir_name_p, DIR_UNFORMATTED );
+
+        //  If the directory does not already exist, create it.
+        file_dir_exist( out_name, true );
+
+        //  Append the subdirectory to the output name
+        snprintf( out_name, sizeof( out_name ),
+                  "%s/%s/%s", out_dir_name_p, DIR_UNFORMATTED, subdirectory );
+
+        //  If the directory does not already exist, create it.
+        file_dir_exist( out_name, true );
+
+        snprintf( out_name, sizeof( out_name ),
+                  "%s/%s/%s/%s.ria", out_dir_name_p, DIR_UNFORMATTED,
+                  subdirectory, recipe_p->recipe_id );
     }
     else
     {
-        //  NO:
-        strncat( out_name, ".discarded_data", sizeof( out_name ) );
+        //  NO:     Append DIR_TRASH to the output name
+        snprintf( out_name, sizeof( out_name ),
+                  "%s/%s", out_dir_name_p, DIR_TRASH );
+
+        //  If the directory does not already exist, create it.
+        file_dir_exist( out_name, true );
+
+        //  Append the subdirectory to the output name
+        snprintf( out_name, sizeof( out_name ),
+                  "%s/%s/%s", out_dir_name_p, DIR_TRASH, subdirectory );
+
+        //  If the directory does not already exist, create it.
+        file_dir_exist( out_name, true );
+
+        snprintf( out_name, sizeof( out_name ),
+                  "%s/%s/%s/%s.trash", out_dir_name_p, DIR_TRASH,
+                  subdirectory, recipe_p->recipe_id );
     }
 
     //  Open the input file
@@ -336,6 +389,9 @@ DECODE_TXT__dump(
         log_write( MID_FATAL, "DECODE_TXT__dump",
                    "There is still something on the list\n" );
     }
+
+    //  Release storage used by the recipe structure.
+    recipe_kill( recipe_p );
 
     //  DONE!
 }
@@ -597,9 +653,9 @@ DECODE_TXT__decode(
             {
                 //  YES:    Insert the recipe start tag into the list
                 tmp_p = text_copy_to_new( "[[[[[" );
-        
+
                 log_write( MID_DEBUG_1, "decode_txt_lib.c", "Line: %d\n", __LINE__ );
-                
+
                 list_put_last( grf_list_p, tmp_p );
 
                 //  Move the Recipe title to the list
@@ -609,7 +665,7 @@ DECODE_TXT__decode(
 
                 //  And finally a blank line
                 tmp_p = text_copy_to_new( " " );
-        
+
                 log_write( MID_DEBUG_1, "decode_txt_lib.c", "Line: %d\n", __LINE__ );
 
                 list_put_last( grf_list_p, tmp_p );
@@ -643,7 +699,7 @@ DECODE_TXT__decode(
 
         //  Insert the recipe end tag into the list
         tmp_p = text_copy_to_new( "]]]]]" );
-        
+
         log_write( MID_DEBUG_1, "decode_txt_lib.c", "Line: %d\n", __LINE__ );
 
         list_put_last( grf_list_p, tmp_p );
