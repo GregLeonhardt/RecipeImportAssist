@@ -976,25 +976,25 @@ recipe_add_instructions(
      ************************************************************************/
 
     //  Is this the first thing for the instructions buffer ?
-        if ( recipe_p->instructions == NULL )
-        {
-            //  YES:    Just use this buffer
-            recipe_p->instructions = text_copy_to_new( data_p );
+    if ( recipe_p->instructions == NULL )
+    {
+        //  YES:    Just use this buffer
+        recipe_p->instructions = text_copy_to_new( data_p );
 
-            log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
-        }
+        log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
+    }
     else
     {
         //  NO:     Figure out how big it needs to be.
-        new_data_l = ( strlen( data_p ) + ( strlen( recipe_p->instructions ) ) + 1 );
+        new_data_l = ( strlen( data_p ) + ( strlen( recipe_p->instructions ) ) + 2 );
 
         //  Create a new buffer with the old and the new
         new_data_p = mem_malloc( new_data_l );
-
         log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
         //  Merge the two buffers together.
         strncpy( new_data_p, recipe_p->instructions, new_data_l );
+        strncat( new_data_p, " ", 1 );
         strncat( new_data_p, data_p, new_data_l - strlen( new_data_p ) );
 
         //  Release the (now) unused buffers
