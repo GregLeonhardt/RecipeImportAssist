@@ -17,6 +17,7 @@
  *  Compiler directives
  ****************************************************************************/
 
+#define _GNU_SOURCE             //  See feature_test_macros(7)
 
 /****************************************************************************
  * System Function API
@@ -28,6 +29,7 @@
 #include <stdio.h>              //  Standard I/O definitions
                                 //*******************************************
 #include <string.h>             //  Functions for managing strings
+#include <ctype.h>              //  Testing and mapping characters
                                 //*******************************************
 
 /****************************************************************************
@@ -98,9 +100,6 @@ DECODE__directions_cleanup(
     )
 {
     /**
-     *  @param  lowercase       The current directions data in lowercase    */
-    char                            lowercase[ INSTRUCTIONS_L ];
-    /**
      *  @param  directions_p    Pointer to a line of the directions         */
     char                        *   directions_p;
     /**
@@ -126,232 +125,312 @@ DECODE__directions_cleanup(
         //  Set the flag
         found = false;
 
-        //  Clean out the lowercase buffer
-        memset( lowercase, '\0', sizeof( lowercase ) );
-
-        //  Copy the formatted text buffer to the lowercase buffer
-        strncpy( lowercase, directions_p, sizeof( lowercase ) );
-
-        //  Make everything in the buffer lowercase
-        text_to_lowercase( lowercase );
-
         //--------------------------------------------------------------------
         //  Date :
-        compare_p = strstr( lowercase, "date :" );
+        compare_p = strcasestr( directions_p, "date :" );
         if ( compare_p != NULL )
         {
-            memcpy( &directions_p[ compare_p - lowercase ], "Date: ",       6 );
+            memcpy( compare_p, "Date: ",       6 );
             found = true;
         }
         //====================================================================
         //  From :
-        compare_p = strstr( lowercase, "from :" );
+        compare_p = strcasestr( directions_p, "from :" );
         if ( compare_p != NULL )
         {
-            memcpy( &directions_p[ compare_p - lowercase ], "From: ",       6 );
+            memcpy( compare_p, "From: ",       6 );
+            found = true;
+        }
+        //--------------------------------------------------------------------
+        //  From The
+        compare_p = strcasestr( directions_p, "from the:" );
+        if ( compare_p != NULL )
+        {
+            memcpy( compare_p, "From:    ",    9 );
+            found = true;
+        }
+        //--------------------------------------------------------------------
+        //  From The
+        compare_p = strcasestr( directions_p, "from the " );
+        if ( compare_p != NULL )
+        {
+            memcpy( compare_p, "From:    ",    9 );
             found = true;
         }
         //====================================================================
         //  Makes :
-        compare_p = strstr( lowercase, "makes :" );
+        compare_p = strcasestr( directions_p, "makes :" );
         if ( compare_p != NULL )
         {
-            memcpy( &directions_p[ compare_p - lowercase ], "Makes: ",      7 );
+            memcpy( compare_p, "Makes: ",      7 );
             found = true;
         }
-#if 0
-        //  @NOTE:  Many instances of corrupting the directions.
         //--------------------------------------------------------------------
         //  Makes
-        compare_p = strstr( lowercase, "makes " );
+        compare_p = strcasestr( directions_p, "makes " );
         if ( compare_p != NULL )
         {
-            memcpy( &directions_p[ compare_p - lowercase ], "Makes:",       6 );
-            found = true;
+            /**
+             *  @param  tmp_p           Temporary pointer                   */
+            char                        *   tmp_p;
+
+            //  Is the next thing numeric ?
+            tmp_p = compare_p + 6;
+            tmp_p = text_skip_past_whitespace( tmp_p );
+
+            //  Is it numeric ?
+            if ( isdigit( tmp_p[ 0 ] ) != 0 )
+            {
+                memcpy( compare_p, "Makes:",       6 );
+                found = true;
+            }
         }
-#endif
         //====================================================================
-        //  Note :
-        compare_p = strstr( lowercase, "note :" );
+        //  Notes :
+        compare_p = strcasestr( directions_p, "notes :" );
         if ( compare_p != NULL )
         {
-            memcpy( &directions_p[ compare_p - lowercase ], "Notes: ",      7 );
+            memcpy( compare_p, "Notes: ",      7 );
             found = true;
         }
         //--------------------------------------------------------------------
-        //  Notes :
-        compare_p = strstr( lowercase, "notes :" );
+        //  Note :
+        compare_p = strcasestr( directions_p, "note :" );
         if ( compare_p != NULL )
         {
-            memcpy( &directions_p[ compare_p - lowercase ], "Notes: ",      7 );
+            memcpy( compare_p, "Notes: ",      6 );
+            found = true;
+        }
+        //--------------------------------------------------------------------
+        //  Notes
+        compare_p = strcasestr( directions_p, "notes " );
+        if ( compare_p != NULL )
+        {
+            memcpy( compare_p, "Notes:",      6 );
             found = true;
         }
         //====================================================================
         //  Per Serving:
-        compare_p = strstr( lowercase, "per serving:" );
+        compare_p = strcasestr( directions_p, "per serving:" );
         if ( compare_p != NULL )
         {
-            memcpy( &directions_p[ compare_p - lowercase ], "PerServing: ",12 );
+            memcpy( compare_p, "PerServing: ",12 );
             found = true;
         }
         //====================================================================
         //  Posted By :
-        compare_p = strstr( lowercase, "posted by :" );
+        compare_p = strcasestr( directions_p, "posted by :" );
         if ( compare_p != NULL )
         {
-            memcpy( &directions_p[ compare_p - lowercase ], "SentBy:    ", 11 );
+            memcpy( compare_p, "SentBy:    ", 11 );
             found = true;
         }
         //--------------------------------------------------------------------
         //  Posted By:
-        compare_p = strstr( lowercase, "posted by:" );
+        compare_p = strcasestr( directions_p, "posted by:" );
         if ( compare_p != NULL )
         {
-            memcpy( &directions_p[ compare_p - lowercase ], "SentBy:   ",  10 );
+            memcpy( compare_p, "SentBy:   ",  10 );
             found = true;
         }
         //--------------------------------------------------------------------
         //  Posted By
-        compare_p = strstr( lowercase, "posted by" );
+        compare_p = strcasestr( directions_p, "posted by " );
         if ( compare_p != NULL )
         {
-            memcpy( &directions_p[ compare_p - lowercase ], "SentBy:   ",  10 );
+            memcpy( compare_p, "SentBy:   ",  10 );
             found = true;
         }
         //====================================================================
         //  Posted To :
-        compare_p = strstr( lowercase, "posted To :" );
+        compare_p = strcasestr( directions_p, "posted to :" );
         if ( compare_p != NULL )
         {
-            memcpy( &directions_p[ compare_p - lowercase ], "SentTo:    ", 11 );
+            memcpy( compare_p, "SentTo:    ", 11 );
             found = true;
         }
         //--------------------------------------------------------------------
         //  Posted To:
-        compare_p = strstr( lowercase, "posted to:" );
+        compare_p = strcasestr( directions_p, "posted to:" );
         if ( compare_p != NULL )
         {
-            memcpy( &directions_p[ compare_p - lowercase ], "SentTo:   ",  10 );
+            memcpy( compare_p, "SentTo:   ",  10 );
             found = true;
         }
         //--------------------------------------------------------------------
         //  Posted To
-        compare_p = strstr( lowercase, "posted to" );
+        compare_p = strcasestr( directions_p, "posted to " );
         if ( compare_p != NULL )
         {
-            memcpy( &directions_p[ compare_p - lowercase ], "SentTo:   ",  10 );
+            memcpy( compare_p, "SentTo:   ",  10 );
             found = true;
         }
         //====================================================================
         //  Recipe By :
-        compare_p = strstr( lowercase, "recipe by :" );
+        compare_p = strcasestr( directions_p, "recipe by :" );
         if ( compare_p != NULL )
         {
-            memcpy( &directions_p[ compare_p - lowercase ], "RecipeBy:  ", 11 );
+            memcpy( compare_p, "RecipeBy:  ", 11 );
             found = true;
         }
         //--------------------------------------------------------------------
         //  Recipe By:
-        compare_p = strstr( lowercase, "recipe by:" );
+        compare_p = strcasestr( directions_p, "recipe by:" );
         if ( compare_p != NULL )
         {
-            memcpy( &directions_p[ compare_p - lowercase ], "RecipeBy: ",  10 );
+            memcpy( compare_p, "RecipeBy: ",  10 );
             found = true;
         }
         //--------------------------------------------------------------------
         //  Recipe By
-        compare_p = strstr( lowercase, "recipe by" );
+        compare_p = strcasestr( directions_p, "recipe by " );
         if ( compare_p != NULL )
         {
-            memcpy( &directions_p[ compare_p - lowercase ], "RecipeBy: ",  10 );
+            memcpy( compare_p, "RecipeBy: ",  10 );
             found = true;
         }
         //====================================================================
         //  Sent By :
-        compare_p = strstr( lowercase, "sent by :" );
+        compare_p = strcasestr( directions_p, "sent by :" );
         if ( compare_p != NULL )
         {
-            memcpy( &directions_p[ compare_p - lowercase ], "SentBy:  ",     9 );
+            memcpy( compare_p, "SentBy:  ",     9 );
             found = true;
         }
         //--------------------------------------------------------------------
         //  Sent By:
-        compare_p = strstr( lowercase, "sent by:" );
+        compare_p = strcasestr( directions_p, "sent by:" );
         if ( compare_p != NULL )
         {
-            memcpy( &directions_p[ compare_p - lowercase ], "SentBy: ",      8 );
+            memcpy( compare_p, "SentBy: ",      8 );
             found = true;
         }
         //--------------------------------------------------------------------
         //  Sent By
-        compare_p = strstr( lowercase, "sent by " );
+        compare_p = strcasestr( directions_p, "sent by " );
         if ( compare_p != NULL )
         {
-            memcpy( &directions_p[ compare_p - lowercase ], "SentBy: ",      8 );
+            memcpy( compare_p, "SentBy: ",      8 );
             found = true;
         }
         //====================================================================
         //  Sent To :
-        compare_p = strstr( lowercase, "sent to :" );
+        compare_p = strcasestr( directions_p, "sent to :" );
         if ( compare_p != NULL )
         {
-            memcpy( &directions_p[ compare_p - lowercase ], "SentTo:  ",     9 );
+            memcpy( compare_p, "SentTo:  ",     9 );
             found = true;
         }
         //--------------------------------------------------------------------
         //  Sent To:
-        compare_p = strstr( lowercase, "sent to:" );
+        compare_p = strcasestr( directions_p, "sent to:" );
         if ( compare_p != NULL )
         {
-            memcpy( &directions_p[ compare_p - lowercase ], "SentTo: ",      8 );
+            memcpy( compare_p, "SentTo: ",      8 );
             found = true;
         }
         //--------------------------------------------------------------------
         //  Sent To
-        compare_p = strstr( lowercase, "sent to " );
+        compare_p = strcasestr( directions_p, "sent to " );
         if ( compare_p != NULL )
         {
-            memcpy( &directions_p[ compare_p - lowercase ], "SentTo: ",      8 );
+            memcpy( compare_p, "SentTo: ",      8 );
             found = true;
         }
         //====================================================================
-        //  Serves :
-        compare_p = strstr( lowercase, "serves :" );
+        //  Servings :
+        compare_p = strcasestr( directions_p, "servings :" );
         if ( compare_p != NULL )
         {
-            memcpy( &directions_p[ compare_p - lowercase ], "Serves: ",     8 );
+            memcpy( compare_p, "Serves:   ", 10 );
             found = true;
         }
         //--------------------------------------------------------------------
         //  Servings:
-        compare_p = strstr( lowercase, "servings:" );
+        compare_p = strcasestr( directions_p, "servings:" );
         if ( compare_p != NULL )
         {
-            memcpy( &directions_p[ compare_p - lowercase ], "Serves:   ",  10 );
+            memcpy( compare_p, "Serves:  ",    9 );
             found = true;
         }
         //--------------------------------------------------------------------
-        //  Servings :
-        compare_p = strstr( lowercase, "servings :" );
+        //  Serves :
+        compare_p = strcasestr( directions_p, "serves :" );
         if ( compare_p != NULL )
         {
-            memcpy( &directions_p[ compare_p - lowercase ], "Serves:    ", 11 );
+            memcpy( compare_p, "Serves: ",     8 );
             found = true;
         }
-        //====================================================================
-        //  Source :
-        compare_p = strstr( lowercase, "source :" );
+        //--------------------------------------------------------------------
+        //  Serves
+        //  NOTE:   This code gets confused by compound words such as
+        //          preserves.  They get translated into 'preServes:'
+#if 0
+        compare_p = strcasestr( directions_p, "serves " );
         if ( compare_p != NULL )
         {
-            memcpy( &directions_p[ compare_p - lowercase ], "Source: ",     8 );
+            memcpy( compare_p, "Serves:",     7 );
+            found = true;
+        }
+#endif
+        //====================================================================
+        //  Source :
+        compare_p = strcasestr( directions_p, "source :" );
+        if ( compare_p != NULL )
+        {
+            memcpy( compare_p, "Source: ",     8 );
             found = true;
         }
         //====================================================================
         //  To Plate:
-        compare_p = strstr( lowercase, "to plate:" );
+        compare_p = strcasestr( directions_p, "to plate:" );
         if ( compare_p != NULL )
         {
-            memcpy( &directions_p[ compare_p - lowercase ], "ToPlate: ",     9 );
+            memcpy( compare_p, "ToPlate: ",     9 );
+            found = true;
+        }
+        //====================================================================
+        //  Yield :
+        compare_p = strcasestr( directions_p, "yield :" );
+        if ( compare_p != NULL )
+        {
+            memcpy( compare_p, "Makes: ",  7 );
+            found = true;
+        }
+        //--------------------------------------------------------------------
+        //  Yield:
+        compare_p = strcasestr( directions_p, "yield:" );
+        if ( compare_p != NULL )
+        {
+            memcpy( compare_p, "Makes:",  6 );
+            found = true;
+        }
+        //--------------------------------------------------------------------
+        //  Yield
+        compare_p = strcasestr( directions_p, "yield " );
+        if ( compare_p != NULL )
+        {
+            /**
+             *  @param  tmp_p           Temporary pointer                   */
+            char                        *   tmp_p;
+
+            //  Is the next thing numeric ?
+            tmp_p = compare_p + 6;
+            tmp_p = text_skip_past_whitespace( tmp_p );
+
+            //  Is it numeric ?
+            if ( isdigit( tmp_p[ 0 ] ) != 0 )
+            {
+                memcpy( compare_p, "Makes:",       6 );
+                found = true;
+            }
+        }
+        //====================================================================
+        //  Copyright,
+        compare_p = strcasestr( directions_p, "copyright," );
+        if ( compare_p != NULL )
+        {
+            memcpy( compare_p, "Copyright:",    10 );
             found = true;
         }
         //--------------------------------------------------------------------
@@ -401,7 +480,6 @@ DECODE__title_information(
 
     //  Allocate storage for the local copy of the recipe title
     name_p = mem_malloc( ( strlen( recipe_p->name ) + 1 ) );
-
     log_write( MID_DEBUG_1, "decode_lib.c", "Line: %d\n", __LINE__ );
 
     //  Copy the recipe title to the local buffer

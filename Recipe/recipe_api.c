@@ -926,7 +926,6 @@ recipe_append(
 
         //  Copy the new data to a buffer
         table_data_p = text_copy_to_new( search_data );
-
         log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
         //  Add it to the list.
@@ -980,7 +979,6 @@ recipe_add_instructions(
     {
         //  YES:    Just use this buffer
         recipe_p->instructions = text_copy_to_new( data_p );
-
         log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
     }
     else
@@ -1158,11 +1156,12 @@ recipe_fmt_directions(
              *  write it and start a new line.
              ****************************************************************/
 
+            //  Will this word overflow the formatted output buffer ?
             if (   ( strlen( formatted_text ) + strlen( next_word ) + 1 )
                 > MAX_LINE_L )
             {
+                //  YES:    Save the current buffer and start a new buffer.
                 tmp_p = text_copy_to_new( formatted_text );
-
                 log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
                 //  Add it to the list.
@@ -1178,7 +1177,11 @@ recipe_fmt_directions(
              ****************************************************************/
 
             // Does this word end with a colon ?
+#if 0
             if ( next_word[ strlen( next_word ) - 1 ] == ':' )
+#else
+            if ( strchr( next_word, ':' ) != NULL )
+#endif
             {
                 //  YES:    Set the flags.
                 fwos = true;
@@ -1189,7 +1192,6 @@ recipe_fmt_directions(
                 {
                     //  YES:    Copy it to an allocated buffer
                     tmp_p = text_copy_to_new( formatted_text );
-
                     log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
                     //  Add it to the list.
@@ -1204,14 +1206,18 @@ recipe_fmt_directions(
              *  First Word of Sentence and First-Word-of-Line
              ****************************************************************/
 
+            //  First-Word-Of-Sentence && First-Word-Of-Line && something to save
             if (    ( fwos == true )
                  && ( fwol == true )
                  && ( strlen( next_word ) > 0 ) )
             {
+                //  YES:    Drop the new word in the output buffer.
                 strncpy( formatted_text, next_word, MAX_LINE_L );
                 strncat( formatted_text, " ",
                          MAX_LINE_L - strlen( formatted_text ) );
                 formatted_text[ 0 ] = toupper( formatted_text[ 0 ] );
+
+                //  It is no lonfer the first word of anything.
                 fwos = false;
                 fwol = false;
             }
@@ -1236,7 +1242,6 @@ recipe_fmt_directions(
                         //  This word marks the start of a new sentence.
                         //  Write the current output line and start a new one
                         tmp_p = text_copy_to_new( formatted_text );
-
                         log_write( MID_DEBUG_1, "recipe_api.c",
                                 "Line: %d\n", __LINE__ );
 
@@ -1305,7 +1310,6 @@ recipe_fmt_directions(
                     //  This word marks the start of a new sentence.
                     //  Write the current output line and start a new one
                     tmp_p = text_copy_to_new( formatted_text );
-
                     log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
                     //  Add it to the list.
@@ -1337,7 +1341,6 @@ recipe_fmt_directions(
     {
         //  YES:    Copy it to a temporary buffer.
         tmp_p = text_copy_to_new( formatted_text );
-
         log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
         //  Add it to the list.
@@ -1508,7 +1511,6 @@ recipe_fmt_notes(
             {
 
                 tmp_p = text_copy_to_new( formatted_text );
-
                 log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
                 //  Add it to the list.
@@ -1554,7 +1556,6 @@ recipe_fmt_notes(
                         //  This word marks the start of a new sentence.
                         //  Write the current output line and start a new one
                         tmp_p = text_copy_to_new( formatted_text );
-
                         log_write( MID_DEBUG_1, "recipe_api.c",
                                 "Line: %d\n", __LINE__ );
 
@@ -1624,7 +1625,6 @@ recipe_fmt_notes(
                     //  This word marks the start of a new sentence.
                     //  Write the current output line and start a new one
                     tmp_p = text_copy_to_new( formatted_text );
-
                     log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
                     //  Add it to the list.
@@ -1656,7 +1656,6 @@ recipe_fmt_notes(
     {
         //  YES:    Copy it to a temporary buffer.
         tmp_p = text_copy_to_new( formatted_text );
-
         log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
         //  Add it to the list.
@@ -1745,7 +1744,6 @@ recipe_next_id(
 
     //  Add it to the recipe
     recipe_p->recipe_id = text_copy_to_new( id_string );
-
     log_write( MID_DEBUG_1, "recipe_api.c", "Line: %d\n", __LINE__ );
 
     /************************************************************************

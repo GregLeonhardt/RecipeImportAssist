@@ -503,6 +503,7 @@ Table: Paragraph Starters
 ,       Combine
 ,       Cook
 ,       Cool
+,       Copyright
 ,       Cut
 ,       Dissolve
 ,       Divide
@@ -539,17 +540,31 @@ Table: Paragraph Starters
 ,       Repeat
 ,       Serve
 ,       Serves
+,       Set
 ,       Slowly
 ,       Source
 ,       Spoon
 ,       Taste
+,       Top
+,       Turn
+,       Typos
 ,       Use
 ,       Using
 ,       When
 ,       While
 ,       Yield
+,       Date:
+,       From:
+,       Makes:
+,       Notes:
+,       PerServing:
+,       SentBy:
+,       SentTo:
+,       RecipeBy:
+,       Served:
+,       ToPlate:
+,       Yield:
 ,       ^T
-
 
 ##############################################################################
 #
