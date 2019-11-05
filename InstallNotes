@@ -1,0 +1,7 @@
+
+#   Create the hidden folder
+    $ mkdir ~/.LibTools
+
+#   Copy the translations file to the hidden folder
+    cp {root build directory}/Translations ~/.LibTools/.
+

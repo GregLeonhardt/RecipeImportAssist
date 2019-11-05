@@ -193,41 +193,73 @@
 -----
 
 ##############################################################################
-#  NATIVE RECIPE FORMAT
+#  RIA RECIPE FORMAT
 ##############################################################################
 
-#! START	Native Recipe Format
-##
-TITLE:		   Recipe Title                             RECIPE TITLE
-BASED ON:      Recipe used for the base of this recipe.
-CATEGORIES:    cat1, cat2, cat3                         RECIPE CATEGORIES
-OTHER CAT:     Categories in the source recipe not recognized
-AUTHOR:		   The creator of the recipe
-SOURCE:		   Where the recipe was published (possible www)
-COPYRIGHT:	   If there is a copyright
-POSTED:		   User name - date - time
-FORMATTED:	   User name - date - time (May be many of these)
-SERVINGS:	   Number of servings.
-SERVINGS SIZE:	The size of each serving.
-MAKES:		   Number of what.  (4 Dozen cookies)
-PREP TIME:	   0:00
-TOTAL TIME:	   0:00
-COOK TIME:	   0:00	(Cook or bake time)
-RATING:		   0 to 5 spatulas
-WINE:		      If there is a preferred wine.
-SRV IDEAS:	   Serve with ...
-DESCRIPTION:	A wonderful ...
-NOTES:		   Use butter not magerine.
+#! START	RIA Recipe Format
 
+RECIPE ID:
+    "A unique recipe identifier"
+NAME:		   
+    "Recipe Name"
+AUTHOR:
+    "The creator of the recipe"
+COPYRIGHT:
+    "nnnn (c) Copyright or (CC) Creative commons information"
+DESCRIPTION:
+    "Some text that describes the recipe."
+APPLIANCE:
+    "Oven" "Crockpot" ...
+CUISINE:
+    "French" Italian" ...
+OCCASION:
+    "Easter"  "Halloween" ...
+COURSE:
+    "Breakfast" "Appetizer" ...
+DIET:
+    "Low-Fat" "Diabetic" ...
+SERVINGS:
+    "nn"
+MAKES:
+    "nn" "somethings"
+PREP TIME:
+    "0:00"
+PRE-COOK TIME:
+    "0:00"
+COOK TIME:
+    "0:00"
+REST TIME:
+    "0:00"
+
+==================================================
+RATING:
+    "0-5"
 AUIP:
-I:			Standard AUIP
-T:			Additional text.
-R:			Link to another recipe.
-S:			Substitutions
-
+I:
+    "Standard AUIP"
+T:
+    "Additional text."
+R:
+    "Link to another recipe."
+S:
+    "Substitutions"
 DIRECTIONS:
+    "The procedure used"
+    "to make whatever it"
+    "is that we are making."
+NOTES:
+    "Use butter not margarine."
+SOURCE:
+    "Where the recipe was published (possible www)"
+POSTED:
+    "User name - Date - Time"
+    "eMail - Date - Time"
+FORMATTED:
+    "User name - date - time"
+    "User name - date - time"
+    "User name - date - time"
 
-#! END	Native Recipe Format
+#! END	RIA Recipe Format
 
    ##########################################################################
    #  EXAMPLE:

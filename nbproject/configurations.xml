@@ -128,6 +128,12 @@
         <itemPath>Encode/encode_lib.c</itemPath>
         <itemPath>Encode/encode_lib.h</itemPath>
       </logicalFolder>
+      <logicalFolder name="f17" displayName="EncodeRIA" projectFiles="true">
+        <itemPath>EncodeRIA/encode_ria_api.c</itemPath>
+        <itemPath>EncodeRIA/encode_ria_api.h</itemPath>
+        <itemPath>EncodeRIA/encode_ria_lib.c</itemPath>
+        <itemPath>EncodeRIA/encode_ria_lib.h</itemPath>
+      </logicalFolder>
       <logicalFolder name="f9" displayName="EncodeRXF" projectFiles="true">
         <itemPath>EncodeRXF/encode_rxf_api.c</itemPath>
         <itemPath>EncodeRXF/encode_rxf_api.h</itemPath>
@@ -166,6 +172,7 @@
       <itemPath>Makefile</itemPath>
       <itemPath>Translations</itemPath>
     </logicalFolder>
+    <itemPath>InstallNotes</itemPath>
   </logicalFolder>
   <sourceRootList>
     <Elem>DecodeGF1</Elem>
@@ -326,6 +333,14 @@
       </item>
       <item path="Encode/encode_lib.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="EncodeRIA/encode_ria_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="EncodeRIA/encode_ria_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="EncodeRIA/encode_ria_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="EncodeRIA/encode_ria_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="EncodeRXF/encode_rxf_api.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="EncodeRXF/encode_rxf_api.h" ex="false" tool="3" flavor2="0">
@@ -341,6 +356,8 @@
       <item path="FileScan/filescan_lib.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="FileScan/filescan_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="InstallNotes" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Recipe/recipe_api.c" ex="false" tool="0" flavor2="0">
       </item>
@@ -545,6 +562,14 @@
       </item>
       <item path="Encode/encode_lib.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="EncodeRIA/encode_ria_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="EncodeRIA/encode_ria_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="EncodeRIA/encode_ria_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="EncodeRIA/encode_ria_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="EncodeRXF/encode_rxf_api.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="EncodeRXF/encode_rxf_api.h" ex="false" tool="3" flavor2="0">
@@ -560,6 +585,8 @@
       <item path="FileScan/filescan_lib.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="FileScan/filescan_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="InstallNotes" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Recipe/recipe_api.c" ex="false" tool="0" flavor2="0">
       </item>

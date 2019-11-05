@@ -50,6 +50,7 @@
 #include <decode_txt_api.h>     //  API for all decode_txt_*        PUBLIC
 #include <decode_erd_api.h>     //  API for all encode_erd_*        PUBLIC
 #include <encode_rxf_api.h>     //  API for all encode_rxf_*        PUBLIC
+#include <encode_ria_api.h>     //  API for all encode_ria_*        PUBLIC
                                 //*******************************************
 #include <decode_api.h>         //  API for all decode_*            PUBLIC
 #include "decode_lib.h"         //  API for all DECODE__*           PRIVATE
@@ -931,7 +932,8 @@ decode_finalize(
      ************************************************************************/
 
 #if ( THREADING == false )
-    encode_rxf( recipe_p );
+//  encode_rxf( recipe_p );
+    encode_ria( recipe_p );
 #else
     queue_put_payload( encode_queue_id, recipe_p );
 #endif

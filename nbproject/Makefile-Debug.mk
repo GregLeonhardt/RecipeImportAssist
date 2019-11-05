@@ -65,6 +65,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/DecodeTXT/decode_txt_lib.o \
 	${OBJECTDIR}/Encode/encode_api.o \
 	${OBJECTDIR}/Encode/encode_lib.o \
+	${OBJECTDIR}/EncodeRIA/encode_ria_api.o \
+	${OBJECTDIR}/EncodeRIA/encode_ria_lib.o \
 	${OBJECTDIR}/EncodeRXF/encode_rxf_api.o \
 	${OBJECTDIR}/EncodeRXF/encode_rxf_lib.o \
 	${OBJECTDIR}/FileScan/filescan_api.o \
@@ -253,6 +255,16 @@ ${OBJECTDIR}/Encode/encode_lib.o: Encode/encode_lib.c
 	${MKDIR} -p ${OBJECTDIR}/Encode
 	${RM} "$@.d"
 	$(COMPILE.c) -g -Wall -I../LibTools/include -Iinclude -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Encode/encode_lib.o Encode/encode_lib.c
+
+${OBJECTDIR}/EncodeRIA/encode_ria_api.o: EncodeRIA/encode_ria_api.c
+	${MKDIR} -p ${OBJECTDIR}/EncodeRIA
+	${RM} "$@.d"
+	$(COMPILE.c) -g -Wall -I../LibTools/include -Iinclude -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/EncodeRIA/encode_ria_api.o EncodeRIA/encode_ria_api.c
+
+${OBJECTDIR}/EncodeRIA/encode_ria_lib.o: EncodeRIA/encode_ria_lib.c
+	${MKDIR} -p ${OBJECTDIR}/EncodeRIA
+	${RM} "$@.d"
+	$(COMPILE.c) -g -Wall -I../LibTools/include -Iinclude -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/EncodeRIA/encode_ria_lib.o EncodeRIA/encode_ria_lib.c
 
 ${OBJECTDIR}/EncodeRXF/encode_rxf_api.o: EncodeRXF/encode_rxf_api.c
 	${MKDIR} -p ${OBJECTDIR}/EncodeRXF
