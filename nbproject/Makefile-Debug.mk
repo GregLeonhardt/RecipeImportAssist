@@ -69,6 +69,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/EncodeRIA/encode_ria_lib.o \
 	${OBJECTDIR}/EncodeRXF/encode_rxf_api.o \
 	${OBJECTDIR}/EncodeRXF/encode_rxf_lib.o \
+	${OBJECTDIR}/EncodeTXT/encode_txt_api.o \
+	${OBJECTDIR}/EncodeTXT/encode_txt_lib.o \
 	${OBJECTDIR}/FileScan/filescan_api.o \
 	${OBJECTDIR}/FileScan/filescan_lib.o \
 	${OBJECTDIR}/Recipe/recipe_api.o \
@@ -275,6 +277,16 @@ ${OBJECTDIR}/EncodeRXF/encode_rxf_lib.o: EncodeRXF/encode_rxf_lib.c
 	${MKDIR} -p ${OBJECTDIR}/EncodeRXF
 	${RM} "$@.d"
 	$(COMPILE.c) -g -Wall -I../LibTools/include -Iinclude -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/EncodeRXF/encode_rxf_lib.o EncodeRXF/encode_rxf_lib.c
+
+${OBJECTDIR}/EncodeTXT/encode_txt_api.o: EncodeTXT/encode_txt_api.c
+	${MKDIR} -p ${OBJECTDIR}/EncodeTXT
+	${RM} "$@.d"
+	$(COMPILE.c) -g -Wall -I../LibTools/include -Iinclude -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/EncodeTXT/encode_txt_api.o EncodeTXT/encode_txt_api.c
+
+${OBJECTDIR}/EncodeTXT/encode_txt_lib.o: EncodeTXT/encode_txt_lib.c
+	${MKDIR} -p ${OBJECTDIR}/EncodeTXT
+	${RM} "$@.d"
+	$(COMPILE.c) -g -Wall -I../LibTools/include -Iinclude -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/EncodeTXT/encode_txt_lib.o EncodeTXT/encode_txt_lib.c
 
 ${OBJECTDIR}/FileScan/filescan_api.o: FileScan/filescan_api.c
 	${MKDIR} -p ${OBJECTDIR}/FileScan

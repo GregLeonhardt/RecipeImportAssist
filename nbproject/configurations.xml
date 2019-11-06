@@ -20,6 +20,8 @@
       <itemPath>include/decodel2_api.h</itemPath>
       <itemPath>include/email_api.h</itemPath>
       <itemPath>include/encode_api.h</itemPath>
+      <itemPath>include/encode_mmf_api.h</itemPath>
+      <itemPath>include/encode_ria_api.h</itemPath>
       <itemPath>include/encode_rxf_api.h</itemPath>
       <itemPath>include/filescan_api.h</itemPath>
       <itemPath>include/main_api.h</itemPath>
@@ -140,6 +142,12 @@
         <itemPath>EncodeRXF/encode_rxf_lib.c</itemPath>
         <itemPath>EncodeRXF/encode_rxf_lib.h</itemPath>
       </logicalFolder>
+      <logicalFolder name="f18" displayName="EncodeTXT" projectFiles="true">
+        <itemPath>EncodeTXT/encode_txt_api.c</itemPath>
+        <itemPath>EncodeTXT/encode_txt_api.h</itemPath>
+        <itemPath>EncodeTXT/encode_txt_lib.c</itemPath>
+        <itemPath>EncodeTXT/encode_txt_lib.h</itemPath>
+      </logicalFolder>
       <logicalFolder name="f2" displayName="FileScan" projectFiles="true">
         <itemPath>FileScan/filescan_api.c</itemPath>
         <itemPath>FileScan/filescan_api.h</itemPath>
@@ -169,7 +177,9 @@
                    displayName="Important Files"
                    projectFiles="false"
                    kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>InstallNotes</itemPath>
       <itemPath>Makefile</itemPath>
+      <itemPath>RECIPE_FORMAT</itemPath>
       <itemPath>Translations</itemPath>
     </logicalFolder>
     <itemPath>InstallNotes</itemPath>
@@ -349,6 +359,14 @@
       </item>
       <item path="EncodeRXF/encode_rxf_lib.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="EncodeTXT/encode_txt_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="EncodeTXT/encode_txt_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="EncodeTXT/encode_txt_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="EncodeTXT/encode_txt_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="FileScan/filescan_api.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="FileScan/filescan_api.h" ex="false" tool="3" flavor2="0">
@@ -408,6 +426,10 @@
       <item path="include/email_api.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="include/encode_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/encode_mmf_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/encode_ria_api.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="include/encode_rxf_api.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -578,6 +600,14 @@
       </item>
       <item path="EncodeRXF/encode_rxf_lib.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="EncodeTXT/encode_txt_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="EncodeTXT/encode_txt_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="EncodeTXT/encode_txt_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="EncodeTXT/encode_txt_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="FileScan/filescan_api.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="FileScan/filescan_api.h" ex="false" tool="3" flavor2="0">
@@ -637,6 +667,10 @@
       <item path="include/email_api.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="include/encode_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/encode_mmf_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/encode_ria_api.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="include/encode_rxf_api.h" ex="false" tool="3" flavor2="0">
       </item>

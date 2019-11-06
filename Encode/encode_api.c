@@ -39,6 +39,7 @@
                                 //*******************************************
 #include <encode_rxf_api.h>     //  API for all encode_rxf_*        PUBLIC
 #include <encode_ria_api.h>     //  API for all encode_ria_*        PUBLIC
+#include <encode_txt_api.h>     //  API for all encode_txt_*        PUBLIC
 #include <recipe_api.h>         //  API for all recipe_*            PUBLIC
                                 //*******************************************
 #include <encode_api.h>         //  API for all encode_*            PUBLIC
@@ -133,7 +134,8 @@ encode_thread(
 //          encode_mx2( recipe_p );     //  Does Not Exist
 //          encode_mxp( recipe_p );     //  Does Not Exist
 //          encode_rxf( recipe_p );     //  Recipe XML Format
-            encode_ria( recipe_p );     //  Generic Output Format
+//          encode_ria( recipe_p );     //  Native Output Format
+            encode_txt( recipe_p );     //  Generic Text Output Format
         }
     }
 
