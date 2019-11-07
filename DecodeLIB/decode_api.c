@@ -880,7 +880,8 @@ decode_finalize(
     {
         //  Create a default string
         recipe_p->copyright = text_copy_to_new( "Copyright (c) and related "
-                "rights reserved via Creative Commons [CC BY-SA 4.0]\n\t\t"
+                "rights reserved via Creative Commons [CC BY-SA 4.0]\n"
+                "                "
                 "https://creativecommons.org/licenses/by-sa/4.0/" );
 
         log_write( MID_DEBUG_1, "decode_api.c", "Line: %d\n", __LINE__ );
@@ -893,7 +894,8 @@ decode_finalize(
 
         //  Create a default string
         recipe_p->copyright = text_copy_to_new( "Copyright (c) and related "
-                "rights reserved via Creative Commons [CC BY-SA 4.0]\n\t\t"
+                "rights reserved via Creative Commons [CC BY-SA 4.0]\n"
+                "                "
                 "https://creativecommons.org/licenses/by-sa/4.0/" );
         log_write( MID_DEBUG_1, "decode_api.c", "Line: %d\n", __LINE__ );
     }
