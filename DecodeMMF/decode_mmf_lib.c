@@ -399,14 +399,14 @@ DECODE_MMF__fmt_split(
 
     //  Get the size of the data buffer
     data_l = strlen( data_p );
-    
+
     //  Locate the first character in the buffer
     data_p = text_skip_past_whitespace( data_p );
 
     /************************************************************************
      *  Remove leading 'MMMMM'
      ************************************************************************/
-    
+
     //  Is the first character in the buffer a 'M' ?
     while ( data_p[ 0 ] == 'M' )
     {
@@ -417,55 +417,74 @@ DECODE_MMF__fmt_split(
     /************************************************************************
      *  Remove leading non-alpha-numeric characters
      ************************************************************************/
-    
-    //  Is the first character in the buffer a 'M' ?
+
+    //  Is the first character in the buffer an alpha or numeric character ?
     while ( isalnum( data_p[ 0 ] ) == 0 )
     {
-        //  YES:    Remove it
+        //  NO:     Remove it
         text_remove( data_p, 0, 1 );
+
+        //  Is there anything still in the buffer ?
+        if ( text_is_blank_line( data_p ) == true )
+        {
+            //  NO:     We're done here
+            break;
+        }
     }
 
     /************************************************************************
      *  Skip over the text
      ************************************************************************/
-    
-    //  Get a temporary pointer to the string
-    tmp_data_p = data_p;
-    
-    //  Is the first character in the buffer a 'M' ?
-    while (    (    ( isalnum( tmp_data_p[ 0 ] ) != 0 )
-                 || ( isspace( tmp_data_p[ 0 ] ) != 0 ) )
-            || (    ( isalnum( tmp_data_p[ 0 ] ) == 0 )
-                 && ( isalnum( tmp_data_p[ 1 ] ) != 0 ) ) )
+
+    //  Is there anything still in the buffer ?
+    if ( text_is_blank_line( data_p ) != true )
     {
-        //  YES:    Skip over it
-        tmp_data_p += 1;
+        //  YES:    Get a temporary pointer to the string
+        tmp_data_p = data_p;
+
+        //  Is the first character in the buffer a 'M' ?
+        while (    (    ( isalnum( tmp_data_p[ 0 ] ) != 0 )
+                     || ( isspace( tmp_data_p[ 0 ] ) != 0 ) )
+                || (    ( isalnum( tmp_data_p[ 0 ] ) == 0 )
+                     && ( isalnum( tmp_data_p[ 1 ] ) != 0 ) ) )
+        {
+            //  YES:    Skip over it
+            tmp_data_p += 1;
+        }
     }
 
     /************************************************************************
      *  Remove all trailing characters
      ************************************************************************/
-    
-    //  Is the last character in the buffer ?
-    while ( tmp_data_p[ 0 ] != '\0' )
+
+    //  Is there anything still in the buffer ?
+    if ( text_is_blank_line( data_p ) != true )
     {
-        //  YES:    Remove it
-        text_remove( tmp_data_p, 0, 1 );
+        //  YES:    Is the last character in the buffer ?
+        while ( tmp_data_p[ 0 ] != '\0' )
+        {
+            //  YES:    Remove it
+            text_remove( tmp_data_p, 0, 1 );
+        }
     }
 
     /************************************************************************
      *  Format the string
      ************************************************************************/
 
-    // Put a '-' in the beginning of the string
-    text_insert( data_p, data_l, 0, (char*)"** " );
-
-    //  Append a colon to the end of the string
-    if ( strlen( data_p ) < ( data_l + 3 ) )
+    //  Is there anything still in the buffer ?
+    if ( text_is_blank_line( data_p ) != true )
     {
-        tmp_data_p[ 3 ] = ' ';
-        tmp_data_p[ 4 ] = '*';
-        tmp_data_p[ 5 ] = '*';
+        // YES: Put a '-' in the beginning of the string
+        text_insert( data_p, data_l, 0, (char*)"** " );
+
+        //  Append a colon to the end of the string
+        if ( strlen( data_p ) < ( data_l + 3 ) )
+        {
+            tmp_data_p[ 3 ] = ' ';
+            tmp_data_p[ 4 ] = '*';
+            tmp_data_p[ 5 ] = '*';
+        }
     }
 
     /************************************************************************
@@ -833,7 +852,7 @@ DECODE_MMF__auip(
         {
             //  YES:    This must be part of the directions
             DECODE_MMF__directions( recipe_p, in_buffer_p );
-            
+
             //  End of AUIP
             mmf_rc = true;
         }
@@ -842,14 +861,14 @@ DECODE_MMF__auip(
             //  Change the flag because we have data.
             MMF_blank_line = false;
             MMF_first_auip = true;
-            
+
             //  Is this an AUIP split line ?
             if ( DECODE_MMF__split( in_buffer_p ) == true )
             {
                 //  Format the split line
                 in_buffer_p = DECODE_MMF__fmt_split( in_buffer_p );
             }
-            
+
             // Format the AUIP line
             recipe_fmt_auip( recipe_p, in_buffer_p, RECIPE_FORMAT_MMF );
         }
