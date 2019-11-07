@@ -345,13 +345,16 @@ DECODE_MMF__split(
     tmp_data_p = text_skip_past_whitespace( data_p );
 
     /************************************************************************
-     *  Test for a valid recipe end string
+     *  Test for a valid AUIP split string
      ************************************************************************/
 
     //  Is this the start of a Meal-Master MMF recipe ?
-    if (    ( strncmp( tmp_data_p, MMF_END_1,  MMF_END_1_L  ) == 0 )
-         || ( strncmp( tmp_data_p, MMF_END_2,  MMF_END_2_L  ) == 0 )
-         || ( strncmp( tmp_data_p, MMF_END_3,  MMF_END_3_L  ) == 0 ) )
+    if (    (    ( strncmp( tmp_data_p, MMF_END_1,  MMF_END_1_L  ) == 0 )
+              && ( strlen( tmp_data_p ) > MMF_END_1_L ) )
+         || (    ( strncmp( tmp_data_p, MMF_END_2,  MMF_END_2_L  ) == 0 )
+              && ( strlen( tmp_data_p ) > MMF_END_2_L ) )
+         || (    ( strncmp( tmp_data_p, MMF_END_3,  MMF_END_3_L  ) == 0 )
+              && ( strlen( tmp_data_p ) > MMF_END_3_L ) ) )
     {
         //  YES:    Change the return code
         mmf_rc = true;
