@@ -1113,6 +1113,17 @@ recipe_fmt_directions(
         {
 
             /****************************************************************
+             *  Replace 0x14 with a NULL
+             ****************************************************************/
+
+            //  Is this a matching character sequence ?
+            if ( next_word[ strlen( next_word ) - 1 ] == 0x14 )
+            {
+                //  YES:    Replace with CR and terminate the line.
+                next_word[ strlen( next_word ) - 1 ] = '\n';
+            }
+            
+            /****************************************************************
              *  Remove format bars of all dashes.
              ****************************************************************/
 
