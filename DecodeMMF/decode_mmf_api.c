@@ -54,10 +54,9 @@ enum    mmf_decode_state_e
     MMF_DS_TITLE                =   1,
     MMF_DS_CATEGORIES           =   2,
     MMF_DS_YIELD                =   3,
-    MMF_DS_AUIP_0               =   4,
-    MMF_DS_AUIP_1               =   5,
-    MMF_DS_DIRECTIONS           =   6,
-    MMF_DS_END                  =   7
+    MMF_DS_AUIP                 =   4,
+    MMF_DS_DIRECTIONS           =   5,
+    MMF_DS_END                  =   6
 };
 //----------------------------------------------------------------------------
 
@@ -131,6 +130,10 @@ decode_mmf(
 
     //  Change state to looking for the recipe title.
     mmf_state = MMF_DS_TITLE;
+    
+    //  Initialize the decode flags
+    MMF_first_auip = false;
+    MMF_blank_line = true;
 
     /************************************************************************
      *  Copy e-Mail information
@@ -186,8 +189,14 @@ decode_mmf(
                 //  Locate and process the recipe title
                 if ( DECODE_MMF__categories( recipe_p, list_data_p ) == true )
                 {
-                    //  When rc == true, the title search is complete.
-                    //  Change state to looking for the recipe yield.
+                    //  Change to Title Case
+                    text_title_case( recipe_p->name, recipe_p->name );
+
+                    //  Log the new title
+                    log_write( MID_INFO, "decode_mmf",
+                               "'%s'\n", recipe_p->name );
+
+                    //  Change decode state
                     mmf_state = MMF_DS_YIELD;
                 }
             }   break;
@@ -201,41 +210,21 @@ decode_mmf(
                 //  Locate and process the recipe title
                 if ( DECODE_MMF__yield( recipe_p, list_data_p ) == true )
                 {
-                    //  When rc == true, the title search is complete.
-                    //  Change state to looking for the AUIP section.
-                    mmf_state = MMF_DS_AUIP_0;
+                    //  Change decode state
+                    mmf_state = MMF_DS_AUIP;
                 }
-            }   break;
-
-            /****************************************************************
-             *  Search for the start of AUIP
-             *      Amount, Unit, Ingredient, Preparation
-             ****************************************************************/
-
-            case MMF_DS_AUIP_0:
-            {
-                //  Change state to processing AUIP section.
-                mmf_state = MMF_DS_AUIP_1;
             }   break;
 
             /****************************************************************
              *  Process AUIP
              ****************************************************************/
 
-            case MMF_DS_AUIP_1:
+            case MMF_DS_AUIP:
             {
                 //  Locate and process the recipe title
                 if ( DECODE_MMF__auip( recipe_p, list_data_p ) == true )
                 {
-                    //  Change to Title Case
-                    text_title_case( recipe_p->name, recipe_p->name );
-
-                    //  Log the new title
-                    log_write( MID_INFO, "decode_mmf",
-                               "'%s'\n", recipe_p->name );
-
-                    //  When rc == true, the title search is complete.
-                    //  Change state to looking for the recipe directions.
+                    //  Change decode state
                     mmf_state = MMF_DS_DIRECTIONS;
                 }
             }   break;
@@ -249,8 +238,7 @@ decode_mmf(
                 //  Locate and process the recipe title
                 if ( DECODE_MMF__directions( recipe_p, list_data_p ) == true )
                 {
-                    //  When rc == true, the title search is complete.
-                    //  Change state to recipe decode complete.
+                    //  Change decode state
                     mmf_state = MMF_DS_END;
                 }
             }   break;

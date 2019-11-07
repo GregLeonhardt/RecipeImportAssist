@@ -304,6 +304,177 @@ DECODE_MMF__end(
 
 /****************************************************************************/
 /**
+ *  Test for an AUIP split marker.
+ *      FORMATS:
+ *          1   |MMMMM|
+ *          2   |-----|
+ *          3   |- -----|
+ *      NOTE:
+ *          When new end of recipe markers are added here, they should also
+ *          be added to rd_input_file:rd_preprocess( )
+ *
+ *  @param  data_p              Pointer to a a line of text to be scanned.
+ *
+ *  @return                     TRUE when the text string matches a known
+ *                              end of recipe marker, else FALSE
+ *
+ *  @note
+ *
+ ****************************************************************************/
+
+int
+DECODE_MMF__split(
+    char                        *   data_p
+    )
+{
+    /**
+     * @param mmf_rc            Return Code                                 */
+    int                             mmf_rc;
+    /**
+     * @param tmp_data_p        Pointer to a temp data buffer               */
+    char                        *   tmp_data_p;
+
+    /************************************************************************
+     *  Function Initialization
+     ************************************************************************/
+
+    //  The assumption is that this is NOT the start of a Meal-Master recipe
+    mmf_rc = false;
+
+    //  Locate the first character in the buffer
+    tmp_data_p = text_skip_past_whitespace( data_p );
+
+    /************************************************************************
+     *  Test for a valid recipe end string
+     ************************************************************************/
+
+    //  Is this the start of a Meal-Master MMF recipe ?
+    if (    ( strncmp( tmp_data_p, MMF_END_1,  MMF_END_1_L  ) == 0 )
+         || ( strncmp( tmp_data_p, MMF_END_2,  MMF_END_2_L  ) == 0 )
+         || ( strncmp( tmp_data_p, MMF_END_3,  MMF_END_3_L  ) == 0 ) )
+    {
+        //  YES:    Change the return code
+        mmf_rc = true;
+    }
+
+    /************************************************************************
+     *  Function Exit
+     ************************************************************************/
+
+    //  DONE!
+    return ( mmf_rc );
+}
+
+/****************************************************************************/
+/**
+ *  Format an AUIP split line
+ *
+ *  @param  data_p              Pointer to a a line of text to be scanned.
+ *
+ *  @return                     TRUE when the text string matches a known
+ *                              end of recipe marker, else FALSE
+ *
+ *  @note
+ *
+ ****************************************************************************/
+
+char *
+DECODE_MMF__fmt_split(
+    char                        *   data_p
+    )
+{
+    /**
+     * @param tmp_data_p        Pointer to a temp data buffer               */
+    char                        *   tmp_data_p;
+    /**
+     * @param data_l            Size of the known data buffer               */
+    int                             data_l;
+
+    /************************************************************************
+     *  Function Initialization
+     ************************************************************************/
+
+    //  Get the size of the data buffer
+    data_l = strlen( data_p );
+    
+    //  Locate the first character in the buffer
+    data_p = text_skip_past_whitespace( data_p );
+
+    /************************************************************************
+     *  Remove leading 'MMMMM'
+     ************************************************************************/
+    
+    //  Is the first character in the buffer a 'M' ?
+    while ( data_p[ 0 ] == 'M' )
+    {
+        //  YES:    Remove it
+        text_remove( data_p, 0, 1 );
+    }
+
+    /************************************************************************
+     *  Remove leading non-alpha-numeric characters
+     ************************************************************************/
+    
+    //  Is the first character in the buffer a 'M' ?
+    while ( isalnum( data_p[ 0 ] ) == 0 )
+    {
+        //  YES:    Remove it
+        text_remove( data_p, 0, 1 );
+    }
+
+    /************************************************************************
+     *  Skip over the text
+     ************************************************************************/
+    
+    //  Get a temporary pointer to the string
+    tmp_data_p = data_p;
+    
+    //  Is the first character in the buffer a 'M' ?
+    while (    (    ( isalnum( tmp_data_p[ 0 ] ) != 0 )
+                 || ( isspace( tmp_data_p[ 0 ] ) != 0 ) )
+            || (    ( isalnum( tmp_data_p[ 0 ] ) == 0 )
+                 && ( isalnum( tmp_data_p[ 1 ] ) != 0 ) ) )
+    {
+        //  YES:    Skip over it
+        tmp_data_p += 1;
+    }
+
+    /************************************************************************
+     *  Remove all trailing characters
+     ************************************************************************/
+    
+    //  Is the last character in the buffer ?
+    while ( tmp_data_p[ 0 ] != '\0' )
+    {
+        //  YES:    Remove it
+        text_remove( tmp_data_p, 0, 1 );
+    }
+
+    /************************************************************************
+     *  Format the string
+     ************************************************************************/
+
+    // Put a '-' in the beginning of the string
+    text_insert( data_p, data_l, 0, (char*)"** " );
+
+    //  Append a colon to the end of the string
+    if ( strlen( data_p ) < ( data_l + 3 ) )
+    {
+        tmp_data_p[ 3 ] = ' ';
+        tmp_data_p[ 4 ] = '*';
+        tmp_data_p[ 5 ] = '*';
+    }
+
+    /************************************************************************
+     *  Function Exit
+     ************************************************************************/
+
+    //  DONE!
+    return ( data_p );
+}
+
+/****************************************************************************/
+/**
  *  Search for and process the recipe title.
  *
  *  @param  recipe_p            Pointer to a recipe structure.
@@ -652,13 +823,38 @@ DECODE_MMF__auip(
         //  Process the first half (or the entire line)
         in_buffer_p = text_skip_past_whitespace( in_buffer_p );
 
-        // Format the AUIP line
-        recipe_fmt_auip( recipe_p, in_buffer_p, RECIPE_FORMAT_MMF );
+        //  Did we run past the end of AUIP ?
+        if (    ( MMF_blank_line                   == true )
+             && ( DECODE_MMF__split( in_buffer_p ) != true )
+             && ( MMF_first_auip                   == true ) )
+        {
+            //  YES:    This must be part of the directions
+            DECODE_MMF__directions( recipe_p, in_buffer_p );
+            
+            //  End of AUIP
+            mmf_rc = true;
+        }
+        else
+        {
+            //  Change the flag because we have data.
+            MMF_blank_line = false;
+            MMF_first_auip = true;
+            
+            //  Is this an AUIP split line ?
+            if ( DECODE_MMF__split( in_buffer_p ) == true )
+            {
+                //  Format the split line
+                in_buffer_p = DECODE_MMF__fmt_split( in_buffer_p );
+            }
+            
+            // Format the AUIP line
+            recipe_fmt_auip( recipe_p, in_buffer_p, RECIPE_FORMAT_MMF );
+        }
     }
     else
     {
-        //  The blank line marks the end of the AUIP section
-        mmf_rc = true;
+        //  So we can detect the previous line was blank.
+        MMF_blank_line = true;
     }
 
     /************************************************************************

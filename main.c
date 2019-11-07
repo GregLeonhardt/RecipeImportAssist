@@ -176,6 +176,10 @@ command_line(
      *  Function Initialization
      ************************************************************************/
 
+    //  Initialize the pointers
+    in_file_name_p = NULL;
+    in_dir_name_p  = NULL;
+    out_dir_name_p = NULL;
 
     /************************************************************************
      *  Scan for parameters
@@ -194,12 +198,8 @@ command_line(
     if (    ( in_file_name_p       == NULL )
          && ( in_dir_name_p        == NULL ) )
     {
-//      in_file_name_p       = "../samples/1996.mxp";
-//      in_file_name_p       = "../samples/Alacarte.mxp";
-//      in_file_name_p       = "../samples/test.txt";
-//      in_file_name_p       = "../samples/MM3500_1.TXT";
-//      in_dir_name_p        = "../samples/";
-        in_dir_name_p        = "/home/greg/TEST";
+        in_dir_name_p        = "/home/greg/work/RecipeSourceFiles";
+        out_dir_name_p       = "/home/greg/work/RecipeOutputFiles";
     }
 
     /************************************************************************
