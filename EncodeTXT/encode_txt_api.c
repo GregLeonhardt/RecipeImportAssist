@@ -212,7 +212,7 @@ encode_txt(
             //  Is there a preparation method ?
             if ( auip_p->preparation_p != NULL )
             {
-                fprintf( out_file_fp, " -- %s",     auip_p->preparation_p );
+                fprintf( out_file_fp, " %s",     auip_p->preparation_p );
             }
             //  End-of-Line
             fprintf( out_file_fp, "\n" );
