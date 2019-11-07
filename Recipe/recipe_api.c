@@ -1122,6 +1122,19 @@ recipe_fmt_directions(
                 //  YES:    Replace with CR and terminate the line.
                 next_word[ strlen( next_word ) - 1 ] = '\n';
             }
+
+            /****************************************************************
+             *  Replace '~-' with a CR
+             ****************************************************************/
+
+            //  Is this a matching character sequence ?
+            if (    ( next_word[ 0 ] == '~' )
+                 && ( next_word[ 1 ] == '-' ) )
+            {
+                //  YES:    Replace with CR and terminate the line.
+                next_word[ 0 ] = '\n';
+                next_word[ 1 ] = '\0';
+            }
             
             /****************************************************************
              *  Remove format bars of all dashes.
