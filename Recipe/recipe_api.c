@@ -1213,11 +1213,7 @@ recipe_fmt_directions(
              ****************************************************************/
 
             // Does this word end with a colon ?
-#if 0
-            if ( next_word[ strlen( next_word ) - 1 ] == ':' )
-#else
             if ( strchr( next_word, ':' ) != NULL )
-#endif
             {
                 //  YES:    Set the flags.
                 fwos = true;
