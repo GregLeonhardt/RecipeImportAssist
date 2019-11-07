@@ -191,10 +191,18 @@ encode_txt(
             {
                 fprintf( out_file_fp, "%-8s",     auip_p->amount_p );
             }
+            else
+            {
+                fprintf( out_file_fp, "        " );
+            }
             //  Is there a unit of measurement ?
             if ( auip_p->unit_p != NULL )
             {
                 fprintf( out_file_fp, "%-12s",     auip_p->unit_p );
+            }
+            else
+            {
+                fprintf( out_file_fp, "            " );
             }
             //  Is there an ingredient ?
             if ( auip_p->ingredient_p != NULL )
@@ -230,7 +238,7 @@ encode_txt(
     //  DESCRIPTION:
     if ( recipe_p->description != NULL )
     {
-        fprintf( out_file_fp, "Description:\t%s\n", recipe_p->description );
+        fprintf( out_file_fp, "Description:    %s\n", recipe_p->description );
     }
     //-----------------------------------------------------------------------
     //  NOTES:
@@ -270,7 +278,7 @@ encode_txt(
             {
                 if ( first_category == true )
                 {
-                    fprintf( out_file_fp, "\tCUISINE:\t\t%s", data_p );
+                    fprintf( out_file_fp, "    CUISINE:    %s", data_p );
                     first_category = false;
                 }
                 else
@@ -294,7 +302,7 @@ encode_txt(
             {
                 if ( first_category == true )
                 {
-                    fprintf( out_file_fp, "\tOCCASION:\t%s", data_p );
+                    fprintf( out_file_fp, "    OCCASION:   %s", data_p );
                     first_category = false;
                 }
                 else
@@ -318,7 +326,7 @@ encode_txt(
             {
                 if ( first_category == true )
                 {
-                    fprintf( out_file_fp, "\tCOURSE:\t\t%s", data_p );
+                    fprintf( out_file_fp, "    COURSE:     %s", data_p );
                     first_category = false;
                 }
                 else
@@ -342,7 +350,7 @@ encode_txt(
             {
                 if ( first_category == true )
                 {
-                    fprintf( out_file_fp, "\tDIET:\t\t%s", data_p );
+                    fprintf( out_file_fp, "    DIET:       %s", data_p );
                     first_category = false;
                 }
                 else
@@ -366,7 +374,7 @@ encode_txt(
             {
                 if ( first_category == true )
                 {
-                    fprintf( out_file_fp, "\tAPPLIANCE:\t%s", data_p );
+                    fprintf( out_file_fp, "    APPLIANCE:  %s", data_p );
                     first_category = false;
                 }
                 else
@@ -390,7 +398,7 @@ encode_txt(
             {
                 if ( first_category == true )
                 {
-                    fprintf( out_file_fp, "\tCHAPTER:\t%s", data_p );
+                    fprintf( out_file_fp, "    CHAPTER:    %s", data_p );
                     first_category = false;
                 }
                 else
@@ -409,11 +417,11 @@ encode_txt(
     {
         if ( recipe_p->serves != NULL )
         {
-            fprintf( out_file_fp, "Yield:\t\t%s\n", recipe_p->serves );
+            fprintf( out_file_fp, "Yield:          %s\n", recipe_p->serves );
         }
         if ( recipe_p->makes  != NULL )
         {
-            fprintf( out_file_fp, "Makes:\t\t%s", recipe_p->makes );
+            fprintf( out_file_fp, "Makes:          %s", recipe_p->makes );
             
             //  Is there a unit of measurement ?
             if ( recipe_p->makes_unit != NULL )
@@ -430,15 +438,15 @@ encode_txt(
     }
     //-----------------------------------------------------------------------
     //  AUTHOR:
-    fprintf( out_file_fp, "Author:\t\t%s\n", recipe_p->author );
+    fprintf( out_file_fp, "Author:         %s\n", recipe_p->author );
     //-----------------------------------------------------------------------
     //  COPYRIGHT:
-    fprintf( out_file_fp, "Copyright:\t%s\n", recipe_p->copyright );
+    fprintf( out_file_fp, "Copyright:      %s\n", recipe_p->copyright );
     //-----------------------------------------------------------------------
     //  TIME PREP:
     if ( recipe_p->time_prep != NULL )
     {
-        fprintf( out_file_fp, "Time Prep:\t%s\n", recipe_p->time_prep );
+        fprintf( out_file_fp, "Time Prep:      %s\n", recipe_p->time_prep );
     }
     //-----------------------------------------------------------------------
     //  TIME WAIT:
@@ -446,41 +454,41 @@ encode_txt(
     //          I'm using the resting time as a place holder.
     if ( recipe_p->time_resting != NULL )
     {
-        fprintf( out_file_fp, "Time Wait:\t%s\n", recipe_p->time_resting );
+        fprintf( out_file_fp, "Time Wait:      %s\n", recipe_p->time_resting );
     }
     //-----------------------------------------------------------------------
     //  TIME COOK:
     if ( recipe_p->time_cook != NULL )
     {
-        fprintf( out_file_fp, "Time Cook:\t%s\n", recipe_p->time_cook );
+        fprintf( out_file_fp, "Time Cook:      %s\n", recipe_p->time_cook );
     }
     //-----------------------------------------------------------------------
     //  TIME REST:
     if ( recipe_p->time_resting != NULL )
     {
-        fprintf( out_file_fp, "Time Rest:\t%s\n", recipe_p->time_resting );
+        fprintf( out_file_fp, "Time Rest:      %s\n", recipe_p->time_resting );
     }
     //-----------------------------------------------------------------------
     //  SKILL LEVEL:
     if ( recipe_p->skill != NULL )
     {
-        fprintf( out_file_fp, "Skill Level:\t%s\n", recipe_p->skill );
+        fprintf( out_file_fp, "Skill Level:    %s\n", recipe_p->skill );
     }
     //-----------------------------------------------------------------------
     //  RATING:
     if ( recipe_p->rating != NULL )
     {
-        fprintf( out_file_fp, "Rating:\t\t%s\n", recipe_p->rating );
+        fprintf( out_file_fp, "Rating:         %s\n", recipe_p->rating );
     }
     //-----------------------------------------------------------------------
     //  FORMAT:
     if ( recipe_p->source_format == NULL )
     {
-        fprintf( out_file_fp, "Format:\t\tTXT\n" );
+        fprintf( out_file_fp, "Format:         TXT\n" );
     }
     else
     {
-        fprintf( out_file_fp, "Format:\t\t%s\n", recipe_p->source_format );
+        fprintf( out_file_fp, "Format:         %s\n", recipe_p->source_format );
     }
     //-----------------------------------------------------------------------
     //  <IMPORTED_FROM>
@@ -491,18 +499,18 @@ encode_txt(
     {
         if ( recipe_p->dir_name != NULL )
         {
-            fprintf( out_file_fp, "FileDirectory:\t%s\n", recipe_p->dir_name );
+            fprintf( out_file_fp, "FileDirectory:  %s\n", recipe_p->dir_name );
         }
         if ( recipe_p->file_name != NULL )
         {
-            fprintf( out_file_fp, "FileName:\t%s\n", recipe_p->file_name );
+            fprintf( out_file_fp, "FileName:       %s\n", recipe_p->file_name );
         }
         if ( recipe_p->file_date_time != NULL )
         {
-            fprintf( out_file_fp, "FileSize:\t%s\n", recipe_p->file_size );
+            fprintf( out_file_fp, "FileSize:       %s\n", recipe_p->file_size );
         }
         {
-            fprintf( out_file_fp, "FileDateTime:\t%s\n", recipe_p->file_date_time );
+            fprintf( out_file_fp, "FileDateTime:   %s\n", recipe_p->file_date_time );
         }
     }
     //-----------------------------------------------------------------------
@@ -516,42 +524,42 @@ encode_txt(
         //  GROUP-NAME:
         if ( recipe_p->group_from != NULL )
         {
-            fprintf( out_file_fp, "G-Name:\t\t%s\n",
+            fprintf( out_file_fp, "G-Name:         %s\n",
                      recipe_p->group_from );
         }
         //  ####################
         //  GROUP-SUBJECT:
         if ( recipe_p->group_subject != NULL )
         {
-            fprintf( out_file_fp, "G-Subject:\t%s\n",
+            fprintf( out_file_fp, "G-Subject:      %s\n",
                      recipe_p->group_subject );
         }
         //  ####################
         //  GROUP-DATE:
         if ( recipe_p->group_date != NULL )
         {
-            fprintf( out_file_fp, "G-Date:\t\t%s\n",
+            fprintf( out_file_fp, "G-Date:         %s\n",
                      recipe_p->group_date );
         }
         //  ####################
         //  POSTED-BY:
         if ( recipe_p->posted_by != NULL )
         {
-            fprintf( out_file_fp, "P-By:\t\t%s\n",
+            fprintf( out_file_fp, "P-By:           %s\n",
                      recipe_p->posted_by );
         }
         //  ####################
         //  POSTED-SUBJECT:
         if ( recipe_p->posted_subject != NULL )
         {
-            fprintf( out_file_fp, "P-Subject:\t%s\n",
+            fprintf( out_file_fp, "P-Subject:      %s\n",
                      recipe_p->posted_subject );
         }
         //  ####################
         //  POSTED-DATE:
         if ( recipe_p->posted_date != NULL )
         {
-            fprintf( out_file_fp, "P-Date:\t\t%s\n",
+            fprintf( out_file_fp, "P-Date:         %s\n",
                      recipe_p->posted_date );
         }
     }
@@ -562,11 +570,11 @@ encode_txt(
     {
         if ( recipe_p->formatted_by != NULL )
         {
-            fprintf( out_file_fp, "FormattedBy:\t%s\n", recipe_p->formatted_by );
+            fprintf( out_file_fp, "FormattedBy:    %s\n", recipe_p->formatted_by );
         }
         if ( recipe_p->edited_by != NULL )
         {
-            fprintf( out_file_fp, "EditedBy:\t%s\n", recipe_p->edited_by );
+            fprintf( out_file_fp, "EditedBy:       %s\n", recipe_p->edited_by );
         }
     }
     //-----------------------------------------------------------------------
