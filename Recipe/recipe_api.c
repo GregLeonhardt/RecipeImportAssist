@@ -303,6 +303,7 @@ recipe_kill(
     if ( recipe_p->based_on != NULL)         mem_free( recipe_p->based_on );
     if ( recipe_p->serve_with != NULL)       mem_free( recipe_p->serve_with );
     if ( recipe_p->rating != NULL)           mem_free( recipe_p->rating );
+    if ( recipe_p->source != NULL)           mem_free( recipe_p->source );
     if ( recipe_p->skill != NULL)            mem_free( recipe_p->skill );
     if ( recipe_p->instructions != NULL )    mem_free( recipe_p->instructions );
     //------------------------------------------------------------------------
@@ -1135,7 +1136,7 @@ recipe_fmt_directions(
                 next_word[ 0 ] = '\n';
                 next_word[ 1 ] = '\0';
             }
-            
+
             /****************************************************************
              *  Remove format bars of all dashes.
              ****************************************************************/

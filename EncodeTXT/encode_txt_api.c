@@ -174,10 +174,82 @@ encode_txt(
     fprintf( out_file_fp, "@@@@@\n" );
     //-----------------------------------------------------------------------
     //  NAME
-    fprintf( out_file_fp, "%s\n\n", recipe_p->name );
+    fprintf( out_file_fp, "%s\n", recipe_p->name );
     //-----------------------------------------------------------------------
-    //  Recipe-Id
-    fprintf( out_file_fp, "%s\n\n", recipe_p->recipe_id );
+    //  Section break:
+    fprintf( out_file_fp, "|\n" );
+    //-----------------------------------------------------------------------
+    //  DESCRIPTION:
+    if ( recipe_p->description != NULL )
+    {
+        fprintf( out_file_fp, "%s\n", recipe_p->description );
+    }
+    //-----------------------------------------------------------------------
+    //  AUTHOR:
+    fprintf( out_file_fp, "Author: " );
+    if ( recipe_p->author != NULL )
+    {
+        fprintf( out_file_fp, "%s\n", recipe_p->author );
+    }
+    else
+    {
+        fprintf( out_file_fp, "\n" );
+    }
+    //-----------------------------------------------------------------------
+    //  Serves:
+    fprintf( out_file_fp, "Serves: " );
+    if ( recipe_p->serves != NULL )
+    {
+        fprintf( out_file_fp, "%s\n", recipe_p->serves );
+    }
+    else
+    {
+        fprintf( out_file_fp, "\n" );
+    }
+    //-----------------------------------------------------------------------
+    //  TIME PREP:
+    fprintf( out_file_fp, "Prep Time: " );
+    if ( recipe_p->time_prep != NULL )
+    {
+        fprintf( out_file_fp, "%s\n", recipe_p->time_prep );
+    }
+    else
+    {
+        fprintf( out_file_fp, "0:00\n" );
+    }
+    //-----------------------------------------------------------------------
+    //  TIME COOK:
+    fprintf( out_file_fp, "Cook Time: " );
+    if ( recipe_p->time_cook != NULL )
+    {
+        fprintf( out_file_fp, "%s\n", recipe_p->time_cook );
+    }
+    else
+    {
+        fprintf( out_file_fp, "0:00\n" );
+    }
+    //-----------------------------------------------------------------------
+    //  Yield:
+    fprintf( out_file_fp, "Yield: " );
+
+    if ( recipe_p->makes != NULL )
+    {
+        fprintf( out_file_fp, "%s", recipe_p->makes );
+    }
+    //  Is there a unit of measurement ?
+    if ( recipe_p->makes_unit != NULL )
+    {
+        //  YES:    Write it
+        fprintf( out_file_fp, " %s\n", recipe_p->makes_unit );
+    }
+    else
+    {
+        //  NO:     End-of-Line
+        fprintf( out_file_fp, "\n" );
+    }
+    //-----------------------------------------------------------------------
+    //  Section break:
+    fprintf( out_file_fp, "|\n" );
     //-----------------------------------------------------------------------
     //  <AUIP>
     if ( list_query_count( recipe_p->ingredient ) > 0 )
@@ -218,8 +290,16 @@ encode_txt(
             fprintf( out_file_fp, "\n" );
         }
     }
+    else
+    {
+        //  No AUIP
+        fprintf( out_file_fp, "** TEXT ONLY - NO INGREDIENTS **" );
+    }
     //  Add a blank line after the AUIP
     fprintf( out_file_fp, "\n" );
+    //-----------------------------------------------------------------------
+    //  Section break:
+    fprintf( out_file_fp, "|\n" );
     //-----------------------------------------------------------------------
     //  DIRECTIONS
     if ( list_query_count( recipe_p->directions ) > 0 )
@@ -232,20 +312,27 @@ encode_txt(
         }
     }
     //-----------------------------------------------------------------------
+    //  Source:
+    fprintf( out_file_fp, "Source: " );
+    if ( recipe_p->source != NULL )
+    {
+        fprintf( out_file_fp, "%s\n\n", recipe_p->source );
+    }
+    else
+    {
+        fprintf( out_file_fp, "\n" );
+    }
+    //-----------------------------------------------------------------------
     //  Extra Stuff:
     fprintf( out_file_fp, "\n============== EXTRA STUFF: ==============\n\n" );
     //-----------------------------------------------------------------------
-    //  DESCRIPTION:
-    if ( recipe_p->description != NULL )
-    {
-        fprintf( out_file_fp, "Description:    %s\n", recipe_p->description );
-    }
+    //  Recipe-Id
+    fprintf( out_file_fp, "Recipe-ID:      %s\n", recipe_p->recipe_id );
     //-----------------------------------------------------------------------
     //  NOTES:
+    fprintf( out_file_fp, "NOTES:\n" );
     if ( list_query_count( recipe_p->notes ) > 0 )
     {
-        //  Notes tag:
-        fprintf( out_file_fp, "NOTES:\n" );
         for( data_p = list_get_first( recipe_p->notes );
              data_p != NULL;
              data_p = list_get_next( recipe_p->notes, data_p ) )
@@ -255,30 +342,25 @@ encode_txt(
     }
     //-----------------------------------------------------------------------
     //  CATEGORIES
-    if (    ( list_query_count( recipe_p->cuisine  ) != 0 )
-         || ( list_query_count( recipe_p->occasion ) != 0 )
-         || ( list_query_count( recipe_p->course   ) != 0 )
-         || ( list_query_count( recipe_p->diet     ) != 0 ) )
+    fprintf( out_file_fp, "Categories:\n" );
     {
         int                             first_category;
-        
-        //  Categories tag
-        fprintf( out_file_fp, "Categories:\n" );
 
         //  ####################
         //  type=CUISINE
+        fprintf( out_file_fp, "    CUISINE:    " );
         if ( list_query_count( recipe_p->cuisine ) != 0 )
         {
             //  Set the flag
             first_category = true;
-            
+
             for( data_p = list_get_first( recipe_p->cuisine );
                  data_p != NULL;
                  data_p = list_get_next( recipe_p->cuisine, data_p ) )
             {
                 if ( first_category == true )
                 {
-                    fprintf( out_file_fp, "    CUISINE:    %s", data_p );
+                    fprintf( out_file_fp, "%s", data_p );
                     first_category = false;
                 }
                 else
@@ -286,23 +368,25 @@ encode_txt(
                     fprintf( out_file_fp, ", %s", data_p );
                 }
             }
-            //  End-of-Line
-            fprintf( out_file_fp, "\n" );
         }
+        //  End-of-Line
+        fprintf( out_file_fp, "\n" );
+
         //  ####################
         //  type=OCCASION
+        fprintf( out_file_fp, "    OCCASION:   " );
         if ( list_query_count( recipe_p->occasion ) != 0 )
         {
             //  Set the flag
             first_category = true;
-            
+
             for( data_p = list_get_first( recipe_p->occasion );
                  data_p != NULL;
                  data_p = list_get_next( recipe_p->occasion, data_p ) )
             {
                 if ( first_category == true )
                 {
-                    fprintf( out_file_fp, "    OCCASION:   %s", data_p );
+                    fprintf( out_file_fp, "%s", data_p );
                     first_category = false;
                 }
                 else
@@ -310,23 +394,25 @@ encode_txt(
                     fprintf( out_file_fp, ", %s", data_p );
                 }
             }
-            //  End-of-Line
-            fprintf( out_file_fp, "\n" );
         }
+        //  End-of-Line
+        fprintf( out_file_fp, "\n" );
+
         //  ####################
         //  type=COURSE
+        fprintf( out_file_fp, "    COURSE:     " );
         if ( list_query_count( recipe_p->course ) != 0 )
         {
             //  Set the flag
             first_category = true;
-            
+
             for( data_p = list_get_first( recipe_p->course );
                  data_p != NULL;
                  data_p = list_get_next( recipe_p->course, data_p ) )
             {
                 if ( first_category == true )
                 {
-                    fprintf( out_file_fp, "    COURSE:     %s", data_p );
+                    fprintf( out_file_fp, "%s", data_p );
                     first_category = false;
                 }
                 else
@@ -334,23 +420,25 @@ encode_txt(
                     fprintf( out_file_fp, ", %s", data_p );
                 }
             }
-            //  End-of-Line
-            fprintf( out_file_fp, "\n" );
         }
+        //  End-of-Line
+        fprintf( out_file_fp, "\n" );
+
         //  ####################
         //  type=DIET
+        fprintf( out_file_fp, "    DIET:       " );
         if ( list_query_count( recipe_p->diet ) != 0 )
         {
             //  Set the flag
             first_category = true;
-            
+
             for( data_p = list_get_first( recipe_p->diet );
                  data_p != NULL;
                  data_p = list_get_next( recipe_p->diet, data_p ) )
             {
                 if ( first_category == true )
                 {
-                    fprintf( out_file_fp, "    DIET:       %s", data_p );
+                    fprintf( out_file_fp, "%s", data_p );
                     first_category = false;
                 }
                 else
@@ -358,23 +446,25 @@ encode_txt(
                     fprintf( out_file_fp, ", %s", data_p );
                 }
             }
-            //  End-of-Line
-            fprintf( out_file_fp, "\n" );
         }
+        //  End-of-Line
+        fprintf( out_file_fp, "\n" );
+
         //  ####################
         //  type=APPLIANCE
+        fprintf( out_file_fp, "    APPLIANCE:  " );
         if ( list_query_count( recipe_p->appliance ) != 0 )
         {
             //  Set the flag
             first_category = true;
-            
+
             for( data_p = list_get_first( recipe_p->appliance );
                  data_p != NULL;
                  data_p = list_get_next( recipe_p->appliance, data_p ) )
             {
                 if ( first_category == true )
                 {
-                    fprintf( out_file_fp, "    APPLIANCE:  %s", data_p );
+                    fprintf( out_file_fp, "%s", data_p );
                     first_category = false;
                 }
                 else
@@ -382,23 +472,25 @@ encode_txt(
                     fprintf( out_file_fp, ", %s", data_p );
                 }
             }
-            //  End-of-Line
-            fprintf( out_file_fp, "\n" );
         }
+        //  End-of-Line
+        fprintf( out_file_fp, "\n" );
+
         //  ####################
         //  type=CHAPTER
+        fprintf( out_file_fp, "    CHAPTER:    " );
         if ( list_query_count( recipe_p->chapter ) != 0 )
         {
             //  Set the flag
             first_category = true;
-            
+
             for( data_p = list_get_first( recipe_p->chapter );
                  data_p != NULL;
                  data_p = list_get_next( recipe_p->chapter, data_p ) )
             {
                 if ( first_category == true )
                 {
-                    fprintf( out_file_fp, "    CHAPTER:    %s", data_p );
+                    fprintf( out_file_fp, "%s", data_p );
                     first_category = false;
                 }
                 else
@@ -406,79 +498,59 @@ encode_txt(
                     fprintf( out_file_fp, ", %s", data_p );
                 }
             }
-            //  End-of-Line
-            fprintf( out_file_fp, "\n" );
         }
+        //  End-of-Line
+        fprintf( out_file_fp, "\n" );
+
     }
-    //-----------------------------------------------------------------------
-    //  YIELD
-    if (    ( recipe_p->serves     != NULL )
-         || ( recipe_p->makes      != NULL ) )
-    {
-        if ( recipe_p->serves != NULL )
-        {
-            fprintf( out_file_fp, "Yield:          %s\n", recipe_p->serves );
-        }
-        if ( recipe_p->makes  != NULL )
-        {
-            fprintf( out_file_fp, "Makes:          %s", recipe_p->makes );
-            
-            //  Is there a unit of measurement ?
-            if ( recipe_p->makes_unit != NULL )
-            {
-                //  YES:    Write it
-                fprintf( out_file_fp, " %s\n", recipe_p->makes_unit );
-            }
-            else
-            {
-                //  NO:     End-of-Line
-                fprintf( out_file_fp, "\n" );
-            }
-        }
-    }
-    //-----------------------------------------------------------------------
-    //  AUTHOR:
-    fprintf( out_file_fp, "Author:         %s\n", recipe_p->author );
     //-----------------------------------------------------------------------
     //  COPYRIGHT:
     fprintf( out_file_fp, "Copyright:      %s\n", recipe_p->copyright );
     //-----------------------------------------------------------------------
-    //  TIME PREP:
-    if ( recipe_p->time_prep != NULL )
-    {
-        fprintf( out_file_fp, "Time Prep:      %s\n", recipe_p->time_prep );
-    }
-    //-----------------------------------------------------------------------
     //  TIME WAIT:
     //  @TODO:  This field isn't decoded yet!
     //          I'm using the resting time as a place holder.
+    fprintf( out_file_fp, "Time Wait:      " );
     if ( recipe_p->time_resting != NULL )
     {
-        fprintf( out_file_fp, "Time Wait:      %s\n", recipe_p->time_resting );
+        fprintf( out_file_fp, "%s\n", recipe_p->time_resting );
     }
-    //-----------------------------------------------------------------------
-    //  TIME COOK:
-    if ( recipe_p->time_cook != NULL )
+    else
     {
-        fprintf( out_file_fp, "Time Cook:      %s\n", recipe_p->time_cook );
+        fprintf( out_file_fp, "0:00\n" );
     }
     //-----------------------------------------------------------------------
     //  TIME REST:
+    fprintf( out_file_fp, "Time Rest:      " );
     if ( recipe_p->time_resting != NULL )
     {
-        fprintf( out_file_fp, "Time Rest:      %s\n", recipe_p->time_resting );
+        fprintf( out_file_fp, "%s\n", recipe_p->time_resting );
+    }
+    else
+    {
+        fprintf( out_file_fp, "0:00\n" );
     }
     //-----------------------------------------------------------------------
     //  SKILL LEVEL:
+    fprintf( out_file_fp, "Skill Level:    " );
     if ( recipe_p->skill != NULL )
     {
-        fprintf( out_file_fp, "Skill Level:    %s\n", recipe_p->skill );
+        fprintf( out_file_fp, "%s\n", recipe_p->skill );
+    }
+    else
+    {
+        fprintf( out_file_fp, "*\n" );
     }
     //-----------------------------------------------------------------------
     //  RATING:
+    fprintf( out_file_fp, "Rating:         " );
     if ( recipe_p->rating != NULL )
     {
-        fprintf( out_file_fp, "Rating:         %s\n", recipe_p->rating );
+        fprintf( out_file_fp, "%s\n", recipe_p->rating );
+    }
+    else
+    {
+        fprintf( out_file_fp, "*\n" );
     }
     //-----------------------------------------------------------------------
     //  FORMAT:
@@ -564,22 +636,30 @@ encode_txt(
         }
     }
     //-----------------------------------------------------------------------
-    //  <EDITING>
-    if (    ( recipe_p->formatted_by     != NULL )
-         || ( recipe_p->edited_by        != NULL ) )
+    //  Formatted By:
+    fprintf( out_file_fp, "FormattedBy:    " );
+    if ( recipe_p->formatted_by != NULL )
     {
-        if ( recipe_p->formatted_by != NULL )
-        {
-            fprintf( out_file_fp, "FormattedBy:    %s\n", recipe_p->formatted_by );
-        }
-        if ( recipe_p->edited_by != NULL )
-        {
-            fprintf( out_file_fp, "EditedBy:       %s\n", recipe_p->edited_by );
-        }
+        fprintf( out_file_fp, "%s\n", recipe_p->formatted_by );
+    }
+    else
+    {
+        fprintf( out_file_fp, "Recipe Import Assistant\n" );
+    }
+    //-----------------------------------------------------------------------
+    //  Edited By:
+    fprintf( out_file_fp, "EditedBy:       " );
+    if ( recipe_p->edited_by != NULL )
+    {
+        fprintf( out_file_fp, "%s\n", recipe_p->edited_by );
+    }
+    else
+    {
+        fprintf( out_file_fp, "\n" );
     }
     //-----------------------------------------------------------------------
     //  TXT Recipe end tag
-    fprintf( out_file_fp, "@@@@@\n\n\n" );
+    fprintf( out_file_fp, "_____\n" );
 
     /************************************************************************
      *  Function Exit

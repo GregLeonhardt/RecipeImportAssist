@@ -179,6 +179,9 @@ struct   recipe_t
      *  @param  instructions    A single string of the "directions:         */
     char                        *   instructions;
     /**
+     *  @param  source          Where the recipe came from                  */
+    char                        *   source;
+    /**
      *  @param  Appliance       List of appliances needed to make           */
     struct  list_base_t         *   appliance;
     /**
