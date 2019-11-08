@@ -293,10 +293,8 @@ encode_txt(
     else
     {
         //  No AUIP
-        fprintf( out_file_fp, "** TEXT ONLY - NO INGREDIENTS **" );
+        fprintf( out_file_fp, "** TEXT ONLY - NO INGREDIENTS **\n" );
     }
-    //  Add a blank line after the AUIP
-    fprintf( out_file_fp, "\n" );
     //-----------------------------------------------------------------------
     //  Section break:
     fprintf( out_file_fp, "|\n" );
