@@ -126,7 +126,7 @@ DECODE__directions_cleanup(
         found = false;
 
         //--------------------------------------------------------------------
-        //  Date :
+        //  "Date :"
         compare_p = strcasestr( directions_p, "date :" );
         if ( compare_p != NULL )
         {
@@ -134,7 +134,7 @@ DECODE__directions_cleanup(
             found = true;
         }
         //====================================================================
-        //  From :
+        //  "From ::
         compare_p = strcasestr( directions_p, "from :" );
         if ( compare_p != NULL )
         {
@@ -142,7 +142,7 @@ DECODE__directions_cleanup(
             found = true;
         }
         //--------------------------------------------------------------------
-        //  From The
+        //  "From The:"
         compare_p = strcasestr( directions_p, "from the:" );
         if ( compare_p != NULL )
         {
@@ -150,13 +150,8 @@ DECODE__directions_cleanup(
             found = true;
         }
         //--------------------------------------------------------------------
-        //  From The
-        compare_p = strcasestr( directions_p, "from the " );
-        if ( compare_p != NULL )
-        {
-            memcpy( compare_p, "From:    ",    9 );
-            found = true;
-        }
+        //  "From The "
+        //  Can't use this because "from the" occurs in normal recipe directions.
         //====================================================================
         //  Makes :
         compare_p = strcasestr( directions_p, "makes :" );
