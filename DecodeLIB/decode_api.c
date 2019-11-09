@@ -926,7 +926,16 @@ decode_finalize(
         //  Directions format
         recipe_fmt_directions( recipe_p );
 
-        //  Recipe Title analysis
+        //  Find "SOURCE:" in the directions
+        DECODE__directions_source( recipe_p );
+
+        //  Find "COPYRIGHT:" in the directions
+        DECODE__directions_copyright( recipe_p );
+
+        //  Find "AUTHOR:" in the directions
+        DECODE__directions_author( recipe_p );
+
+        //  Find "NOTES:" in the directions
         DECODE__directions_notes( recipe_p );
     }
 

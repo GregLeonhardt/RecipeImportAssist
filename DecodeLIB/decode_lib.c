@@ -644,3 +644,249 @@ DECODE__directions_notes(
 }
 
 /****************************************************************************/
+/**
+ *  Scan the recipe directions for the recipe source
+ *
+ *  @param recipe_t             Primary structure for a recipe
+ *
+ *  @return void                No return code from this function.
+ *
+ *  @note
+ *
+ ****************************************************************************/
+
+void
+DECODE__directions_source(
+    struct   recipe_t           *   recipe_p
+    )
+{
+    /**
+     *  @param  directions_p    Pointer to a line of the directions         */
+    char                        *   directions_p;
+    /**
+     *  @param  source_p        Pointer to a "SOURCE:" string               */
+    char                        *   source_p;
+
+    /************************************************************************
+     *  Function Initialization
+     ************************************************************************/
+
+
+    /************************************************************************
+     *  Function
+     ************************************************************************/
+
+    if ( list_query_count( recipe_p->directions ) > 0 )
+    {
+        for( directions_p = list_get_first( recipe_p->directions );
+             directions_p != NULL;
+             directions_p = list_get_next( recipe_p->directions, directions_p ) )
+        {
+            //  Look for the keyword "From:"
+            if ( ( source_p = strcasestr( directions_p, "From:" ) ) != NULL )
+            {
+                //  Remove the "FROM:" tag
+                text_remove( source_p, 0, 5 );
+            }
+            //  Look for the keyword "SentBy:"
+            else
+            if ( ( source_p = strcasestr( directions_p, "SentBy:" ) ) != NULL )
+            {
+                //  Remove the "SENTBY:" tag
+                text_remove( source_p, 0, 7 );
+            }
+            //  Look for the keyword "Source:"
+            else
+            if ( ( source_p = strcasestr( directions_p, "Source:" ) ) != NULL )
+            {
+                //  Remove the "Source:" tag
+                text_remove( source_p, 0, 7 );
+            }
+            //  Look for the keyword "PostedBy:"
+            else
+            if ( ( source_p = strcasestr( directions_p, "PostedBy:" ) ) != NULL )
+            {
+                //  Remove the "POSTEDBY:" tag
+                text_remove( source_p, 0, 9 );
+            }
+            //  Did we find "SOURCE:" ?
+            if ( source_p != NULL )
+            {
+                //  YES:    Move past any leading whitespace
+                source_p = text_skip_past_whitespace( source_p );
+
+                //  Does a source string already exist ?
+                if ( recipe_p->source != NULL )
+                {
+                    //  YES:    Dump the old for the new
+                    mem_free( recipe_p->source );
+                }
+
+                //  Move the remaining string to the "AUTHOR: string
+                recipe_p->source = text_copy_to_new( source_p );
+                source_p[ 0 ] = '\0';
+            }
+        }
+    }
+
+    /************************************************************************
+     *  Function Exit
+     ************************************************************************/
+
+    //  DONE!
+}
+
+/****************************************************************************/
+/**
+ *  Scan the recipe directions for a recipe copyright
+ *
+ *  @param recipe_t             Primary structure for a recipe
+ *
+ *  @return void                No return code from this function.
+ *
+ *  @note
+ *
+ ****************************************************************************/
+
+void
+DECODE__directions_copyright(
+    struct   recipe_t           *   recipe_p
+    )
+{
+    /**
+     *  @param  directions_p    Pointer to a line of the directions         */
+    char                        *   directions_p;
+    /**
+     *  @param  copyright_p     Pointer to a "COPYRIGHT:" string            */
+    char                        *   copyright_p;
+
+    /************************************************************************
+     *  Function Initialization
+     ************************************************************************/
+
+
+    /************************************************************************
+     *  Function
+     ************************************************************************/
+
+    if ( list_query_count( recipe_p->directions ) > 0 )
+    {
+        for( directions_p = list_get_first( recipe_p->directions );
+             directions_p != NULL;
+             directions_p = list_get_next( recipe_p->directions, directions_p ) )
+        {
+            //  Look for the keyword "Copyright:"
+            if ( ( copyright_p = strcasestr( directions_p, "Copyright:" ) ) != NULL )
+            {
+                //  Remove the "COPYRIGHT:" tag
+                text_remove( copyright_p, 0, 10 );
+            }
+
+            //  Did we find "COPYRIGHT:" ?
+            if ( copyright_p != NULL )
+            {
+                //  YES:    Move past any leading whitespace
+                copyright_p = text_skip_past_whitespace( copyright_p );
+
+                //  Does a copyright string already exist ?
+                if ( recipe_p->copyright != NULL )
+                {
+                    //  YES:    Dump the old for the new
+                    mem_free( recipe_p->copyright );
+                }
+
+                //  Move the remaining string to the "COPYRIGHT:" string
+                recipe_p->copyright = text_copy_to_new( copyright_p );
+                copyright_p[ 0 ] = '\0';
+            }
+        }
+    }
+
+    /************************************************************************
+     *  Function Exit
+     ************************************************************************/
+
+    //  DONE!
+}
+
+/****************************************************************************/
+/**
+ *  Scan the recipe directions for a recipe author.
+ *
+ *  @param recipe_t             Primary structure for a recipe
+ *
+ *  @return void                No return code from this function.
+ *
+ *  @note
+ *
+ ****************************************************************************/
+
+void
+DECODE__directions_author(
+    struct   recipe_t           *   recipe_p
+    )
+{
+    /**
+     *  @param  directions_p    Pointer to a line of the directions         */
+    char                        *   directions_p;
+    /**
+     *  @param  author_p        Pointer to a "AUTHOR:" string               */
+    char                        *   author_p;
+
+    /************************************************************************
+     *  Function Initialization
+     ************************************************************************/
+
+
+    /************************************************************************
+     *  Function
+     ************************************************************************/
+
+    if ( list_query_count( recipe_p->directions ) > 0 )
+    {
+        for( directions_p = list_get_first( recipe_p->directions );
+             directions_p != NULL;
+             directions_p = list_get_next( recipe_p->directions, directions_p ) )
+        {
+            //  Look for the keyword "Copyright:"
+            if ( ( author_p = strcasestr( directions_p, "Author:" ) ) != NULL )
+            {
+                //  Remove the "AUTHOR:" tag
+                text_remove( author_p, 0, 10 );
+            }
+            //  Look for the keyword "RecipeBy:"
+            else
+            if ( ( author_p = strcasestr( directions_p, "RecipeBy:" ) ) != NULL )
+            {
+                //  Remove the "RECIPEBY:" tag
+                text_remove( author_p, 0, 9 );
+            }
+
+            //  Did we find "AUTHOR:" ?
+            if ( author_p != NULL )
+            {
+                //  YES:    Move past any leading whitespace
+                author_p = text_skip_past_whitespace( author_p );
+
+                //  Does a author string already exist ?
+                if ( recipe_p->author != NULL )
+                {
+                    //  YES:    Dump the old for the new
+                    mem_free( recipe_p->author );
+                }
+
+                //  Move the remaining string to the "AUTHOR:" string
+                recipe_p->author = text_copy_to_new( author_p );
+                author_p[ 0 ] = '\0';
+            }
+        }
+    }
+
+    /************************************************************************
+     *  Function Exit
+     ************************************************************************/
+
+    //  DONE!
+}
+
+/****************************************************************************/

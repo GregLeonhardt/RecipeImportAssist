@@ -311,7 +311,7 @@ encode_txt(
     }
     //-----------------------------------------------------------------------
     //  Source:
-    fprintf( out_file_fp, "Source: " );
+    fprintf( out_file_fp, "\nSource: " );
     if ( recipe_p->source != NULL )
     {
         fprintf( out_file_fp, "%s\n\n", recipe_p->source );
