@@ -585,54 +585,57 @@ encode_txt(
     }
     //-----------------------------------------------------------------------
     //  <E-MAIL>
-    if (    ( recipe_p->group_from       != NULL )
-         || ( recipe_p->group_subject    != NULL )
-         || ( recipe_p->posted_by        != NULL )
-         || ( recipe_p->posted_subject   != NULL ) )
+    //  ####################
+    //  GROUP-NAME:
+    fprintf( out_file_fp, "G-Name:         " );
+    if ( recipe_p->group_from != NULL )
     {
-        //  ####################
-        //  GROUP-NAME:
-        if ( recipe_p->group_from != NULL )
-        {
-            fprintf( out_file_fp, "G-Name:         %s\n",
-                     recipe_p->group_from );
-        }
-        //  ####################
-        //  GROUP-SUBJECT:
-        if ( recipe_p->group_subject != NULL )
-        {
-            fprintf( out_file_fp, "G-Subject:      %s\n",
-                     recipe_p->group_subject );
-        }
-        //  ####################
-        //  GROUP-DATE:
-        if ( recipe_p->group_date != NULL )
-        {
-            fprintf( out_file_fp, "G-Date:         %s\n",
-                     recipe_p->group_date );
-        }
-        //  ####################
-        //  POSTED-BY:
-        if ( recipe_p->posted_by != NULL )
-        {
-            fprintf( out_file_fp, "P-By:           %s\n",
-                     recipe_p->posted_by );
-        }
-        //  ####################
-        //  POSTED-SUBJECT:
-        if ( recipe_p->posted_subject != NULL )
-        {
-            fprintf( out_file_fp, "P-Subject:      %s\n",
-                     recipe_p->posted_subject );
-        }
-        //  ####################
-        //  POSTED-DATE:
-        if ( recipe_p->posted_date != NULL )
-        {
-            fprintf( out_file_fp, "P-Date:         %s\n",
-                     recipe_p->posted_date );
-        }
+        fprintf( out_file_fp, "%s", recipe_p->group_from );
     }
+    fprintf( out_file_fp, "\n" );
+    //  ####################
+    //  GROUP-SUBJECT:
+    fprintf( out_file_fp, "G-Subject:      " );
+    if ( recipe_p->group_subject != NULL )
+    {
+        fprintf( out_file_fp, "%s", recipe_p->group_subject );
+    }
+    fprintf( out_file_fp, "\n" );
+    //  ####################
+    //  GROUP-DATE:
+    fprintf( out_file_fp, "G-Date:         " );
+    if ( recipe_p->group_date != NULL )
+    {
+        fprintf( out_file_fp, "%s", recipe_p->group_date );
+    }
+    fprintf( out_file_fp, "\n" );
+    //  ####################
+    //  POSTED-BY:
+    fprintf( out_file_fp, "P-By:           " );
+    if ( recipe_p->posted_by != NULL )
+    {
+        fprintf( out_file_fp, "%s", recipe_p->posted_by );
+    }
+    fprintf( out_file_fp, "\n" );
+    //  ####################
+    //  POSTED-SUBJECT:
+    fprintf( out_file_fp, "P-Subject:      " );
+    if ( recipe_p->posted_subject != NULL )
+    {
+        fprintf( out_file_fp, "%s", recipe_p->posted_subject );
+    }
+    {
+        fprintf( out_file_fp, "\n" );
+    }
+    fprintf( out_file_fp, "\n" );
+    //  ####################
+    //  POSTED-DATE:
+    fprintf( out_file_fp, "P-Date:         " );
+    if ( recipe_p->posted_date != NULL )
+    {
+        fprintf( out_file_fp, "%s", recipe_p->posted_date );
+    }
+    fprintf( out_file_fp, "\n" );
     //-----------------------------------------------------------------------
     //  Formatted By:
     fprintf( out_file_fp, "FormattedBy:    " );
