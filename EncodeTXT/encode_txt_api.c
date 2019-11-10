@@ -624,9 +624,6 @@ encode_txt(
     {
         fprintf( out_file_fp, "%s", recipe_p->posted_subject );
     }
-    {
-        fprintf( out_file_fp, "\n" );
-    }
     fprintf( out_file_fp, "\n" );
     //  ####################
     //  POSTED-DATE:
