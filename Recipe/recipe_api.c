@@ -517,6 +517,10 @@ recipe_fmt_auip(
         memset( local_prep,     '\0', sizeof( local_prep ) );
         memset( tmp_ingredient, '\0', sizeof ( tmp_ingredient ) );
 
+        /********************************************************************
+         *  Meal-Master dual column length
+         ********************************************************************/
+
         //  Set the maximum length
         if ( recipe_format == RECIPE_FORMAT_MMF )
         {
@@ -529,14 +533,26 @@ recipe_fmt_auip(
             mmf_length = strlen( tmp_data_p );
         }
 
+        /********************************************************************
+         *  A - Amount
+         ********************************************************************/
+
         //  Format the Amount field
         tmp_data_p = RECIPE__fmt_amount( tmp_data_p, local_amount, SIZE_AMOUNT );
+
+        /********************************************************************
+         *  U - Unit
+         ********************************************************************/
 
         //  Format the Unit field
         if ( strlen( local_amount ) != 0 )
         {
             tmp_data_p = RECIPE__fmt_unit( tmp_data_p, local_unit, SIZE_UNIT );
         }
+
+        /********************************************************************
+         *  IP - Ingredient & Preparation
+         ********************************************************************/
 
         if ( recipe_format == RECIPE_FORMAT_MMF )
         {
@@ -568,6 +584,32 @@ recipe_fmt_auip(
             tmp_data_p = RECIPE__fmt_preparation( tmp_data_p, local_prep,
                                                   mmf_length, SIZE_PREPARATION );
         }
+
+        /********************************************************************
+         *  Everything to lowercase
+         ********************************************************************/
+
+        //  Amount
+        if ( text_is_blank_line( local_amount ) == false )
+        {
+            text_to_lowercase( local_amount );
+        }
+        if ( text_is_blank_line( local_unit ) == false )
+        {
+            text_to_lowercase( local_unit );
+        }
+        if ( text_is_blank_line( local_ingred ) == false )
+        {
+            text_to_lowercase( local_ingred );
+        }
+        if ( text_is_blank_line( local_prep ) == false )
+        {
+            text_to_lowercase( local_prep );
+        }
+
+        /********************************************************************
+         *  Attach the new AUIP to the recipe.
+         ********************************************************************/
 
         //  Is there anything in any of the fields
         if (    ( text_is_blank_line( local_amount ) == false )
