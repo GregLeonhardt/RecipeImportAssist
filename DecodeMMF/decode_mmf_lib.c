@@ -767,6 +767,12 @@ DECODE_MMF__yield(
                 tmp_unit[ strlen( tmp_unit ) - 1 ] =
                     toupper( tmp_unit[ strlen( tmp_unit ) - 1 ] );
             }
+            //  Is the unit SERVINGS ?
+            if ( strncmp( tmp_unit, "SERVINGS", 8 ) == 0 )
+            {
+                //  YES:    Erase it
+                tmp_unit[ 0 ] = '\0';
+            }
             //  Is the units field empty
             if ( strlen( tmp_unit ) == 0 )
             {
