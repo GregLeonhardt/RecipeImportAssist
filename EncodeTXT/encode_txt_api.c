@@ -306,12 +306,17 @@ encode_txt(
              data_p != NULL;
              data_p = list_get_next( recipe_p->directions, data_p ) )
         {
-            fprintf( out_file_fp, "%s\n", data_p );
+            //  Is there something to write ?
+            if ( text_is_blank_line( data_p ) != true )
+            {
+                //  YES:    Write the directions text.
+                fprintf( out_file_fp, "%s\n\n", data_p );
+            }
         }
     }
     //-----------------------------------------------------------------------
     //  Source:
-    fprintf( out_file_fp, "\nSource: " );
+    fprintf( out_file_fp, "Source: " );
     if ( recipe_p->source != NULL )
     {
         fprintf( out_file_fp, "%s\n\n", recipe_p->source );
@@ -322,7 +327,7 @@ encode_txt(
     }
     //-----------------------------------------------------------------------
     //  Extra Stuff:
-    fprintf( out_file_fp, "\n============== EXTRA STUFF: ==============\n\n" );
+    fprintf( out_file_fp, "\n----------------------------------------\n\n" );
     //-----------------------------------------------------------------------
     //  Recipe-Id
     fprintf( out_file_fp, "Recipe-ID:      %s\n", recipe_p->recipe_id );
