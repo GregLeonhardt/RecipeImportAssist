@@ -57,6 +57,48 @@
  ****************************************************************************/
 
 //----------------------------------------------------------------------------
+#define SRCH_CONTENT_TYPE           "Content-Type:"
+#define SRCH_CONTENT_TYPE_L         strlen( SRCH_CONTENT_TYPE )
+//----------------------------------------------------------------------------
+#define SRCH_CT_T_HTML              "text/html"
+#define SRCH_CT_T_HTML_L            strlen( SRCH_CT_T_HTML )
+//----------------------------------------------------------------------------
+#define SRCH_CT_TEXT                "text/"
+#define SRCH_CT_TEXT_L              strlen( SRCH_CT_TEXT )
+//----------------------------------------------------------------------------
+#define SRCH_CT_MULTIPART           "multipart/"
+#define SRCH_CT_MULTIPART_L         strlen( SRCH_CT_MULTIPART )
+//----------------------------------------------------------------------------
+#define SRCH_CT_APPLICATION         "application/"
+#define SRCH_CT_APPLICATION_L       strlen( SRCH_CT_APPLICATION )
+//----------------------------------------------------------------------------
+#define SRCH_CT_IMAGE               "image/"
+#define SRCH_CT_IMAGE_L             strlen( SRCH_CT_IMAGE )
+//----------------------------------------------------------------------------
+#define SRCH_CT_VIDEO               "video/"
+#define SRCH_CT_VIDEO_L             strlen( SRCH_CT_VIDEO )
+//----------------------------------------------------------------------------
+#define SRCH_CT_AUDIO               "audio/"
+#define SRCH_CT_AUDIO_L             strlen( SRCH_CT_AUDIO )
+//----------------------------------------------------------------------------
+#define SRCH_CT_MESSAGE             "message/"
+#define SRCH_CT_MESSAGE_L           strlen( SRCH_CT_MESSAGE )
+//----------------------------------------------------------------------------
+#define SRCH_ENCODING_TYPE          "Content-Transfer-Encoding:"
+#define SRCH_ENCODING_TYPE_L        strlen( SRCH_ENCODING_TYPE )
+//----------------------------------------------------------------------------
+#define SRCH_CTE_QUOTE_PRINT        "quoted-printable"
+#define SRCH_CTE_QUOTE_PRINT_L      strlen( SRCH_CTE_QUOTE_PRINT )
+//----------------------------------------------------------------------------
+#define SRCH_CTE_7BIT               "7bit"
+#define SRCH_CTE_7BIT_L             strlen( SRCH_CTE_7BIT )
+//----------------------------------------------------------------------------
+#define SRCH_CTE_8BIT               "8bit"
+#define SRCH_CTE_8BIT_L             strlen( SRCH_CTE_8BIT )
+//----------------------------------------------------------------------------
+#define SRCH_CTE_BASE64             "base64"
+#define SRCH_CTE_BASE64_L           strlen( SRCH_CTE_BASE64 )
+//----------------------------------------------------------------------------
 #define SRCH_SOURCE                 "From - "
 #define SRCH_SOURCE_L               strlen( SRCH_SOURCE )
 //----------------------------------------------------------------------------
@@ -173,6 +215,96 @@ email_is_start(
 
 /****************************************************************************/
 /**
+ *  Test the input text line to see if it is a multi-part message break
+ *
+ *  @param  data_p              Pointer to a line of text data.
+ *
+ *  @return email_rc            TRUE when the text is the start of an e-Mail
+ *                              message, else FALSE is returned
+ *
+ *  @note
+ *      --14dae9340eb5aa68e304ca739f03
+ *
+ ****************************************************************************/
+
+int
+email_is_multipart_break(
+    char                        *   data_p
+    )
+{
+    /**
+     * @param email_rc          Return code for this function               */
+    int                             email_rc;
+    /**
+     * @param start_p           Pointer to a temp data buffer               */
+    char                        *   start_p;
+    /**
+     * @param ndx               Index into the buffer                       */
+    int                             ndx;
+
+    /************************************************************************
+     *  Function Initialization
+     ************************************************************************/
+
+    //  Assume this is properly formatted multipart message break
+    email_rc = true;
+
+    //  Locate the first character in the buffer
+    start_p = text_skip_past_whitespace( data_p );
+
+    /************************************************************************
+     *  Function
+     ************************************************************************/
+
+    //  Does the line start with two dash [-] characters ?
+    if (    ( start_p[ 0 ] == '-' )
+         && ( start_p[ 1 ] == '-' ) )
+    {
+        //  YES:    Look at the next 28 characters to see if they are hex
+        for ( ndx = 2;
+              ndx < 30;
+              ndx += 1 )
+        {
+            //  YES:    Is this a hex digit ?
+            if ( isxdigit( start_p[ ndx ] ) == 0 )
+            {
+                //  NO:     Not a hex digit
+                email_rc = false;
+
+                //  Stop looking
+                break;
+            }
+        }
+    }
+    else
+    {
+        //  NO:     This isn't a multipart message break
+        email_rc = false;
+    }
+
+    //  Does it check-out as valid so far ?
+    if ( email_rc == true )
+    {
+        //  YES:    Is the string exactly 30 or 32 characters long ?
+        if (    ( strlen( data_p ) != 30 )
+             && ( strlen( data_p ) != 32 ) )
+        {
+            //  NO:     Not a multipart message break
+            email_rc = false;
+        }
+    }
+
+
+    /************************************************************************
+     *  Function Exit
+     ************************************************************************/
+
+    //  DONE!
+    return( email_rc );
+}
+
+/****************************************************************************/
+/**
  *  Test the text line to see if it contains an e-Mail group break.
  *
  *  @param  data_p              Pointer to a line of text data
@@ -229,7 +361,8 @@ email_is_group_break(
               && ( strlen( tmp_data_p )                                        == 40 ) )
          || ( strncmp( tmp_data_p, "========================  Arch",      30 ) == 0 )
          || ( strncmp( tmp_data_p, "--------------- MESSAGE bread-",      30 ) == 0 )
-         || ( strncmp( tmp_data_p, "--------------- END bread-bake",      30 ) == 0 ) )
+         || ( strncmp( tmp_data_p, "--------------- END bread-bake",      30 ) == 0 )
+         || ( email_is_multipart_break( tmp_data_p )                           == true ) )
     {
         //  YES:    Change the return code
         email_rc = true;
@@ -241,6 +374,251 @@ email_is_group_break(
 
     //  DONE!
     return( email_rc );
+}
+
+/****************************************************************************/
+/**
+ *  Discover the 'Content-Type:' of the current text string.
+ *
+ *  @param  data_p              Pointer to a line of text data
+ *
+ *  @return content_type        CT_NONE       = Content-Type: not found
+ *                              CT_TEXT_PLAIN = text/plain;
+ *                              CT_TEXT_HTML  = text/html;
+ *                              CT_MP_ALT     = multipart/alternative;
+ *                              CT_UNKNOWN    = unknown type
+ *
+ *  @note
+ *
+ ****************************************************************************/
+
+enum    content_type_e
+email_find_content(
+    char                        *   data_p
+    )
+{
+    /**
+     * @param tmp_data_p        Pointer to a temp data buffer               */
+    char                        *   tmp_data_p;
+    /**
+     * @param content_type      Decoded content type.                       */
+    enum    content_type_e          content_type;
+
+    /************************************************************************
+     *  Function Initialization
+     ************************************************************************/
+
+    //  Locate the first character in the buffer
+    tmp_data_p = text_skip_past_whitespace( data_p );
+
+    //  The assumption is that this is that the text string does NOT contain.
+    content_type = CT_NONE;
+
+    /************************************************************************
+     *  Function
+     ************************************************************************/
+
+    //  Content-Type: ?
+    if ( strncasecmp( tmp_data_p, SRCH_CONTENT_TYPE, SRCH_CONTENT_TYPE_L ) == 0 )
+    {
+        //  YES:    Move the pointer past the search text
+        tmp_data_p += SRCH_CONTENT_TYPE_L;
+
+        //  Also move past any whitespace to eventually point to the data
+        tmp_data_p = text_skip_past_whitespace( tmp_data_p );
+
+        /********************************************************************
+         *  Discover the content type
+         ********************************************************************/
+
+        //  text/html ?
+        if ( strncasecmp( tmp_data_p, SRCH_CT_T_HTML, SRCH_CT_T_HTML_L ) == 0 )
+        {
+            //  YES:    Set the return type code
+            content_type = CT_TEXT_HTML;
+        }
+
+        //  text/ ?
+        else
+        if ( strncasecmp( tmp_data_p, SRCH_CT_TEXT, SRCH_CT_TEXT_L ) == 0 )
+        {
+            //  YES:    Set the return type code
+            content_type = CT_TEXT;
+        }
+
+        //  multipart/ ?
+        else
+        if ( strncasecmp( tmp_data_p, SRCH_CT_MULTIPART, SRCH_CT_MULTIPART_L ) == 0 )
+        {
+            //  YES:    Set the return type code
+            content_type = CT_MULTIPART;
+        }
+
+        //  application/x-ygp-stripped ?
+        else
+        if ( strncasecmp( tmp_data_p, SRCH_CT_APPLICATION, SRCH_CT_APPLICATION_L ) == 0 )
+        {
+            //  YES:    Set the return type code
+            content_type = CT_APPLICATION;
+        }
+
+        //  image/ ?
+        else
+        if ( strncasecmp( tmp_data_p, SRCH_CT_IMAGE, SRCH_CT_IMAGE_L ) == 0 )
+        {
+            //  YES:    Set the return type code
+            content_type = CT_IMAGE;
+        }
+
+        //  video/ ?
+        else
+        if ( strncasecmp( tmp_data_p, SRCH_CT_VIDEO, SRCH_CT_VIDEO_L ) == 0 )
+        {
+            //  YES:    Set the return type code
+            content_type = CT_VIDEO;
+        }
+
+        //  audio/ ?
+        else
+        if ( strncasecmp( tmp_data_p, SRCH_CT_AUDIO, SRCH_CT_AUDIO_L ) == 0 )
+        {
+            //  YES:    Set the return type code
+            content_type = CT_AUDIO;
+        }
+
+        //  message/ ?
+        else
+        if ( strncasecmp( tmp_data_p, SRCH_CT_MESSAGE, SRCH_CT_MESSAGE_L ) == 0 )
+        {
+            //  YES:    Set the return type code
+            content_type = CT_MESSAGE;
+        }
+
+        //  The content type is unknown.
+        else
+        {
+            //  YES:    Set the return type code
+            content_type = CT_UNKNOWN;
+
+            //  STOP and display the string we didn't decode.
+            log_write( MID_FATAL, "email_find_content",
+                          "[%s]\n", data_p );
+        }
+    }
+
+    /************************************************************************
+     *  Function Exit
+     ************************************************************************/
+
+    //  DONE!
+    return( content_type );
+}
+
+/****************************************************************************/
+/**
+ *  Discover the 'Content-Transfer-Encoding:' of the current text string.
+ *
+ *  @param  data_p              Pointer to a line of text data
+ *
+ *  @return encoding_type       CTE_NONE        Content-Transfer-Encoding: not found
+ *                              CTE_QUOTE_PRINT quoted-printable
+ *                              CTE_7BIT        7BIT
+ *                              CTE_8BIT        8BIT
+ *                              CTE_BASE64      BASE64
+ *                              CTE_UNKNOWN     An unknown type was found
+ *
+ *  @note
+ *
+ ****************************************************************************/
+
+enum    encoding_type_e
+email_find_encoding(
+    char                        *   data_p
+    )
+{
+    /**
+     * @param tmp_data_p        Pointer to a temp data buffer               */
+    char                        *   tmp_data_p;
+    /**
+     * @param encoding_type     Decoded encoding type.                      */
+    enum    encoding_type_e         encoding_type;
+
+    /************************************************************************
+     *  Function Initialization
+     ************************************************************************/
+
+    //  Locate the first character in the buffer
+    tmp_data_p = text_skip_past_whitespace( data_p );
+
+    //  The assumption is that this is that the text string does NOT contain.
+    encoding_type = CTE_NONE;
+
+    /************************************************************************
+     *  Function
+     ************************************************************************/
+
+    //  Content-Transfer-Encoding: ?
+    if ( strncasecmp( tmp_data_p, SRCH_ENCODING_TYPE, SRCH_ENCODING_TYPE_L ) == 0 )
+    {
+        //  YES:    Move the pointer past the search text
+        tmp_data_p += SRCH_ENCODING_TYPE_L;
+
+        //  Also move past any whitespace to eventually point to the data
+        tmp_data_p = text_skip_past_whitespace( tmp_data_p );
+
+        /********************************************************************
+         *  Discover the encoding type
+         ********************************************************************/
+
+        //  quoted-printable ?
+        if ( strncasecmp( tmp_data_p, SRCH_CTE_QUOTE_PRINT, SRCH_CTE_QUOTE_PRINT_L ) == 0 )
+        {
+            //  YES:    Set the return type code
+            encoding_type = CTE_QUOTE_PRINT;
+        }
+
+        //  7BIT ?
+        else
+        if ( strncasecmp( tmp_data_p, SRCH_CTE_7BIT, SRCH_CTE_7BIT_L ) == 0 )
+        {
+            //  YES:    Set the return type code
+            encoding_type = CTE_7BIT;
+        }
+
+        //  8BIT ?
+        else
+        if ( strncasecmp( tmp_data_p, SRCH_CTE_8BIT, SRCH_CTE_8BIT_L ) == 0 )
+        {
+            //  YES:    Set the return type code
+            encoding_type = CTE_8BIT;
+        }
+
+        //  BASE64 ?
+        else
+        if ( strncasecmp( tmp_data_p, SRCH_CTE_BASE64, SRCH_CTE_BASE64_L ) == 0 )
+        {
+            //  YES:    Set the return type code
+            encoding_type = CTE_BASE64;
+        }
+
+        //  The encoding type is unknown.
+        else
+        {
+            //  YES:    Set the return type code
+            encoding_type = CTE_UNKNOWN;
+
+            //  STOP and display the string we didn't decode.
+            log_write( MID_FATAL, "email_find_encoding",
+                          "[%s]\n", data_p );
+        }
+    }
+
+    /************************************************************************
+     *  Function Exit
+     ************************************************************************/
+
+    //  DONE!
+    return( encoding_type );
 }
 
 /****************************************************************************/
@@ -564,7 +942,7 @@ email_filter(
             //  Is the data length too long for a compare match ?
             if ( strlen( data_p ) < sizeof( tmp_data ) )
             {
-                //  YES:    Copy the data to our temporary buffer
+                //  NO:     Copy the data to our temporary buffer
                 memset( tmp_data, '\0', sizeof( tmp_data ) );
                 strncpy( tmp_data, data_p, sizeof( tmp_data ) - 1 );
 
@@ -577,28 +955,6 @@ email_filter(
                     //  YES:    Set the filter type.
                     email_filter_type = EMAIL_FILTER_X_YMAILISG;
                 }
-                //  BASE-64:
-                else
-                if ( strncmp( tmp_data, "content-transfer-encoding: base64", 33 ) == 0 )
-                {
-                    //  YES:    Set the filter type.
-                    email_filter_type = EMAIL_FILTER_BASE64;
-                }
-//  @ToDo   I think this is a part of the past and is no longer needed.
-//          It was here to allow processing of forwarded messages.
-#if 0
-                //  Is this part of a reply to an e-mail
-                else
-                if (    ( data_p[ 0 ] == '>' )
-//  @ToDo   This was removed because it is a defined part of the GF2
-//          recipe format.
-//                   || ( data_p[ 0 ] == '|' )
-                     || ( data_p[ 0 ] == '!' ) )
-                {
-                    //  YES:    Throw it in the trash
-                    email_filter_type = EMAIL_FILTER_REPLY;
-                }
-#endif
             }
         }
     }

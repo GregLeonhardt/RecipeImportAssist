@@ -51,7 +51,29 @@
  ****************************************************************************/
 
 //----------------------------------------------------------------------------
+enum    content_type_e
+{
+    CT_NONE                     =   0,      //  Content-Type: not found
+    CT_TEXT_HTML                =   1,      //  text/html
+    CT_TEXT                     =   2,      //  text/
+    CT_MULTIPART                =   3,      //  multipart/
+    CT_APPLICATION              =   4,      //  application/
+    CT_IMAGE                    =   5,      //  image/
+    CT_VIDEO                    =   6,      //  video/
+    CT_AUDIO                    =   7,      //  audio/
+    CT_MESSAGE                  =   8,      //  message/
+    CT_UNKNOWN                  =  -1       //  An unknown type was found
+};
 //----------------------------------------------------------------------------
+enum    encoding_type_e
+{
+    CTE_NONE                    =   0,      //  Content-Transfer-Encoding: not found
+    CTE_QUOTE_PRINT             =   1,      //  quoted-printable
+    CTE_7BIT                    =   2,      //  7BIT
+    CTE_8BIT                    =   3,      //  8BIT
+    CTE_BASE64                  =   4,      //  BASE64
+    CTE_UNKNOWN                 =  -1       //  An unknown type was found
+};
 
 /****************************************************************************
  * Library Public Structures
@@ -78,7 +100,22 @@ email_is_start(
     );
 //---------------------------------------------------------------------------
 int
+email_is_multipart_break(
+    char                        *   data_p
+    );
+//---------------------------------------------------------------------------
+int
 email_is_group_break(
+    char                        *   data_p
+    );
+//---------------------------------------------------------------------------
+enum    content_type_e
+email_find_content(
+    char                        *   data_p
+    );
+//---------------------------------------------------------------------------
+enum    encoding_type_e
+email_find_encoding(
     char                        *   data_p
     );
 //---------------------------------------------------------------------------

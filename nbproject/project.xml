@@ -8,7 +8,9 @@
             <cpp-extensions/>
             <header-extensions>h</header-extensions>
             <sourceEncoding>UTF-8</sourceEncoding>
-            <make-dep-projects/>
+            <make-dep-projects>
+                <make-dep-project>../LibTools</make-dep-project>
+            </make-dep-projects>
             <sourceRootList>
                 <sourceRootElem>DecodeGF1</sourceRootElem>
                 <sourceRootElem>DecodeGRF</sourceRootElem>

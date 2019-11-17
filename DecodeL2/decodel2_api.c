@@ -168,6 +168,13 @@ decodel2_parse(
         //  Remove it from the level 2 list
         list_fdelete( level2_list_p, list_data_p, list_lock_key );
 
+        //  HACK:   First character == 0x95 ?
+        if ( (unsigned char)list_data_p[ 0 ] == 0x3F )
+        {
+            //  YES:    Translate it to a space
+            list_data_p[ 0 ] = ' ';
+        }
+
         /********************************************************************
          *  Look to see if this is from an UNFORMATTED_RECIPE file
          ********************************************************************/

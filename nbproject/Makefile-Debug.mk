@@ -335,6 +335,7 @@ ${OBJECTDIR}/main.o: main.c
 
 # Subprojects
 .build-subprojects:
+	cd ../LibTools && ${MAKE} -s -f Makefile CONF=Debug
 
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
@@ -342,6 +343,7 @@ ${OBJECTDIR}/main.o: main.c
 
 # Subprojects
 .clean-subprojects:
+	cd ../LibTools && ${MAKE} -s -f Makefile CONF=Debug clean
 
 # Enable dependency checking
 .dep.inc: .depcheck-impl

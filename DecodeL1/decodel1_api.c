@@ -29,6 +29,7 @@
 #include <stdio.h>              //  Standard I/O definitions
                                 //*******************************************
 #include <string.h>             //  Functions for managing strings
+#include <ctype.h>              //  Determine the type contained
                                 //*******************************************
 
 /****************************************************************************
@@ -41,6 +42,7 @@
                                 //*******************************************
 #include <decode_api.h>         //  API for all decode_*            PUBLIC
 #include <decodel2_api.h>       //  API for all decodel2_*          PUBLIC
+#include <decode_html_api.h>    //  API for all decode_html_*       PUBLIC
 #include <email_api.h>          //  API for all email_*             PUBLIC
                                 //*******************************************
 #include "decodel1_lib.h"       //  API for all DECODEL1__*         PRIVATE
@@ -114,6 +116,12 @@ decodel1_parse(
     /**
      * @param file_ll_p         Pointer to the level 2 list                 */
     struct  list_base_t         *   level2_list_p;
+    /**
+     * @param content_type      e-Mail content type                         */
+    enum    content_type_e          content_type;
+    /**
+     * @param encoding_type      e-Mail encoding type                       */
+    enum    encoding_type_e         encoding_type;
 
     /************************************************************************
      *  Function Initialization
@@ -153,6 +161,10 @@ decodel1_parse(
         //  YES:    Set a flag so we can track it.
         email_flag = true;
 
+        //  Reset the content types.
+        content_type   = CT_NONE;
+        encoding_type  = CTE_NONE;
+
         log_write( MID_DEBUG_0, "decodel1_parse",
                       "Start      %p - '%.80s'\n", list_data_p, list_data_p );
 
@@ -166,14 +178,115 @@ decodel1_parse(
          list_data_p != NULL;
          list_data_p = list_fget_next( level1_list_p, list_data_p, list_lock_key ) )
     {
+        /**
+         * @param tmp_c_type        e-Mail content type                     */
+        enum    content_type_e          tmp_c_type;
+        /**
+         * @param tmp_e_type        e-Mail encoding type                    */
+        enum    encoding_type_e         tmp_e_type;
 
         //  Remove the data from the level 1 list
         list_fdelete( level1_list_p, list_data_p, list_lock_key );
 
+        tmp_c_type = email_find_content( list_data_p );
+        tmp_e_type = email_find_encoding( list_data_p );
+
+        /********************************************************************/
+        //  Content-Type: text/plain; charset="utf-8"
+
+        //  Do we have a new content type ?
+        if (    ( email_flag == true    )
+             && ( tmp_c_type != CT_NONE ) )
+        {
+            //  YES:    Set the new encoding type
+            content_type = tmp_c_type;
+
+            //  YES:    Were we decoding HTML ?
+            if ( content_type == CT_TEXT_HTML  )
+            {
+                //  YES:    Insert a '<html>' tag so the decoder will work.
+                list_put_last( level2_list_p, text_copy_to_new( "<html>\0" ) );
+
+                //  The input data will interfere with HTML decode.
+                list_data_p[ 0 ] = '\0';
+            }
+        }
+        /********************************************************************/
+        //  Content-Transfer-Encoding: base64
+
+        //  Do we have a new encoding type ?
+        else
+        if (    ( email_flag == true     )
+             && ( tmp_e_type != CTE_NONE ) )
+        {
+            //  YES:    Set the new encoding type
+            encoding_type = tmp_e_type;
+
+            //  Are we decoding HTML ?
+            if ( content_type == CT_TEXT_HTML  )
+            {
+                //  YES:    The input data will interfere with HTML decode.
+                list_data_p[ 0 ] = '\0';
+            }
+        }
+
+        /********************************************************************/
+        //  -- End of content
+
+        //  Is this the end of a multipart message ?
+        else
+        if (    ( email_flag                              == true     )
+             && ( content_type                            != CT_NONE  )
+             && ( encoding_type                           != CTE_NONE )
+             && ( email_is_multipart_break( list_data_p ) == true     ) )
+        {
+            //  YES:    Were we decoding HTML ?
+            if ( content_type == CT_TEXT_HTML  )
+            {
+                //  YES:    HACK:   End html
+                list_put_last( level2_list_p, text_copy_to_new( "</html>\0" ) );
+
+                //  Convert HTML to TEXT
+                decode_html( level2_list_p, source_info_p );
+            }
+
+            //  Reset the content types.
+            content_type   = CT_NONE;
+            encoding_type  = CTE_NONE;
+        }
+
+        /********************************************************************/
+        //  Decode BASE64 data
+
+        //  Is it time to decode base64 data ?
+        else
+        if ( encoding_type == CTE_BASE64 )
+        {
+            //  YES:    Is this plain text or html ?
+            if (    ( content_type == CT_TEXT )
+                 || ( content_type == CT_TEXT_HTML  ) )
+            {
+                /**
+                 * @param tmp_data_p        Pointer to decoded data         */
+                char                        *   tmp_data_p;
+
+                //  YES:    Decode the current text string
+                tmp_data_p = base64_decode( list_data_p );
+
+                //  Do we have a good decode ?
+                if ( tmp_data_p != NULL )
+                {
+                    //  YES:    Swap the read data for the decoded data.
+                    mem_free( list_data_p );
+                    list_data_p = tmp_data_p;
+                }
+            }
+        }
+
         /********************************************************************/
         //  Mailing-List: list MC_recipes@onelist.com; contact MC_recipes-owner@onelist.com
         //  Sender: bread-bakers-errors@lists.best.com
-
+        else
         //  Did we locate e-Mail source data ?
         if (    ( email_flag                                        == true )
              && ( ( tmp_data_p = email_find_source( list_data_p ) ) != NULL )
@@ -296,7 +409,6 @@ decodel1_parse(
 
         /********************************************************************/
         //  Is this the start of a new e-Mail message ?
-        else
         if (    ( email_flag                          == true )
              && ( email_is_group_break( list_data_p ) == true ) )
         {

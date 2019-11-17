@@ -33,8 +33,9 @@
           <runcommandpicklistitem>"${OUTPUT_PATH}" ria -id /home/greg/ria-test -od /home/greg/ria-test</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" ria -id /home/greg/ria-test/in -od /home/greg/ria-test'out</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" ria -id /home/greg/ria-test/in -od /home/greg/ria-test/out</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" ria -id /home/greg/ria-test/mbox -od /home/greg/ria-test/out</runcommandpicklistitem>
         </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}" ria -id /home/greg/ria-test/in -od /home/greg/ria-test/out</runcommand>
+        <runcommand>"${OUTPUT_PATH}" ria -id /home/greg/ria-test/mbox -od /home/greg/ria-test/out</runcommand>
         <rundir></rundir>
         <buildfirst>true</buildfirst>
         <terminal-type>0</terminal-type>

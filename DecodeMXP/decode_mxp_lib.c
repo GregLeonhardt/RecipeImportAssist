@@ -17,6 +17,7 @@
  *  Compiler directives
  ****************************************************************************/
 
+#define _GNU_SOURCE
 
 /****************************************************************************
  * System Function API
@@ -125,19 +126,16 @@ enum    direction_state_e
 #define MXP_END_2               "-+-"
 #define MXP_END_2_L             strlen( MXP_END_2 )
 //----------------------------------------------------------------------------
-#define MXP_BY                  "Recipe By     :"
+#define MXP_BY                  "Recipe By"
 #define MXP_BY_L                strlen( MXP_BY )
 //----------------------------------------------------------------------------
-#define MXP_SRV_SIZE            "Serving Size  :"
+#define MXP_SRV_SIZE            "Serving Size"
 #define MXP_SRV_SIZE_L          strlen( MXP_SRV_SIZE )
 //----------------------------------------------------------------------------
-#define MXP_PREP_TIME_F1        "Preparation Time:"
-#define MXP_PREP_TIME_F1_L      strlen( MXP_PREP_TIME_F1 )
+#define MXP_PREP_TIME           "Preparation Time"
+#define MXP_PREP_TIME_L         strlen( MXP_PREP_TIME )
 //----------------------------------------------------------------------------
-#define MXP_PREP_TIME_F2        "Preparation Time :"
-#define MXP_PREP_TIME_F2_L      strlen( MXP_PREP_TIME_F2 )
-//----------------------------------------------------------------------------
-#define MXP_CATEGORIES          "Categories    :"
+#define MXP_CATEGORIES          "Categories"
 #define MXP_CATEGORIES_L        strlen( MXP_CATEGORIES )
 //----------------------------------------------------------------------------
 #define MXP_AUIP_HDR_1          "Amount"
@@ -262,8 +260,8 @@ DECODE_MXP__start(
         //  Is this the start of a MasterCook MXP recipe ?
         if ( strncmp( start_p, MXP_S_PART_1,  MXP_S_PART_1_L  ) == 0 )
         {
-                if (    ( strstr( start_p, MXP_S_PART_2 ) != NULL )     //  Exported
-                     && ( strstr( start_p, MXP_S_PART_3 ) != NULL ) )   //  from
+                if (    ( strcasestr( start_p, MXP_S_PART_2 ) != NULL )     //  Exported
+                     && ( strcasestr( start_p, MXP_S_PART_3 ) != NULL ) )   //  from
                 {
                     //  YES:    Change the return code
                     mxp_rc = true;
@@ -404,15 +402,12 @@ DECODE_MXP__recipe_by(
      ************************************************************************/
 
     //  Search the data buffer
-    tmp_data_p = strstr( data_p, MXP_BY );
+    tmp_data_p = decode_is_tag( data_p, MXP_BY );
 
     //  Does this line contain
     if ( tmp_data_p != NULL )
     {
-        //  YES:    Jump past the search string
-        tmp_data_p += MXP_BY_L;
-
-        //  Skip past any leading whitespace.
+        //  YES:    Skip past any leading whitespace.
         tmp_data_p = text_skip_past_whitespace( tmp_data_p );
 
         //  Save the recipe title (name)
@@ -473,15 +468,12 @@ DECODE_MXP__srv_size(
      ************************************************************************/
 
     //  Search the data buffer
-    tmp_data_p = strstr( data_p, MXP_SRV_SIZE );
+    tmp_data_p = decode_is_tag( data_p, MXP_SRV_SIZE );
 
     //  Does this line contain
     if ( tmp_data_p != NULL )
     {
-        //  YES:    Jump past the search string
-        tmp_data_p += MXP_SRV_SIZE_L;
-
-        //  Skip past any leading whitespace.
+        //  YES:    Skip past any leading whitespace.
         tmp_data_p = text_skip_past_whitespace( tmp_data_p );
 
         //  Save the recipe title (name)
@@ -550,15 +542,12 @@ DECODE_MXP__prep_time(
      ************************************************************************/
 
     //  Search the data buffer
-    tmp_data_p = strstr( data_p, MXP_PREP_TIME_F1 );
+    tmp_data_p = decode_is_tag( data_p, MXP_PREP_TIME );
 
     //  Does this line contain
     if ( tmp_data_p != NULL )
     {
-        //  YES:    Jump past the search string
-        tmp_data_p += MXP_PREP_TIME_F1_L;
-
-        //  Skip past any leading whitespace.
+        //  YES:    Skip past any leading whitespace.
         tmp_data_p = text_skip_past_whitespace( tmp_data_p );
 
         //  Save the recipe title (name)
@@ -567,28 +556,6 @@ DECODE_MXP__prep_time(
 
         //  Change the return code
         mxp_rc = true;
-    }
-    else
-    {
-        //  Search the data buffer
-        tmp_data_p = strstr( data_p, MXP_PREP_TIME_F2 );
-
-        //  Does this line contain
-        if ( tmp_data_p != NULL )
-        {
-            //  YES:    Jump past the search string
-            tmp_data_p += MXP_PREP_TIME_F2_L;
-
-            //  Skip past any leading whitespace.
-            tmp_data_p = text_skip_past_whitespace( tmp_data_p );
-
-            //  Save the recipe title (name)
-            recipe_p->time_prep = text_copy_to_new( tmp_data_p );
-            log_write( MID_DEBUG_1, "decode_mxp_lib.c", "Line: %d\n", __LINE__ );
-
-            //  Change the return code
-            mxp_rc = true;
-        }
     }
 
     /************************************************************************
@@ -652,16 +619,13 @@ DECODE_MXP__categories(
     if ( categories_scan_state == CSS_IDLE )
     {
         //  Search the data buffer
-        tmp_data_p = strstr( tmp_data_p, MXP_CATEGORIES );
+        tmp_data_p = decode_is_tag( tmp_data_p, MXP_CATEGORIES );
 
         //  Does this line contain ?
         if ( tmp_data_p != NULL )
         {
             //  YES:    This is the first categories line being scanned.
             categories_scan_state = CSS_STARTED;
-
-            // Move the pointer past the marker.
-            tmp_data_p += MXP_CATEGORIES_L;
 
             //  Locate the first character in the buffer
             tmp_data_p = text_skip_past_whitespace( tmp_data_p );
@@ -845,9 +809,9 @@ DECODE_MXP__auip(
         case    AUIPS_TEXT:
         {
             //  Is this the AUIP column description ?
-            if (    ( strstr( tmp_data_p, MXP_AUIP_HDR_1 ) != NULL )
-                 && ( strstr( tmp_data_p, MXP_AUIP_HDR_2 ) != NULL )
-                 && ( strstr( tmp_data_p, MXP_AUIP_HDR_3 ) != NULL ) )
+            if (    ( strcasestr( tmp_data_p, MXP_AUIP_HDR_1 ) != NULL )
+                 && ( strcasestr( tmp_data_p, MXP_AUIP_HDR_2 ) != NULL )
+                 && ( strcasestr( tmp_data_p, MXP_AUIP_HDR_3 ) != NULL ) )
             {
                 //  YES:    Change the state
                 auip_scan_state = AUIPS_DASH;
@@ -856,9 +820,18 @@ DECODE_MXP__auip(
         case    AUIPS_DASH:
         {
             //  Is this the AUIP separator line ?
+#if 0
             if (    ( strncmp( tmp_data_p, MXP_AUIP_HDR_4, MXP_AUIP_HDR_4_L ) == 0 )
                  || ( strncmp( tmp_data_p, MXP_AUIP_HDR_5, MXP_AUIP_HDR_5_L ) == 0 )
                  || ( strncmp( tmp_data_p, MXP_AUIP_HDR_6, MXP_AUIP_HDR_6_L ) == 0 ) )
+#else
+            if (    (      tmp_data_p[ 0 ] == '-' )
+                 && (    ( tmp_data_p[ 1 ] == '-' )
+                      || ( tmp_data_p[ 1 ] == ' ' ) )
+                 && (      tmp_data_p[ 2 ] == '-' )
+                 && (      tmp_data_p[ 3 ] == '-' )
+                 && (      tmp_data_p[ 4 ] == '-' ) )
+#endif
             {
                 //  YES:    Change the state
                 auip_scan_state = AUIPS_AMIP;
