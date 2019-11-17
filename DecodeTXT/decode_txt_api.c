@@ -152,6 +152,10 @@ decode_txt(
      *  Function
      ************************************************************************/
 
+    //  @TODO   Should there also be a minimum line count to reduce the
+    //          amount of trash we accumulate.
+
+    
     //  Will everything fit in the structure
     if ( line_count < MAX_LINE_COUNT )
     {
