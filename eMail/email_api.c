@@ -19,6 +19,8 @@
 
 #define ALLOC_EMAIL             ( "ALLOCATE STORAGE FOR EMAIL" )
 
+#define _GNU_SOURCE
+
 /****************************************************************************
  * System Function API
  ****************************************************************************/
@@ -134,6 +136,9 @@
 #define SRCH_SUBJECT                "Subject:"
 #define SRCH_SUBJECT_L              strlen( SRCH_SUBJECT )
 //----------------------------------------------------------------------------
+#define SRCH_BOUNDARY               "Boundary="
+#define SRCH_BOUNDARY_L             strlen( SRCH_BOUNDARY )
+//----------------------------------------------------------------------------
 
 /****************************************************************************
  * Private Structures
@@ -215,6 +220,104 @@ email_is_start(
 
 /****************************************************************************/
 /**
+ *  Test the input text line to see if it's a multipart boundary.
+ *
+ *  @param  data_p              Pointer to a line of text data.
+ *
+ *  @return email_rc            TRUE when the text is the start of an e-Mail
+ *                              message, else FALSE is returned
+ *
+ *  @note
+ *
+ ****************************************************************************/
+
+int
+email_is_boundary(
+    char                        *   data_p
+    )
+{
+    /**
+     * @param email_rc          Return code for this function               */
+    int                             email_rc;
+    /**
+     * @param start_p           Pointer to a temp data buffer               */
+    char                        *   start_p;
+    /**
+     * @param boundary_p        Pointer to the start of 'boundary='         */
+    char                        *   boundary_p;
+
+    /************************************************************************
+     *  Function Initialization
+     ************************************************************************/
+
+    //  Assume this is NOT a boundary tag
+    email_rc = false;
+
+    //  Locate the first character in the buffer
+    start_p = text_skip_past_whitespace( data_p );
+
+    /************************************************************************
+     *  Function
+     ************************************************************************/
+
+    //  Is there anything to search ?
+    if ( text_is_blank_line( start_p ) == false )
+    {
+        //  Look for the 'boundary=' tag here ?
+        boundary_p = strcasestr( start_p, SRCH_BOUNDARY );
+
+        //  Did we find it ?
+        if ( boundary_p != NULL )
+        {
+            //  YES:    Position the pointer to the start of the boundary
+            boundary_p = strchr( boundary_p, '"' );
+
+            //  Did we find it ?
+            if ( boundary_p != NULL )
+            {
+                //  YES:    Will it fit in the buffer ?
+                if ( strlen( &boundary_p[ 1 ] ) <= ( EMAIL_BOUNDARY_L - 1 ) )
+                {
+                    //  YES:    Save it.
+                    strcpy( email_boundary, &boundary_p[ 1 ] );
+
+                    //  Remove the ending quote ["]
+                    start_p = strchr( email_boundary, '"' );
+                    if ( boundary_p != NULL )
+                        boundary_p[ 0 ] = '\0';
+
+                    //  Found it and saved it.  All is good!
+                    email_rc = true;
+                }
+            }
+            else
+            {
+                //  YES:    Position the pointer to the start of the boundary
+                start_p = &start_p[ SRCH_BOUNDARY_L ];
+
+                //  YES:    Will it fit in the buffer ?
+                if ( strlen( &start_p[ 1 ] ) <= ( EMAIL_BOUNDARY_L - 1 ) )
+                {
+                    //  YES:    Save it.
+                    strcpy( email_boundary, start_p );
+
+                    //  Found it and saved it.  All is good!
+                    email_rc = true;
+                }
+            }
+        }
+    }
+
+    /************************************************************************
+     *  Function Exit
+     ************************************************************************/
+
+    //  DONE!
+    return( email_rc );
+}
+
+/****************************************************************************/
+/**
  *  Test the input text line to see if it is a multi-part message break
  *
  *  @param  data_p              Pointer to a line of text data.
@@ -223,9 +326,6 @@ email_is_start(
  *                              message, else FALSE is returned
  *
  *  @note
- *      --14dae9340eb5aa68e304ca739f03
- *      --_b1248cf0-3959-455d-95c3-8fb1580ac0e2_
-
  *
  ****************************************************************************/
 
@@ -240,16 +340,13 @@ email_is_multipart_break(
     /**
      * @param start_p           Pointer to a temp data buffer               */
     char                        *   start_p;
-    /**
-     * @param ndx               Index into the buffer                       */
-    int                             ndx;
 
     /************************************************************************
      *  Function Initialization
      ************************************************************************/
 
-    //  Assume this is properly formatted multipart message break
-    email_rc = true;
+    //  Assume this is NOT a match for the current boundary
+    email_rc = false;
 
     //  Locate the first character in the buffer
     start_p = text_skip_past_whitespace( data_p );
@@ -259,82 +356,25 @@ email_is_multipart_break(
      ************************************************************************/
 
     //  Does the line start with two dash [-] characters ?
-    if (    ( start_p[ 0 ] == '-' )
-         && ( start_p[ 1 ] == '-' ) )
+    if (    ( strlen( email_boundary ) >   0  )
+         && ( start_p[ 0 ]             == '-' )
+         && ( start_p[ 1 ]             == '-' ) )
     {
-        //  Using the 28 character format ?
-        if ( isxdigit( start_p[ 2 ] ) != 0 )
+        //  Do we have a boundary marker match ?
+        if ( strncmp( &start_p[ 2 ], email_boundary, strlen( email_boundary ) ) == 0 )
         {
-            //  YES:    Look at the next 28 characters to see if they are hex
-            for ( ndx = 2;
-                  ndx < 30;
-                  ndx += 1 )
-            {
-                //  YES:    Is this a hex digit ?
-                if ( isxdigit( start_p[ ndx ] ) == 0 )
-                {
-                    //  NO:     Not a hex digit
-                    email_rc = false;
+            //  YES:    Set a good return code.
+            email_rc = true;
 
-                    //  Stop looking
-                    break;
-                }
-            }
-            //  Does it check-out as valid so far ?
-            if ( email_rc == true )
+            //  Is this also the end of the current multipart ?
+            if (    ( data_p[ strlen( data_p ) -2 ] == '-' )
+                 && ( data_p[ strlen( data_p ) -1 ] == '-' ) )
             {
-                //  YES:    Is the string exactly 30 or 32 characters long ?
-                if (    ( strlen( data_p ) != 30 )
-                     && ( strlen( data_p ) != 32 ) )
-                {
-                    //  NO:     Not a multipart message break
-                    email_rc = false;
-                }
-            }
-        }
-        //  Using the 36 character format ?
-        else
-        if (    ( start_p[  2 ] == '_' )
-             && ( start_p[ 39 ] == '_' ) )
-        {
-            //  YES:    Validate it.
-            for ( ndx = 3;
-                  ndx < 38;
-                  ndx += 1 )
-            {
-                char c = start_p[ ndx ];
-
-                //  YES:    Is this a hex digit ?
-                if (    ( isxdigit( start_p[ ndx ] ) == 0   )
-                     && (           start_p[ ndx ]   != '-' ) )
-                {
-                    //  NO:     Not a hex digit
-                    email_rc = false;
-
-                    //  Stop looking
-                    break;
-                }
-            }
-            //  Does it check-out as valid so far ?
-            if ( email_rc == true )
-            {
-                //  YES:    Is the string exactly 30 or 32 characters long ?
-                if (    ( strlen( data_p ) != 40 )
-                     && ( strlen( data_p ) != 42 ) )
-                {
-                    //  NO:     Not a multipart message break
-                    email_rc = false;
-                }
+                //  YES:    Erase the existing boundary marker
+                memset( email_boundary, '\0', EMAIL_BOUNDARY_L );
             }
         }
     }
-    else
-    {
-        //  NO:     This isn't a multipart message break
-        email_rc = false;
-    }
-
-
 
     /************************************************************************
      *  Function Exit

@@ -45,6 +45,7 @@
  ****************************************************************************/
 
 //----------------------------------------------------------------------------
+#define EMAIL_BOUNDARY_L            ( 100 )
 //----------------------------------------------------------------------------
 
 /****************************************************************************
@@ -78,11 +79,18 @@ enum    email_filter_e
  *  @param  email_filtering     When TRUE we are filtering the data stream  */
 EMAIL_EXT
     enum    email_filter_e          email_filter_type;
+//----------------------------------------------------------------------------
 /**
  *  @param  email_blank_count   Number of blank lines needed before
  *                              normal processing resumes                   */
 EMAIL_EXT
     int                             email_blank_count;
+//----------------------------------------------------------------------------
+/**
+ *  @param  email_blank_count   Number of blank lines needed before
+ *                              normal processing resumes                   */
+EMAIL_EXT
+    char                            email_boundary[ EMAIL_BOUNDARY_L ];
 //----------------------------------------------------------------------------
 
 /****************************************************************************

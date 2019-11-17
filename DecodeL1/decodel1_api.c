@@ -19,6 +19,8 @@
 
 #define ALLOC_RECIPE          ( "ALLOCATE STORAGE FOR RECIPE" )
 
+#define _GNU_SOURCE
+
 /****************************************************************************
  * System Function API
  ****************************************************************************/
@@ -122,6 +124,9 @@ decodel1_parse(
     /**
      * @param encoding_type      e-Mail encoding type                       */
     enum    encoding_type_e         encoding_type;
+    /**
+     * @param boundary   Flag showing the bounadry search state             */
+    int                             boundary;
 
     /************************************************************************
      *  Function Initialization
@@ -134,6 +139,9 @@ decodel1_parse(
 
     //  By default we are NOT doing e-Mail.
     email_flag = false;
+
+    //  At startup we are NOT looking for a boundary= tag.
+    boundary = false;
 
     //  Lock the list for fast(er) access
     list_lock_key = list_user_lock( level1_list_p );
@@ -201,6 +209,9 @@ decodel1_parse(
             //  YES:    Set the new encoding type
             content_type = tmp_c_type;
 
+            //  Just in case it is on, turn the boundary search flag off
+            boundary = false;
+
             //  YES:    Were we decoding HTML ?
             if ( content_type == CT_TEXT_HTML  )
             {
@@ -210,7 +221,15 @@ decodel1_parse(
                 //  The input data will interfere with HTML decode.
                 list_data_p[ 0 ] = '\0';
             }
+
+            //  YES:    Is this the content type 'multipart/alternative' ?
+            if ( strcasestr( list_data_p, "multipart/alternative" ) != NULL )
+            {
+                //  YES:    Set the searching for boundary flag.
+                boundary = true;
+            }
         }
+
         /********************************************************************/
         //  Content-Transfer-Encoding: base64
 
@@ -404,6 +423,18 @@ decodel1_parse(
                             sizeof( source_info_p->e_subject ) );
                     strncpy( source_info_p->e_subject, tmp_data_p, SUBJECT_L );
                 }
+            }
+        }
+
+        /********************************************************************/
+        //  Are we looking for boundary= ?
+        if ( boundary == true )
+        {
+            //  Is this the boundary tag we are looking for ?
+            if ( email_is_boundary( list_data_p ) == true )
+            {
+                //  YES:    Set the flag off.
+                boundary = false;
             }
         }
 
