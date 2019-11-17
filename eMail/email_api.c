@@ -224,6 +224,8 @@ email_is_start(
  *
  *  @note
  *      --14dae9340eb5aa68e304ca739f03
+ *      --_b1248cf0-3959-455d-95c3-8fb1580ac0e2_
+
  *
  ****************************************************************************/
 
@@ -260,19 +262,69 @@ email_is_multipart_break(
     if (    ( start_p[ 0 ] == '-' )
          && ( start_p[ 1 ] == '-' ) )
     {
-        //  YES:    Look at the next 28 characters to see if they are hex
-        for ( ndx = 2;
-              ndx < 30;
-              ndx += 1 )
+        //  Using the 28 character format ?
+        if ( isxdigit( start_p[ 2 ] ) != 0 )
         {
-            //  YES:    Is this a hex digit ?
-            if ( isxdigit( start_p[ ndx ] ) == 0 )
+            //  YES:    Look at the next 28 characters to see if they are hex
+            for ( ndx = 2;
+                  ndx < 30;
+                  ndx += 1 )
             {
-                //  NO:     Not a hex digit
-                email_rc = false;
+                //  YES:    Is this a hex digit ?
+                if ( isxdigit( start_p[ ndx ] ) == 0 )
+                {
+                    //  NO:     Not a hex digit
+                    email_rc = false;
 
-                //  Stop looking
-                break;
+                    //  Stop looking
+                    break;
+                }
+            }
+            //  Does it check-out as valid so far ?
+            if ( email_rc == true )
+            {
+                //  YES:    Is the string exactly 30 or 32 characters long ?
+                if (    ( strlen( data_p ) != 30 )
+                     && ( strlen( data_p ) != 32 ) )
+                {
+                    //  NO:     Not a multipart message break
+                    email_rc = false;
+                }
+            }
+        }
+        //  Using the 36 character format ?
+        else
+        if (    ( start_p[  2 ] == '_' )
+             && ( start_p[ 39 ] == '_' ) )
+        {
+            //  YES:    Validate it.
+            for ( ndx = 3;
+                  ndx < 38;
+                  ndx += 1 )
+            {
+                char c = start_p[ ndx ];
+
+                //  YES:    Is this a hex digit ?
+                if (    ( isxdigit( start_p[ ndx ] ) == 0   )
+                     && (           start_p[ ndx ]   != '-' ) )
+                {
+                    //  NO:     Not a hex digit
+                    email_rc = false;
+
+                    //  Stop looking
+                    break;
+                }
+            }
+            //  Does it check-out as valid so far ?
+            if ( email_rc == true )
+            {
+                //  YES:    Is the string exactly 30 or 32 characters long ?
+                if (    ( strlen( data_p ) != 40 )
+                     && ( strlen( data_p ) != 42 ) )
+                {
+                    //  NO:     Not a multipart message break
+                    email_rc = false;
+                }
             }
         }
     }
@@ -282,17 +334,6 @@ email_is_multipart_break(
         email_rc = false;
     }
 
-    //  Does it check-out as valid so far ?
-    if ( email_rc == true )
-    {
-        //  YES:    Is the string exactly 30 or 32 characters long ?
-        if (    ( strlen( data_p ) != 30 )
-             && ( strlen( data_p ) != 32 ) )
-        {
-            //  NO:     Not a multipart message break
-            email_rc = false;
-        }
-    }
 
 
     /************************************************************************
