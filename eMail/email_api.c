@@ -283,8 +283,10 @@ email_is_boundary(
 
                     //  Remove the ending quote ["]
                     start_p = strchr( email_boundary, '"' );
-                    if ( boundary_p != NULL )
-                        boundary_p[ 0 ] = '\0';
+                    if ( start_p != NULL )
+                    {
+                        start_p[ 0 ] = '\0';
+                    }
 
                     //  Found it and saved it.  All is good!
                     email_rc = true;
