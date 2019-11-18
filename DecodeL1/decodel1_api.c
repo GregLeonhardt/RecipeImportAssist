@@ -46,6 +46,7 @@
 #include <decodel2_api.h>       //  API for all decodel2_*          PUBLIC
 #include <decode_html_api.h>    //  API for all decode_html_*       PUBLIC
 #include <email_api.h>          //  API for all email_*             PUBLIC
+#include <decode_txt_api.h>     //  API for all decode_txt*         PUBLIC
                                 //*******************************************
 #include "decodel1_lib.h"       //  API for all DECODEL1__*         PRIVATE
                                 //*******************************************
@@ -259,7 +260,7 @@ decodel1_parse(
              && ( encoding_type                           != CTE_NONE )
              && ( email_is_multipart_break( list_data_p ) == true     ) )
         {
-            //  YES:    Were we decoding HTML ?
+            //  YES:    Were we decoding text/html ?
             if ( content_type == CT_TEXT_HTML  )
             {
                 //  YES:    HACK:   End html
@@ -267,6 +268,12 @@ decodel1_parse(
 
                 //  Convert HTML to TEXT
                 decode_html( level2_list_p, source_info_p );
+            }
+            //  Were we decoding content type text/plain ?
+            if ( content_type == CT_TEXT  )
+            {
+                //  YES:    Clean up the text.
+                level2_list_p = decode_txt_cleanup( level2_list_p );
             }
 
             //  Reset the content types.
