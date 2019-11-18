@@ -308,18 +308,12 @@ main(
      *  @param  queue_rc        Return code from queue management           */
     enum    queue_rc_e              queue_rc;
     /**
-     *  @param  html_found      Flag showing that an HTML tag was found      */
-    int                             html_found;
-    /**
      *  @param  extention       Buffer to hold file extention               */
     char                            extention[ 32 ];
 
     /************************************************************************
      *  Application Initialization
      ************************************************************************/
-
-    //  Variable initialization
-    html_found = false;
 
     //  Initialize the CommonCode memory process
     token_init( );
@@ -659,29 +653,12 @@ main(
                 }
                 else
                 {
-                    //  Is there an HTML tag here ?
-                    if ( strstr( read_data_p, "<html>" ) != NULL )
-                    {
-                        //  YES:    Set the HTML found flag
-                        html_found = true;
-                    }
-
-                    //  Is this the start of a new e-Mail ?
+                    //  NO:     Is this the start of a new e-Mail ?
                     if ( email_is_start( read_data_p ) == true )
                     {
                         //  YES:    Is there something already in the list ?
                         if ( list_query_count( level1_list_p ) > 0 )
                         {
-                            //  YES:    Have we seen an HTML tag ?
-                            if ( html_found == true )
-                            {
-                                //  YES:    Convert HTML to TEXT
-                                decode_html( level1_list_p, source_info_p );
-
-                                //  Reset the flag to FALSE
-                                html_found = false;
-                            }
-
                             //  YES:    Go process the list.
                             decodel1_parse( level1_list_p, source_info_p );
 
@@ -723,15 +700,6 @@ main(
         //  Is there something still in the list ?
         if ( list_query_count( level1_list_p ) > 0 )
         {
-            //  YES:    Have we seen an HTML tag ?
-            if ( html_found == true )
-            {
-                //  YES:    Convert HTML to TEXT
-                decode_html( level1_list_p, source_info_p );
-
-                //  Reset the flag to FALSE
-                html_found = false;
-            }
             //  YES:    Go process the list.
             decodel1_parse( level1_list_p, source_info_p );
 
