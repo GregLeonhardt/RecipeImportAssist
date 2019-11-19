@@ -125,6 +125,9 @@
 #define SRCH_SENDER                 "Sender:"
 #define SRCH_SENDER_L               strlen( SRCH_SENDER )
 //----------------------------------------------------------------------------
+#define SRCH_X_TO                   "X-Apparently-To:"
+#define SRCH_X_TO_L                 strlen( SRCH_X_TO )
+//----------------------------------------------------------------------------
 #if 0
 #define SRCH_DELIVER                "Delivered-To:"
 #define SRCH_DELIVER_L              strlen( SRCH_DELIVER )
@@ -836,7 +839,17 @@ email_find_source(
     //          is used as the "To:" later.  This dual use makes it impossible
     //          to use
 
+    //  X-Apparently-To: ?
+    if ( strncmp( tmp_data_p, SRCH_X_TO, SRCH_X_TO_L ) == 0 )
+    {
+        //  YES:    Move the pointer past the search text
+        tmp_data_p += SRCH_X_TO_L;
+
+        //  Also move past any whitespace to eventually point to the data
+        tmp_data_p = text_skip_past_whitespace( tmp_data_p );
+    }
     //  Mailing-List: ?
+    else
     if ( strncmp( tmp_data_p, SRCH_MAILINGLIST, SRCH_MAILINGLIST_L ) == 0 )
     {
         //  YES:    Move the pointer past the search text
@@ -908,16 +921,6 @@ email_find_from(
     {
         //  YES:    Move the pointer past the search text
         tmp_data_p += SRCH_FROM_L;
-
-        //  Also move past any whitespace to eventually point to the data
-        tmp_data_p = text_skip_past_whitespace( tmp_data_p );
-    }
-    //  Posted by: ?
-    else
-    if ( strncmp( tmp_data_p, SRCH_POSTED, SRCH_POSTED_L ) == 0 )
-    {
-        //  YES:    Move the pointer past the search text
-        tmp_data_p += SRCH_POSTED_L;
 
         //  Also move past any whitespace to eventually point to the data
         tmp_data_p = text_skip_past_whitespace( tmp_data_p );

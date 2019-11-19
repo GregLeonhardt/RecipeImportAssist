@@ -202,6 +202,7 @@ decodel1_parse(
 
         /********************************************************************/
         //  Content-Type: text/plain; charset="utf-8"
+        /********************************************************************/
 
         //  Do we have a new content type ?
         if (    ( email_flag == true    )
@@ -233,6 +234,7 @@ decodel1_parse(
 
         /********************************************************************/
         //  Content-Transfer-Encoding: base64
+        /********************************************************************/
 
         //  Do we have a new encoding type ?
         else
@@ -251,7 +253,8 @@ decodel1_parse(
         }
 
         /********************************************************************/
-        //  -- End of content
+        //  -- End of Boundary-Content
+        /********************************************************************/
 
         //  Is this the end of a multipart message ?
         else
@@ -285,6 +288,7 @@ decodel1_parse(
 
         /********************************************************************/
         //  Decode BASE64 data
+        /********************************************************************/
 
         //  Is it time to decode base64 data ?
         else
@@ -312,8 +316,9 @@ decodel1_parse(
         }
 
         /********************************************************************/
-        //  Mailing-List: list MC_recipes@onelist.com; contact MC_recipes-owner@onelist.com
-        //  Sender: bread-bakers-errors@lists.best.com
+        //  Group-From:
+        /********************************************************************/
+
         else
         //  Did we locate e-Mail source data ?
         if (    ( email_flag                                        == true )
@@ -324,18 +329,23 @@ decodel1_parse(
             log_write( MID_DEBUG_0, "decodel1_parse",
                           "Source:    '%.60s'\n", tmp_data_p );
 
-            //  Will the e-Mail source information fit in the buffer ?
-            if ( sizeof( source_info_p->g_from ) > strlen( tmp_data_p ) )
+            //  Is there already something here ?
+            if ( strlen( source_info_p->g_from ) == 0 )
             {
-                //  YES:    Overwrite the e-Mail 'source' data
-                memset( source_info_p->g_from, '\0',
-                        sizeof( source_info_p->g_from ) );
-                strncpy( source_info_p->g_from, tmp_data_p, SOURCE_L );
+                //  NO:     Will the e-Mail source information fit in the buffer ?
+                if ( sizeof( source_info_p->g_from ) > strlen( tmp_data_p ) )
+                {
+                    //  YES:    Overwrite the e-Mail 'source' data
+                    memset( source_info_p->g_from, '\0',
+                            sizeof( source_info_p->g_from ) );
+                    strncpy( source_info_p->g_from, tmp_data_p, SOURCE_L );
+                }
             }
         }
 
         /********************************************************************/
-        //  From: 'Jane Doe' jane.doe@server.mail (Jane Doe)
+        //  Email-From:
+        /********************************************************************/
 
         //  Did we locate e-Mail from data ?
         else
@@ -344,21 +354,26 @@ decodel1_parse(
              && ( strlen( source_info_p->e_from )                 ==    0 ) )
         {
             //  YES:    Log what we found
-                log_write( MID_DEBUG_0, "decodel1_parse",
-                              "From:      '%.60s'\n", tmp_data_p );
+            log_write( MID_DEBUG_0, "decodel1_parse",
+                          "From:      '%.60s'\n", tmp_data_p );
 
-            //  Will the e-Mail from information fit in the buffer ?
-            if ( sizeof( source_info_p->e_from ) > strlen( tmp_data_p ) )
+            //  Is there already something here ?
+            if ( strlen( source_info_p->e_from ) == 0 )
             {
-                //  YES:    Overwrite the e-Mail 'from' data
-                memset( source_info_p->e_from, '\0',
-                        sizeof( source_info_p->e_from ) );
-                strncpy( source_info_p->e_from, tmp_data_p, FROM_L );
+                //  NO:     Will the e-Mail from information fit in the buffer ?
+                if ( sizeof( source_info_p->e_from ) > strlen( tmp_data_p ) )
+                {
+                    //  YES:    Overwrite the e-Mail 'from' data
+                    memset( source_info_p->e_from, '\0',
+                            sizeof( source_info_p->e_from ) );
+                    strncpy( source_info_p->e_from, tmp_data_p, FROM_L );
+                }
             }
         }
 
         /********************************************************************/
-        //  Date: Tue, 7 Mar 2000 10:18:45 -0800 (PST)
+        //  Group-DateTime:
+        /********************************************************************/
 
         //  Did we locate e-Mail from data ?
         else
@@ -369,7 +384,7 @@ decodel1_parse(
             log_write( MID_DEBUG_0, "decodel1_parse",
                           "DataTime   '%.60s'\n", tmp_data_p );
 
-            //  Is there something is the group date/time field ?
+            //  Is there already something here ?
             if ( strlen( source_info_p->g_datetime ) == 0 )
             {
                 //  NO:     Will the e-Mail date/time information fit in the buffer ?
@@ -381,23 +396,19 @@ decodel1_parse(
                     strncpy( source_info_p->g_datetime, tmp_data_p, DATETIME_L );
                 }
             }
-            //  Is there something is the subject field ?
-            else
-            if ( strlen( source_info_p->e_datetime ) == 0 )
+            //  Will the e-Mail date/time information fit in the buffer ?
+            if ( sizeof( source_info_p->g_datetime ) > strlen( tmp_data_p ) )
             {
-                //  NO:     Will the e-Mail date/time information fit in the buffer ?
-                if ( sizeof( source_info_p->g_datetime ) > strlen( tmp_data_p ) )
-                {
-                    //  YES:    Write the e-Mail 'date/time' data
-                    memset( source_info_p->e_datetime, '\0',
-                            sizeof( source_info_p->e_datetime ) );
-                    strncpy( source_info_p->e_datetime, tmp_data_p, DATETIME_L );
-                }
+                //  YES:    Write the e-Mail 'date/time' data
+                memset( source_info_p->e_datetime, '\0',
+                        sizeof( source_info_p->e_datetime ) );
+                strncpy( source_info_p->e_datetime, tmp_data_p, DATETIME_L );
             }
         }
 
         /********************************************************************/
-        //  Subject: Crockpot Cherry Pie Filling
+        //  Group-Subject:
+        /********************************************************************/
 
         //  Did we locate the e-Mail subject ?
         else
@@ -420,18 +431,13 @@ decodel1_parse(
                     strncpy( source_info_p->g_subject, tmp_data_p, SUBJECT_L );
                 }
             }
-            //  Is there something is the subject field ?
-            else
-            if ( strlen( source_info_p->e_subject ) == 0 )
+            //  Will the e-Mail subject information fit in the buffer ?
+            if ( sizeof( source_info_p->e_subject ) > strlen( tmp_data_p ) )
             {
-                //  YES:    Will the e-Mail subject information fit in the buffer ?
-                if ( sizeof( source_info_p->e_subject ) > strlen( tmp_data_p ) )
-                {
-                    //  YES:    Write the e-Mail subject data
-                    memset( source_info_p->e_subject, '\0',
-                            sizeof( source_info_p->e_subject ) );
-                    strncpy( source_info_p->e_subject, tmp_data_p, SUBJECT_L );
-                }
+                //  YES:    Write the e-Mail subject data
+                memset( source_info_p->e_subject, '\0',
+                        sizeof( source_info_p->e_subject ) );
+                strncpy( source_info_p->e_subject, tmp_data_p, SUBJECT_L );
             }
         }
 
