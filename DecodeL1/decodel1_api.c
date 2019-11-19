@@ -123,11 +123,11 @@ decodel1_parse(
      * @param content_type      e-Mail content type                         */
     enum    content_type_e          content_type;
     /**
-     * @param encoding_type      e-Mail encoding type                       */
+     * @param encoding_type     e-Mail encoding type                        */
     enum    encoding_type_e         encoding_type;
     /**
-     * @param boundary   Flag showing the bounadry search state             */
-    int                             boundary;
+     * @param boundary_type     e-Mail boundary type                        */
+    enum    boundary_type_e         boundary_type;
 
     /************************************************************************
      *  Function Initialization
@@ -142,7 +142,7 @@ decodel1_parse(
     email_flag = false;
 
     //  At startup we are NOT looking for a boundary= tag.
-    boundary = false;
+    boundary_type = BT_NOT_SEARCHING;
 
     //  Lock the list for fast(er) access
     list_lock_key = list_user_lock( level1_list_p );
@@ -211,7 +211,7 @@ decodel1_parse(
             content_type = tmp_c_type;
 
             //  Just in case it is on, turn the boundary search flag off
-            boundary = false;
+            boundary_type = BT_NOT_SEARCHING;
 
             //  YES:    Were we decoding HTML ?
             if ( content_type == CT_TEXT_HTML  )
@@ -227,7 +227,7 @@ decodel1_parse(
             if ( strcasestr( list_data_p, "multipart/alternative" ) != NULL )
             {
                 //  YES:    Set the searching for boundary flag.
-                boundary = true;
+                boundary_type = BT_SEARCHING;
             }
         }
 
@@ -270,7 +270,8 @@ decodel1_parse(
                 decode_html( level2_list_p, source_info_p );
             }
             //  Were we decoding content type text/plain ?
-            if ( content_type == CT_TEXT  )
+            if (    ( content_type  == CT_TEXT    )
+                 && ( encoding_type == CTE_BASE64 ) )
             {
                 //  YES:    Clean up the text.
                 level2_list_p = decode_txt_cleanup( level2_list_p );
@@ -279,6 +280,7 @@ decodel1_parse(
             //  Reset the content types.
             content_type   = CT_NONE;
             encoding_type  = CTE_NONE;
+            boundary_type  = BT_NOT_SEARCHING;
         }
 
         /********************************************************************/
@@ -434,15 +436,19 @@ decodel1_parse(
         }
 
         /********************************************************************/
-        //  Are we looking for boundary= ?
-        if ( boundary == true )
+        //  Are we looking for the boundary identifier ?
+        if ( boundary_type == BT_NO_IDENTIFIER )
         {
-            //  Is this the boundary tag we are looking for ?
-            if ( email_is_boundary( list_data_p ) == true )
-            {
-                //  YES:    Set the flag off.
-                boundary = false;
-            }
+            //  See if this is the boundary identifier.
+            boundary_type = email_is_boundary_identifier( list_data_p );
+        }
+
+        /********************************************************************/
+        //  Are we looking for boundary= ?
+        if ( boundary_type == BT_SEARCHING )
+        {
+            //  We are looking for a multi-part boundary
+            boundary_type = email_is_boundary( list_data_p );
         }
 
         /********************************************************************/

@@ -136,7 +136,7 @@
 #define SRCH_SUBJECT                "Subject:"
 #define SRCH_SUBJECT_L              strlen( SRCH_SUBJECT )
 //----------------------------------------------------------------------------
-#define SRCH_BOUNDARY               "Boundary="
+#define SRCH_BOUNDARY               "Boundary"
 #define SRCH_BOUNDARY_L             strlen( SRCH_BOUNDARY )
 //----------------------------------------------------------------------------
 
@@ -231,7 +231,7 @@ email_is_start(
  *
  ****************************************************************************/
 
-int
+enum    boundary_type_e
 email_is_boundary(
     char                        *   data_p
     )
@@ -251,13 +251,13 @@ email_is_boundary(
      ************************************************************************/
 
     //  Assume this is NOT a boundary tag
-    email_rc = false;
+    email_rc = BT_SEARCHING;
 
     //  Locate the first character in the buffer
     start_p = text_skip_past_whitespace( data_p );
 
     /************************************************************************
-     *  Function
+     *  Is this a Boundary tag ?
      ************************************************************************/
 
     //  Is there anything to search ?
@@ -266,20 +266,25 @@ email_is_boundary(
         //  Look for the 'boundary=' tag here ?
         boundary_p = strcasestr( start_p, SRCH_BOUNDARY );
 
-        //  Did we find it ?
+        //  Was a boundary tag found ?
         if ( boundary_p != NULL )
         {
-            //  YES:    Position the pointer to the start of the boundary
-            boundary_p = strchr( boundary_p, '"' );
+
+            /****************************************************************
+             *  Format 1:   boundary="_1af2321e-e051-4911-833c-77b9b34c619e_"
+             ****************************************************************/
+
+            //  YES:    Position the pointer to the start of the boundary identifier
+            start_p = strchr( boundary_p, '"' );
 
             //  Did we find it ?
-            if ( boundary_p != NULL )
+            if ( start_p != NULL )
             {
                 //  YES:    Will it fit in the buffer ?
-                if ( strlen( &boundary_p[ 1 ] ) <= ( EMAIL_BOUNDARY_L - 1 ) )
+                if ( strlen( &start_p[ 1 ] ) <= ( EMAIL_BOUNDARY_L - 1 ) )
                 {
                     //  YES:    Save it.
-                    strcpy( email_boundary, &boundary_p[ 1 ] );
+                    strcpy( email_boundary, &start_p[ 1 ] );
 
                     //  Remove the ending quote ["]
                     start_p = strchr( email_boundary, '"' );
@@ -289,23 +294,111 @@ email_is_boundary(
                     }
 
                     //  Found it and saved it.  All is good!
-                    email_rc = true;
+                    email_rc = BT_BOUNDARY;
                 }
             }
+
+            /****************************************************************
+             *  Format 2:   boundary cf300fb1c1e09cec04c0942d07
+             ****************************************************************/
+
             else
             {
-                //  YES:    Position the pointer to the start of the boundary
-                start_p = &start_p[ SRCH_BOUNDARY_L ];
+                //  YES:    Position the pointer to the past the tag
+                start_p = &boundary_p[ SRCH_BOUNDARY_L ];
 
-                //  YES:    Will it fit in the buffer ?
-                if ( strlen( &start_p[ 1 ] ) <= ( EMAIL_BOUNDARY_L - 1 ) )
+                //  Move past all white space
+                start_p = text_skip_past_whitespace( start_p );
+
+                //  Is there anything here ?
+                if ( text_is_blank_line( start_p ) == false )
                 {
-                    //  YES:    Save it.
-                    strcpy( email_boundary, start_p );
+                    //  YES:    Will it fit in the buffer ?
+                    if ( strlen( start_p ) <= ( EMAIL_BOUNDARY_L - 1 ) )
+                    {
+                        //  YES:    Save it.
+                        strcpy( email_boundary, start_p );
 
-                    //  Found it and saved it.  All is good!
-                    email_rc = true;
+                        //  Found it and saved it.  All is good!
+                        email_rc = BT_BOUNDARY;
+                    }
                 }
+
+                /************************************************************
+                 *  Format 3:   boundary
+                 ************************************************************/
+
+                else
+                {
+                    //  NO:     Found the 'boundary tag but not the identifier.
+                    email_rc = BT_NO_IDENTIFIER;
+                }
+            }
+        }
+    }
+
+    /************************************************************************
+     *  Function Exit
+     ************************************************************************/
+
+    //  DONE!
+    return( email_rc );
+}
+
+/****************************************************************************/
+/**
+ *  Test the input text line to see if it's a multipart boundary.
+ *
+ *  @param  data_p              Pointer to a line of text data.
+ *
+ *  @return email_rc            TRUE when the text is the start of an e-Mail
+ *                              message, else FALSE is returned
+ *
+ *  @note
+ *
+ ****************************************************************************/
+
+enum    boundary_type_e
+email_is_boundary_identifier(
+    char                        *   data_p
+    )
+{
+    /**
+     * @param email_rc          Return code for this function               */
+    int                             email_rc;
+    /**
+     * @param start_p           Pointer to a temp data buffer               */
+    char                        *   start_p;
+
+    /************************************************************************
+     *  Function Initialization
+     ************************************************************************/
+
+    //  Assume this is NOT a boundary tag
+    email_rc = BT_NO_IDENTIFIER;
+
+    //  Locate the first character in the buffer
+    start_p = text_skip_past_whitespace( data_p );
+
+    /************************************************************************
+     *  Could this be the boundary identifier
+     ************************************************************************/
+
+    //  Is there anything to search ?
+    if ( text_is_blank_line( start_p ) == false )
+    {
+        //  YES:    Is the length correct ?
+        if ( strlen( data_p ) == 30 )
+        {
+            //  YES:    Does it start with two dashes [--] ?
+            if (    ( data_p[ 0 ] == '-' )
+                 && ( data_p[ 1 ] == '-' ) )
+            {
+                //  YES:    This must be it so save it.
+                strcpy( email_boundary, &start_p[ 2 ] );
+
+                //  Found it and saved it.  All is good!
+                email_rc = BT_BOUNDARY;
             }
         }
     }

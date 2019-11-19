@@ -74,6 +74,14 @@ enum    encoding_type_e
     CTE_BASE64                  =   4,      //  BASE64
     CTE_UNKNOWN                 =  -1       //  An unknown type was found
 };
+//----------------------------------------------------------------------------
+enum    boundary_type_e
+{
+    BT_NOT_SEARCHING            =   0,      //  NOT searching for a boundary
+    BT_SEARCHING                =   1,      //  Searching for a boundary
+    BT_BOUNDARY                 =   2,      //  Boundary Found
+    BT_NO_IDENTIFIER            =   3       //  Identifier NOT FOUND
+};
 
 /****************************************************************************
  * Library Public Structures
@@ -99,8 +107,13 @@ email_is_start(
     char                        *   data_p
     );
 //---------------------------------------------------------------------------
-int
+enum    boundary_type_e
 email_is_boundary(
+    char                        *   data_p
+    );
+//---------------------------------------------------------------------------
+enum    boundary_type_e
+email_is_boundary_identifier(
     char                        *   data_p
     );
 //---------------------------------------------------------------------------
