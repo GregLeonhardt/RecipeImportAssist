@@ -65,6 +65,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/DecodeTXT/decode_txt_lib.o \
 	${OBJECTDIR}/Encode/encode_api.o \
 	${OBJECTDIR}/Encode/encode_lib.o \
+	${OBJECTDIR}/EncodeMXP/encode_mxp_api.o \
+	${OBJECTDIR}/EncodeMXP/encode_mxp_lib.o \
 	${OBJECTDIR}/EncodeRIA/encode_ria_api.o \
 	${OBJECTDIR}/EncodeRIA/encode_ria_lib.o \
 	${OBJECTDIR}/EncodeRXF/encode_rxf_api.o \
@@ -255,6 +257,16 @@ ${OBJECTDIR}/Encode/encode_lib.o: Encode/encode_lib.c
 	${MKDIR} -p ${OBJECTDIR}/Encode
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Encode/encode_lib.o Encode/encode_lib.c
+
+${OBJECTDIR}/EncodeMXP/encode_mxp_api.o: EncodeMXP/encode_mxp_api.c
+	${MKDIR} -p ${OBJECTDIR}/EncodeMXP
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/EncodeMXP/encode_mxp_api.o EncodeMXP/encode_mxp_api.c
+
+${OBJECTDIR}/EncodeMXP/encode_mxp_lib.o: EncodeMXP/encode_mxp_lib.c
+	${MKDIR} -p ${OBJECTDIR}/EncodeMXP
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/EncodeMXP/encode_mxp_lib.o EncodeMXP/encode_mxp_lib.c
 
 ${OBJECTDIR}/EncodeRIA/encode_ria_api.o: EncodeRIA/encode_ria_api.c
 	${MKDIR} -p ${OBJECTDIR}/EncodeRIA

@@ -52,6 +52,7 @@
 #include <decode_nyc_api.h>     //  API for all decode_nyc_*        PUBLIC
 #include <decode_txt_api.h>     //  API for all decode_txt_*        PUBLIC
 #include <decode_erd_api.h>     //  API for all encode_erd_*        PUBLIC
+#include <encode_mxp_api.h>     //  API for all encode_mxp_*        PUBLIC
 #include <encode_rxf_api.h>     //  API for all encode_rxf_*        PUBLIC
 #include <encode_ria_api.h>     //  API for all encode_ria_*        PUBLIC
 #include <encode_txt_api.h>     //  API for all encode_txt_*        PUBLIC
@@ -953,8 +954,7 @@ decode_finalize(
     {
         //  Create a default string
         recipe_p->copyright = text_copy_to_new( "Copyright (c) and related "
-                "rights reserved via Creative Commons [CC BY-SA 4.0]\n"
-                "                "
+                "rights reserved via Creative Commons [CC BY-SA 4.0]  "
                 "https://creativecommons.org/licenses/by-sa/4.0/" );
 
         log_write( MID_DEBUG_1, "decode_api.c", "Line: %d\n", __LINE__ );
@@ -967,8 +967,7 @@ decode_finalize(
 
         //  Create a default string
         recipe_p->copyright = text_copy_to_new( "Copyright (c) and related "
-                "rights reserved via Creative Commons [CC BY-SA 4.0]\n"
-                "                "
+                "rights reserved via Creative Commons [CC BY-SA 4.0]  "
                 "https://creativecommons.org/licenses/by-sa/4.0/" );
         log_write( MID_DEBUG_1, "decode_api.c", "Line: %d\n", __LINE__ );
     }
@@ -1017,9 +1016,10 @@ decode_finalize(
      ************************************************************************/
 
 #if ( THREADING == false )
+    encode_mxp( recipe_p );
 //  encode_rxf( recipe_p );
 //  encode_ria( recipe_p );
-    encode_txt( recipe_p );
+//  encode_txt( recipe_p );
 #else
     queue_put_payload( encode_queue_id, recipe_p );
 #endif

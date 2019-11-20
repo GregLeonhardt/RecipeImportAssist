@@ -37,6 +37,7 @@
 #include <main_api.h>           //  Global stuff for this application
 #include <libtools_api.h>       //  My Tools Library
                                 //*******************************************
+#include <encode_mxp_api.h>     //  API for all encode_mxp_*        PUBLIC
 #include <encode_rxf_api.h>     //  API for all encode_rxf_*        PUBLIC
 #include <encode_ria_api.h>     //  API for all encode_ria_*        PUBLIC
 #include <encode_txt_api.h>     //  API for all encode_txt_*        PUBLIC
@@ -132,10 +133,10 @@ encode_thread(
             //  YES:    Go encode it.
 //          encode_mmf( recipe_p );     //  Does Not Exist
 //          encode_mx2( recipe_p );     //  Does Not Exist
-//          encode_mxp( recipe_p );     //  Does Not Exist
+            encode_mxp( recipe_p );     //  Does Not Exist
 //          encode_rxf( recipe_p );     //  Recipe XML Format
 //          encode_ria( recipe_p );     //  Native Output Format
-            encode_txt( recipe_p );     //  Generic Text Output Format
+//          encode_txt( recipe_p );     //  Generic Text Output Format
         }
     }
 

@@ -130,6 +130,12 @@
         <itemPath>Encode/encode_lib.c</itemPath>
         <itemPath>Encode/encode_lib.h</itemPath>
       </logicalFolder>
+      <logicalFolder name="f19" displayName="EncodeMXP" projectFiles="true">
+        <itemPath>EncodeMXP/encode_mxp_api.c</itemPath>
+        <itemPath>EncodeMXP/encode_mxp_api.h</itemPath>
+        <itemPath>EncodeMXP/encode_mxp_lib.c</itemPath>
+        <itemPath>EncodeMXP/encode_mxp_lib.h</itemPath>
+      </logicalFolder>
       <logicalFolder name="f17" displayName="EncodeRIA" projectFiles="true">
         <itemPath>EncodeRIA/encode_ria_api.c</itemPath>
         <itemPath>EncodeRIA/encode_ria_api.h</itemPath>
@@ -353,6 +359,14 @@
       <item path="Encode/encode_lib.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="Encode/encode_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="EncodeMXP/encode_mxp_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="EncodeMXP/encode_mxp_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="EncodeMXP/encode_mxp_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="EncodeMXP/encode_mxp_lib.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="EncodeRIA/encode_ria_api.c" ex="false" tool="0" flavor2="0">
       </item>
@@ -594,6 +608,14 @@
       <item path="Encode/encode_lib.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="Encode/encode_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="EncodeMXP/encode_mxp_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="EncodeMXP/encode_mxp_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="EncodeMXP/encode_mxp_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="EncodeMXP/encode_mxp_lib.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="EncodeRIA/encode_ria_api.c" ex="false" tool="0" flavor2="0">
       </item>
