@@ -205,7 +205,7 @@ encode_mxp(
     fprintf( out_file_fp, "Serving Size     : " );
     if ( recipe_p->serves != NULL )
     {
-        fprintf( out_file_fp, "3%s  ", recipe_p->serves );
+        fprintf( out_file_fp, "%3s  ", recipe_p->serves );
     }
     else
     {
@@ -555,17 +555,18 @@ encode_mxp(
     {
         fprintf( out_file_fp, "Yield:\n" );
         fprintf( out_file_fp, "\"%s", recipe_p->makes );
-    }
-    //  Is there a unit of measurement ?
-    if ( recipe_p->makes_unit != NULL )
-    {
-        //  YES:    Write it
-        fprintf( out_file_fp, " %s\"\n", recipe_p->makes_unit );
-    }
-    else
-    {
-        //  NO:     End-of-Line
-        fprintf( out_file_fp, "\"\n" );
+
+        //  Is there a unit of measurement ?
+        if ( recipe_p->makes_unit != NULL )
+        {
+            //  YES:    Write it
+            fprintf( out_file_fp, " %s\"\n", recipe_p->makes_unit );
+        }
+        else
+        {
+            //  NO:     End-of-Line
+            fprintf( out_file_fp, "\"\n" );
+        }
     }
 
     //-----------------------------------------------------------------------
@@ -599,7 +600,7 @@ encode_mxp(
     //-----------------------------------------------------------------------
     //  Recipe End:
     //-----------------------------------------------------------------------
-    fprintf( out_file_fp, "                    - - - - - - - - - - - - - - - - - -\n" );
+    fprintf( out_file_fp, "\n                    - - - - - - - - - - - - - - - - - -\n" );
 
     //-----------------------------------------------------------------------
     //  NOTES:
