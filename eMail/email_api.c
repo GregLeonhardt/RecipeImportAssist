@@ -86,6 +86,9 @@
 #define SRCH_CT_MESSAGE             "message/"
 #define SRCH_CT_MESSAGE_L           strlen( SRCH_CT_MESSAGE )
 //----------------------------------------------------------------------------
+#define SRCH_CT_UNKNOWN             "unknown/"
+#define SRCH_CT_UNKNOWN_L           strlen( SRCH_CT_UNKNOWN )
+//----------------------------------------------------------------------------
 #define SRCH_ENCODING_TYPE          "Content-Transfer-Encoding:"
 #define SRCH_ENCODING_TYPE_L        strlen( SRCH_ENCODING_TYPE )
 //----------------------------------------------------------------------------
@@ -671,6 +674,14 @@ email_find_content(
         {
             //  YES:    Set the return type code
             content_type = CT_MESSAGE;
+        }
+
+        //  unknown/ ?
+        else
+        if ( strncasecmp( tmp_data_p, SRCH_CT_UNKNOWN, SRCH_CT_UNKNOWN_L ) == 0 )
+        {
+            //  YES:    Set the return type code
+            content_type = CT_UNKNOWN;
         }
 
         //  The content type is unknown.
