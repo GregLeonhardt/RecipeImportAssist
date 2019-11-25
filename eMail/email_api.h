@@ -72,6 +72,7 @@ enum    encoding_type_e
     CTE_7BIT                    =   2,      //  7BIT
     CTE_8BIT                    =   3,      //  8BIT
     CTE_BASE64                  =   4,      //  BASE64
+    CTE_BINARY                  =   5,      //  BINARY
     CTE_UNKNOWN                 =  -1       //  An unknown type was found
 };
 //----------------------------------------------------------------------------

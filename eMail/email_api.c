@@ -104,6 +104,9 @@
 #define SRCH_CTE_BASE64             "base64"
 #define SRCH_CTE_BASE64_L           strlen( SRCH_CTE_BASE64 )
 //----------------------------------------------------------------------------
+#define SRCH_CTE_BINARY             "binary"
+#define SRCH_CTE_BINARY_L           strlen( SRCH_CTE_BINARY )
+//----------------------------------------------------------------------------
 #define SRCH_SOURCE                 "From - "
 #define SRCH_SOURCE_L               strlen( SRCH_SOURCE )
 //----------------------------------------------------------------------------
@@ -789,6 +792,14 @@ email_find_encoding(
         {
             //  YES:    Set the return type code
             encoding_type = CTE_BASE64;
+        }
+
+        //  BINARY ?
+        else
+        if ( strncasecmp( tmp_data_p, SRCH_CTE_BINARY, SRCH_CTE_BINARY_L ) == 0 )
+        {
+            //  YES:    Set the return type code
+            encoding_type = CTE_BINARY;
         }
 
         //  The encoding type is unknown.
