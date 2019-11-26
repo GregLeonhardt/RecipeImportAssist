@@ -65,7 +65,7 @@
 #define SRCH_CT_T_HTML              "text/html"
 #define SRCH_CT_T_HTML_L            strlen( SRCH_CT_T_HTML )
 //----------------------------------------------------------------------------
-#define SRCH_CT_TEXT                "text/"
+#define SRCH_CT_TEXT                "text"
 #define SRCH_CT_TEXT_L              strlen( SRCH_CT_TEXT )
 //----------------------------------------------------------------------------
 #define SRCH_CT_MULTIPART           "multipart/"
