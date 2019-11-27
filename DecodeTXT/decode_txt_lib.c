@@ -340,7 +340,7 @@ DECODE_TXT__dump(
      ************************************************************************/
 
     //  Write a header
-    fprintf( out_file_fp, "<><><><><><><><><><><><><><><><><><><><>\n" );
+    fprintf( out_file_fp, "<><><> RIA Unformatted Rcipe <><><>\n" );
     fprintf( out_file_fp, "FILE-DIR:      %s\n", source_info_p->f_dir_name  );
     fprintf( out_file_fp, "FILE-NAME:     %s\n", source_info_p->f_file_name );
     fprintf( out_file_fp, "FILE-DATE:     %s\n", source_info_p->f_date_time );
