@@ -466,6 +466,9 @@ decodel1_parse(
             log_write( MID_DEBUG_0, "decodel1_parse",
                           "GroupBreak'\n" );
 
+            //  Remove HTML tags before passing the list to the next level.
+            decode_html( level2_list_p, source_info_p );
+            
             //  Pass the data to level 2 processing
             decodel2_parse( level2_list_p, source_info_p );
 
@@ -501,6 +504,9 @@ decodel1_parse(
     //  Is there still something on the list ?
     if ( list_query_count( level2_list_p ) != 0 )
     {
+        //  YES:    Remove HTML tags before passing the list to the next level.
+        decode_html( level2_list_p, source_info_p );
+
         //  Pass the data to level 2 processing
         decodel2_parse( level2_list_p, source_info_p );
 
