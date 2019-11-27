@@ -1256,9 +1256,6 @@ DECODE_MX2__decode(
      *  @param  mx2_offset_p    Pointer to the first space in MX2 buffer    */
     char                        *   mx2_offset_p;
     /**
-     *  @param  compare         A place to put a lowercase version          */
-    char                            compare[ 10 ];
-    /**
      *  @param recipe_p         Primary structure for a recipe              */
     struct   recipe_t           *   recipe_p;
     /**
@@ -1327,19 +1324,14 @@ DECODE_MX2__decode(
              *  Scan for MX2 tags
              ****************************************************************/
 
-            //  YES:    Fill the compare buffer from the decode buffer
-            memset( compare, '\0', sizeof( compare ) );
-            memcpy( compare, mx2_offset_p, ( sizeof( compare ) - 1 ) );
-            text_to_lowercase( compare );
-
-            //  Loop through all entries in the MX2 conversion table
+            //  YES:    Loop through all entries in the MX2 conversion table
             for( mx2_table_ndx = 0;
                  mx2_table[ mx2_table_ndx ].code != MX2_TAG_END;
                  mx2_table_ndx += 1 )
             {
 
                 //  Is the string a match to a MX2 Tag ?
-                if ( strncmp( compare,
+                if ( strncasecmp( mx2_offset_p,
                               mx2_table[ mx2_table_ndx ].mx2_tag,
                               strlen( mx2_table[ mx2_table_ndx ].mx2_tag ) ) == 0 )
                 {
@@ -1366,6 +1358,17 @@ DECODE_MX2__decode(
                             //  Skip processing until we find it.
                             break;
                         }
+                    }
+
+                    //  Did we somehow not see the MX2_TAG_RCPE tag ?
+                    if (    ( mx2_table[ mx2_table_ndx ].code > MX2_TAG_RCPE )
+                         && ( recipe_p                       ==         NULL ) )
+                    {
+                        //  YES:    Abort this recipe decode!
+                        decode_fail = true;
+
+                        //  Skip it.
+                        break;
                     }
 
                     switch( mx2_table[ mx2_table_ndx ].code )
@@ -1951,8 +1954,8 @@ DECODE_MX2__decode(
             {
                 //  YES:    Write a fatal error message
                 log_write( MID_WARNING, "DECODE_MX2__decode",
-                        "An unidentified MX2 tag '%s' was found in the recipe stream.\n",
-                        compare );
+                        "An unidentified MX2 tag '%10s' was found in the recipe stream.\n",
+                        mx2_offset_p );
                 log_write( MID_WARNING, "DECODE_MX2__decode",
                         "'%.80s'\n", mx2_offset_p );
 
