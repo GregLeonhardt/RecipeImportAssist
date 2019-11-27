@@ -809,7 +809,7 @@ email_find_encoding(
             encoding_type = CTE_UNKNOWN;
 
             //  STOP and display the string we didn't decode.
-            log_write( MID_FATAL, "email_find_encoding",
+            log_write( MID_WARNING, "email_find_encoding",
                           "[%s]\n", data_p );
         }
     }

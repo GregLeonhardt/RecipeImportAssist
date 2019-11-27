@@ -26,7 +26,6 @@
       </nativedebugger>
       <runprofile version="9">
         <runcommandpicklist>
-          <runcommandpicklistitem>"${OUTPUT_PATH}" -id RIA_Input -od RIA_Output</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -id ~/RIA_Input -od ~/RIA_Output</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" ria -id /home/greg/work/RecipeSourceFiles -od /home/greg/work/RecipeOutputFiles</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" ria -id /home/greg/ria-test -od /home/greg/ria-test</runcommandpicklistitem>
@@ -36,8 +35,9 @@
           <runcommandpicklistitem>"${OUTPUT_PATH}" ria -id /home/greg/Recipes/in -od /home/greg/Recipes/out</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" ria -id /home/greg/work/Recipes/in -od /home/greg/work/Recipes/out</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" ria -id /home/greg/recipes/Recipes/in -od /home/greg/recipes/Recipes/out</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" ria -id /home/greg/sdb/in -od /home/greg/sdb/out</runcommandpicklistitem>
         </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}" ria -id /home/greg/recipes/Recipes/in -od /home/greg/recipes/Recipes/out</runcommand>
+        <runcommand>"${OUTPUT_PATH}" ria -id /home/greg/sdb/in -od /home/greg/sdb/out</runcommand>
         <rundir></rundir>
         <buildfirst>true</buildfirst>
         <terminal-type>0</terminal-type>
