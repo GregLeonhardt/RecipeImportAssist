@@ -694,7 +694,7 @@ email_find_content(
             content_type = CT_UNKNOWN;
 
             //  STOP and display the string we didn't decode.
-            log_write( MID_FATAL, "email_find_content",
+            log_write( MID_WARNING, "email_find_content",
                           "[%s]\n", data_p );
         }
     }
