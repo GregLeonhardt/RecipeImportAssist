@@ -84,6 +84,10 @@ char                        *   in_file_name_p;
  * @param in_dir_name_p     Pointer to the input directory name             */
 char                        *   in_dir_name_p;
 //----------------------------------------------------------------------------
+/**
+ * @param delete_flag       Delete input file when true                     */
+int                             delete_flag;
+//----------------------------------------------------------------------------
 
 /****************************************************************************
  * Private Functions
@@ -193,6 +197,9 @@ command_line(
 
     //  Scan for        Input Directory name
     out_dir_name_p = get_cmd_line_parm( argc, argv, "od" );
+
+    //  Scan for        DELETE input file when complete.
+    delete_flag = is_cmd_line_parm( argc, argv, "del" );
 
     //  DEBUG DEFAULTS
     if (    ( in_file_name_p       == NULL )
@@ -720,6 +727,13 @@ main(
 
         //  Close the input file
         file_close( in_file_fp );
+
+        //  Are we supposed to delete the file now that we are done with it ?
+        if ( delete_flag == true )
+        {
+            //  YES:    Then delete it.
+            unlink( input_file_name );
+        }
 
         //  Log the current count
         log_write( MID_INFO, "main",
