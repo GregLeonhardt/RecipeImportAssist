@@ -522,7 +522,7 @@ main(
             //  YES:    Copy the file extention to a new buffer
             strncpy( extention, ++read_data_p, sizeof( extention ) );
 
-            //  Make the file extention all lowercase
+            //  Make the file extension all lowercase
             text_to_lowercase( extention );
 
             if (    ( strncmp( extention, "trash",                5 ) == 0 )
@@ -585,7 +585,6 @@ main(
                  || ( strncmp( extention, "rea",                  3 ) == 0 )
                  || ( strncmp( extention, "rli",                  3 ) == 0 )
                  || ( strncmp( extention, "rp_",                  3 ) == 0 )
-                 || ( strncmp( extention, "ria",                  3 ) == 0 )
                  || ( strncmp( extention, "rxf",                  3 ) == 0 )
                  || ( strncmp( extention, "sql",                  3 ) == 0 )
                  || ( strncmp( extention, "tag",                  3 ) == 0 )
