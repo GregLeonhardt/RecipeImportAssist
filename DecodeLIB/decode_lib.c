@@ -707,7 +707,7 @@ DECODE__directions_source(
             //  Did we find "SOURCE:" ?
             if ( source_p != NULL )
             {
-                //  YES:    Move past any leading whitespace
+                //  YES:    Move past any leading white space
                 source_p = text_skip_past_whitespace( source_p );
 
                 //  Does a source string already exist ?

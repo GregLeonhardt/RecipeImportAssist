@@ -1250,6 +1250,13 @@ recipe_fmt_directions(
                 memset( formatted_text, '\0', sizeof( formatted_text ) );
             }
 
+//  @note:  This was initially put in to assist in formatting sections of the
+//          directions such as 'Dough:'.  However all to frequently the recipe
+//          is written something like 'For the dough:' which will leave 'For the'
+//          on the current line and start a new line with 'Dough:'.
+//          Anyhow for now it's more trouble then it's worth so I am disabling
+//          the code.
+#if 0
             /****************************************************************
              *  ANY word that ends with a colon (:) is the start of a new
              *  sentence and line.
@@ -1276,6 +1283,7 @@ recipe_fmt_directions(
                     memset( formatted_text, '\0', sizeof( formatted_text ) );
                     }
             }
+#endif
 
             /****************************************************************
              *  First Word of Sentence and First-Word-of-Line
