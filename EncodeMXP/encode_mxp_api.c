@@ -111,8 +111,11 @@ encode_mxp(
      *  @param  auip_p          Pointer to AUIP structure                   */
     struct  auip_t              *   auip_p;
     /**
-     * @param category_count    Number of categories written            */
+     * @param category_count    Number of categories written                */
     int                             category_count;
+    /**
+     * @param center_data       A buffer to center a data string in.        */
+    char                            center_data[ 80 ];
 
     /************************************************************************
      *  Function Initialization
@@ -176,13 +179,16 @@ encode_mxp(
     //  TXT Recipe start tag
     //-----------------------------------------------------------------------
 
-    fprintf( out_file_fp, "                 * Exported from MasterCook *\n\n" );
+    text_center( center_data, sizeof( center_data ),
+                 "* Exported from MasterCook *" );
+    fprintf( out_file_fp, "%s\n\n", center_data );
 
     //-----------------------------------------------------------------------
     //  NAME
     //-----------------------------------------------------------------------
 
-    fprintf( out_file_fp, "                %s\n\n", recipe_p->name );
+    text_center( center_data, sizeof( center_data ), recipe_p->name );
+    fprintf( out_file_fp, "%s\n\n", center_data );
 
     //-----------------------------------------------------------------------
     //  AUTHOR:
