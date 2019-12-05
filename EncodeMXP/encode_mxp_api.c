@@ -606,7 +606,7 @@ encode_mxp(
     //  NOTES:
     if ( list_query_count( recipe_p->notes ) > 0 )
     {
-        fprintf( out_file_fp, "NOTES:\n" );
+        fprintf( out_file_fp, "NOTES : " );
 
         for( data_p = list_get_first( recipe_p->notes );
              data_p != NULL;
