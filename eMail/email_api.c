@@ -540,8 +540,10 @@ email_is_group_break(
               && ( strlen( tmp_data_p )                                        == 70 ) )
          || (    ( strncmp( tmp_data_p, "________________________________________________________________________", 72 ) == 0 )
               && ( strlen( tmp_data_p )                                        == 72 ) )
-         || (    ( strncmp( tmp_data_p, "-----"                         ,  5 ) ==  0 )
-              && ( strlen( tmp_data_p )                                        ==  5 ) )
+//  @note:  Removed because it occurs frequently inside recipes resulting
+//          in the recipe being split (sometimes multiple times).
+//       || (    ( strncmp( tmp_data_p, "-----"                         ,  5 ) ==  0 )
+//            && ( strlen( tmp_data_p )                                        ==  5 ) )
          || (    ( strncmp( tmp_data_p, "........................................", 40 ) ==  0 )
               && ( strlen( tmp_data_p )                                        == 40 ) )
          || ( strncmp( tmp_data_p, "========================  Arch",      30 ) == 0 )
