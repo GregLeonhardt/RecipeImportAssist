@@ -120,11 +120,8 @@ enum    direction_state_e
 #define MXP_START_10            "*  Exported from  Key Home Gourmet  *"
 #define MXP_START_10_L          strlen( MXP_START_10 )
 //----------------------------------------------------------------------------
-#define MXP_END_1               "- - - - - - - - - - - - - - - - - -"
-#define MXP_END_1_L             strlen( MXP_END_1 )
-//----------------------------------------------------------------------------
-#define MXP_END_2               "-+-"
-#define MXP_END_2_L             strlen( MXP_END_2 )
+#define MXP_DIR_END             "- - - - - - - - - - - - - - - - - -"
+#define MXP_DIR_END_L           strlen( MXP_DIR_END )
 //----------------------------------------------------------------------------
 #define MXP_BY                  "Recipe By"
 #define MXP_BY_L                strlen( MXP_BY )
@@ -155,6 +152,21 @@ enum    direction_state_e
 //----------------------------------------------------------------------------
 #define MXP_AUIP_HDR_6          "-------- --------------------"
 #define MXP_AUIP_HDR_6_L        strlen( MXP_AUIP_HDR_6 )
+//----------------------------------------------------------------------------
+#define MXP_PER_SERVING         "Per Serving"
+#define MXP_PER_SERVING_L       strlen( MXP_PER_SERVING )
+//----------------------------------------------------------------------------
+#define MXP_NUTR_ASSOC          "Nutr. Assoc."
+#define MXP_NUTR_ASSOC_L        strlen( MXP_NUTR_ASSOC )
+//----------------------------------------------------------------------------
+#define MXP_NOTES               "NOTES"
+#define MXP_NOTES_L             strlen( MXP_NOTES )
+//----------------------------------------------------------------------------
+#define MXP_WINE                "Suggested Wine"
+#define MXP_WINE_L              strlen( MXP_WINE )
+//----------------------------------------------------------------------------
+#define MXP_SERVING_IDEAS       "Serving Ideas"
+#define MXP_SERVING_IDEAS_L     strlen( MXP_SERVING_IDEAS )
 //----------------------------------------------------------------------------
 #define MXP_APPLIANCE           "Appliance:"
 #define MXP_APPLIANCE_L         strlen( MXP_APPLIANCE )
@@ -868,8 +880,7 @@ DECODE_MXP__auip(
         }   break;
     }
     //  Is this the start of a MasterCook MXP recipe ?
-    if (    ( strncmp( tmp_data_p, MXP_END_1, MXP_END_1_L ) == 0 )
-         || ( strncmp( tmp_data_p, MXP_END_2, MXP_END_2_L ) == 0 ) )
+    if ( DECODE_MXP__end( tmp_data_p ) == true )
     {
         //  YES:    Change the return code
         mxp_rc = true;
@@ -929,7 +940,7 @@ DECODE_MXP__directions(
      ************************************************************************/
 
     //  Is this the end of the recipe ?
-    if ( DECODE_MXP__end( tmp_data_p ) == true )
+    if ( strncmp( tmp_data_p, MXP_DIR_END, MXP_DIR_END_L ) == 0 )
     {
         //  YES:    Change the return code
         mxp_rc = true;
@@ -1009,11 +1020,115 @@ DECODE_MXP__notes(
      *  Function
      ************************************************************************/
 
-    //  Is this the start of a MasterCook MXP recipe ?
-    if (    ( strncmp( tmp_data_p, MXP_END_1, MXP_END_1_L ) == 0 ) )
+    //  Is this the end of the recipe ?
+    if ( decode_end_of_recipe( RECIPE_FORMAT_MX2, data_p ) == true )
     {
         //  YES:    Change the return code
         mxp_rc = true;
+    }
+    else
+    {
+        //  NO:     Continue (or start) the notes decode.
+        if ( note_state == MXP_NS_IDLE )
+        {
+            //----------------------------------------------------------------
+            //  Is this a blank line ?
+            if ( text_is_blank_line( tmp_data_p ) == true )
+            {
+                //  YES:    Ignore it.
+            }
+            //----------------------------------------------------------------
+            //  "Per Serving"
+            else
+            if ( strncasecmp( tmp_data_p, MXP_PER_SERVING, MXP_PER_SERVING_L ) == 0 )
+            {
+                //  Change the state
+                note_state = MXP_NS_PER_SERVING;
+            }
+            //----------------------------------------------------------------
+            //  "Nutr. Assoc."
+            else
+            if ( strncasecmp( tmp_data_p, MXP_NUTR_ASSOC, MXP_NUTR_ASSOC_L ) == 0 )
+            {
+                //  Change the state
+                note_state = MXP_NS_NUTR_ASSOC;
+            }
+            //----------------------------------------------------------------
+            //  "NOTES :"
+            else
+            if ( strncasecmp( tmp_data_p, MXP_NOTES, MXP_NOTES_L ) == 0 )
+            {
+                //  Change the state
+                note_state = MXP_NS_NOTES;
+            }
+            //----------------------------------------------------------------
+            //  "Suggested Wine:"
+            else
+            if ( strncasecmp( tmp_data_p, MXP_WINE, MXP_WINE_L ) == 0 )
+            {
+                //  Change the state
+                note_state = MXP_NS_WINE;
+            }
+            //----------------------------------------------------------------
+            //  "Serving Ideas:"
+            else
+            if ( strncasecmp( tmp_data_p, MXP_SERVING_IDEAS, MXP_SERVING_IDEAS_L ) == 0 )
+            {
+                //  Change the state
+                note_state = MXP_NS_SERVING_IDEAS;
+            }
+            //----------------------------------------------------------------
+            //  Not a valid notes tag.
+            else
+            {
+                //  Change the return code
+                mxp_rc = true;
+            }
+        }
+        //--------------------------------------------------------------------
+        if (    ( note_state == MXP_NS_SERVING_IDEAS )
+             || ( note_state == MXP_NS_NOTES         ) )
+        {
+            //  Is this the start of another section ?
+            if (    ( strncasecmp( tmp_data_p, MXP_PER_SERVING,   MXP_PER_SERVING_L   ) != 0 )
+                 && ( strncasecmp( tmp_data_p, MXP_NUTR_ASSOC,    MXP_NUTR_ASSOC_L    ) != 0 )
+                 && ( strncasecmp( tmp_data_p, MXP_WINE,          MXP_WINE_L          ) != 0 ) )
+            {
+                //  NO:     Is this the first line of some notes ?
+                if ( strncasecmp( tmp_data_p, MXP_NOTES, MXP_NOTES_L ) == 0 )
+                {
+                    //  YES:    Skip past the 'NOTES :' tag.
+                    tmp_data_p += MXP_NOTES_L + 2;
+                }
+                //  Is this the first line of some 'Serving Ideas :' ?
+                if ( strncasecmp( tmp_data_p, MXP_SERVING_IDEAS, MXP_SERVING_IDEAS_L ) == 0 )
+                {
+                    //  YES:    Skip past the 'Serving Ideas :' tag.
+                    tmp_data_p += MXP_SERVING_IDEAS_L + 2;
+                }
+                //  NO:     Add the remaining text to the notes.
+                recipe_fmt_notes( recipe_p, tmp_data_p );
+            }
+            else
+            {
+                //  NO:     Change the state
+                note_state = MXP_NS_IDLE;
+            }
+        }
+        //--------------------------------------------------------------------
+        if (    ( note_state == MXP_NS_PER_SERVING )
+             || ( note_state == MXP_NS_WINE        )
+             || ( note_state == MXP_NS_NUTR_ASSOC  ) )
+        {
+            //  @note:  Information from these three sections will be deleted
+
+            //  Is this a blank line ?
+            if ( text_is_blank_line( tmp_data_p ) == true )
+            {
+                //  YES:    Change the state
+                note_state = MXP_NS_IDLE;
+            }
+        }
     }
 
     /************************************************************************
@@ -1066,8 +1181,7 @@ DECODE_MXP__end(
      ************************************************************************/
 
     //  Is this the end of a MasterCook MXP recipe ?
-    if (    ( strncmp( tmp_data_p, MXP_END_1, MXP_END_1_L ) == 0 )
-         || ( email_is_group_break( tmp_data_p )         == true )
+    if (    ( email_is_group_break( tmp_data_p )         == true )
          || ( email_is_start( tmp_data_p )               == true ) )
     {
         //  YES:    Change the return code

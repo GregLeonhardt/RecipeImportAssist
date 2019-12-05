@@ -138,6 +138,9 @@ decode_mxp(
     //  Set the initial decode state
     mxp_state = MXP_STATE_IDLE;
 
+    //  Set the initial note state
+    note_state = MXP_NS_IDLE;
+
     /************************************************************************
      *  Copy e-Mail information
      ************************************************************************/
@@ -263,7 +266,7 @@ decode_mxp(
                 {
                     // When rc == TRUE, the directions search is complete.
                     // Change state to recipe decode complete.
-                    mxp_state = MXP_STATE_COMPLETE;
+                    mxp_state = MXP_STATE_NOTES;
                 }
             }   break;
             //----------------------------------------------------------------
