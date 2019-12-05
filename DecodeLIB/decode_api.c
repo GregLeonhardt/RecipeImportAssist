@@ -386,7 +386,7 @@ decode_copy_info_to_recipe(
 
     //------------------------------------------------------------------------
     //  Directory Name:
-    if ( strlen( source_info_p->f_file_name ) > 0 )
+    if ( strlen( source_info_p->f_dir_name ) > 0 )
     {
         //  YES:    Is there something there already ?
         if ( recipe_p->dir_name != NULL )
@@ -428,7 +428,7 @@ decode_copy_info_to_recipe(
     }
     //------------------------------------------------------------------------
     //  File Size:
-    if ( strlen( source_info_p->f_date_time ) > 0 )
+    if ( strlen( source_info_p->f_file_size ) > 0 )
     {
         //  YES:    Is there something there already ?
         if ( recipe_p->file_size != NULL )
@@ -439,6 +439,66 @@ decode_copy_info_to_recipe(
         //  Save to the recipe
         recipe_p->file_size = text_copy_to_new( source_info_p->f_file_size );
         log_write( MID_DEBUG_1, "decode_api.c", "Line: %d\n", __LINE__ );
+    }
+    //------------------------------------------------------------------------
+    //  WEB Address
+    if ( strlen( source_info_p->f_dir_name ) > 0 )
+    {
+        /**
+         *  @param  tmp_web_address     Temp buffer to build the web addr   */
+        char                            *   tmp_web_address;
+        /**
+         *  @param                      Pointers into web address           */
+        char                            *   addr_beg_p;
+        char                            *   addr_end_p;
+        char                            *   dot_1_p;
+        char                            *   dot_2_p;
+
+        //  YES:    Is there something there already ?
+        if ( recipe_p->web_address != NULL )
+        {
+            //  YES:    Get rid of the old value.
+            mem_free( recipe_p->web_address );
+        }
+        //  Allocate storage for the work buffer
+        tmp_web_address = mem_malloc( strlen( source_info_p->f_dir_name ) + 1 );
+
+        //  Copy the directory name to the work buffer
+        strncpy( tmp_web_address, source_info_p->f_dir_name,
+                 strlen( source_info_p->f_dir_name ) );
+
+        //  Initialize everything
+        addr_beg_p = NULL;
+        addr_end_p = NULL;
+        dot_1_p    = NULL;
+        dot_2_p    = NULL;
+
+        //  Look for a web address
+        dot_1_p = strchr( tmp_web_address, '.' );
+        if ( dot_1_p != NULL )
+            dot_2_p = strchr( dot_1_p + 1, '.' );
+        if ( dot_2_p != NULL )
+            addr_end_p = strchrnul( dot_2_p, '/' );
+        if ( addr_end_p != NULL ) {
+            addr_end_p[ 0 ] = '\0';
+            addr_beg_p = strrchr( tmp_web_address, '/' ); }
+        if ( addr_beg_p != NULL )
+            addr_beg_p += 1;
+        else
+            addr_beg_p = &tmp_web_address[ 0 ];
+
+        //  Does a web address exist ?
+        if (    ( dot_1_p    != NULL )
+             && ( dot_2_p    != NULL )
+             && ( addr_end_p != NULL ) )
+        {
+            //  YES:    Save it
+            recipe_p->web_address = text_copy_to_new( addr_beg_p );
+            log_write( MID_DEBUG_1, "decode_api.c", "Line: %d\n", __LINE__ );
+        }
+
+        //  Release the working buffer
+        mem_free( tmp_web_address );
     }
     //------------------------------------------------------------------------
 

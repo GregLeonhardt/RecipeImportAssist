@@ -541,7 +541,8 @@ encode_mxp(
     }
     else
     {
-        fprintf( out_file_fp, "\"%s | %s\"\n\n",
+        fprintf( out_file_fp, "\"%s | %s | %s\"\n\n",
+                        recipe_p->web_address,
                         recipe_p->file_name,
                         recipe_p->file_date_time );
     }

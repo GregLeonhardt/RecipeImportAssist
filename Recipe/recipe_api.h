@@ -86,6 +86,9 @@ struct   recipe_t
      *  @param  recipe_id       A unique identifier for the recipe          */
     char                        *   recipe_id;
     /**
+     *  @param  web_address     The web address the file came from         */
+    char                        *   web_address;
+    /**
      *  @param  dir_name        The directory the recipe was imported from */
     char                        *   dir_name;
     /**
