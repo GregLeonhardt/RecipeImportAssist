@@ -181,62 +181,62 @@ encode_mxp(
 
     text_center( center_data, sizeof( center_data ),
                  "* Exported from MasterCook *" );
-    fprintf( out_file_fp, "%s\n\n", center_data );
+    fprintf( out_file_fp, "%s\r\n\r\n", center_data );
 
     //-----------------------------------------------------------------------
     //  NAME
     //-----------------------------------------------------------------------
 
     text_center( center_data, sizeof( center_data ), recipe_p->name );
-    fprintf( out_file_fp, "%s\n\n", center_data );
+    fprintf( out_file_fp, "%s\r\n\r\n", center_data );
 
     //-----------------------------------------------------------------------
     //  AUTHOR:
     //-----------------------------------------------------------------------
 
-    fprintf( out_file_fp, "Recipe By        : " );
+    fprintf( out_file_fp, "Recipe By     :" );
     if ( recipe_p->author != NULL )
     {
-        fprintf( out_file_fp, "%s\n", recipe_p->author );
+        fprintf( out_file_fp, "%s\r\n", recipe_p->author );
     }
     else
     {
-        fprintf( out_file_fp, "\n" );
+        fprintf( out_file_fp, "\r\n" );
     }
 
     //-----------------------------------------------------------------------
     //  Serves:
     //-----------------------------------------------------------------------
 
-    fprintf( out_file_fp, "Serving Size     : " );
+    fprintf( out_file_fp, "Serving Size  : " );
     if ( recipe_p->serves != NULL )
     {
-        fprintf( out_file_fp, "%3s  ", recipe_p->serves );
+        fprintf( out_file_fp, "%-6s", recipe_p->serves );
     }
     else
     {
-        fprintf( out_file_fp, "   " );
+        fprintf( out_file_fp, "      " );
     }
 
     //-----------------------------------------------------------------------
     //  TIME PREP:
     //-----------------------------------------------------------------------
 
-    fprintf( out_file_fp, "Preparation Time : " );
+    fprintf( out_file_fp, "Preparation Time :" );
     if ( recipe_p->time_prep != NULL )
     {
-        fprintf( out_file_fp, "%s\n", recipe_p->time_prep );
+        fprintf( out_file_fp, "%s\r\n", recipe_p->time_prep );
     }
     else
     {
-        fprintf( out_file_fp, "0:00\n" );
+        fprintf( out_file_fp, "0:00\r\n" );
     }
 
     //-----------------------------------------------------------------------
     //  CATEGORIES
     //-----------------------------------------------------------------------
 
-    fprintf( out_file_fp, "Categories       : " );
+    fprintf( out_file_fp, "Categories    : " );
 
     //  Initialize the number of categories written
     category_count = 0;
@@ -260,13 +260,13 @@ encode_mxp(
             else
             {
                 //  YES:
-                fprintf( out_file_fp, "             %-32s", data_p );
+                fprintf( out_file_fp, "                %-32s", data_p );
             }
             //  Do we need a CR here ?
             if ( ( ( ++category_count ) % 2 ) == 0 )
             {
                 //  YES:
-                fprintf( out_file_fp, "\n" );
+                fprintf( out_file_fp, "\r\n" );
             }
         }
     }
@@ -289,13 +289,13 @@ encode_mxp(
             else
             {
                 //  YES:
-                fprintf( out_file_fp, "                   %-32s", data_p );
+                fprintf( out_file_fp, "                %-32s", data_p );
             }
             //  Do we need a CR here ?
             if ( ( ( ++category_count ) % 2 ) == 0 )
             {
                 //  YES:
-                fprintf( out_file_fp, "\n" );
+                fprintf( out_file_fp, "\r\n" );
             }
         }
     }
@@ -319,13 +319,13 @@ encode_mxp(
             else
             {
                 //  YES:
-                fprintf( out_file_fp, "                   %-32s", data_p );
+                fprintf( out_file_fp, "                %-32s", data_p );
             }
             //  Do we need a CR here ?
             if ( ( ( ++category_count ) % 2 ) == 0 )
             {
                 //  YES:
-                fprintf( out_file_fp, "\n" );
+                fprintf( out_file_fp, "\r\n" );
             }
         }
     }
@@ -350,13 +350,13 @@ encode_mxp(
             else
             {
                 //  YES:
-                fprintf( out_file_fp, "                   %-32s", data_p );
+                fprintf( out_file_fp, "                %-32s", data_p );
             }
             //  Do we need a CR here ?
             if ( ( ( ++category_count ) % 2 ) == 0 )
             {
                 //  YES:
-                fprintf( out_file_fp, "\n" );
+                fprintf( out_file_fp, "\r\n" );
             }
         }
     }
@@ -381,13 +381,13 @@ encode_mxp(
             else
             {
                 //  YES:
-                fprintf( out_file_fp, "                   %-32s", data_p );
+                fprintf( out_file_fp, "                %-32s", data_p );
             }
             //  Do we need a CR here ?
             if ( ( ( ++category_count ) % 2 ) == 0 )
             {
                 //  YES:
-                fprintf( out_file_fp, "\n" );
+                fprintf( out_file_fp, "\r\n" );
             }
         }
     }
@@ -412,13 +412,13 @@ encode_mxp(
             else
             {
                 //  YES:
-                fprintf( out_file_fp, "                   %-32s", data_p );
+                fprintf( out_file_fp, "                %-32s", data_p );
             }
             //  Do we need a CR here ?
             if ( ( ( ++category_count ) % 2 ) == 0 )
             {
                 //  YES:
-                fprintf( out_file_fp, "\n" );
+                fprintf( out_file_fp, "\r\n" );
             }
         }
     }
@@ -427,18 +427,18 @@ encode_mxp(
          || (   category_count       != 0 ) )
     {
         //  YES:
-        fprintf( out_file_fp, "\n" );
+        fprintf( out_file_fp, "\r\n" );
     }
     //  Add a blank line here
-    fprintf( out_file_fp, "\n" );
+    fprintf( out_file_fp, "\r\n" );
 
     //-----------------------------------------------------------------------
     //  <AUIP>
     //-----------------------------------------------------------------------
 
     //  Write the AUIP header
-    fprintf( out_file_fp, "Amount   Measure      Ingredient -- Preparation Method\n" );
-    fprintf( out_file_fp, "-------- ------------ --------------------------------\n" );
+    fprintf( out_file_fp, "  Amount  Measure       Ingredient -- Preparation Method\r\n" );
+    fprintf( out_file_fp, "--------  ------------  --------------------------------\r\n" );
 
     if ( list_query_count( recipe_p->ingredient ) > 0 )
     {
@@ -449,7 +449,7 @@ encode_mxp(
             //  Is there an amount ?
             if ( auip_p->amount_p != NULL )
             {
-                fprintf( out_file_fp, "%-8s",     auip_p->amount_p );
+                fprintf( out_file_fp, "  %-6s",     auip_p->amount_p );
             }
             else
             {
@@ -458,16 +458,16 @@ encode_mxp(
             //  Is there a unit of measurement ?
             if ( auip_p->unit_p != NULL )
             {
-                fprintf( out_file_fp, "%-12s",     auip_p->unit_p );
+                fprintf( out_file_fp, "  %12s",     auip_p->unit_p );
             }
             else
             {
-                fprintf( out_file_fp, "            " );
+                fprintf( out_file_fp, "              " );
             }
             //  Is there an ingredient ?
             if ( auip_p->ingredient_p != NULL )
             {
-                fprintf( out_file_fp, "%s",     auip_p->ingredient_p );
+                fprintf( out_file_fp, "  %s",     auip_p->ingredient_p );
             }
             //  Is there a preparation method ?
             if ( auip_p->preparation_p != NULL )
@@ -475,15 +475,15 @@ encode_mxp(
                 fprintf( out_file_fp, " %s",     auip_p->preparation_p );
             }
             //  End-of-Line
-            fprintf( out_file_fp, "\n" );
+            fprintf( out_file_fp, "\r\n" );
         }
         //  Blank Line
-        fprintf( out_file_fp, "\n" );
+        fprintf( out_file_fp, "\r\n" );
     }
     else
     {
         //  No AUIP
-        fprintf( out_file_fp, "** TEXT ONLY - NO INGREDIENTS **\n\n" );
+        fprintf( out_file_fp, "** TEXT ONLY - NO INGREDIENTS **\r\n\r\n" );
     }
 
     //-----------------------------------------------------------------------
@@ -500,7 +500,7 @@ encode_mxp(
             if ( text_is_blank_line( data_p ) != true )
             {
                 //  YES:    Write the directions text.
-                fprintf( out_file_fp, "%s\n\n", data_p );
+                fprintf( out_file_fp, "%s\r\n\r\n", data_p );
             }
         }
     }
@@ -511,8 +511,8 @@ encode_mxp(
 
     if ( recipe_p->description != NULL )
     {
-        fprintf( out_file_fp, "Description:\n" );
-        fprintf( out_file_fp, "\"%s\"\n\n", recipe_p->description );
+        fprintf( out_file_fp, "Description:\r\n" );
+        fprintf( out_file_fp, "\"%s\"\r\n\r\n", recipe_p->description );
     }
 
     //-----------------------------------------------------------------------
@@ -521,19 +521,19 @@ encode_mxp(
 
     if ( recipe_p->source != NULL )
     {
-        fprintf( out_file_fp, "Source:\n" );
-        fprintf( out_file_fp, "\"%s\"\n\n", recipe_p->source );
+        fprintf( out_file_fp, "Source:\r\n" );
+        fprintf( out_file_fp, "\"%s\"\r\n\r\n", recipe_p->source );
     }
 
     //-----------------------------------------------------------------------
     //  Imported From:
     //-----------------------------------------------------------------------
 
-    fprintf( out_file_fp, "S(Imported From):\n" );
+    fprintf( out_file_fp, "S(Imported From):\r\n" );
 
     if ( recipe_p->posted_by != NULL )
     {
-        fprintf( out_file_fp, "\"%s | %s | %s | %s\"\n\n",
+        fprintf( out_file_fp, "\"%s | %s | %s | %s\"\r\n\r\n",
                 recipe_p->group_from,
                 recipe_p->group_subject,
                 recipe_p->posted_by,
@@ -541,7 +541,7 @@ encode_mxp(
     }
     else
     {
-        fprintf( out_file_fp, "\"%s | %s | %s\"\n\n",
+        fprintf( out_file_fp, "\"%s | %s | %s\"\r\n\r\n",
                         recipe_p->web_address,
                         recipe_p->file_name,
                         recipe_p->file_date_time );
@@ -551,8 +551,8 @@ encode_mxp(
     //  COPYRIGHT:
     //-----------------------------------------------------------------------
 
-    fprintf( out_file_fp, "Copyright:\n" );
-    fprintf( out_file_fp, "\"%s\"\n\n", recipe_p->copyright );
+    fprintf( out_file_fp, "Copyright:\r\n" );
+    fprintf( out_file_fp, "\"%s\"\r\n\r\n", recipe_p->copyright );
 
     //-----------------------------------------------------------------------
     //  Yield:
@@ -560,19 +560,19 @@ encode_mxp(
 
     if ( recipe_p->makes != NULL )
     {
-        fprintf( out_file_fp, "Yield:\n" );
+        fprintf( out_file_fp, "Yield:\r\n" );
         fprintf( out_file_fp, "\"%s", recipe_p->makes );
 
         //  Is there a unit of measurement ?
         if ( recipe_p->makes_unit != NULL )
         {
             //  YES:    Write it
-            fprintf( out_file_fp, " %s\"\n\n", recipe_p->makes_unit );
+            fprintf( out_file_fp, " %s\"\r\n\r\n", recipe_p->makes_unit );
         }
         else
         {
             //  NO:     End-of-Line
-            fprintf( out_file_fp, "\"\n\n" );
+            fprintf( out_file_fp, "\"\r\n\r\n" );
         }
     }
 
@@ -583,7 +583,7 @@ encode_mxp(
     if ( recipe_p->time_cook != NULL )
     {
     fprintf( out_file_fp, "T(Cook Time):" );
-        fprintf( out_file_fp, "\"%s\"\n\n", recipe_p->time_cook );
+        fprintf( out_file_fp, "\"%s\"\r\n\r\n", recipe_p->time_cook );
     }
 
     //-----------------------------------------------------------------------
@@ -596,18 +596,21 @@ encode_mxp(
         fprintf( out_file_fp, "RATINGS           : " );
         if ( recipe_p->skill != NULL )
         {
-            fprintf( out_file_fp, "30%s\n\n", recipe_p->skill );
+            fprintf( out_file_fp, "30%s\r\n\r\n", recipe_p->skill );
         }
         if ( recipe_p->rating != NULL )
         {
-            fprintf( out_file_fp, "%s\n\n", recipe_p->rating );
+            fprintf( out_file_fp, "%s\r\n\r\n", recipe_p->rating );
         }
     }
 
     //-----------------------------------------------------------------------
     //  Recipe End:
     //-----------------------------------------------------------------------
-    fprintf( out_file_fp, "\n                    - - - - - - - - - - - - - - - - - -\n" );
+
+    text_center( center_data, sizeof( center_data ),
+                 "- - - - - - - - - - - - - - - - - - - " );
+    fprintf( out_file_fp, "%s\r\n\r\n", center_data );
 
     //-----------------------------------------------------------------------
     //  NOTES:
@@ -619,9 +622,16 @@ encode_mxp(
              data_p != NULL;
              data_p = list_get_next( recipe_p->notes, data_p ) )
         {
-            fprintf( out_file_fp, "%s\n", data_p );
+            fprintf( out_file_fp, "%s\r\n", data_p );
         }
+        fprintf( out_file_fp, "\r\n" );
     }
+
+    //-----------------------------------------------------------------------
+    //  Nutr. Assoc. :
+    //-----------------------------------------------------------------------
+
+    fprintf( out_file_fp, "Nutr. Assoc. : 0 0 0 0 0 0 0 0 0 0\r\n" );
 
     /************************************************************************
      *  Function Exit
