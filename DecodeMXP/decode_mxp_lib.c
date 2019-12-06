@@ -832,18 +832,12 @@ DECODE_MXP__auip(
         case    AUIPS_DASH:
         {
             //  Is this the AUIP separator line ?
-#if 0
-            if (    ( strncmp( tmp_data_p, MXP_AUIP_HDR_4, MXP_AUIP_HDR_4_L ) == 0 )
-                 || ( strncmp( tmp_data_p, MXP_AUIP_HDR_5, MXP_AUIP_HDR_5_L ) == 0 )
-                 || ( strncmp( tmp_data_p, MXP_AUIP_HDR_6, MXP_AUIP_HDR_6_L ) == 0 ) )
-#else
             if (    (      tmp_data_p[ 0 ] == '-' )
                  && (    ( tmp_data_p[ 1 ] == '-' )
                       || ( tmp_data_p[ 1 ] == ' ' ) )
                  && (      tmp_data_p[ 2 ] == '-' )
                  && (      tmp_data_p[ 3 ] == '-' )
                  && (      tmp_data_p[ 4 ] == '-' ) )
-#endif
             {
                 //  YES:    Change the state
                 auip_scan_state = AUIPS_AMIP;
