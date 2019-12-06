@@ -354,12 +354,12 @@ RECIPE__fmt_unit(
 
             //  Set the return pointer to after the unit field
             in_unit_p = &( in_unit_p[ ndx ] );
-            
+
             //---------------------------------------------------------------
             //  Some recipe formats (CookenPro 2) add a '(s)' following the
             //  unit of measurement.  We will now skip past it [if it is there].
             //---------------------------------------------------------------
-            
+
             //  Does the character string '(s)' exist ?
             if (    ( in_unit_p[ 0 ] == '(' )
                  && ( in_unit_p[ 1 ] == 's' )
@@ -367,7 +367,7 @@ RECIPE__fmt_unit(
             {
                 //  YES:    Skip past it.
                 in_unit_p += 3;
-                
+
                 //  And any white space following it.
                 text_strip_whitespace( in_unit_p );
             }
@@ -623,6 +623,16 @@ RECIPE__fmt_preparation(
         //  Are we at the end of this line ?
         if ( tmp_prep_p[ ndx ] != '\0' )
         {
+            //  Look for a second ' -- '
+            if (    ( tmp_prep_p[ ndx     ] != ' ' )
+                 && ( tmp_prep_p[ ndx + 1 ] != '-' )
+                 && ( tmp_prep_p[ ndx + 2 ] != '-' )
+                 && ( tmp_prep_p[ ndx + 3 ] != ' ' ) )
+            {
+                //  YES:    Replace it with a semi-colon.
+                tmp_prep_p[ ndx ] = ';';
+                text_remove( tmp_prep_p, ( ndx + 1 ), 2 );
+            }
             //  Copy this character to the output buffer
             preparation_p[ ndx ] = tmp_prep_p[ ndx ];
         }
