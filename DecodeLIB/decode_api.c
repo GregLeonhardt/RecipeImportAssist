@@ -972,6 +972,44 @@ decode_finalize(
     }
 
     /************************************************************************
+     *  Recipe Title analysis
+     *
+     *  @NOTE:
+     *      There are MANY-MANY-MANY incorrect categorizations here.
+     *      -- IS IT WORTH IT --
+     *
+     ************************************************************************/
+
+    //  Recipe Title analysis
+    DECODE__title_information( recipe_p );
+
+    /************************************************************************
+     *  Recipe Directions analysis
+     *
+     ************************************************************************/
+
+    if ( recipe_p->instructions != NULL )
+    {
+        //  Directions  analysis
+        DECODE__directions_cleanup( recipe_p );
+
+        //  Directions format
+        recipe_fmt_directions( recipe_p );
+
+        //  Find "SOURCE:" in the directions
+        DECODE__directions_source( recipe_p );
+
+        //  Find "COPYRIGHT:" in the directions
+        DECODE__directions_copyright( recipe_p );
+
+        //  Find "AUTHOR:" in the directions
+//      DECODE__directions_author( recipe_p );
+
+        //  Find "NOTES:" in the directions
+        DECODE__directions_notes( recipe_p );
+    }
+
+    /************************************************************************
      *  Set the recipe defaults when information is not present
      ************************************************************************/
 
@@ -1032,44 +1070,6 @@ decode_finalize(
         log_write( MID_DEBUG_1, "decode_api.c", "Line: %d\n", __LINE__ );
     }
     //-----------------------------------------------------------------------
-
-    /************************************************************************
-     *  Recipe Title analysis
-     *
-     *  @NOTE:
-     *      There are MANY-MANY-MANY incorrect categorizations here.
-     *      -- IS IT WORTH IT --
-     *
-     ************************************************************************/
-
-    //  Recipe Title analysis
-    DECODE__title_information( recipe_p );
-
-    /************************************************************************
-     *  Recipe Directions analysis
-     *
-     ************************************************************************/
-
-    if ( recipe_p->instructions != NULL )
-    {
-        //  Directions  analysis
-        DECODE__directions_cleanup( recipe_p );
-
-        //  Directions format
-        recipe_fmt_directions( recipe_p );
-
-        //  Find "SOURCE:" in the directions
-        DECODE__directions_source( recipe_p );
-
-        //  Find "COPYRIGHT:" in the directions
-//      DECODE__directions_copyright( recipe_p );
-
-        //  Find "AUTHOR:" in the directions
-//      DECODE__directions_author( recipe_p );
-
-        //  Find "NOTES:" in the directions
-        DECODE__directions_notes( recipe_p );
-    }
 
     /************************************************************************
      *  Function Exit

@@ -477,29 +477,33 @@ DECODE__title_information(
     name_p = mem_malloc( ( strlen( recipe_p->name ) + 1 ) );
     log_write( MID_DEBUG_1, "decode_lib.c", "Line: %d\n", __LINE__ );
 
-    //  Copy the recipe title to the local buffer
-    memcpy( name_p, recipe_p->name, strlen( recipe_p->name ) );
-
     /************************************************************************
      *  Function
      ************************************************************************/
 
-    //  Clean the next word buffer
-    memset( next_word, '\0', sizeof( next_word ) );
-
-    //  Process all words in the input buffer
-    for( buffer_p = text_next_word( name_p, next_word );
-         buffer_p != NULL;
-         buffer_p = text_next_word( buffer_p, next_word ) )
+    //  Is there a recipe title to analyze ?
+    if ( recipe_p->name != NULL )
     {
-        //  Lookup to see if this word has meaning
-        chapter_p = xlate_chapter( next_word );
+        //  YES:    Copy the recipe title to the local buffer
+        memcpy( name_p, recipe_p->name, strlen( recipe_p->name ) );
 
-        //  Do we have a chapter to save ?
-        if ( chapter_p != NULL )
+        //  Clean the next word buffer
+        memset( next_word, '\0', sizeof( next_word ) );
+
+        //  Process all words in the input buffer
+        for( buffer_p = text_next_word( name_p, next_word );
+             buffer_p != NULL;
+             buffer_p = text_next_word( buffer_p, next_word ) )
         {
-            //  YES:    Save it
-            decode_save_chapter( chapter_p, recipe_p );
+            //  Lookup to see if this word has meaning
+            chapter_p = xlate_chapter( next_word );
+
+            //  Do we have a chapter to save ?
+            if ( chapter_p != NULL )
+            {
+                //  YES:    Save it
+                decode_save_chapter( chapter_p, recipe_p );
+            }
         }
     }
 
@@ -715,7 +719,7 @@ DECODE__directions_source(
                         if ( string_end_p != NULL )
                         {
                             //  YES:    Set the length of the data to copy out
-                            string_l = ( string_end_p - string_beg_p ) - 2;
+                            string_l = ( string_end_p - string_beg_p ) - 1;
 
                             //  Copy the source data string
                             memcpy( source_data, &string_beg_p[ 1 ], string_l );
@@ -765,47 +769,80 @@ DECODE__directions_copyright(
      *  @param  directions_p    Pointer to a line of the directions         */
     char                        *   directions_p;
     /**
-     *  @param  copyright_p     Pointer to a "COPYRIGHT:" string            */
-    char                        *   copyright_p;
+     *  @param  temp_p          Temporary string pointer                    */
+    char                        *   temp_p;
+    /**
+     *  @param  string_beg_p    Beginning of the source string              */
+    char                        *   string_beg_p;
+    /**
+     *  @param  string_end_p    End of the source string                    */
+    char                        *   string_end_p;
+    /**
+     *  @param  string_l        Length of the source string                 */
+    int                             string_l;
+    /**
+     *  @param  source_data    Buffer to hold the 'SOURCE:' data.          */
+    char                            source_data[ MAX_LINE_L ];
 
     /************************************************************************
      *  Function Initialization
      ************************************************************************/
 
+    //  Clean the source data buffer
+    memset( source_data, '\0', sizeof( source_data ) );
 
     /************************************************************************
      *  Function
      ************************************************************************/
 
+    //  Are there any directions for this recipe ?
     if ( list_query_count( recipe_p->directions ) > 0 )
     {
+        //  YES:    Scan the whole thing.
         for( directions_p = list_get_first( recipe_p->directions );
              directions_p != NULL;
              directions_p = list_get_next( recipe_p->directions, directions_p ) )
         {
-            //  Look for the keyword "Copyright:"
-            if ( ( copyright_p = strcasestr( directions_p, "Copyright:" ) ) != NULL )
+            //  Do we already have a COPYRIGHT: for this recipe ?
+            if ( recipe_p->copyright == NULL )
             {
-                //  Remove the "COPYRIGHT:" tag
-                text_remove( copyright_p, 0, 10 );
-            }
-
-            //  Did we find "COPYRIGHT:" ?
-            if ( copyright_p != NULL )
-            {
-                //  YES:    Move past any leading white space
-                copyright_p = text_skip_past_whitespace( copyright_p );
-
-                //  Does a copyright string already exist ?
-                if ( recipe_p->copyright != NULL )
+                //  NO:     Is there a COPYRIGHT: in this directions line ?
+                if ( ( temp_p = strcasestr( directions_p, "Copyright:" ) ) != NULL )
                 {
-                    //  YES:    Dump the old for the new
-                    mem_free( recipe_p->copyright );
-                }
+                    //  YES:    Move past the tag and any white space that follows
+                    string_beg_p = &temp_p[ 10 ];
+                    string_beg_p = text_skip_past_whitespace( string_beg_p );
 
-                //  Move the remaining string to the "COPYRIGHT:" string
-                recipe_p->copyright = text_copy_to_new( copyright_p );
-                copyright_p[ 0 ] = '\0';
+                    //  Is the next character a quotation ["]
+                    if (    ( string_beg_p[ 0 ] == '"'  )
+                         && ( string_beg_p[ 1 ] != '"'  )
+                         && ( string_beg_p[ 1 ] != '\0' ) )
+                    {
+                        //  YES:    Look for the ending quotation mark
+                        string_end_p = strchr( &string_beg_p[ 1 ], '"' );
+
+                        //  Is it a well formed source tag ?
+                        if ( string_end_p != NULL )
+                        {
+                            //  YES:    Set the length of the data to copy out
+                            string_l = ( string_end_p - string_beg_p ) - 1;
+
+                            //  Copy the source data string
+                            memcpy( source_data, &string_beg_p[ 1 ], string_l );
+
+                            //  Now remove the COPYRIGHT: string from the directions line.
+                            text_remove( temp_p, 0, ( string_end_p - temp_p ) + 1 );
+
+                            //  Save the COPYRIGHT: information in the recipe
+                            recipe_p->copyright = text_copy_to_new( source_data );
+                        }
+                    }
+                }
+            }
+            else
+            {
+                //  YES:    There can only be one so stop looking
+                break;
             }
         }
     }
