@@ -1068,7 +1068,7 @@ decode_finalize(
 //      DECODE__directions_author( recipe_p );
 
         //  Find "NOTES:" in the directions
-//      DECODE__directions_notes( recipe_p );
+        DECODE__directions_notes( recipe_p );
     }
 
     /************************************************************************
