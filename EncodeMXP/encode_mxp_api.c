@@ -114,8 +114,8 @@ encode_mxp(
      * @param category_count    Number of categories written                */
     int                             category_count;
     /**
-     * @param center_data       A buffer to center a data string in.        */
-    char                            center_data[ 80 ];
+     * @param temp_data         A data buffer for temporary use.            */
+    char                            temp_data[ 80 ];
 
     /************************************************************************
      *  Function Initialization
@@ -179,16 +179,16 @@ encode_mxp(
     //  TXT Recipe start tag
     //-----------------------------------------------------------------------
 
-    text_center( center_data, sizeof( center_data ),
+    text_center( temp_data, sizeof( temp_data ),
                  "* Exported from MasterCook *" );
-    fprintf( out_file_fp, "%s\r\n\r\n", center_data );
+    fprintf( out_file_fp, "%s\r\n\r\n", temp_data );
 
     //-----------------------------------------------------------------------
     //  NAME
     //-----------------------------------------------------------------------
 
-    text_center( center_data, sizeof( center_data ), recipe_p->name );
-    fprintf( out_file_fp, "%s\r\n\r\n", center_data );
+    text_center( temp_data, sizeof( temp_data ), recipe_p->name );
+    fprintf( out_file_fp, "%s\r\n\r\n", temp_data );
 
     //-----------------------------------------------------------------------
     //  AUTHOR:
@@ -255,12 +255,16 @@ encode_mxp(
                  || (   category_count       == 0 ) )
             {
                 //  NO:
-                fprintf( out_file_fp, "%-32s", data_p );
+                snprintf( temp_data, sizeof(temp_data),
+                        "CUISINE:%s", data_p );
+                fprintf( out_file_fp, "%-32s", temp_data );
             }
             else
             {
                 //  YES:
-                fprintf( out_file_fp, "                %-32s", data_p );
+                snprintf( temp_data, sizeof(temp_data),
+                        "CUISINE:%s", data_p );
+                fprintf( out_file_fp, "                %-32s", temp_data );
             }
             //  Do we need a CR here ?
             if ( ( ( ++category_count ) % 2 ) == 0 )
@@ -284,12 +288,16 @@ encode_mxp(
                  || (   category_count       == 0 ) )
             {
                 //  NO:
-                fprintf( out_file_fp, "%-32s", data_p );
+                snprintf( temp_data, sizeof(temp_data),
+                        "OCCASION:%s", data_p );
+                fprintf( out_file_fp, "%-32s", temp_data );
             }
             else
             {
                 //  YES:
-                fprintf( out_file_fp, "                %-32s", data_p );
+                snprintf( temp_data, sizeof(temp_data),
+                        "OCCASION:%s", data_p );
+                fprintf( out_file_fp, "                %-32s", temp_data );
             }
             //  Do we need a CR here ?
             if ( ( ( ++category_count ) % 2 ) == 0 )
@@ -314,12 +322,16 @@ encode_mxp(
                  || (   category_count       == 0 ) )
             {
                 //  NO:
-                fprintf( out_file_fp, "%-32s", data_p );
+                snprintf( temp_data, sizeof(temp_data),
+                        "COURSE:%s", data_p );
+                fprintf( out_file_fp, "%-32s", temp_data );
             }
             else
             {
                 //  YES:
-                fprintf( out_file_fp, "                %-32s", data_p );
+                snprintf( temp_data, sizeof(temp_data),
+                        "COURSE:%s", data_p );
+                fprintf( out_file_fp, "                %-32s", temp_data );
             }
             //  Do we need a CR here ?
             if ( ( ( ++category_count ) % 2 ) == 0 )
@@ -345,12 +357,16 @@ encode_mxp(
                  || (   category_count       == 0 ) )
             {
                 //  NO:
-                fprintf( out_file_fp, "%-32s", data_p );
+                snprintf( temp_data, sizeof(temp_data),
+                        "DIET:%s", data_p );
+                fprintf( out_file_fp, "%-32s", temp_data );
             }
             else
             {
                 //  YES:
-                fprintf( out_file_fp, "                %-32s", data_p );
+                snprintf( temp_data, sizeof(temp_data),
+                        "DIET:%s", data_p );
+                fprintf( out_file_fp, "                %-32s", temp_data );
             }
             //  Do we need a CR here ?
             if ( ( ( ++category_count ) % 2 ) == 0 )
@@ -376,12 +392,16 @@ encode_mxp(
                  || (   category_count       == 0 ) )
             {
                 //  NO:
-                fprintf( out_file_fp, "%-32s", data_p );
+                snprintf( temp_data, sizeof(temp_data),
+                        "APPLIANCE:%s", data_p );
+                fprintf( out_file_fp, "%-32s", temp_data );
             }
             else
             {
                 //  YES:
-                fprintf( out_file_fp, "                %-32s", data_p );
+                snprintf( temp_data, sizeof(temp_data),
+                        "APPLIANCE:%s", data_p );
+                fprintf( out_file_fp, "                %-32s", temp_data );
             }
             //  Do we need a CR here ?
             if ( ( ( ++category_count ) % 2 ) == 0 )
@@ -407,12 +427,16 @@ encode_mxp(
                  || (   category_count       == 0 ) )
             {
                 //  NO:
-                fprintf( out_file_fp, "%-32s", data_p );
+                snprintf( temp_data, sizeof(temp_data),
+                        "CHAPTER:%s", data_p );
+                fprintf( out_file_fp, "%-32s", temp_data );
             }
             else
             {
                 //  YES:
-                fprintf( out_file_fp, "                %-32s", data_p );
+                snprintf( temp_data, sizeof(temp_data),
+                        "CHAPTER:%s", data_p );
+                fprintf( out_file_fp, "                %-32s", temp_data );
             }
             //  Do we need a CR here ?
             if ( ( ( ++category_count ) % 2 ) == 0 )
@@ -608,9 +632,9 @@ encode_mxp(
     //  Recipe End:
     //-----------------------------------------------------------------------
 
-    text_center( center_data, sizeof( center_data ),
+    text_center( temp_data, sizeof( temp_data ),
                  "- - - - - - - - - - - - - - - - - - - " );
-    fprintf( out_file_fp, "%s\r\n\r\n", center_data );
+    fprintf( out_file_fp, "%s\r\n\r\n", temp_data );
 
     //-----------------------------------------------------------------------
     //  NOTES:
