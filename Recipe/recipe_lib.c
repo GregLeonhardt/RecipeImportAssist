@@ -546,39 +546,43 @@ RECIPE__fmt_preparation(
      *  Reformat a section split  (--- SOMETHING ---)
      ************************************************************************/
 
-    //  Set the line length
-    eol = ( strlen( tmp_prep_p ) - 1 );
-    ndx = 0;
-
-    //  NO:     Is this a comment line ?
-    if (    ( tmp_prep_p[ ndx     ] == '-' )
-         && ( tmp_prep_p[ ndx + 1 ] == '-' )
-         && ( tmp_prep_p[ ndx + 2 ] == '-' )
-         && ( tmp_prep_p[ eol     ] == '-' )
-         && ( tmp_prep_p[ eol - 1 ] == '-' )
-         && ( tmp_prep_p[ eol - 2 ] == '-' ) )
+    //  Is the string long enough for this to be a marker ?
+    if ( strlen( tmp_prep_p ) > 9 )
     {
-        //  YES:    Alter leading '-'
-        for( ndx = 0;
-             tmp_prep_p[ ndx ] == '-';
-             ndx += 1 )
-        {
-            tmp_prep_p[ ndx ] = ' ';
-        }
-        tmp_prep_p[ ndx - 1 ] = '#';
+        //  YES:    Set the line length
+        eol = ( strlen( tmp_prep_p ) - 1 );
+        ndx = 0;
 
-        //  Alter trailing '-'
-        for( ndx = ( strlen( tmp_prep_p ) - 1 );
-             tmp_prep_p[ ndx ] == '-';
-             ndx -= 1 )
+        //  NO:     Is this a comment line ?
+        if (    ( tmp_prep_p[ ndx     ] == '-' )
+             && ( tmp_prep_p[ ndx + 1 ] == '-' )
+             && ( tmp_prep_p[ ndx + 2 ] == '-' )
+             && ( tmp_prep_p[ eol     ] == '-' )
+             && ( tmp_prep_p[ eol - 1 ] == '-' )
+             && ( tmp_prep_p[ eol - 2 ] == '-' ) )
         {
-            tmp_prep_p[ ndx ] = ' ';
-        }
-        tmp_prep_p[ ndx + 1 ] = '#';
+            //  YES:    Alter leading '-'
+            for( ndx = 0;
+                 tmp_prep_p[ ndx ] == '-';
+                 ndx += 1 )
+            {
+                tmp_prep_p[ ndx ] = ' ';
+            }
+            tmp_prep_p[ ndx - 1 ] = '#';
 
-        //  Skip over leading and trailing spaces and or tabs
-        tmp_prep_p = text_skip_past_whitespace( tmp_prep_p );
-                     text_strip_whitespace( tmp_prep_p );
+            //  Alter trailing '-'
+            for( ndx = ( strlen( tmp_prep_p ) - 1 );
+                 tmp_prep_p[ ndx ] == '-';
+                 ndx -= 1 )
+            {
+                tmp_prep_p[ ndx ] = ' ';
+            }
+            tmp_prep_p[ ndx + 1 ] = '#';
+
+            //  Skip over leading and trailing spaces and or tabs
+            tmp_prep_p = text_skip_past_whitespace( tmp_prep_p );
+                         text_strip_whitespace( tmp_prep_p );
+        }
     }
 
     /************************************************************************
@@ -624,10 +628,10 @@ RECIPE__fmt_preparation(
         if ( tmp_prep_p[ ndx ] != '\0' )
         {
             //  Look for a second ' -- '
-            if (    ( tmp_prep_p[ ndx     ] != ' ' )
-                 && ( tmp_prep_p[ ndx + 1 ] != '-' )
-                 && ( tmp_prep_p[ ndx + 2 ] != '-' )
-                 && ( tmp_prep_p[ ndx + 3 ] != ' ' ) )
+            if (    ( tmp_prep_p[ ndx     ] == ' ' )
+                 && ( tmp_prep_p[ ndx + 1 ] == '-' )
+                 && ( tmp_prep_p[ ndx + 2 ] == '-' )
+                 && ( tmp_prep_p[ ndx + 3 ] == ' ' ) )
             {
                 //  YES:    Replace it with a semi-colon.
                 tmp_prep_p[ ndx ] = ';';
