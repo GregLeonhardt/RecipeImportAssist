@@ -1059,7 +1059,7 @@ decode_finalize(
         recipe_fmt_directions( recipe_p );
 
         //  Find "SOURCE:" in the directions
-//      DECODE__directions_source( recipe_p );
+        DECODE__directions_source( recipe_p );
 
         //  Find "COPYRIGHT:" in the directions
 //      DECODE__directions_copyright( recipe_p );
