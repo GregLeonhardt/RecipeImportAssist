@@ -561,27 +561,46 @@ RECIPE__fmt_preparation(
              && ( tmp_prep_p[ eol - 1 ] == '-' )
              && ( tmp_prep_p[ eol - 2 ] == '-' ) )
         {
-            //  YES:    Alter leading '-'
+            //  YES:    Is there anything other then dashes [-] ?
             for( ndx = 0;
                  tmp_prep_p[ ndx ] == '-';
                  ndx += 1 )
             {
-                tmp_prep_p[ ndx ] = ' ';
+                //  Nothing to do until we find something other then a dash.
             }
-            tmp_prep_p[ ndx - 1 ] = '#';
 
-            //  Alter trailing '-'
-            for( ndx = ( strlen( tmp_prep_p ) - 1 );
-                 tmp_prep_p[ ndx ] == '-';
-                 ndx -= 1 )
+            //  Did we run to the End-of-Line ?
+            if ( tmp_prep_p[ ndx ] != '\0' )
             {
-                tmp_prep_p[ ndx ] = ' ';
-            }
-            tmp_prep_p[ ndx + 1 ] = '#';
+                //  NO:     Change leading [--- ] to spaces [** ].
+                for( ndx = 0;
+                     (    ( tmp_prep_p[ ndx ] == '-' )
+                       || ( tmp_prep_p[ ndx ] == ' ' ) );
+                     ndx += 1 )
+                {
+                    tmp_prep_p[ ndx ] = ' ';
+                }
+                tmp_prep_p[ ndx - 2 ] = '*';
+                tmp_prep_p[ ndx - 3 ] = '*';
 
-            //  Skip over leading and trailing spaces and or tabs
-            tmp_prep_p = text_skip_past_whitespace( tmp_prep_p );
-                         text_strip_whitespace( tmp_prep_p );
+                //  Change leading [--- ] to spaces [ **].
+                for( ndx = ( strlen( tmp_prep_p ) - 1 );
+                     (    ( tmp_prep_p[ ndx ] == '-' )
+                       || ( tmp_prep_p[ ndx ] == ' ' ) );
+                     ndx -= 1 )
+                {
+                    tmp_prep_p[ ndx ] = ' ';
+                }
+                tmp_prep_p[ ndx + 2 ] = '*';
+                tmp_prep_p[ ndx + 3 ] = '*';
+
+                //  Skip over leading and trailing spaces and or tabs
+                tmp_prep_p = text_skip_past_whitespace( tmp_prep_p );
+                text_strip_whitespace( tmp_prep_p );
+
+                //  Make the text all UPPERCASE
+                text_to_uppercase( tmp_prep_p );
+            }
         }
     }
 
