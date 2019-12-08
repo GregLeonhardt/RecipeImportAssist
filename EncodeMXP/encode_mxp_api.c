@@ -152,7 +152,7 @@ encode_mxp(
 
     //  Append the file name to the output name
     snprintf( out_name, sizeof( out_name ),
-              "%s/%s/%s/%s.txt", out_dir_name_p, DIR_FORMATTED,
+              "%s/%s/%s/%s.mxp", out_dir_name_p, DIR_FORMATTED,
               subdirectory, recipe_p->recipe_id );
 
     /************************************************************************
