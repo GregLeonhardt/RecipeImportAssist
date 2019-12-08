@@ -155,7 +155,7 @@ struct   recipe_t
      *  @param  time_cook       How long it should take to cook             */
     char                        *   time_cook;
     /**
-     *  @param  time_rest       After cooked before serving                 */
+     *  @param  time_resting    After cooked before serving                 */
     char                        *   time_resting;
     /**
      *  @param  time_total      All the times added up.                     */
