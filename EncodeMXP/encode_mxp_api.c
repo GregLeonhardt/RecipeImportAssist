@@ -181,7 +181,7 @@ encode_mxp(
 
     text_center( temp_data, sizeof( temp_data ),
                  "* Exported from MasterCook *" );
-    fprintf( out_file_fp, "%s\r\n\r\n", temp_data );
+    fprintf( out_file_fp, "\r\n%s\r\n\r\n", temp_data );
 
     //-----------------------------------------------------------------------
     //  NAME
@@ -535,12 +535,11 @@ encode_mxp(
 
     if ( recipe_p->description != NULL )
     {
-        fprintf( out_file_fp, "Description:\r\n" );
-        fprintf( out_file_fp, "\"%s\"\r\n\r\n", recipe_p->description );
+        fprintf( out_file_fp, "Description: \"%s\"\r\n\r\n", recipe_p->description );
     }
     else
     {
-        fprintf( out_file_fp, "Description: \"~\"\r\n" );
+        fprintf( out_file_fp, "Description: \"~\"\r\n\r\n" );
     }
 
     //-----------------------------------------------------------------------
@@ -549,19 +548,18 @@ encode_mxp(
 
     if ( recipe_p->source != NULL )
     {
-        fprintf( out_file_fp, "Source:\r\n" );
-        fprintf( out_file_fp, "\"%s\"\r\n\r\n", recipe_p->source );
+        fprintf( out_file_fp, "Source: \"%s\"\r\n\r\n", recipe_p->source );
     }
     else
     {
-        fprintf( out_file_fp, "Source: \"~\"\r\n" );
+        fprintf( out_file_fp, "Source: \"~\"\r\n\r\n" );
     }
 
     //-----------------------------------------------------------------------
     //  Imported From:
     //-----------------------------------------------------------------------
 
-    fprintf( out_file_fp, "S(Imported From):\r\n" );
+    fprintf( out_file_fp, "S(Imported From): " );
 
     if ( recipe_p->posted_by != NULL )
     {
@@ -583,8 +581,9 @@ encode_mxp(
     //  COPYRIGHT:
     //-----------------------------------------------------------------------
 
-    fprintf( out_file_fp, "Copyright:\r\n" );
-    fprintf( out_file_fp, "\"%s\"\r\n\r\n", recipe_p->copyright );
+    fprintf( out_file_fp,
+             "Copyright: \"%s\"\r\n\r\n",
+             recipe_p->copyright );
 
     //-----------------------------------------------------------------------
     //  Yield:
@@ -592,8 +591,7 @@ encode_mxp(
 
     if ( recipe_p->makes != NULL )
     {
-        fprintf( out_file_fp, "Yield:\r\n" );
-        fprintf( out_file_fp, "\"%s", recipe_p->makes );
+        fprintf( out_file_fp, "Yield: \"%s", recipe_p->makes );
 
         //  Is there a unit of measurement ?
         if ( recipe_p->makes_unit != NULL )
@@ -609,7 +607,7 @@ encode_mxp(
     }
     else
     {
-        fprintf( out_file_fp, "Yield: \"0 ~\"\r\n" );
+        fprintf( out_file_fp, "Yield: \"0 ~\"\r\n\r\n" );
     }
 
     //-----------------------------------------------------------------------
@@ -618,12 +616,13 @@ encode_mxp(
 
     if ( recipe_p->time_prep != NULL )
     {
-        fprintf( out_file_fp, "T(Prep Time): \r\n" );
-        fprintf( out_file_fp, "\"%s\"\r\n\r\n", recipe_p->time_prep );
+        fprintf( out_file_fp,
+                 "T(Prep Time): \"%s\"\r\n\r\n",
+                 recipe_p->time_prep );
     }
     else
     {
-        fprintf( out_file_fp, "T(Prep Time): \"00:00\"\r\n" );
+        fprintf( out_file_fp, "T(Prep Time): \"00:00\"\r\n\r\n" );
     }
 
     //-----------------------------------------------------------------------
@@ -632,12 +631,13 @@ encode_mxp(
 
     if ( recipe_p->time_cook != NULL )
     {
-        fprintf( out_file_fp, "T(Cook Time): \r\n" );
-        fprintf( out_file_fp, "\"%s\"\r\n\r\n", recipe_p->time_cook );
+        fprintf( out_file_fp,
+                 "T(Cook Time): \"%s\"\r\n\r\n\r\n",
+                 recipe_p->time_cook );
     }
     else
     {
-        fprintf( out_file_fp, "T(Cook Time): \"00:00\"\r\n" );
+        fprintf( out_file_fp, "T(Cook Time): \"00:00\"\r\n\r\n" );
     }
 
     //-----------------------------------------------------------------------
@@ -646,12 +646,13 @@ encode_mxp(
 
     if ( recipe_p->time_resting != NULL )
     {
-        fprintf( out_file_fp, "T(Cook Rest): \r\n" );
-        fprintf( out_file_fp, "\"%s\"\r\n\r\n", recipe_p->time_resting );
+        fprintf( out_file_fp,
+                 "T(Rest Time): \"%s\"\r\n\r\n",
+                 recipe_p->time_resting );
     }
     else
     {
-        fprintf( out_file_fp, "T(Cook Rest): \"00:00\"\r\n" );
+        fprintf( out_file_fp, "T(Rest Time): \"00:00\"\r\n\r\n" );
     }
 
     //-----------------------------------------------------------------------
@@ -660,12 +661,13 @@ encode_mxp(
 
     if ( recipe_p->time_total != NULL )
     {
-        fprintf( out_file_fp, "Start to Finish Time: \r\n" );
-        fprintf( out_file_fp, "\"%s\"\r\n\r\n", recipe_p->time_total );
+        fprintf( out_file_fp,
+                 "Start to Finish Time: \"%s\"\r\n\r\n",
+                 recipe_p->time_total );
     }
     else
     {
-        fprintf( out_file_fp, "Start to Finish Time: \"00:00\"\r\n" );
+        fprintf( out_file_fp, "Start to Finish Time: \"00:00\"\r\n\r\n" );
     }
 
     //-----------------------------------------------------------------------
@@ -678,7 +680,7 @@ encode_mxp(
         fprintf( out_file_fp, "RATINGS           : " );
         if ( recipe_p->skill != NULL )
         {
-            fprintf( out_file_fp, "30%s\r\n\r\n", recipe_p->skill );
+            fprintf( out_file_fp, "%-30s", recipe_p->skill );
         }
         if ( recipe_p->rating != NULL )
         {
@@ -688,7 +690,7 @@ encode_mxp(
     else
     {
         fprintf( out_file_fp, "RATINGS           : " );
-        fprintf( out_file_fp, "30%s\r\n\r\n", "Skill: 1-5" );
+        fprintf( out_file_fp, "%-30s", "Skill: 1-5" );
         fprintf( out_file_fp, "%s\r\n\r\n", "TNT Rating: 1-5 " );
     }
 
@@ -710,9 +712,9 @@ encode_mxp(
              data_p != NULL;
              data_p = list_get_next( recipe_p->notes, data_p ) )
         {
-            fprintf( out_file_fp, "%s\r\n", data_p );
+            fprintf( out_file_fp, "%s\r\n\r\n", data_p );
         }
-        fprintf( out_file_fp, "\r\n" );
+        fprintf( out_file_fp, "\r\n\r\n" );
     }
 
     //-----------------------------------------------------------------------
