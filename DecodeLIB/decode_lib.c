@@ -150,6 +150,14 @@ DECODE__directions_cleanup(
             found = true;
         }
         //--------------------------------------------------------------------
+        //  ">From:"
+        compare_p = strcasestr( directions_p, ">from:" );
+        if ( compare_p != NULL )
+        {
+            memcpy( compare_p, " From:",    9 );
+            found = true;
+        }
+        //--------------------------------------------------------------------
         //  "From The "
         //  Can't use this because "from the" occurs in normal recipe directions.
         //====================================================================
@@ -856,7 +864,7 @@ DECODE__directions_copyright(
 
 /****************************************************************************/
 /**
- *  Scan the recipe directions for a recipe author.
+ *  Scan the recipe directions for a recipe DESCRIPTION.
  *
  *  @param recipe_t             Primary structure for a recipe
  *
@@ -867,7 +875,7 @@ DECODE__directions_copyright(
  ****************************************************************************/
 
 void
-DECODE__directions_author(
+DECODE__directions_description(
     struct   recipe_t           *   recipe_p
     )
 {
@@ -875,54 +883,89 @@ DECODE__directions_author(
      *  @param  directions_p    Pointer to a line of the directions         */
     char                        *   directions_p;
     /**
-     *  @param  author_p        Pointer to a "AUTHOR:" string               */
-    char                        *   author_p;
+     *  @param  temp_p          Temporary string pointer                    */
+    char                        *   temp_p;
+    /**
+     *  @param  string_beg_p    Beginning of the source string              */
+    char                        *   string_beg_p;
+    /**
+     *  @param  string_end_p    End of the source string                    */
+    char                        *   string_end_p;
+    /**
+     *  @param  string_l        Length of the source string                 */
+    int                             string_l;
+    /**
+     *  @param  source_data    Buffer to hold the 'SOURCE:' data.          */
+    char                            source_data[ MAX_LINE_L ];
 
     /************************************************************************
      *  Function Initialization
      ************************************************************************/
 
+    //  Clean the source data buffer
+    memset( source_data, '\0', sizeof( source_data ) );
 
     /************************************************************************
      *  Function
      ************************************************************************/
 
+    //  Are there any directions for this recipe ?
     if ( list_query_count( recipe_p->directions ) > 0 )
     {
+        //  YES:    Scan the whole thing.
         for( directions_p = list_get_first( recipe_p->directions );
              directions_p != NULL;
              directions_p = list_get_next( recipe_p->directions, directions_p ) )
         {
-            //  Look for the keyword "Copyright:"
-            if ( ( author_p = strcasestr( directions_p, "Author:" ) ) != NULL )
+            //  Do we already have a DESCRIPTION: for this recipe ?
+            if ( recipe_p->description == NULL )
             {
-                //  Remove the "AUTHOR:" tag
-                text_remove( author_p, 0, 10 );
-            }
-            //  Look for the keyword "RecipeBy:"
-            else
-            if ( ( author_p = strcasestr( directions_p, "RecipeBy:" ) ) != NULL )
-            {
-                //  Remove the "RECIPEBY:" tag
-                text_remove( author_p, 0, 9 );
-            }
-
-            //  Did we find "AUTHOR:" ?
-            if ( author_p != NULL )
-            {
-                //  YES:    Move past any leading white space
-                author_p = text_skip_past_whitespace( author_p );
-
-                //  Does a author string already exist ?
-                if ( recipe_p->author != NULL )
+                //  NO:     Is there a DESCRIPTION: in this directions line ?
+                if ( ( temp_p = strcasestr( directions_p, "Description:" ) ) != NULL )
                 {
-                    //  YES:    Dump the old for the new
-                    mem_free( recipe_p->author );
-                }
+                    //  YES:    Move past the tag and any white space that follows
+                    string_beg_p = &temp_p[ 10 ];
+                    string_beg_p = text_skip_past_whitespace( string_beg_p );
 
-                //  Move the remaining string to the "AUTHOR:" string
-                recipe_p->author = text_copy_to_new( author_p );
-                author_p[ 0 ] = '\0';
+                    //  Is the next character a quotation ["]
+                    if (    ( string_beg_p[ 0 ] == '"'  )
+                         && ( string_beg_p[ 1 ] != '"'  )
+                         && ( string_beg_p[ 1 ] != '\0' ) )
+                    {
+                        //  YES:    Look for the ending quotation mark
+                        string_end_p = strchr( &string_beg_p[ 1 ], '"' );
+
+                        //  Is it a well formed source tag ?
+                        if ( string_end_p != NULL )
+                        {
+                            //  YES:    Set the length of the data to copy out
+                            string_l = ( string_end_p - string_beg_p ) - 1;
+
+                            //  Copy the source data string
+                            memcpy( source_data, &string_beg_p[ 1 ], string_l );
+
+                            //  Now remove the DESCRIPTION: string from the directions line.
+                            text_remove( temp_p, 0, ( string_end_p - temp_p ) + 1 );
+
+                            //  Is the description too long ?
+                            if ( strlen( recipe_p->description ) < 255 )
+                            {
+                                //  NO:     Save it.
+                                recipe_p->description = text_copy_to_new( source_data );
+                            }
+                            else
+                            {
+                                //  YES:    Save it into the NOTES:
+                                recipe_fmt_notes( recipe_p, source_data );
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                //  YES:    There can only be one so stop looking
+                break;
             }
         }
     }

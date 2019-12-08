@@ -116,7 +116,7 @@ DECODE__directions_copyright(
     );
 //----------------------------------------------------------------------------
 void
-DECODE__directions_author( 
+DECODE__directions_description( 
     struct   recipe_t           *   recipe_p
     );
 //----------------------------------------------------------------------------

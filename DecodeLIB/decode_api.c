@@ -1002,8 +1002,14 @@ decode_finalize(
         //  Find "COPYRIGHT:" in the directions
         DECODE__directions_copyright( recipe_p );
 
-        //  Find "AUTHOR:" in the directions
-//      DECODE__directions_author( recipe_p );
+        //  Find "DESCRIPTION:" in the directions
+        DECODE__directions_description( recipe_p );
+
+        //  @ToDo   S(abcd wxyz): "255 char max."
+        //  @ToDo   YIELD: "10-numeric 25-alpha-numeric"
+        //  @ToDo   Start to Finish Time: "00:00"
+        //  @ToDo   T(wxyz): "00:00"
+        //  @ToDo   Ratings:
 
         //  Find "NOTES:" in the directions
         DECODE__directions_notes( recipe_p );
