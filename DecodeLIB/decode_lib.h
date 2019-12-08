@@ -101,7 +101,7 @@ DECODE__directions_cleanup(
     );
 //----------------------------------------------------------------------------
 void
-DECODE__directions_notes( 
+DECODE__directions_from( 
     struct   recipe_t           *   recipe_p
     );
 //----------------------------------------------------------------------------
@@ -117,6 +117,11 @@ DECODE__directions_copyright(
 //----------------------------------------------------------------------------
 void
 DECODE__directions_description( 
+    struct   recipe_t           *   recipe_p
+    );
+//----------------------------------------------------------------------------
+void
+DECODE__directions_notes( 
     struct   recipe_t           *   recipe_p
     );
 //----------------------------------------------------------------------------

@@ -81,6 +81,93 @@
 
 /****************************************************************************/
 /**
+ *  Scan the recipe title for information that can categorize the recipe.
+ *
+ *  @param recipe_t             Primary structure for a recipe
+ *
+ *  @return void                No return code from this function.
+ *
+ *  @note
+ *
+ ****************************************************************************/
+
+static
+char    *
+DECODE__get_tag_data(
+    char                        *   source_data_p,
+    char                        *   search_string_p
+    )
+{
+    /**
+     *  @param  temp_p          Temporary string pointer                    */
+    char                        *   temp_p;
+    /**
+     *  @param  string_beg_p    Beginning of the source string              */
+    char                        *   string_beg_p;
+    /**
+     *  @param  string_end_p    End of the source string                    */
+    char                        *   string_end_p;
+    /**
+     *  @param  string_l        Length of the source string                 */
+    int                             string_l;
+    /**
+     *  @param  data_p          Pointer to a data buffer with the tag data  */
+    char                        *   data_p;
+
+    /************************************************************************
+     *  Function Initialization
+     ************************************************************************/
+
+    //  Initialize the return data pointer.
+    data_p = NULL;
+
+    /************************************************************************
+     *  Process a [FROM: "xxxx"] tag
+     ************************************************************************/
+
+    //  NO:     Is there a FROM: in this directions line ?
+    if ( ( temp_p = strcasestr( source_data_p, search_string_p ) ) != NULL )
+    {
+        //  YES:    Move past the tag and any white space that follows
+        string_beg_p = &temp_p[ strlen( search_string_p ) ];
+        string_beg_p = text_skip_past_whitespace( string_beg_p );
+
+        //  Is the next character a quotation ["]
+        if (    ( string_beg_p[ 0 ] == '"'  )
+             && ( string_beg_p[ 1 ] != '"'  )
+             && ( string_beg_p[ 1 ] != '\0' ) )
+        {
+            //  YES:    Look for the ending quotation mark
+            string_end_p = strchr( &string_beg_p[ 1 ], '"' );
+
+            //  Is it a well formed source tag ?
+            if ( string_end_p != NULL )
+            {
+                //  YES:    Allocate a data buffer for the tag data
+                data_p = mem_malloc( MAX_LINE_L );
+
+                //  Set the length of the data to copy out
+                string_l = ( string_end_p - string_beg_p ) - 1;
+
+                //  Copy the source data string
+                memcpy( data_p, &string_beg_p[ 1 ], string_l );
+
+                //  Now remove the FROM: string from the directions line.
+                text_remove( temp_p, 0, ( string_end_p - temp_p ) + 1 );
+            }
+        }
+    }
+
+    /************************************************************************
+     *  Function Exit
+     ************************************************************************/
+
+    //  DONE!
+    return( data_p );
+}
+
+/****************************************************************************/
+/**
  *  Some recipes have embedded content in the recipe directions.  Such as
  *  the original poster, number of people it serves, etc.
  *
@@ -527,6 +614,361 @@ DECODE__title_information(
 
 /****************************************************************************/
 /**
+ *  Scan the recipe directions for [FROM: "wxyz"]
+ *
+ *  @param recipe_t             Primary structure for a recipe
+ *
+ *  @return void                No return code from this function.
+ *
+ *  @note
+ *
+ ****************************************************************************/
+
+void
+DECODE__directions_from(
+    struct   recipe_t           *   recipe_p
+    )
+{
+    /**
+     *  @param  directions_p    Pointer to a line of the directions         */
+    char                        *   directions_p;
+    /**
+     *  @param  temp_p          Temporary string pointer                    */
+    char                        *   temp_p;
+    /**
+     *  @param  temp_data       Temporary data buffer                       */
+    char                            temp_data[ MAX_LINE_L ];
+
+    /************************************************************************
+     *  Function Initialization
+     ************************************************************************/
+
+
+    /************************************************************************
+     *  Process a [FROM: "xxxx"] tag
+     ************************************************************************/
+
+    //  Are there any directions for this recipe ?
+    if ( list_query_count( recipe_p->directions ) > 0 )
+    {
+        //  YES:    Scan the whole thing.
+        for( directions_p = list_get_first( recipe_p->directions );
+             directions_p != NULL;
+             directions_p = list_get_next( recipe_p->directions, directions_p ) )
+        {
+            //  Look for the tag
+            temp_p = DECODE__get_tag_data( directions_p, "From:" );
+
+            //  Did we find it ?
+            if ( temp_p != NULL )
+            {
+                //  YES:    Format the output data
+                memset( temp_data, '\0', sizeof( temp_data ) );
+                snprintf( temp_data, sizeof( temp_data ),
+                          "FROM: \"%s\"", temp_p );
+
+                //  Free storage used by the old buffer
+                mem_free( temp_p );
+
+
+                //  Add it to [NOTES :].
+                list_put_last( recipe_p->notes, text_copy_to_new( " "       ) );
+                list_put_last( recipe_p->notes, text_copy_to_new( temp_data ) );
+            }
+        }
+    }
+
+    /************************************************************************
+     *  Function Exit
+     ************************************************************************/
+
+    //  DONE!
+}
+
+/****************************************************************************/
+/**
+ *  Scan the recipe directions for [SOURCE: "wxyz"]
+ *
+ *  @param recipe_t             Primary structure for a recipe
+ *
+ *  @return void                No return code from this function.
+ *
+ *  @note
+ *
+ ****************************************************************************/
+
+void
+DECODE__directions_source(
+    struct   recipe_t           *   recipe_p
+    )
+{
+    /**
+     *  @param  directions_p    Pointer to a line of the directions         */
+    char                        *   directions_p;
+    /**
+     *  @param  temp_p          Temporary string pointer                    */
+    char                        *   temp_p;
+    /**
+     *  @param  temp_data       Temporary data buffer                       */
+    char                            temp_data[ MAX_LINE_L ];
+    /**
+     *  @param  saved           The information has been saved              */
+    int                             saved;
+
+    /************************************************************************
+     *  Function Initialization
+     ************************************************************************/
+
+    //  Initialize the saved flag
+    saved = false;
+
+    /************************************************************************
+     *  Process a [SOURCE: "xxxx"] tag
+     ************************************************************************/
+
+    //  Are there any directions for this recipe ?
+    if ( list_query_count( recipe_p->directions ) > 0 )
+    {
+        //  YES:    Scan the whole thing.
+        for( directions_p = list_get_first( recipe_p->directions );
+             directions_p != NULL;
+             directions_p = list_get_next( recipe_p->directions, directions_p ) )
+        {
+            //  Look for the tag
+            temp_p = DECODE__get_tag_data( directions_p, "Source:" );
+
+            //  Did we find it ?
+            if ( temp_p != NULL )
+            {
+                //  YES:    Is there already a source ?
+                if ( recipe_p->source == NULL )
+                {
+                    //  NO:     Will the data fit into the MasterCook Buffer ?
+                    if ( strlen( temp_p ) < 255 )
+                    {
+                        //  YES:    Save it
+                        recipe_p->source = temp_p;
+
+                        //  Set the saved flag
+                        saved = true;
+                    }
+                }
+                //  Was the information saved ?
+                if ( saved == false )
+                {
+                    //  NO:     Format the output data
+                    memset( temp_data, '\0', sizeof( temp_data ) );
+                    snprintf( temp_data, sizeof( temp_data ),
+                              "Source: \"%s\"", temp_p );
+
+                    //  Free storage used by the old buffer
+                    mem_free( temp_p );
+
+                    //  Add it to [NOTES :].
+                    list_put_last( recipe_p->notes, text_copy_to_new( " "       ) );
+                    list_put_last( recipe_p->notes, text_copy_to_new( temp_data ) );
+                }
+            }
+        }
+    }
+
+    /************************************************************************
+     *  Function Exit
+     ************************************************************************/
+
+    //  DONE!
+}
+
+/****************************************************************************/
+/**
+ *  Scan the recipe directions for [COPYRIGHT: "wxyz"]
+ *
+ *  @param recipe_t             Primary structure for a recipe
+ *
+ *  @return void                No return code from this function.
+ *
+ *  @note
+ *
+ ****************************************************************************/
+
+void
+DECODE__directions_copyright(
+    struct   recipe_t           *   recipe_p
+    )
+{
+    /**
+     *  @param  directions_p    Pointer to a line of the directions         */
+    char                        *   directions_p;
+    /**
+     *  @param  temp_p          Temporary string pointer                    */
+    char                        *   temp_p;
+    /**
+     *  @param  temp_data       Temporary data buffer                       */
+    char                            temp_data[ MAX_LINE_L ];
+    /**
+     *  @param  saved           The information has been saved              */
+    int                             saved;
+
+    /************************************************************************
+     *  Function Initialization
+     ************************************************************************/
+
+    //  Initialize the saved flag
+    saved = false;
+
+    /************************************************************************
+     *  Process a [COPYRIGHT: "xxxx"] tag
+     ************************************************************************/
+
+    //  Are there any directions for this recipe ?
+    if ( list_query_count( recipe_p->directions ) > 0 )
+    {
+        //  YES:    Scan the whole thing.
+        for( directions_p = list_get_first( recipe_p->directions );
+             directions_p != NULL;
+             directions_p = list_get_next( recipe_p->directions, directions_p ) )
+        {
+            //  Look for the tag
+            temp_p = DECODE__get_tag_data( directions_p, "Copyright:" );
+
+            //  Did we find it ?
+            if ( temp_p != NULL )
+            {
+                //  YES:    Is there already a source ?
+                if ( recipe_p->copyright == NULL )
+                {
+                    //  NO:     Will the data fit into the MasterCook Buffer ?
+                    if ( strlen( temp_p ) < 255 )
+                    {
+                        //  YES:    Save it
+                        recipe_p->copyright = temp_p;
+
+                        //  Set the saved flag
+                        saved = true;
+                    }
+                }
+                //  Was the information saved ?
+                if ( saved == false )
+                {
+                    //  NO:     Format the output data
+                    memset( temp_data, '\0', sizeof( temp_data ) );
+                    snprintf( temp_data, sizeof( temp_data ),
+                              "Copyright: \"%s\"", temp_p );
+
+                    //  Free storage used by the old buffer
+                    mem_free( temp_p );
+
+                    //  Add it to [NOTES :].
+                    list_put_last( recipe_p->notes, text_copy_to_new( " "       ) );
+                    list_put_last( recipe_p->notes, text_copy_to_new( temp_data ) );
+                }
+            }
+        }
+    }
+
+    /************************************************************************
+     *  Function Exit
+     ************************************************************************/
+
+    //  DONE!
+}
+
+/****************************************************************************/
+/**
+ *  Scan the recipe directions for [Description: "wxyz"]
+ *
+ *  @param recipe_t             Primary structure for a recipe
+ *
+ *  @return void                No return code from this function.
+ *
+ *  @note
+ *
+ ****************************************************************************/
+
+void
+DECODE__directions_description(
+    struct   recipe_t           *   recipe_p
+    )
+{
+    /**
+     *  @param  directions_p    Pointer to a line of the directions         */
+    char                        *   directions_p;
+    /**
+     *  @param  temp_p          Temporary string pointer                    */
+    char                        *   temp_p;
+    /**
+     *  @param  temp_data       Temporary data buffer                       */
+    char                            temp_data[ MAX_LINE_L ];
+    /**
+     *  @param  saved           The information has been saved              */
+    int                             saved;
+
+    /************************************************************************
+     *  Function Initialization
+     ************************************************************************/
+
+    //  Initialize the saved flag
+    saved = false;
+
+    /************************************************************************
+     *  Process a [DESCRIPTION: "xxxx"] tag
+     ************************************************************************/
+
+    //  Are there any directions for this recipe ?
+    if ( list_query_count( recipe_p->directions ) > 0 )
+    {
+        //  YES:    Scan the whole thing.
+        for( directions_p = list_get_first( recipe_p->directions );
+             directions_p != NULL;
+             directions_p = list_get_next( recipe_p->directions, directions_p ) )
+        {
+            //  Look for the tag
+            temp_p = DECODE__get_tag_data( directions_p, "Description:" );
+
+            //  Did we find it ?
+            if ( temp_p != NULL )
+            {
+                //  YES:    Is there already a source ?
+                if ( recipe_p->description == NULL )
+                {
+                    //  NO:     Will the data fit into the MasterCook Buffer ?
+                    if ( strlen( temp_p ) < 255 )
+                    {
+                        //  YES:    Save it
+                        recipe_p->description = temp_p;
+
+                        //  Set the saved flag
+                        saved = true;
+                    }
+                }
+                //  Was the information saved ?
+                if ( saved == false )
+                {
+                    //  NO:     Format the output data
+                    memset( temp_data, '\0', sizeof( temp_data ) );
+                    snprintf( temp_data, sizeof( temp_data ),
+                              "Description: \"%s\"", temp_p );
+
+                    //  Free storage used by the old buffer
+                    mem_free( temp_p );
+
+                    //  Add it to [NOTES :].
+                    list_put_last( recipe_p->notes, text_copy_to_new( " "       ) );
+                    list_put_last( recipe_p->notes, text_copy_to_new( temp_data ) );
+                }
+            }
+        }
+    }
+
+    /************************************************************************
+     *  Function Exit
+     ************************************************************************/
+
+    //  DONE!
+}
+
+/****************************************************************************/
+/**
  *  Scan the recipe title for information that can categorize the recipe.
  *
  *  @param recipe_t             Primary structure for a recipe
@@ -639,333 +1081,6 @@ DECODE__directions_notes(
                         mem_free( directions_p );
                     }
                 }
-            }
-        }
-    }
-
-    /************************************************************************
-     *  Function Exit
-     ************************************************************************/
-
-    //  DONE!
-}
-
-/****************************************************************************/
-/**
- *  Scan the recipe directions for the recipe source
- *
- *  @param recipe_t             Primary structure for a recipe
- *
- *  @return void                No return code from this function.
- *
- *  @note
- *
- ****************************************************************************/
-
-void
-DECODE__directions_source(
-    struct   recipe_t           *   recipe_p
-    )
-{
-    /**
-     *  @param  directions_p    Pointer to a line of the directions         */
-    char                        *   directions_p;
-    /**
-     *  @param  temp_p          Temporary string pointer                    */
-    char                        *   temp_p;
-    /**
-     *  @param  string_beg_p    Beginning of the source string              */
-    char                        *   string_beg_p;
-    /**
-     *  @param  string_end_p    End of the source string                    */
-    char                        *   string_end_p;
-    /**
-     *  @param  string_l        Length of the source string                 */
-    int                             string_l;
-    /**
-     *  @param  source_data    Buffer to hold the 'SOURCE:' data.          */
-    char                            source_data[ MAX_LINE_L ];
-
-    /************************************************************************
-     *  Function Initialization
-     ************************************************************************/
-
-    //  Clean the source data buffer
-    memset( source_data, '\0', sizeof( source_data ) );
-
-    /************************************************************************
-     *  Function
-     ************************************************************************/
-
-    //  Are there any directions for this recipe ?
-    if ( list_query_count( recipe_p->directions ) > 0 )
-    {
-        //  YES:    Scan the whole thing.
-        for( directions_p = list_get_first( recipe_p->directions );
-             directions_p != NULL;
-             directions_p = list_get_next( recipe_p->directions, directions_p ) )
-        {
-            //  Do we already have a SOURCE: for this recipe ?
-            if ( recipe_p->source == NULL )
-            {
-                //  NO:     Is there a SOURCE: in this directions line ?
-                if ( ( temp_p = strcasestr( directions_p, "Source:" ) ) != NULL )
-                {
-                    //  YES:    Move past the tag and any white space that follows
-                    string_beg_p = &temp_p[ 7 ];
-                    string_beg_p = text_skip_past_whitespace( string_beg_p );
-
-                    //  Is the next character a quotation ["]
-                    if (    ( string_beg_p[ 0 ] == '"'  )
-                         && ( string_beg_p[ 1 ] != '"'  )
-                         && ( string_beg_p[ 1 ] != '\0' ) )
-                    {
-                        //  YES:    Look for the ending quotation mark
-                        string_end_p = strchr( &string_beg_p[ 1 ], '"' );
-
-                        //  Is it a well formed source tag ?
-                        if ( string_end_p != NULL )
-                        {
-                            //  YES:    Set the length of the data to copy out
-                            string_l = ( string_end_p - string_beg_p ) - 1;
-
-                            //  Copy the source data string
-                            memcpy( source_data, &string_beg_p[ 1 ], string_l );
-
-                            //  Now remove the SOURCE: string from the directions line.
-                            text_remove( temp_p, 0, ( string_end_p - temp_p ) + 1 );
-
-                            //  Save the SOURCE: information in the recipe
-                            recipe_p->source = text_copy_to_new( source_data );
-                        }
-                    }
-                }
-            }
-            else
-            {
-                //  YES:    There can only be one so stop looking
-                break;
-            }
-        }
-    }
-
-    /************************************************************************
-     *  Function Exit
-     ************************************************************************/
-
-    //  DONE!
-}
-
-/****************************************************************************/
-/**
- *  Scan the recipe directions for a recipe copyright
- *
- *  @param recipe_t             Primary structure for a recipe
- *
- *  @return void                No return code from this function.
- *
- *  @note
- *
- ****************************************************************************/
-
-void
-DECODE__directions_copyright(
-    struct   recipe_t           *   recipe_p
-    )
-{
-    /**
-     *  @param  directions_p    Pointer to a line of the directions         */
-    char                        *   directions_p;
-    /**
-     *  @param  temp_p          Temporary string pointer                    */
-    char                        *   temp_p;
-    /**
-     *  @param  string_beg_p    Beginning of the source string              */
-    char                        *   string_beg_p;
-    /**
-     *  @param  string_end_p    End of the source string                    */
-    char                        *   string_end_p;
-    /**
-     *  @param  string_l        Length of the source string                 */
-    int                             string_l;
-    /**
-     *  @param  source_data    Buffer to hold the 'SOURCE:' data.          */
-    char                            source_data[ MAX_LINE_L ];
-
-    /************************************************************************
-     *  Function Initialization
-     ************************************************************************/
-
-    //  Clean the source data buffer
-    memset( source_data, '\0', sizeof( source_data ) );
-
-    /************************************************************************
-     *  Function
-     ************************************************************************/
-
-    //  Are there any directions for this recipe ?
-    if ( list_query_count( recipe_p->directions ) > 0 )
-    {
-        //  YES:    Scan the whole thing.
-        for( directions_p = list_get_first( recipe_p->directions );
-             directions_p != NULL;
-             directions_p = list_get_next( recipe_p->directions, directions_p ) )
-        {
-            //  Do we already have a COPYRIGHT: for this recipe ?
-            if ( recipe_p->copyright == NULL )
-            {
-                //  NO:     Is there a COPYRIGHT: in this directions line ?
-                if ( ( temp_p = strcasestr( directions_p, "Copyright:" ) ) != NULL )
-                {
-                    //  YES:    Move past the tag and any white space that follows
-                    string_beg_p = &temp_p[ 10 ];
-                    string_beg_p = text_skip_past_whitespace( string_beg_p );
-
-                    //  Is the next character a quotation ["]
-                    if (    ( string_beg_p[ 0 ] == '"'  )
-                         && ( string_beg_p[ 1 ] != '"'  )
-                         && ( string_beg_p[ 1 ] != '\0' ) )
-                    {
-                        //  YES:    Look for the ending quotation mark
-                        string_end_p = strchr( &string_beg_p[ 1 ], '"' );
-
-                        //  Is it a well formed source tag ?
-                        if ( string_end_p != NULL )
-                        {
-                            //  YES:    Set the length of the data to copy out
-                            string_l = ( string_end_p - string_beg_p ) - 1;
-
-                            //  Copy the source data string
-                            memcpy( source_data, &string_beg_p[ 1 ], string_l );
-
-                            //  Now remove the COPYRIGHT: string from the directions line.
-                            text_remove( temp_p, 0, ( string_end_p - temp_p ) + 1 );
-
-                            //  Save the COPYRIGHT: information in the recipe
-                            recipe_p->copyright = text_copy_to_new( source_data );
-                        }
-                    }
-                }
-            }
-            else
-            {
-                //  YES:    There can only be one so stop looking
-                break;
-            }
-        }
-    }
-
-    /************************************************************************
-     *  Function Exit
-     ************************************************************************/
-
-    //  DONE!
-}
-
-/****************************************************************************/
-/**
- *  Scan the recipe directions for a recipe DESCRIPTION.
- *
- *  @param recipe_t             Primary structure for a recipe
- *
- *  @return void                No return code from this function.
- *
- *  @note
- *
- ****************************************************************************/
-
-void
-DECODE__directions_description(
-    struct   recipe_t           *   recipe_p
-    )
-{
-    /**
-     *  @param  directions_p    Pointer to a line of the directions         */
-    char                        *   directions_p;
-    /**
-     *  @param  temp_p          Temporary string pointer                    */
-    char                        *   temp_p;
-    /**
-     *  @param  string_beg_p    Beginning of the source string              */
-    char                        *   string_beg_p;
-    /**
-     *  @param  string_end_p    End of the source string                    */
-    char                        *   string_end_p;
-    /**
-     *  @param  string_l        Length of the source string                 */
-    int                             string_l;
-    /**
-     *  @param  source_data    Buffer to hold the 'SOURCE:' data.          */
-    char                            source_data[ MAX_LINE_L ];
-
-    /************************************************************************
-     *  Function Initialization
-     ************************************************************************/
-
-    //  Clean the source data buffer
-    memset( source_data, '\0', sizeof( source_data ) );
-
-    /************************************************************************
-     *  Function
-     ************************************************************************/
-
-    //  Are there any directions for this recipe ?
-    if ( list_query_count( recipe_p->directions ) > 0 )
-    {
-        //  YES:    Scan the whole thing.
-        for( directions_p = list_get_first( recipe_p->directions );
-             directions_p != NULL;
-             directions_p = list_get_next( recipe_p->directions, directions_p ) )
-        {
-            //  Do we already have a DESCRIPTION: for this recipe ?
-            if ( recipe_p->description == NULL )
-            {
-                //  NO:     Is there a DESCRIPTION: in this directions line ?
-                if ( ( temp_p = strcasestr( directions_p, "Description:" ) ) != NULL )
-                {
-                    //  YES:    Move past the tag and any white space that follows
-                    string_beg_p = &temp_p[ 10 ];
-                    string_beg_p = text_skip_past_whitespace( string_beg_p );
-
-                    //  Is the next character a quotation ["]
-                    if (    ( string_beg_p[ 0 ] == '"'  )
-                         && ( string_beg_p[ 1 ] != '"'  )
-                         && ( string_beg_p[ 1 ] != '\0' ) )
-                    {
-                        //  YES:    Look for the ending quotation mark
-                        string_end_p = strchr( &string_beg_p[ 1 ], '"' );
-
-                        //  Is it a well formed source tag ?
-                        if ( string_end_p != NULL )
-                        {
-                            //  YES:    Set the length of the data to copy out
-                            string_l = ( string_end_p - string_beg_p ) - 1;
-
-                            //  Copy the source data string
-                            memcpy( source_data, &string_beg_p[ 1 ], string_l );
-
-                            //  Now remove the DESCRIPTION: string from the directions line.
-                            text_remove( temp_p, 0, ( string_end_p - temp_p ) + 1 );
-
-                            //  Is the description too long ?
-                            if ( strlen( recipe_p->description ) < 255 )
-                            {
-                                //  NO:     Save it.
-                                recipe_p->description = text_copy_to_new( source_data );
-                            }
-                            else
-                            {
-                                //  YES:    Save it into the NOTES:
-                                recipe_fmt_notes( recipe_p, source_data );
-                            }
-                        }
-                    }
-                }
-            }
-            else
-            {
-                //  YES:    There can only be one so stop looking
-                break;
             }
         }
     }

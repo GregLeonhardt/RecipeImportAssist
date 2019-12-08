@@ -996,6 +996,9 @@ decode_finalize(
         //  Directions format
         recipe_fmt_directions( recipe_p );
 
+        //  Find "FROM:" in the directions
+        DECODE__directions_from( recipe_p );
+
         //  Find "SOURCE:" in the directions
         DECODE__directions_source( recipe_p );
 
