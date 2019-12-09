@@ -137,6 +137,9 @@ struct   recipe_t
      *  @param  formatted by    Who originally formatted                   */
     char                        *   formatted_by;
     /**
+     *  @param  import_from     Where the recipe was imported from          */
+    char                        *   import_from;
+    /**
      *  @param  serves          Number of people                            */
     char                        *   serves;
     /**

@@ -1014,9 +1014,9 @@ decode_finalize(
         //  Find "TIME-wxyz:" in the directions
         DECODE__directions_time( recipe_p );
 
-        //  @ToDo   Start to Finish Time: "00:00"
-        //  @ToDo   S(abcd wxyz): "255 char max."
-        //  @ToDo   T(wxyz): "00:00"
+        //  Find "S(Imported From):" in the directions
+        DECODE__directions_import_from( recipe_p );
+
         //  @ToDo   Ratings:
 
         //  Find "NOTES:" in the directions

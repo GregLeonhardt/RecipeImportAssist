@@ -749,6 +749,21 @@ DECODE__directions_cleanup(
             replace = true;
         }
         //====================================================================
+        //  Imported-From:
+        //====================================================================
+        compare_p = strcasestr( directions_p, "S(Imported From):" );
+        if ( compare_p != NULL )
+        {
+            //  Remove the old text
+            text_remove( compare_p, 0, 17 );
+
+            //  Insert the new text
+            text_insert( directions_p, directions_l,
+                         (compare_p - directions_p ), "Imported-From:");
+
+            replace = true;
+        }
+        //====================================================================
         //  TIME-COOK:
         //====================================================================
         if ( found == false )
@@ -782,6 +797,18 @@ DECODE__directions_cleanup(
             {
                 //  Remove the old text
                 text_remove( compare_p, 0, 15 );
+
+                //  Set the found flag
+                found = true;
+            }
+        }
+        if ( found == false )
+        {
+            compare_p = strcasestr( directions_p, "T(Cook Time:):" );
+            if ( compare_p != NULL )
+            {
+                //  Remove the old text
+                text_remove( compare_p, 0, 13 );
 
                 //  Set the found flag
                 found = true;
@@ -890,6 +917,30 @@ DECODE__directions_cleanup(
         //====================================================================
         if ( found == false )
         {
+            compare_p = strcasestr( directions_p, "T(Marinating time:):" );
+            if ( compare_p != NULL )
+            {
+                //  Remove the old text
+                text_remove( compare_p, 0, 20 );
+
+                //  Set the found flag
+                found = true;
+            }
+        }
+        if ( found == false )
+        {
+            compare_p = strcasestr( directions_p, "T(Standing Time):" );
+            if ( compare_p != NULL )
+            {
+                //  Remove the old text
+                text_remove( compare_p, 0, 17 );
+
+                //  Set the found flag
+                found = true;
+            }
+        }
+        if ( found == false )
+        {
             compare_p = strcasestr( directions_p, "T(Standing Time):" );
             if ( compare_p != NULL )
             {
@@ -907,6 +958,18 @@ DECODE__directions_cleanup(
             {
                 //  Remove the old text
                 text_remove( compare_p, 0, 12 );
+
+                //  Set the found flag
+                found = true;
+            }
+        }
+        if ( found == false )
+        {
+            compare_p = strcasestr( directions_p, "T(Chill:):" );
+            if ( compare_p != NULL )
+            {
+                //  Remove the old text
+                text_remove( compare_p, 0, 10 );
 
                 //  Set the found flag
                 found = true;
@@ -1838,6 +1901,101 @@ DECODE__directions_time(
                     memset( temp_data, '\0', sizeof( temp_data ) );
                     snprintf( temp_data, sizeof( temp_data ),
                               "TIME-TOTAL: \"%s\"", temp_p );
+
+                    //  Free storage used by the old buffer
+                    mem_free( temp_p );
+
+                    //  Add it to [NOTES :].
+                    list_put_last( recipe_p->notes, text_copy_to_new( " "       ) );
+                    list_put_last( recipe_p->notes, text_copy_to_new( temp_data ) );
+                }
+            }
+        }
+    }
+
+    /************************************************************************
+     *  Function Exit
+     ************************************************************************/
+
+    //  DONE!
+}
+
+/****************************************************************************/
+/**
+ *  Scan the recipe directions for [S(Imported From): "wxyz"]
+ *
+ *  @param recipe_t             Primary structure for a recipe
+ *
+ *  @return void                No return code from this function.
+ *
+ *  @note
+ *
+ ****************************************************************************/
+
+void
+DECODE__directions_import_from(
+    struct   recipe_t           *   recipe_p
+    )
+{
+    /**
+     *  @param  directions_p    Pointer to a line of the directions         */
+    char                        *   directions_p;
+    /**
+     *  @param  temp_p          Temporary string pointer                    */
+    char                        *   temp_p;
+    /**
+     *  @param  temp_data       Temporary data buffer                       */
+    char                            temp_data[ MAX_LINE_L ];
+    /**
+     *  @param  saved           The information has been saved              */
+    int                             saved;
+
+    /************************************************************************
+     *  Function Initialization
+     ************************************************************************/
+
+
+    /************************************************************************
+     *  Process a [Imported-From: "xxxx"] tag
+     ************************************************************************/
+
+    //  Are there any directions for this recipe ?
+    if ( list_query_count( recipe_p->directions ) > 0 )
+    {
+        //  YES:    Scan the whole thing.
+        for( directions_p = list_get_first( recipe_p->directions );
+             directions_p != NULL;
+             directions_p = list_get_next( recipe_p->directions, directions_p ) )
+        {
+            //  Initialize the saved flag
+            saved = false;
+
+            //  Look for the tag
+            temp_p = DECODE__get_tag_data( directions_p, "Imported-From:" );
+
+            //  Did we find it ?
+            if ( temp_p != NULL )
+            {
+                //  YES:    Is there already a description ?
+                if ( recipe_p->import_from == NULL )
+                {
+                    //  NO:     Will the data fit into the MasterCook Buffer ?
+                    if ( strlen( temp_p ) < LINE_L )
+                    {
+                        //  YES:    Save it
+                        recipe_p->import_from = temp_p;
+
+                        //  Set the saved flag
+                        saved = true;
+                    }
+                }
+                //  Was the information saved ?
+                if ( saved == false )
+                {
+                    //  NO:     Format the output data
+                    memset( temp_data, '\0', sizeof( temp_data ) );
+                    snprintf( temp_data, sizeof( temp_data ),
+                              "Imported-From: \"%s\"", temp_p );
 
                     //  Free storage used by the old buffer
                     mem_free( temp_p );
