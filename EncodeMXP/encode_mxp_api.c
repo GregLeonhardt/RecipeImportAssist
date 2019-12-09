@@ -617,12 +617,27 @@ encode_mxp(
     if ( recipe_p->time_prep != NULL )
     {
         fprintf( out_file_fp,
-                 "T(Prep Time): \"%s\"\r\n\r\n",
+                 "Prep-Time: \"%s\"\r\n\r\n",
                  recipe_p->time_prep );
     }
     else
     {
-        fprintf( out_file_fp, "T(Prep Time): \"00:00\"\r\n\r\n" );
+        fprintf( out_file_fp, "Prep-Time: \"00:00\"\r\n\r\n" );
+    }
+
+    //-----------------------------------------------------------------------
+    //  TIME WAIT:
+    //-----------------------------------------------------------------------
+
+    if ( recipe_p->time_wait != NULL )
+    {
+        fprintf( out_file_fp,
+                 "Time-Wait: \"%s\"\r\n\r\n\r\n",
+                 recipe_p->time_cook );
+    }
+    else
+    {
+        fprintf( out_file_fp, "Time-Wait: \"00:00\"\r\n\r\n" );
     }
 
     //-----------------------------------------------------------------------
@@ -632,27 +647,27 @@ encode_mxp(
     if ( recipe_p->time_cook != NULL )
     {
         fprintf( out_file_fp,
-                 "T(Cook Time): \"%s\"\r\n\r\n\r\n",
+                 "Time-Cook: \"%s\"\r\n\r\n\r\n",
                  recipe_p->time_cook );
     }
     else
     {
-        fprintf( out_file_fp, "T(Cook Time): \"00:00\"\r\n\r\n" );
+        fprintf( out_file_fp, "Time-Cook: \"00:00\"\r\n\r\n" );
     }
 
     //-----------------------------------------------------------------------
     //  TIME REST:
     //-----------------------------------------------------------------------
 
-    if ( recipe_p->time_resting != NULL )
+    if ( recipe_p->time_rest != NULL )
     {
         fprintf( out_file_fp,
-                 "T(Rest Time): \"%s\"\r\n\r\n",
-                 recipe_p->time_resting );
+                 "Time-Rest: \"%s\"\r\n\r\n",
+                 recipe_p->time_rest );
     }
     else
     {
-        fprintf( out_file_fp, "T(Rest Time): \"00:00\"\r\n\r\n" );
+        fprintf( out_file_fp, "Time-Rest: \"00:00\"\r\n\r\n" );
     }
 
     //-----------------------------------------------------------------------
@@ -662,12 +677,12 @@ encode_mxp(
     if ( recipe_p->time_total != NULL )
     {
         fprintf( out_file_fp,
-                 "Start to Finish Time: \"%s\"\r\n\r\n",
+                 "Time-Total: \"%s\"\r\n\r\n",
                  recipe_p->time_total );
     }
     else
     {
-        fprintf( out_file_fp, "Start to Finish Time: \"00:00\"\r\n\r\n" );
+        fprintf( out_file_fp, "Time-Total: \"00:00\"\r\n\r\n" );
     }
 
     //-----------------------------------------------------------------------

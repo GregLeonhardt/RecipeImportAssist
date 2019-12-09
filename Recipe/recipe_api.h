@@ -152,11 +152,14 @@ struct   recipe_t
      *  @param  time_prep       How long is should take to get ready        */
     char                        *   time_prep;
     /**
+     *  @param  time_wait       After preparation and before cooking        */
+    char                        *   time_wait;
+    /**
      *  @param  time_cook       How long it should take to cook             */
     char                        *   time_cook;
     /**
-     *  @param  time_resting    After cooked before serving                 */
-    char                        *   time_resting;
+     *  @param  time_rest       After cooked before serving                 */
+    char                        *   time_rest;
     /**
      *  @param  time_total      All the times added up.                     */
     char                        *   time_total;

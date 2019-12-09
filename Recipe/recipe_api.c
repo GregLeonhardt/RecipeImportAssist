@@ -297,7 +297,7 @@ recipe_kill(
     if ( recipe_p->makes_unit != NULL)       mem_free( recipe_p->makes_unit );
     if ( recipe_p->time_prep != NULL)        mem_free( recipe_p->time_prep );
     if ( recipe_p->time_cook != NULL)        mem_free( recipe_p->time_cook );
-    if ( recipe_p->time_resting != NULL)     mem_free( recipe_p->time_resting );
+    if ( recipe_p->time_rest != NULL)     mem_free( recipe_p->time_rest );
     if ( recipe_p->time_total != NULL)       mem_free( recipe_p->time_total );
     if ( recipe_p->description != NULL)      mem_free( recipe_p->description );
     if ( recipe_p->based_on != NULL)         mem_free( recipe_p->based_on );

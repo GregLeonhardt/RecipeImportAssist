@@ -902,10 +902,10 @@ encode_rxf(
     }
     //-----------------------------------------------------------------------
     //  <TIME type=PRE-COOK>
-    if ( recipe_p->time_resting != NULL )
+    if ( recipe_p->time_rest != NULL )
     {
         fprintf( out_file_fp, "  <Time type= \"PreCook\">   %s  </Time>\n",
-                 recipe_p->time_resting );
+                 recipe_p->time_rest );
     }
     //-----------------------------------------------------------------------
     //  <TIME type=COOK>
@@ -916,10 +916,10 @@ encode_rxf(
     }
     //-----------------------------------------------------------------------
     //  <TIME type=POST-COOK>
-    if ( recipe_p->time_resting != NULL )
+    if ( recipe_p->time_rest != NULL )
     {
         fprintf( out_file_fp, "  <Time type= \"PostCook\">  %s  </Time>\n",
-                 recipe_p->time_resting );
+                 recipe_p->time_rest );
     }
     //-----------------------------------------------------------------------
     //  <RATING type=SKILL>

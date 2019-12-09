@@ -514,9 +514,9 @@ encode_txt(
     //  @TODO:  This field isn't decoded yet!
     //          I'm using the resting time as a place holder.
     fprintf( out_file_fp, "Time Wait:      " );
-    if ( recipe_p->time_resting != NULL )
+    if ( recipe_p->time_rest != NULL )
     {
-        fprintf( out_file_fp, "%s\n", recipe_p->time_resting );
+        fprintf( out_file_fp, "%s\n", recipe_p->time_rest );
     }
     else
     {
@@ -525,9 +525,9 @@ encode_txt(
     //-----------------------------------------------------------------------
     //  TIME REST:
     fprintf( out_file_fp, "Time Rest:      " );
-    if ( recipe_p->time_resting != NULL )
+    if ( recipe_p->time_rest != NULL )
     {
-        fprintf( out_file_fp, "%s\n", recipe_p->time_resting );
+        fprintf( out_file_fp, "%s\n", recipe_p->time_rest );
     }
     else
     {

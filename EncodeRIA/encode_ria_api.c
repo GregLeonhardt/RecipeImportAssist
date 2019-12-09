@@ -329,10 +329,10 @@ encode_ria(
     //-----------------------------------------------------------------------
     //  PRE-COOK TIME:
     //      "0:00"
-    if ( recipe_p->time_resting != NULL )
+    if ( recipe_p->time_rest != NULL )
     {
         fprintf( out_file_fp, "PRE-COOK TIME:\r\n\t\"%s\"\n",
-                 recipe_p->time_resting );
+                 recipe_p->time_rest );
     }
     //-----------------------------------------------------------------------
     //  COOK TIME:
@@ -345,10 +345,10 @@ encode_ria(
     //-----------------------------------------------------------------------
     //  REST TIME:
     //      "0:00"
-    if ( recipe_p->time_resting != NULL )
+    if ( recipe_p->time_rest != NULL )
     {
         fprintf( out_file_fp, "PRE-COOK TIME:\r\n\t\"%s\"\n",
-                 recipe_p->time_resting );
+                 recipe_p->time_rest );
     }
     //-----------------------------------------------------------------------
     //  SKILL LEVEL:
