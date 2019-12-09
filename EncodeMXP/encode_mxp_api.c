@@ -633,7 +633,7 @@ encode_mxp(
     {
         fprintf( out_file_fp,
                  "Time-Wait: \"%s\"\r\n\r\n\r\n",
-                 recipe_p->time_cook );
+                 recipe_p->time_wait );
     }
     else
     {

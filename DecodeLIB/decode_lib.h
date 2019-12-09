@@ -126,6 +126,11 @@ DECODE__directions_makes(
     );
 //----------------------------------------------------------------------------
 void
+DECODE__directions_time( 
+    struct   recipe_t           *   recipe_p
+    );
+//----------------------------------------------------------------------------
+void
 DECODE__directions_notes( 
     struct   recipe_t           *   recipe_p
     );

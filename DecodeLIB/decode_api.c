@@ -1011,6 +1011,9 @@ decode_finalize(
         //  Find "MAKES:" in the directions
         DECODE__directions_makes( recipe_p );
 
+        //  Find "TIME-wxyz:" in the directions
+        DECODE__directions_time( recipe_p );
+
         //  @ToDo   Start to Finish Time: "00:00"
         //  @ToDo   S(abcd wxyz): "255 char max."
         //  @ToDo   T(wxyz): "00:00"

@@ -60,6 +60,8 @@
 //----------------------------------------------------------------------------
 #define INSTRUCTIONS_L          ( 1024 * 1024 )
 //----------------------------------------------------------------------------
+#define TIME_L                  ( 5 + 1 )
+//----------------------------------------------------------------------------
 #define MAKES_AMOUNT            ( 10 + 1 )
 //----------------------------------------------------------------------------
 #define MAKES_UNIT              ( 25 + 1 )
@@ -199,7 +201,10 @@ DECODE__directions_cleanup(
      *  @param  compare_p       Pointer to a compare match string           */
     char                        *   compare_p;
     /**
-     *  @param  found           A flag showing that something was found     */
+     *  @param  replace         A flag showing that something was replace   */
+    int                             replace;
+    /**
+     *  @param  found           A flag showing that a tag was found         */
     int                             found;
     /**
      *  @param  directions_l    Initial length of the directions string     */
@@ -209,11 +214,27 @@ DECODE__directions_cleanup(
      *  Function Initialization
      ************************************************************************/
 
-    //  Just a shortened version of the pointer
-    directions_p = recipe_p->instructions;
+    //  Initialize the found flag;
+    found = false;
+
+    //  @NOTE - Some substitutions will take more space then the original text
+    //          so the source buffer size is being increased by an arbitrary
+    //          number.
 
     //  Set the initial size of the buffer
-    directions_l = strlen( directions_p );
+    directions_l = strlen( recipe_p->instructions ) + LINE_L;
+
+    //  Allocate a new (larger) buffer.
+    directions_p = mem_malloc( directions_l );
+
+    //  Copy the instructions data to the new buffer.
+    memcpy( directions_p, recipe_p->instructions, ( directions_l - LINE_L ) );
+
+    //  Release the old buffer
+    mem_free( recipe_p->instructions );
+
+    //  And finally, replace the pointer with the new buffer
+    recipe_p->instructions = directions_p;
 
     /************************************************************************
      *  Cleanup some common formatting problems
@@ -222,39 +243,63 @@ DECODE__directions_cleanup(
     do
     {
         //  Set the flag
-        found = false;
+        replace = false;
 
         //--------------------------------------------------------------------
         //  "Date :"
         compare_p = strcasestr( directions_p, "date :" );
         if ( compare_p != NULL )
         {
-            memcpy( compare_p, "Date: ",       6 );
-            found = true;
+            //  Remove the old text
+            text_remove( compare_p, 0, 6 );
+
+            //  Insert the new text
+            text_insert( directions_p, directions_l,
+                         (compare_p - directions_p ), "Date:");
+
+            replace = true;
         }
         //====================================================================
         //  "From ::
         compare_p = strcasestr( directions_p, "from :" );
         if ( compare_p != NULL )
         {
-            memcpy( compare_p, "From: ",       6 );
-            found = true;
+            //  Remove the old text
+            text_remove( compare_p, 0, 6 );
+
+            //  Insert the new text
+            text_insert( directions_p, directions_l,
+                         (compare_p - directions_p ), "From:");
+
+            replace = true;
         }
         //--------------------------------------------------------------------
         //  "From The:"
         compare_p = strcasestr( directions_p, "from the:" );
         if ( compare_p != NULL )
         {
-            memcpy( compare_p, "From:    ",    9 );
-            found = true;
+            //  Remove the old text
+            text_remove( compare_p, 0, 9 );
+
+            //  Insert the new text
+            text_insert( directions_p, directions_l,
+                         (compare_p - directions_p ), "From:");
+
+            replace = true;
         }
         //--------------------------------------------------------------------
         //  ">From:"
         compare_p = strcasestr( directions_p, ">from:" );
         if ( compare_p != NULL )
         {
-            memcpy( compare_p, " From:",    6 );
-            found = true;
+            //  Remove the old text
+            text_remove( compare_p, 0, 6 );
+
+            //  Insert the new text
+            text_insert( directions_p, directions_l,
+                         (compare_p - directions_p ), "From:");
+
+            replace = true;
         }
         //--------------------------------------------------------------------
         //  "From The "
@@ -264,8 +309,14 @@ DECODE__directions_cleanup(
         compare_p = strcasestr( directions_p, "makes :" );
         if ( compare_p != NULL )
         {
-            memcpy( compare_p, "Makes: ",      7 );
-            found = true;
+            //  Remove the old text
+            text_remove( compare_p, 0, 6 );
+
+            //  Insert the new text
+            text_insert( directions_p, directions_l,
+                         (compare_p - directions_p ), "Makes:");
+
+            replace = true;
         }
         //--------------------------------------------------------------------
         //  Makes
@@ -284,7 +335,7 @@ DECODE__directions_cleanup(
             if ( isdigit( tmp_p[ 0 ] ) != 0 )
             {
                 memcpy( compare_p, "Makes:",       6 );
-                found = true;
+                replace = true;
             }
         }
         //====================================================================
@@ -292,176 +343,308 @@ DECODE__directions_cleanup(
         compare_p = strcasestr( directions_p, "notes :" );
         if ( compare_p != NULL )
         {
-            memcpy( compare_p, "Notes: ",      7 );
-            found = true;
+            //  Remove the old text
+            text_remove( compare_p, 0, 7 );
+
+            //  Insert the new text
+            text_insert( directions_p, directions_l,
+                         (compare_p - directions_p ), "Notes:");
+
+            replace = true;
         }
         //--------------------------------------------------------------------
         //  Note :
         compare_p = strcasestr( directions_p, "note :" );
         if ( compare_p != NULL )
         {
-            memcpy( compare_p, "Notes: ",      6 );
-            found = true;
+            //  Remove the old text
+            text_remove( compare_p, 0, 6 );
+
+            //  Insert the new text
+            text_insert( directions_p, directions_l,
+                         (compare_p - directions_p ), "Notes:");
+
+            replace = true;
         }
         //--------------------------------------------------------------------
         //  Notes
         compare_p = strcasestr( directions_p, "notes " );
         if ( compare_p != NULL )
         {
-            memcpy( compare_p, "Notes:",      6 );
-            found = true;
+            //  Remove the old text
+            text_remove( compare_p, 0, 6 );
+
+            //  Insert the new text
+            text_insert( directions_p, directions_l,
+                         (compare_p - directions_p ), "Notes:");
+
+            replace = true;
         }
         //====================================================================
         //  Per Serving:
         compare_p = strcasestr( directions_p, "per serving:" );
         if ( compare_p != NULL )
         {
-            memcpy( compare_p, "PerServing: ",12 );
-            found = true;
+            //  Remove the old text
+            text_remove( compare_p, 0, 12 );
+
+            //  Insert the new text
+            text_insert( directions_p, directions_l,
+                         (compare_p - directions_p ), "PerServing:");
+
+            replace = true;
         }
         //====================================================================
         //  Posted By :
         compare_p = strcasestr( directions_p, "posted by :" );
         if ( compare_p != NULL )
         {
-            memcpy( compare_p, "SentBy:    ", 11 );
-            found = true;
+            //  Remove the old text
+            text_remove( compare_p, 0, 11 );
+
+            //  Insert the new text
+            text_insert( directions_p, directions_l,
+                         (compare_p - directions_p ), "SentBy:");
+
+            replace = true;
         }
         //--------------------------------------------------------------------
         //  Posted By:
         compare_p = strcasestr( directions_p, "posted by:" );
         if ( compare_p != NULL )
         {
-            memcpy( compare_p, "SentBy:   ",  10 );
-            found = true;
+            //  Remove the old text
+            text_remove( compare_p, 0, 10 );
+
+            //  Insert the new text
+            text_insert( directions_p, directions_l,
+                         (compare_p - directions_p ), "SentBy:");
+
+            replace = true;
         }
         //--------------------------------------------------------------------
         //  Posted By
         compare_p = strcasestr( directions_p, "posted by " );
         if ( compare_p != NULL )
         {
-            memcpy( compare_p, "SentBy:   ",  10 );
-            found = true;
+            //  Remove the old text
+            text_remove( compare_p, 0, 10 );
+
+            //  Insert the new text
+            text_insert( directions_p, directions_l,
+                         (compare_p - directions_p ), "SentBy:");
+
+            replace = true;
         }
         //====================================================================
         //  Posted To :
         compare_p = strcasestr( directions_p, "posted to :" );
         if ( compare_p != NULL )
         {
-            memcpy( compare_p, "SentTo:    ", 11 );
-            found = true;
+            //  Remove the old text
+            text_remove( compare_p, 0, 11 );
+
+            //  Insert the new text
+            text_insert( directions_p, directions_l,
+                         (compare_p - directions_p ), "SentTo:");
+
+            replace = true;
         }
         //--------------------------------------------------------------------
         //  Posted To:
         compare_p = strcasestr( directions_p, "posted to:" );
         if ( compare_p != NULL )
         {
-            memcpy( compare_p, "SentTo:   ",  10 );
-            found = true;
+            //  Remove the old text
+            text_remove( compare_p, 0, 10 );
+
+            //  Insert the new text
+            text_insert( directions_p, directions_l,
+                         (compare_p - directions_p ), "SentTo:");
+
+            replace = true;
         }
         //--------------------------------------------------------------------
         //  Posted To
         compare_p = strcasestr( directions_p, "posted to " );
         if ( compare_p != NULL )
         {
-            memcpy( compare_p, "SentTo:   ",  10 );
-            found = true;
+            //  Remove the old text
+            text_remove( compare_p, 0, 10 );
+
+            //  Insert the new text
+            text_insert( directions_p, directions_l,
+                         (compare_p - directions_p ), "SentTo:");
+
+            replace = true;
         }
         //====================================================================
         //  Recipe By :
         compare_p = strcasestr( directions_p, "recipe by :" );
         if ( compare_p != NULL )
         {
-            memcpy( compare_p, "RecipeBy:  ", 11 );
-            found = true;
+            //  Remove the old text
+            text_remove( compare_p, 0, 11 );
+
+            //  Insert the new text
+            text_insert( directions_p, directions_l,
+                         (compare_p - directions_p ), "RecipeBy:");
+
+            replace = true;
         }
         //--------------------------------------------------------------------
         //  Recipe By:
         compare_p = strcasestr( directions_p, "recipe by:" );
         if ( compare_p != NULL )
         {
-            memcpy( compare_p, "RecipeBy: ",  10 );
-            found = true;
+            //  Remove the old text
+            text_remove( compare_p, 0, 10 );
+
+            //  Insert the new text
+            text_insert( directions_p, directions_l,
+                         (compare_p - directions_p ), "RecipeBy:");
+
+            replace = true;
         }
         //--------------------------------------------------------------------
         //  Recipe By
         compare_p = strcasestr( directions_p, "recipe by " );
         if ( compare_p != NULL )
         {
-            memcpy( compare_p, "RecipeBy: ",  10 );
-            found = true;
+            //  Remove the old text
+            text_remove( compare_p, 0, 10 );
+
+            //  Insert the new text
+            text_insert( directions_p, directions_l,
+                         (compare_p - directions_p ), "RecipeBy:");
+
+            replace = true;
         }
         //====================================================================
         //  Sent By :
         compare_p = strcasestr( directions_p, "sent by :" );
         if ( compare_p != NULL )
         {
-            memcpy( compare_p, "SentBy:  ",     9 );
-            found = true;
+            //  Remove the old text
+            text_remove( compare_p, 0, 9 );
+
+            //  Insert the new text
+            text_insert( directions_p, directions_l,
+                         (compare_p - directions_p ), "SentBy:");
+
+            replace = true;
         }
         //--------------------------------------------------------------------
         //  Sent By:
         compare_p = strcasestr( directions_p, "sent by:" );
         if ( compare_p != NULL )
         {
-            memcpy( compare_p, "SentBy: ",      8 );
-            found = true;
+            //  Remove the old text
+            text_remove( compare_p, 0, 8 );
+
+            //  Insert the new text
+            text_insert( directions_p, directions_l,
+                         (compare_p - directions_p ), "SentBy:");
+
+            replace = true;
         }
         //--------------------------------------------------------------------
         //  Sent By
         compare_p = strcasestr( directions_p, "sent by " );
         if ( compare_p != NULL )
         {
-            memcpy( compare_p, "SentBy: ",      8 );
-            found = true;
+            //  Remove the old text
+            text_remove( compare_p, 0, 8 );
+
+            //  Insert the new text
+            text_insert( directions_p, directions_l,
+                         (compare_p - directions_p ), "SentBy:");
+
+            replace = true;
         }
         //====================================================================
         //  Sent To :
         compare_p = strcasestr( directions_p, "sent to :" );
         if ( compare_p != NULL )
         {
-            memcpy( compare_p, "SentTo:  ",     9 );
-            found = true;
+            //  Remove the old text
+            text_remove( compare_p, 0, 9 );
+
+            //  Insert the new text
+            text_insert( directions_p, directions_l,
+                         (compare_p - directions_p ), "SentTo:");
+
+            replace = true;
         }
         //--------------------------------------------------------------------
         //  Sent To:
         compare_p = strcasestr( directions_p, "sent to:" );
         if ( compare_p != NULL )
         {
-            memcpy( compare_p, "SentTo: ",      8 );
-            found = true;
+            //  Remove the old text
+            text_remove( compare_p, 0, 8 );
+
+            //  Insert the new text
+            text_insert( directions_p, directions_l,
+                         (compare_p - directions_p ), "SentTo:");
+
+            replace = true;
         }
         //--------------------------------------------------------------------
         //  Sent To
         compare_p = strcasestr( directions_p, "sent to " );
         if ( compare_p != NULL )
         {
-            memcpy( compare_p, "SentTo: ",      8 );
-            found = true;
+            //  Remove the old text
+            text_remove( compare_p, 0, 8 );
+
+            //  Insert the new text
+            text_insert( directions_p, directions_l,
+                         (compare_p - directions_p ), "SentTo:");
+
+            replace = true;
         }
         //====================================================================
         //  Servings :
         compare_p = strcasestr( directions_p, "servings :" );
         if ( compare_p != NULL )
         {
-            memcpy( compare_p, "Serves:   ", 10 );
-            found = true;
+            //  Remove the old text
+            text_remove( compare_p, 0, 10 );
+
+            //  Insert the new text
+            text_insert( directions_p, directions_l,
+                         (compare_p - directions_p ), "Serves:");
+
+            replace = true;
         }
         //--------------------------------------------------------------------
         //  Servings:
         compare_p = strcasestr( directions_p, "servings:" );
         if ( compare_p != NULL )
         {
-            memcpy( compare_p, "Serves:  ",    9 );
-            found = true;
+            //  Remove the old text
+            text_remove( compare_p, 0, 9 );
+
+            //  Insert the new text
+            text_insert( directions_p, directions_l,
+                         (compare_p - directions_p ), "Serves:");
+
+            replace = true;
         }
         //--------------------------------------------------------------------
         //  Serves :
         compare_p = strcasestr( directions_p, "serves :" );
         if ( compare_p != NULL )
         {
-            memcpy( compare_p, "Serves: ",     8 );
-            found = true;
+            //  Remove the old text
+            text_remove( compare_p, 0, 8 );
+
+            //  Insert the new text
+            text_insert( directions_p, directions_l,
+                         (compare_p - directions_p ), "Serves:");
+
+            replace = true;
         }
         //--------------------------------------------------------------------
         //  Serves
@@ -472,7 +655,7 @@ DECODE__directions_cleanup(
         if ( compare_p != NULL )
         {
             memcpy( compare_p, "Serves:",     7 );
-            found = true;
+            replace = true;
         }
 #endif
         //====================================================================
@@ -480,32 +663,56 @@ DECODE__directions_cleanup(
         compare_p = strcasestr( directions_p, "source :" );
         if ( compare_p != NULL )
         {
-            memcpy( compare_p, "Source: ",     8 );
-            found = true;
+            //  Remove the old text
+            text_remove( compare_p, 0, 8 );
+
+            //  Insert the new text
+            text_insert( directions_p, directions_l,
+                         (compare_p - directions_p ), "Source:");
+
+            replace = true;
         }
         //====================================================================
         //  To Plate:
         compare_p = strcasestr( directions_p, "to plate:" );
         if ( compare_p != NULL )
         {
-            memcpy( compare_p, "ToPlate: ",     9 );
-            found = true;
+            //  Remove the old text
+            text_remove( compare_p, 0, 9 );
+
+            //  Insert the new text
+            text_insert( directions_p, directions_l,
+                         (compare_p - directions_p ), "ToPlate:");
+
+            replace = true;
         }
         //====================================================================
         //  Yield :
         compare_p = strcasestr( directions_p, "yield :" );
         if ( compare_p != NULL )
         {
-            memcpy( compare_p, "Makes: ",  7 );
-            found = true;
+            //  Remove the old text
+            text_remove( compare_p, 0, 7 );
+
+            //  Insert the new text
+            text_insert( directions_p, directions_l,
+                         (compare_p - directions_p ), "Makes:");
+
+            replace = true;
         }
         //--------------------------------------------------------------------
         //  Yield:
         compare_p = strcasestr( directions_p, "yield:" );
         if ( compare_p != NULL )
         {
-            memcpy( compare_p, "Makes:",  6 );
-            found = true;
+            //  Remove the old text
+            text_remove( compare_p, 0, 6 );
+
+            //  Insert the new text
+            text_insert( directions_p, directions_l,
+                         (compare_p - directions_p ), "Makes:");
+
+            replace = true;
         }
         //--------------------------------------------------------------------
         //  Yield
@@ -524,7 +731,7 @@ DECODE__directions_cleanup(
             if ( isdigit( tmp_p[ 0 ] ) != 0 )
             {
                 memcpy( compare_p, "Makes:",       6 );
-                found = true;
+                replace = true;
             }
         }
         //====================================================================
@@ -532,27 +739,273 @@ DECODE__directions_cleanup(
         compare_p = strcasestr( directions_p, "copyright," );
         if ( compare_p != NULL )
         {
-            memcpy( compare_p, "Copyright:",    10 );
-            found = true;
+            //  Remove the old text
+            text_remove( compare_p, 0, 10 );
+
+            //  Insert the new text
+            text_insert( directions_p, directions_l,
+                         (compare_p - directions_p ), "Copyright:");
+
+            replace = true;
         }
         //====================================================================
-        //  Copyright,
-        compare_p = strcasestr( directions_p, "start to finish time:" );
-        if ( compare_p != NULL )
+        //  TIME-COOK:
+        //====================================================================
+        if ( found == false )
         {
-            //  Remove the old text
-            text_remove( compare_p, 0, 21 );
+            compare_p = strcasestr( directions_p, "T(Cook time on High):" );
+            if ( compare_p != NULL )
+            {
+                //  Remove the old text
+                text_remove( compare_p, 0, 21 );
 
+                //  Set the found flag
+                found = true;
+            }
+        }
+        if ( found == false )
+        {
+            compare_p = strcasestr( directions_p, "T(Cooking Time):" );
+            if ( compare_p != NULL )
+            {
+                //  Remove the old text
+                text_remove( compare_p, 0, 16 );
+
+                //  Set the found flag
+                found = true;
+            }
+        }
+        if ( found == false )
+        {
+            compare_p = strcasestr( directions_p, "T(Baking Time):" );
+            if ( compare_p != NULL )
+            {
+                //  Remove the old text
+                text_remove( compare_p, 0, 15 );
+
+                //  Set the found flag
+                found = true;
+            }
+        }
+        if ( found == false )
+        {
+            compare_p = strcasestr( directions_p, "T(Bake Time):" );
+            if ( compare_p != NULL )
+            {
+                //  Remove the old text
+                text_remove( compare_p, 0, 13 );
+
+                //  Set the found flag
+                found = true;
+            }
+        }
+        if ( found == false )
+        {
+            compare_p = strcasestr( directions_p, "T(Cook Time):" );
+            if ( compare_p != NULL )
+            {
+                //  Remove the old text
+                text_remove( compare_p, 0, 13 );
+
+                //  Set the found flag
+                found = true;
+            }
+        }
+        if ( found == false )
+        {
+            compare_p = strcasestr( directions_p, "T(Cooking):" );
+            if ( compare_p != NULL )
+            {
+                //  Remove the old text
+                text_remove( compare_p, 0, 11 );
+
+                //  Set the found flag
+                found = true;
+            }
+        }
+        if ( found == false )
+        {
+            compare_p = strcasestr( directions_p, "T(Baking):" );
+            if ( compare_p != NULL )
+            {
+                //  Remove the old text
+                text_remove( compare_p, 0, 10 );
+
+                //  Set the found flag
+                found = true;
+            }
+        }
+        if ( found == false )
+        {
+            compare_p = strcasestr( directions_p, "T(Grill):" );
+            if ( compare_p != NULL )
+            {
+                //  Remove the old text
+                text_remove( compare_p, 0, 9 );
+
+                //  Set the found flag
+                found = true;
+            }
+        }
+        if ( found == false )
+        {
+            compare_p = strcasestr( directions_p, "T(Cook):" );
+            if ( compare_p != NULL )
+            {
+                //  Remove the old text
+                text_remove( compare_p, 0, 8 );
+
+                //  Set the found flag
+                found = true;
+            }
+        }
+        if ( found == false )
+        {
+            compare_p = strcasestr( directions_p, "T(Bake):" );
+            if ( compare_p != NULL )
+            {
+                //  Remove the old text
+                text_remove( compare_p, 0, 8 );
+
+                //  Set the found flag
+                found = true;
+            }
+        }
+
+        //  Did we find a tag ?
+        if ( found == true )
+        {
+            //  Insert the new text
+            text_insert( directions_p, directions_l,
+                         (compare_p - directions_p ), "Time-Cook:");
+
+            //  Something was replace and changed.
+            replace = true;
+
+            //  Reset the found flag
+            found = false;
+        }
+        //====================================================================
+        //  TIME-WAIT:
+        //====================================================================
+        if ( found == false )
+        {
+            compare_p = strcasestr( directions_p, "T(Standing Time):" );
+            if ( compare_p != NULL )
+            {
+                //  Remove the old text
+                text_remove( compare_p, 0, 17 );
+
+                //  Set the found flag
+                found = true;
+            }
+        }
+        if ( found == false )
+        {
+            compare_p = strcasestr( directions_p, "T(Chilling):" );
+            if ( compare_p != NULL )
+            {
+                //  Remove the old text
+                text_remove( compare_p, 0, 12 );
+
+                //  Set the found flag
+                found = true;
+            }
+        }
+        if ( found == false )
+        {
+            compare_p = strcasestr( directions_p, "T(Chill):" );
+            if ( compare_p != NULL )
+            {
+                //  Remove the old text
+                text_remove( compare_p, 0, 9 );
+
+                //  Set the found flag
+                found = true;
+            }
+        }
+
+        //  Did we find a tag ?
+        if ( found == true )
+        {
+            //  Insert the new text
+            text_insert( directions_p, directions_l,
+                         (compare_p - directions_p ), "Time-Wait:");
+
+            //  Something was replace and changed.
+            replace = true;
+
+            //  Reset the found flag
+            found = false;
+        }
+        //====================================================================
+        //  TIME-TOTAL:
+        //====================================================================
+        if ( found == false )
+        {
+            compare_p = strcasestr( directions_p, "Start to Finish Time:" );
+            if ( compare_p != NULL )
+            {
+                //  Remove the old text
+                text_remove( compare_p, 0, 21 );
+
+                //  Set the found flag
+                found = true;
+            }
+        }
+        if ( found == false )
+        {
+            compare_p = strcasestr( directions_p, "T(Prep & Cook Time):" );
+            if ( compare_p != NULL )
+            {
+                //  Remove the old text
+                text_remove( compare_p, 0, 20 );
+
+                //  Set the found flag
+                found = true;
+            }
+        }
+        if ( found == false )
+        {
+            compare_p = strcasestr( directions_p, "T(Total Time):" );
+            if ( compare_p != NULL )
+            {
+                //  Remove the old text
+                text_remove( compare_p, 0, 14 );
+
+                //  Set the found flag
+                found = true;
+            }
+        }
+        if ( found == false )
+        {
+            compare_p = strcasestr( directions_p, "T(Ready in):" );
+            if ( compare_p != NULL )
+            {
+                //  Remove the old text
+                text_remove( compare_p, 0, 12 );
+
+                //  Set the found flag
+                found = true;
+            }
+        }
+
+        //  Did we find a tag ?
+        if ( found == true )
+        {
             //  Insert the new text
             text_insert( directions_p, directions_l,
                          (compare_p - directions_p ), "Time-Total:");
 
-            //  Something was found and changed.
-            found = true;
+            //  Something was replace and changed.
+            replace = true;
+
+            //  Reset the found flag
+            found = false;
         }
         //--------------------------------------------------------------------
 
-    }   while( found == true );
+    }   while( replace == true );
 
     /************************************************************************
      *  Function Exit
@@ -1134,6 +1587,260 @@ DECODE__directions_makes(
                     //  Free storage used by the old buffer
                     mem_free( makes_amount );
                     mem_free( makes_unit );
+
+                    //  Add it to [NOTES :].
+                    list_put_last( recipe_p->notes, text_copy_to_new( " "       ) );
+                    list_put_last( recipe_p->notes, text_copy_to_new( temp_data ) );
+                }
+            }
+        }
+    }
+
+    /************************************************************************
+     *  Function Exit
+     ************************************************************************/
+
+    //  DONE!
+}
+
+/****************************************************************************/
+/**
+ *  Scan the recipe directions for [TIME-wxyz: "00:00"]
+ *
+ *  @param recipe_t             Primary structure for a recipe
+ *
+ *  @return void                No return code from this function.
+ *
+ *  @note
+ *
+ ****************************************************************************/
+
+void
+DECODE__directions_time(
+    struct   recipe_t           *   recipe_p
+    )
+{
+    /**
+     *  @param  directions_p    Pointer to a line of the directions         */
+    char                        *   directions_p;
+    /**
+     *  @param  temp_p          Temporary string pointer                    */
+    char                        *   temp_p;
+    /**
+     *  @param  temp_data       Temporary data buffer                       */
+    char                            temp_data[ MAX_LINE_L ];
+    /**
+     *  @param  saved           The information has been saved              */
+    int                             saved;
+
+    /************************************************************************
+     *  Function Initialization
+     ************************************************************************/
+
+
+    /************************************************************************
+     *  Process a [TIME-wxyz: "00:00"] tag
+     ************************************************************************/
+
+    //  Are there any directions for this recipe ?
+    if ( list_query_count( recipe_p->directions ) > 0 )
+    {
+        //  YES:    Scan the whole thing.
+        for( directions_p = list_get_first( recipe_p->directions );
+             directions_p != NULL;
+             directions_p = list_get_next( recipe_p->directions, directions_p ) )
+        {
+            //  Initialize the saved flag
+            saved = false;
+
+            //----------------------------------------------------------------
+            //  TIME-PREP:
+            //----------------------------------------------------------------
+            //  Look for the tag
+            temp_p = DECODE__get_tag_data( directions_p, "Time-Prep:" );
+
+            //  Did we find it ?
+            if ( temp_p != NULL )
+            {
+                //  YES:    Is there already a description ?
+                if ( recipe_p->time_prep == NULL )
+                {
+                    //  NO:     Will the data fit into the MasterCook Buffer ?
+                    if ( strlen( temp_p ) < TIME_L )
+                    {
+                        //  YES:    Save it
+                        recipe_p->time_prep = temp_p;
+
+                        //  Set the saved flag
+                        saved = true;
+                    }
+                }
+                //  Was the information saved ?
+                if ( saved == false )
+                {
+                    //  NO:     Format the output data
+                    memset( temp_data, '\0', sizeof( temp_data ) );
+                    snprintf( temp_data, sizeof( temp_data ),
+                              "TIME-PREP: \"%s\"", temp_p );
+
+                    //  Free storage used by the old buffer
+                    mem_free( temp_p );
+
+                    //  Add it to [NOTES :].
+                    list_put_last( recipe_p->notes, text_copy_to_new( " "       ) );
+                    list_put_last( recipe_p->notes, text_copy_to_new( temp_data ) );
+                }
+            }
+
+            //----------------------------------------------------------------
+            //  TIME-WAIT:
+            //----------------------------------------------------------------
+            //  Look for the tag
+            temp_p = DECODE__get_tag_data( directions_p, "Time-Wait:" );
+
+            //  Did we find it ?
+            if ( temp_p != NULL )
+            {
+                //  YES:    Is there already a description ?
+                if ( recipe_p->time_wait == NULL )
+                {
+                    //  NO:     Will the data fit into the MasterCook Buffer ?
+                    if ( strlen( temp_p ) < TIME_L )
+                    {
+                        //  YES:    Save it
+                        recipe_p->time_wait = temp_p;
+
+                        //  Set the saved flag
+                        saved = true;
+                    }
+                }
+                //  Was the information saved ?
+                if ( saved == false )
+                {
+                    //  NO:     Format the output data
+                    memset( temp_data, '\0', sizeof( temp_data ) );
+                    snprintf( temp_data, sizeof( temp_data ),
+                              "TIME-WAIT: \"%s\"", temp_p );
+
+                    //  Free storage used by the old buffer
+                    mem_free( temp_p );
+
+                    //  Add it to [NOTES :].
+                    list_put_last( recipe_p->notes, text_copy_to_new( " "       ) );
+                    list_put_last( recipe_p->notes, text_copy_to_new( temp_data ) );
+                }
+            }
+
+            //----------------------------------------------------------------
+            //  TIME-COOK:
+            //----------------------------------------------------------------
+            //  Look for the tag
+            temp_p = DECODE__get_tag_data( directions_p, "Time-Cook:" );
+
+            //  Did we find it ?
+            if ( temp_p != NULL )
+            {
+                //  YES:    Is there already a description ?
+                if ( recipe_p->time_cook == NULL )
+                {
+                    //  NO:     Will the data fit into the MasterCook Buffer ?
+                    if ( strlen( temp_p ) < TIME_L )
+                    {
+                        //  YES:    Save it
+                        recipe_p->time_cook = temp_p;
+
+                        //  Set the saved flag
+                        saved = true;
+                    }
+                }
+                //  Was the information saved ?
+                if ( saved == false )
+                {
+                    //  NO:     Format the output data
+                    memset( temp_data, '\0', sizeof( temp_data ) );
+                    snprintf( temp_data, sizeof( temp_data ),
+                              "TIME-COOK: \"%s\"", temp_p );
+
+                    //  Free storage used by the old buffer
+                    mem_free( temp_p );
+
+                    //  Add it to [NOTES :].
+                    list_put_last( recipe_p->notes, text_copy_to_new( " "       ) );
+                    list_put_last( recipe_p->notes, text_copy_to_new( temp_data ) );
+                }
+            }
+
+            //----------------------------------------------------------------
+            //  TIME-REST:
+            //----------------------------------------------------------------
+            //  Look for the tag
+            temp_p = DECODE__get_tag_data( directions_p, "Time-Rest:" );
+
+            //  Did we find it ?
+            if ( temp_p != NULL )
+            {
+                //  YES:    Is there already a description ?
+                if ( recipe_p->time_rest == NULL )
+                {
+                    //  NO:     Will the data fit into the MasterCook Buffer ?
+                    if ( strlen( temp_p ) < TIME_L )
+                    {
+                        //  YES:    Save it
+                        recipe_p->time_rest = temp_p;
+
+                        //  Set the saved flag
+                        saved = true;
+                    }
+                }
+                //  Was the information saved ?
+                if ( saved == false )
+                {
+                    //  NO:     Format the output data
+                    memset( temp_data, '\0', sizeof( temp_data ) );
+                    snprintf( temp_data, sizeof( temp_data ),
+                              "TIME-REST: \"%s\"", temp_p );
+
+                    //  Free storage used by the old buffer
+                    mem_free( temp_p );
+
+                    //  Add it to [NOTES :].
+                    list_put_last( recipe_p->notes, text_copy_to_new( " "       ) );
+                    list_put_last( recipe_p->notes, text_copy_to_new( temp_data ) );
+                }
+            }
+
+            //----------------------------------------------------------------
+            //  TIME-TOTAL:
+            //----------------------------------------------------------------
+            //  Look for the tag
+            temp_p = DECODE__get_tag_data( directions_p, "Time-Total:" );
+
+            //  Did we find it ?
+            if ( temp_p != NULL )
+            {
+                //  YES:    Is there already a description ?
+                if ( recipe_p->time_total == NULL )
+                {
+                    //  NO:     Will the data fit into the MasterCook Buffer ?
+                    if ( strlen( temp_p ) < TIME_L )
+                    {
+                        //  YES:    Save it
+                        recipe_p->time_total = temp_p;
+
+                        //  Set the saved flag
+                        saved = true;
+                    }
+                }
+                //  Was the information saved ?
+                if ( saved == false )
+                {
+                    //  NO:     Format the output data
+                    memset( temp_data, '\0', sizeof( temp_data ) );
+                    snprintf( temp_data, sizeof( temp_data ),
+                              "TIME-TOTAL: \"%s\"", temp_p );
+
+                    //  Free storage used by the old buffer
+                    mem_free( temp_p );
 
                     //  Add it to [NOTES :].
                     list_put_last( recipe_p->notes, text_copy_to_new( " "       ) );
