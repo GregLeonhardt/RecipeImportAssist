@@ -60,6 +60,12 @@
 //----------------------------------------------------------------------------
 #define INSTRUCTIONS_L          ( 1024 * 1024 )
 //----------------------------------------------------------------------------
+#define MAKES_AMOUNT            ( 10 + 1 )
+//----------------------------------------------------------------------------
+#define MAKES_UNIT              ( 25 + 1 )
+//----------------------------------------------------------------------------
+#define LINE_L                  ( 255 + 1 )
+//----------------------------------------------------------------------------
 
 /****************************************************************************
  * Structures local to this file
@@ -241,7 +247,7 @@ DECODE__directions_cleanup(
         compare_p = strcasestr( directions_p, ">from:" );
         if ( compare_p != NULL )
         {
-            memcpy( compare_p, " From:",    9 );
+            memcpy( compare_p, " From:",    6 );
             found = true;
         }
         //--------------------------------------------------------------------
@@ -719,8 +725,6 @@ DECODE__directions_source(
      *  Function Initialization
      ************************************************************************/
 
-    //  Initialize the saved flag
-    saved = false;
 
     /************************************************************************
      *  Process a [SOURCE: "xxxx"] tag
@@ -734,6 +738,9 @@ DECODE__directions_source(
              directions_p != NULL;
              directions_p = list_get_next( recipe_p->directions, directions_p ) )
         {
+            //  Initialize the saved flag
+            saved = false;
+            
             //  Look for the tag
             temp_p = DECODE__get_tag_data( directions_p, "Source:" );
 
@@ -744,7 +751,7 @@ DECODE__directions_source(
                 if ( recipe_p->source == NULL )
                 {
                     //  NO:     Will the data fit into the MasterCook Buffer ?
-                    if ( strlen( temp_p ) < 255 )
+                    if ( strlen( temp_p ) < LINE_L )
                     {
                         //  YES:    Save it
                         recipe_p->source = temp_p;
@@ -813,8 +820,6 @@ DECODE__directions_copyright(
      *  Function Initialization
      ************************************************************************/
 
-    //  Initialize the saved flag
-    saved = false;
 
     /************************************************************************
      *  Process a [COPYRIGHT: "xxxx"] tag
@@ -828,17 +833,20 @@ DECODE__directions_copyright(
              directions_p != NULL;
              directions_p = list_get_next( recipe_p->directions, directions_p ) )
         {
+            //  Initialize the saved flag
+            saved = false;
+
             //  Look for the tag
             temp_p = DECODE__get_tag_data( directions_p, "Copyright:" );
 
             //  Did we find it ?
             if ( temp_p != NULL )
             {
-                //  YES:    Is there already a source ?
+                //  YES:    Is there already a copyright ?
                 if ( recipe_p->copyright == NULL )
                 {
                     //  NO:     Will the data fit into the MasterCook Buffer ?
-                    if ( strlen( temp_p ) < 255 )
+                    if ( strlen( temp_p ) < LINE_L )
                     {
                         //  YES:    Save it
                         recipe_p->copyright = temp_p;
@@ -907,8 +915,6 @@ DECODE__directions_description(
      *  Function Initialization
      ************************************************************************/
 
-    //  Initialize the saved flag
-    saved = false;
 
     /************************************************************************
      *  Process a [DESCRIPTION: "xxxx"] tag
@@ -922,17 +928,20 @@ DECODE__directions_description(
              directions_p != NULL;
              directions_p = list_get_next( recipe_p->directions, directions_p ) )
         {
+            //  Initialize the saved flag
+            saved = false;
+
             //  Look for the tag
             temp_p = DECODE__get_tag_data( directions_p, "Description:" );
 
             //  Did we find it ?
             if ( temp_p != NULL )
             {
-                //  YES:    Is there already a source ?
+                //  YES:    Is there already a description ?
                 if ( recipe_p->description == NULL )
                 {
                     //  NO:     Will the data fit into the MasterCook Buffer ?
-                    if ( strlen( temp_p ) < 255 )
+                    if ( strlen( temp_p ) < LINE_L )
                     {
                         //  YES:    Save it
                         recipe_p->description = temp_p;
@@ -951,6 +960,159 @@ DECODE__directions_description(
 
                     //  Free storage used by the old buffer
                     mem_free( temp_p );
+
+                    //  Add it to [NOTES :].
+                    list_put_last( recipe_p->notes, text_copy_to_new( " "       ) );
+                    list_put_last( recipe_p->notes, text_copy_to_new( temp_data ) );
+                }
+            }
+        }
+    }
+
+    /************************************************************************
+     *  Function Exit
+     ************************************************************************/
+
+    //  DONE!
+}
+
+/****************************************************************************/
+/**
+ *  Scan the recipe directions for [MAKES: "0 0/0 wxyz"]
+ *
+ *  @param recipe_t             Primary structure for a recipe
+ *
+ *  @return void                No return code from this function.
+ *
+ *  @note
+ *
+ ****************************************************************************/
+
+void
+DECODE__directions_makes(
+    struct   recipe_t           *   recipe_p
+    )
+{
+    /**
+     *  @param  directions_p    Pointer to a line of the directions         */
+    char                        *   directions_p;
+    /**
+     *  @param  temp_p          Temporary string pointer                    */
+    char                        *   temp_p;
+    /**
+     *  @param  temp_data       Temporary data buffer                       */
+    char                            temp_data[ MAX_LINE_L ];
+    /**
+     *  @param  saved           The information has been saved              */
+    int                             saved;
+    /**
+     *  @param  makes_amount    How many of something will be made          */
+    char                        *   makes_amount;
+    /**
+     *  @param  makes_unit      What is being made                          */
+    char                        *   makes_unit;
+    /**
+     *  @param  ndx             Index into a buffer                         */
+    int                             ndx;
+
+    /************************************************************************
+     *  Function Initialization
+     ************************************************************************/
+
+
+    /************************************************************************
+     *  Process a [MAKES: "xxxx"] tag
+     ************************************************************************/
+
+    //  Are there any directions for this recipe ?
+    if ( list_query_count( recipe_p->directions ) > 0 )
+    {
+        //  YES:    Scan the whole thing.
+        for( directions_p = list_get_first( recipe_p->directions );
+             directions_p != NULL;
+             directions_p = list_get_next( recipe_p->directions, directions_p ) )
+        {
+            //  Initialize the saved flag
+            saved = false;
+
+            //  Look for the tag
+            temp_p = DECODE__get_tag_data( directions_p, "Makes:" );
+
+            //  Did we find it ?
+            if ( temp_p != NULL )
+            {
+                //  YES:    Allocate storage for the two parts
+                makes_amount = mem_malloc( MAKES_AMOUNT );
+                makes_unit   = mem_malloc( MAKES_UNIT );
+
+                //  Copy the makes_amount
+                for ( ndx = 0;
+                      ndx < MAKES_AMOUNT;
+                      ndx += 1 )
+                {
+                    //  Is this a valid amount character ?
+                    if (    ( isdigit( temp_p[ ndx ] ) !=  0  )
+                         || ( temp_p[ ndx ]            == '/' )
+                         || ( temp_p[ ndx ]            == ' ' ) )
+                    {
+                        //  YES:    Copy the character
+                        strncat( makes_amount, &temp_p[ ndx ], 1 );
+                    }
+                    else
+                    {
+                        //  NO:     Done with makes_amount
+                        break;
+                    }
+                }
+
+                //  Copy the makes_unit
+                for ( ;
+                      ndx < MAKES_UNIT;
+                      ndx += 1 )
+                {
+                    //  Is this a valid amount character ?
+                    if ( temp_p[ ndx ] != '\0' )
+                    {
+                        //  YES:    Copy the character
+                        strncat( makes_unit, &temp_p[ ndx ], 1 );
+                    }
+                    else
+                    {
+                        //  NO:     Done with makes_unit
+                        break;
+                    }
+                }
+
+                //  Release the storage used by the temporary buffer.
+                mem_free( temp_p );
+
+                //  Is there already a makes amount or unit ?
+                if (    ( recipe_p->makes      == NULL )
+                     && ( recipe_p->makes_unit == NULL ) )
+                {
+                    //  NO:     Will the data fit into the MasterCook Buffer ?
+                    if (    ( strlen( makes_amount ) < MAKES_AMOUNT - 1 )
+                         && ( strlen( makes_unit   ) < MAKES_UNIT   - 1 ) )
+                    {
+                        //  YES:    Save it
+                        recipe_p->makes      = makes_amount;
+                        recipe_p->makes_unit = makes_unit;
+
+                        //  Set the saved flag
+                        saved = true;
+                    }
+                }
+                //  Was the information saved ?
+                if ( saved == false )
+                {
+                    //  NO:     Format the output data
+                    memset( temp_data, '\0', sizeof( temp_data ) );
+                    snprintf( temp_data, sizeof( temp_data ),
+                              "Yield: \"%s %s\"", makes_amount, makes_unit );
+
+                    //  Free storage used by the old buffer
+                    mem_free( makes_amount );
+                    mem_free( makes_unit );
 
                     //  Add it to [NOTES :].
                     list_put_last( recipe_p->notes, text_copy_to_new( " "       ) );

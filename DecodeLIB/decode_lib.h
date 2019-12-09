@@ -121,6 +121,11 @@ DECODE__directions_description(
     );
 //----------------------------------------------------------------------------
 void
+DECODE__directions_makes( 
+    struct   recipe_t           *   recipe_p
+    );
+//----------------------------------------------------------------------------
+void
 DECODE__directions_notes( 
     struct   recipe_t           *   recipe_p
     );

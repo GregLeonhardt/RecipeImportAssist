@@ -1008,9 +1008,11 @@ decode_finalize(
         //  Find "DESCRIPTION:" in the directions
         DECODE__directions_description( recipe_p );
 
-        //  @ToDo   S(abcd wxyz): "255 char max."
-        //  @ToDo   YIELD: "10-numeric 25-alpha-numeric"
+        //  Find "MAKES:" in the directions
+        DECODE__directions_makes( recipe_p );
+
         //  @ToDo   Start to Finish Time: "00:00"
+        //  @ToDo   S(abcd wxyz): "255 char max."
         //  @ToDo   T(wxyz): "00:00"
         //  @ToDo   Ratings:
 
