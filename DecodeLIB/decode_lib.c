@@ -201,6 +201,9 @@ DECODE__directions_cleanup(
     /**
      *  @param  found           A flag showing that something was found     */
     int                             found;
+    /**
+     *  @param  directions_l    Initial length of the directions string     */
+    int                             directions_l;
 
     /************************************************************************
      *  Function Initialization
@@ -208,6 +211,9 @@ DECODE__directions_cleanup(
 
     //  Just a shortened version of the pointer
     directions_p = recipe_p->instructions;
+
+    //  Set the initial size of the buffer
+    directions_l = strlen( directions_p );
 
     /************************************************************************
      *  Cleanup some common formatting problems
@@ -529,6 +535,21 @@ DECODE__directions_cleanup(
             memcpy( compare_p, "Copyright:",    10 );
             found = true;
         }
+        //====================================================================
+        //  Copyright,
+        compare_p = strcasestr( directions_p, "start to finish time:" );
+        if ( compare_p != NULL )
+        {
+            //  Remove the old text
+            text_remove( compare_p, 0, 21 );
+
+            //  Insert the new text
+            text_insert( directions_p, directions_l,
+                         (compare_p - directions_p ), "Time-Total:");
+
+            //  Something was found and changed.
+            found = true;
+        }
         //--------------------------------------------------------------------
 
     }   while( found == true );
@@ -740,7 +761,7 @@ DECODE__directions_source(
         {
             //  Initialize the saved flag
             saved = false;
-            
+
             //  Look for the tag
             temp_p = DECODE__get_tag_data( directions_p, "Source:" );
 
