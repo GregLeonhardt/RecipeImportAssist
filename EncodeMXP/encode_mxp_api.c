@@ -559,7 +559,7 @@ encode_mxp(
     //  Imported From:
     //-----------------------------------------------------------------------
 
-    fprintf( out_file_fp, "Imported From: " );
+    fprintf( out_file_fp, "Imported-From: " );
 
     if ( recipe_p->posted_by != NULL )
     {
