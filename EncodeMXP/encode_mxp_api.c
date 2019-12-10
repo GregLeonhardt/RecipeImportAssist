@@ -194,7 +194,7 @@ encode_mxp(
     //  AUTHOR:
     //-----------------------------------------------------------------------
 
-    fprintf( out_file_fp, "Recipe By     :" );
+    fprintf( out_file_fp, "Recipe By     : " );
     if ( recipe_p->author != NULL )
     {
         fprintf( out_file_fp, "%s\r\n", recipe_p->author );
