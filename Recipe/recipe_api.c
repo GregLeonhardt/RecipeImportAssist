@@ -1049,7 +1049,7 @@ recipe_add_instructions(
 
         //  Merge the two buffers together.
         strncpy( new_data_p, recipe_p->instructions, new_data_l );
-        strncat( new_data_p, " ", 1 );
+        strcat( new_data_p, " " );
         strncat( new_data_p, data_p, new_data_l - strlen( new_data_p ) );
 
         //  Release the (now) unused buffers

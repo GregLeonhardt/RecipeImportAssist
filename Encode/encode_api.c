@@ -115,7 +115,7 @@ encode_thread(
      *  Function Initialization
      ************************************************************************/
 
-    encode_queue_id = queue_new( "ENCODE" );
+    encode_queue_id = queue_new( "ENCODE", 100 );
 
     /************************************************************************
      *  Function
