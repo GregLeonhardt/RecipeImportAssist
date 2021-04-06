@@ -610,8 +610,12 @@ main(
                 log_write( MID_INFO, "main",
                            "Skipping file: '%s'\n", input_file_name );
 
-                //  Delete the file
-//              unlink( input_file_name );
+                //  Is the delete flag set true ?
+                if ( delete_flag == true )
+                {
+                    //  YES:    Delete the file
+                    unlink( input_file_name );
+                }
 
                 //  Skip it.
                 continue;
