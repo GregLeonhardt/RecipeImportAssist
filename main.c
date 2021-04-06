@@ -519,7 +519,7 @@ main(
         //  Is there one ?
         if ( read_data_p != NULL )
         {
-            //  YES:    Copy the file extention to a new buffer
+            //  YES:    Copy the file extension to a new buffer
             strncpy( extention, ++read_data_p, sizeof( extention ) );
 
             //  Make the file extension all lowercase
@@ -549,6 +549,7 @@ main(
                  || ( strncmp( extention, "dvr",                  3 ) == 0 )
                  || ( strncmp( extention, "ex_",                  3 ) == 0 )
                  || ( strncmp( extention, "exe",                  3 ) == 0 )
+                 || ( strncmp( extention, "fdx",                  3 ) == 0 )
                  || ( strncmp( extention, "gcf",                  3 ) == 0 )
                  || ( strncmp( extention, "ged",                  3 ) == 0 )
                  || ( strncmp( extention, "gif",                  3 ) == 0 )
