@@ -572,6 +572,7 @@ main(
                  || ( strncmp( extention, "mnu",                  3 ) == 0 )
                  || ( strncmp( extention, "mp3",                  3 ) == 0 )
                  || ( strncmp( extention, "mrf",                  3 ) == 0 )
+                 || ( strncmp( extention, "msf",                  3 ) == 0 )
                  || ( strncmp( extention, "mtf",                  3 ) == 0 )
                  || ( strncmp( extention, "mtd",                  3 ) == 0 )
                  || ( strncmp( extention, "mz2",                  3 ) == 0 )
