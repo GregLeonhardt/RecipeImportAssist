@@ -187,8 +187,18 @@ encode_mxp(
     //  NAME
     //-----------------------------------------------------------------------
 
-    text_center( temp_data, sizeof( temp_data ), recipe_p->name );
-    fprintf( out_file_fp, "%s\r\n\r\n", temp_data );
+    //  Will the title fit into the default buffer ?
+    if ( strlen( recipe_p->name ) < sizeof( temp_data ) )
+    {
+        //  YES:    Center and print
+        text_center( temp_data, sizeof( temp_data ), recipe_p->name );
+        fprintf( out_file_fp, "%s\r\n\r\n", temp_data );
+    }
+    else
+    {
+        //  NO:     Just print what we have
+        fprintf( out_file_fp, "%s\r\n\r\n", recipe_p->name );
+    }
 
     //-----------------------------------------------------------------------
     //  AUTHOR:
