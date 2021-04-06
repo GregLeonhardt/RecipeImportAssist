@@ -589,6 +589,7 @@ main(
                  || ( strncmp( extention, "rp_",                  3 ) == 0 )
                  || ( strncmp( extention, "rxf",                  3 ) == 0 )
                  || ( strncmp( extention, "sql",                  3 ) == 0 )
+                 || ( strncmp( extention, "swp",                  3 ) == 0 )
                  || ( strncmp( extention, "tag",                  3 ) == 0 )
                  || ( strncmp( extention, "tlx",                  3 ) == 0 )
                  || ( strncmp( extention, "tx_",                  3 ) == 0 )
